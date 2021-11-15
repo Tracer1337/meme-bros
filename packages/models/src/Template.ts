@@ -8,8 +8,9 @@ type Textbox = {
 }
 
 type Template = {
+    name: string,
     imageUrl: string,
-    textBoxes: Textbox[]
+    textboxes: Textbox[]
 }
 
 const textboxSchema = new mongoose.Schema<Textbox>({
@@ -20,11 +21,15 @@ const textboxSchema = new mongoose.Schema<Textbox>({
 })
 
 const templateSchema = new mongoose.Schema<Template>({
+    name: {
+        type: String,
+        required: true
+    },
     imageUrl: {
         type: String,
         required: true
     },
-    textBoxes: [textboxSchema]
+    textboxes: [textboxSchema]
 })
 
 export default mongoose.model<Template>("Template", templateSchema)
