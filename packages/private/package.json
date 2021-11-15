@@ -1,0 +1,27 @@
+{
+  "name": "@meme-bros/private",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "yarn prod",
+    "prod": "node dist/main"
+  },
+  "dependencies": {
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/core": "^8.0.0",
+    "@nestjs/mapped-types": "^1.0.0",
+    "@nestjs/platform-express": "^8.0.0",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^7.2.0",
+    "@nestjs/cli": "^8.0.0",
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.0.0"
+  }
+}
