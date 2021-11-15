@@ -1,0 +1,14 @@
+{
+  "name": "meme-bros",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Tracer1337 <merlin.moelter@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "mongoose": "^6.0.12",
+    "typescript": "^4.4.4"
+  }
+}
