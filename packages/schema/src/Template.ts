@@ -13,14 +13,14 @@ type Template = {
     textboxes: Textbox[]
 }
 
-const textboxSchema = new mongoose.Schema<Textbox>({
+const TextboxSchema = new mongoose.Schema<Textbox>({
     w: Number,
     h: Number,
     x: Number,
     y: Number
 })
 
-const templateSchema = new mongoose.Schema<Template>({
+const TemplateSchema = new mongoose.Schema<Template>({
     name: {
         type: String,
         required: true
@@ -29,12 +29,13 @@ const templateSchema = new mongoose.Schema<Template>({
         type: String,
         required: true
     },
-    textboxes: [textboxSchema]
+    textboxes: [TextboxSchema]
 })
 
-export default mongoose.model<Template>("Template", templateSchema)
+const TemplateModel = mongoose.model<Template>("Template", TemplateSchema)
 
 export {
     Template,
-    templateSchema
+    TemplateModel,
+    TemplateSchema
 }
