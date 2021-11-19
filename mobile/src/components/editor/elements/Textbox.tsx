@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { GestureResponderEvent, StyleSheet, TextInput, View } from "react-native"
-import Draggable from "react-native-draggable"
 import { setListeners } from "../../../lib/EventEmitter"
 import { EditorContext } from "../Context"
 import type { PickElement } from "./index"
-import makeElement from "./makeElement"
+import makeElement, { ElementProps } from "./makeElement"
 
 function hasPressedElement(event: GestureResponderEvent, element: View) {
     // @ts-ignore
@@ -17,7 +16,9 @@ export type TextboxData = {
     fontSize: number
 }
 
-function Textbox({ element }: { element: PickElement<"textbox"> }) {
+function Textbox({ element, setDraggableProps }: ElementProps & {
+    element: PickElement<"textbox">
+}) {
     const context = useContext(EditorContext)
 
     const containerRef = useRef<View>(null)
@@ -36,45 +37,36 @@ function Textbox({ element }: { element: PickElement<"textbox"> }) {
     }
 
     useEffect(() =>
-        setListeners(context.events, [
-            ["press", handlePress]
-        ])
+        setListeners(context.events, [["press", handlePress]])
     )
 
+    useEffect(() => {
+        setDraggableProps({ disabled: isTyping })
+    }, [isTyping])
+
     return (
-        <Draggable
-            x={element.rect.x}
-            y={element.rect.y}
-            minX={0}
-            minY={0}
-            maxX={context.dimensions.width}
-            maxY={context.dimensions.height}
-            touchableOpacityProps={{ activeOpacity: 1 }}
-            disabled={isTyping}
+        <View
+            ref={containerRef}
+            style={{
+                width: element.rect.width,
+                height: element.rect.height
+            }}
         >
-            <View
-                ref={containerRef}
-                style={{
-                    width: element.rect.width,
-                    height: element.rect.height
-                }}
-            >
-                <View style={styles.container}>
-                    <TextInput
-                        style={[styles.input, {
-                            fontFamily: element.data.fontFamily,
-                            fontSize: element.data.fontSize
-                        }]}
-                        value={text}
-                        onChangeText={setText}
-                        multiline
-                        ref={inputRef}
-                        onFocus={() => setIsTyping(true)}
-                        onEndEditing={() => setIsTyping(false)}
-                    />
-                </View>
+            <View style={styles.container}>
+                <TextInput
+                    style={[styles.input, {
+                        fontFamily: element.data.fontFamily,
+                        fontSize: element.data.fontSize
+                    }]}
+                    value={text}
+                    onChangeText={setText}
+                    multiline
+                    ref={inputRef}
+                    onFocus={() => setIsTyping(true)}
+                    onEndEditing={() => setIsTyping(false)}
+                />
             </View>
-        </Draggable>
+        </View>
     )
 }
 
