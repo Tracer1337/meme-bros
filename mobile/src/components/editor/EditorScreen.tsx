@@ -32,12 +32,16 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                     {
                         id: 0,
                         type: "textbox",
-                        data: {
+                        rect: {
                             x: 100,
                             y: 100,
-                            width: 100,
-                            height: 100,
-                            text: "This is my text"
+                            width: 200,
+                            height: 100
+                        },
+                        data: {
+                            text: "This is my text",
+                            fontFamily: "impact",
+                            fontSize: 32
                         }
                     }
                 ]

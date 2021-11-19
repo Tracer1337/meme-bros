@@ -1,16 +1,38 @@
 import React from "react"
 import Textbox, { TextboxData } from "./Textbox"
 
-export type Element = {
-    id: number,
-    type: "textbox",
-    data: TextboxData
+type Rect = {
+    x: number,
+    y: number,
+    width: number,
+    height: number
 }
 
-const elementsMap: Record<Element["type"], React.ElementType> = {
+type ElementSchema = {
+    id: number,
+    rect: Rect,
+    type: string,
+    data: {}
+}
+
+export type Element = ElementSchema & (
+    {
+        type: "textbox",
+        data: TextboxData
+    }
+)
+
+export type PickElement<T extends Element["type"]> = Element & { type: T }
+
+const elementsMap: Record<
+    Element["type"],
+    React.ComponentType<{ element: any }>
+> = {
     "textbox": Textbox
 }
 
-export function getElementByType(type: Element["type"]) {
+export function getElementByType<T extends Element["type"]>(
+    type: T
+): React.ComponentType<{ element: PickElement<T> }> {
     return elementsMap[type]
 }

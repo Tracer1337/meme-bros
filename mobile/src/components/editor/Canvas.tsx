@@ -32,7 +32,7 @@ function Canvas() {
             />
             {context.canvas.elements.map((element) =>
                 React.createElement(getElementByType(element.type), {
-                    data: element.data,
+                    element,
                     key: element.id
                 })
             )}
