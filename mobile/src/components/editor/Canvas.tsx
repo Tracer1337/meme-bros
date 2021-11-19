@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { Image, LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
 import { EditorContext } from "./Context"
-import Textbox from "./elements/Textbox"
+import { getElementByType } from "./elements"
 
 function Canvas() {    
     const context = useContext(EditorContext)
@@ -30,7 +30,12 @@ function Canvas() {
                 source={context.canvas.imageSource}
                 style={styles.image}
             />
-            <Textbox/>
+            {context.canvas.elements.map((element) =>
+                React.createElement(getElementByType(element.type), {
+                    data: element.data,
+                    key: element.id
+                })
+            )}
         </View>
     )
 }

@@ -2,20 +2,11 @@ import { createContext } from "react"
 import { GestureResponderEvent, ImageSourcePropType } from "react-native"
 import { DeepPartial } from "tsdef"
 import EventEmitter from "../../lib/EventEmitter"
+import { Element } from "./elements"
 
 type Events = {
     press: GestureResponderEvent
 }
-
-type TextboxType = {
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    text: string
-}
-
-type Element = TextboxType
 
 export type ContextValue = {
     set: (partial: DeepPartial<ContextValue>) => void,

@@ -4,20 +4,26 @@ import Draggable from "react-native-draggable"
 import { setListeners } from "../../../lib/EventEmitter"
 import { EditorContext } from "../Context"
 
-const DEFAULT_TEXT = "Enter Text..."
-
 function pressedElement(event: GestureResponderEvent, element: View) {
     // @ts-ignore
     return event.target._nativeTag === element._nativeTag
 }
 
-function Textbox() {
+export type TextboxData = {
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    text: string
+}
+
+function Textbox({ data }: { data: TextboxData }) {
     const context = useContext(EditorContext)
 
     const containerRef = useRef<View>(null)
     const inputRef = useRef<TextInput>(null)
     
-    const [text, setText] = useState(DEFAULT_TEXT)
+    const [text, setText] = useState(data.text)
     const [isTyping, setIsTyping] = useState(false)
     
     const handlePress = (event: GestureResponderEvent) => {
@@ -37,6 +43,8 @@ function Textbox() {
 
     return (
         <Draggable
+            x={data.x}
+            y={data.y}
             minX={0}
             minY={0}
             maxX={context.dimensions.width}

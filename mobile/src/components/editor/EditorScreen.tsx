@@ -13,7 +13,8 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
 
     contextValue.set = (partial) => {
         const newState = deepmerge(contextValue, partial, {
-            isMergeableObject: isPlainObject
+            isMergeableObject: isPlainObject,
+            arrayMerge: (_dest, source) => source
         }) as ContextValue
         setContextValue(newState)
     }
@@ -26,7 +27,20 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
     useEffect(() => {
         contextValue.set({
             canvas: {
-                imageSource: require("../../assets/meme.png")
+                imageSource: require("../../assets/meme.png"),
+                elements: [
+                    {
+                        id: 0,
+                        type: "textbox",
+                        data: {
+                            x: 100,
+                            y: 100,
+                            width: 100,
+                            height: 100,
+                            text: "This is my text"
+                        }
+                    }
+                ]
             }
         })
     }, [])
