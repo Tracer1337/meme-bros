@@ -45,27 +45,19 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
     }, [isTyping])
 
     return (
-        <View
-            ref={containerRef}
-            style={{
-                width: element.rect.width,
-                height: element.rect.height
-            }}
-        >
-            <View style={styles.container}>
-                <TextInput
-                    style={[styles.input, {
-                        fontFamily: element.data.fontFamily,
-                        fontSize: element.data.fontSize
-                    }]}
-                    value={text}
-                    onChangeText={setText}
-                    multiline
-                    ref={inputRef}
-                    onFocus={() => setIsTyping(true)}
-                    onEndEditing={() => setIsTyping(false)}
-                />
-            </View>
+        <View  ref={containerRef} style={styles.container}>
+            <TextInput
+                style={[styles.input, {
+                    fontFamily: element.data.fontFamily,
+                    fontSize: element.data.fontSize
+                }]}
+                value={text}
+                onChangeText={setText}
+                multiline
+                ref={inputRef}
+                onFocus={() => setIsTyping(true)}
+                onEndEditing={() => setIsTyping(false)}
+            />
         </View>
     )
 }

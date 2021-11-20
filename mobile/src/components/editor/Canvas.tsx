@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { Image, LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
 import { EditorContext } from "./Context"
@@ -7,6 +7,8 @@ import { getElementByType } from "./elements"
 function Canvas() {    
     const context = useContext(EditorContext)
 
+    const [isLayoutLoaded, setIsLayoutLoaded] = useState(false)
+
     const handleCanvasLayout = (event: LayoutChangeEvent) => {
         context.set({
             dimensions: {
@@ -14,6 +16,7 @@ function Canvas() {
                 height: event.nativeEvent.layout.height
             }
         })
+        setIsLayoutLoaded(true)
     }
 
     if (!context.canvas.imageSource) {
@@ -30,7 +33,7 @@ function Canvas() {
                 source={context.canvas.imageSource}
                 style={styles.image}
             />
-            {context.canvas.elements.map((element) =>
+            {isLayoutLoaded && context.canvas.elements.map((element) =>
                 React.createElement(getElementByType(element.type), {
                     element,
                     key: element.id
