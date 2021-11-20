@@ -1,15 +1,21 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutChangeEvent, PanResponder, StyleSheet } from "react-native"
 
+type Rect = { width: number, height: number }
+
+type ViewProps = React.ComponentProps<typeof Animated["View"]>
+
 export type DraggableProps = React.PropsWithChildren<{
+    style?: ViewProps["style"],
     x?: number,
     y?: number,
     clamp?: [number, number, number, number],
     disabled?: boolean,
-    [k: string]: any
+    onDrag?: (pos: { x: number, y: number }) => void,
+    onStart?: () => void,
+    onEnd?: () => void,
+    controlled?: boolean
 }>
-
-type Rect = { width: number, height: number }
 
 function createPanObject({ x, y }: { x: number, y: number }) {
     const pan = new Animated.ValueXY()
@@ -26,6 +32,15 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
 
     const pan = useRef(createPanObject(props)).current
 
+    const handleGestureStart = () => {
+        props.onStart?.()
+    }
+    
+    const handleGestureEnd = () => {
+        pan.extractOffset()
+        props.onEnd?.()
+    }
+
     const panResponder = useRef(
         PanResponder.create({
             onStartShouldSetPanResponder: () => true,
@@ -38,7 +53,9 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
             ], {
                 useNativeDriver: false
             }),
-            onPanResponderRelease: () => pan.extractOffset()
+            onPanResponderGrant: handleGestureStart,
+            onPanResponderRelease: handleGestureEnd,
+            onPanResponderTerminate: handleGestureEnd
         })
     ).current
 
@@ -47,6 +64,14 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
     >(pan.getLayout())
 
     const rect = useRef<Rect>({ width: 0, height: 0 })
+
+    useEffect(() => {
+        if (!props.onDrag) {
+            return
+        }
+        const id = pan.addListener(props.onDrag)
+        return () => pan.removeListener(id)
+    }, [props.onDrag])
 
     const hasLayoutChanged = (layout: Rect) => {
         return (
@@ -71,7 +96,11 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
     return (
         <Animated.View
             {...(props.disabled ? {} : panResponder.panHandlers)}
-            style={[layout, styles.container]}
+            style={[
+                props.controlled ? {} : layout,
+                styles.container,
+                props.style
+            ]}
             onLayout={handleLayout}
         >
             {children}
