@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
+    "@types/react-native-vector-icons": "^6.4.10",
     "deepmerge": "^4.2.2",
     "is-plain-object": "^5.0.0",
     "react": "17.0.2",

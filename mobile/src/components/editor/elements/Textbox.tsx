@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { GestureResponderEvent, StyleSheet, TextInput, View } from "react-native"
+import { GestureResponderEvent, StyleSheet, Text, TextInput, View } from "react-native"
 import { setListeners } from "../../../lib/EventEmitter"
 import { EditorContext } from "../Context"
 import type { PickElement } from "./index"
@@ -67,7 +67,10 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         borderColor: "#000",
-        borderWidth: 1
+        borderWidth: 1,
+        borderStyle: "dashed",
+        // Without border-radius the border-style doesn't work
+        borderRadius: .1
     },
 
     input: {

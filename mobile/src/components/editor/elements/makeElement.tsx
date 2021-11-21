@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useRef, useState } from "react"
 import { Animated, StyleSheet, View } from "react-native"
+import Draggable, { DraggableProps } from "../../../lib/Draggable"
 import { Element, PickElement } from "./index"
 import { EditorContext } from "../Context"
-import { IconButton } from "react-native-paper"
-import Draggable, { DraggableProps } from "../../../lib/Draggable"
+import ResizeHandles from "./ResizeHandles"
 
 export type ElementProps = {
     setDraggableProps: (props: DraggableProps) => void
 }
 
-type HandleKey = "move" | "resizeXY"
+export type HandleKey = "move" | "resizeXY"
 
 function createSizeObject(rect: Element["rect"]) {
     const size = new Animated.ValueXY()
@@ -30,7 +30,7 @@ function makeElement<T extends Element["type"]>(
         const [draggableProps, setDraggableProps] = useState<DraggableProps>({})
         const [activeHandle, setActiveHandle] = useState<HandleKey | null>(null)
 
-        const makeHandleProps = (key: HandleKey): DraggableProps => ({
+        const getHandleProps = (key: HandleKey): DraggableProps => ({
             onStart: () => setActiveHandle(key),
             onEnd: () => setActiveHandle(null),
             disabled: activeHandle !== null && activeHandle !== key
@@ -41,7 +41,7 @@ function makeElement<T extends Element["type"]>(
                 x={element.rect.x}
                 y={element.rect.y}
                 clamp={[0, 0, context.dimensions.width, context.dimensions.height]}
-                {...makeHandleProps("move")}
+                {...getHandleProps("move")}
                 {...draggableProps}
             >
                 <Animated.View
@@ -52,35 +52,10 @@ function makeElement<T extends Element["type"]>(
                         setDraggableProps={setDraggableProps}
                     />
                     <View style={styles.controls}>
-                        <View style={styles.resizeHandles}>
-                            <View style={{
-                                position: "absolute",
-                                right: 0,
-                                bottom: 0,
-                                borderWidth: 3,
-                                borderColor: "white"
-                            }}>
-                                <Draggable
-                                    style={{
-                                        borderWidth: 3,
-                                        borderColor: "black"
-                                    }}
-                                    controlled
-                                    onDrag={Animated.event(
-                                        [{ x: size.x, y: size.y }],
-                                        { useNativeDriver: false }
-                                    )}
-                                    {...makeHandleProps("resizeXY")}
-                                >
-                                    <IconButton
-                                        style={{
-                                            transform: [{ rotate: "90deg" }]
-                                        }}
-                                        icon="arrow-top-right-bottom-left"
-                                    />
-                                </Draggable>
-                            </View>
-                        </View>
+                        <ResizeHandles
+                            animate={size}
+                            getHandleProps={getHandleProps}
+                        />
                     </View>
                 </Animated.View>
             </Draggable>
@@ -93,14 +68,6 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         position: "absolute"
-    },
-
-    resizeHandles: {
-        width: "100%",
-        height: "100%",
-        borderColor: "white",
-        borderWidth: 3,
-        position: "relative"
     }
 })
 
