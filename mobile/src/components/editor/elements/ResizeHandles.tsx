@@ -1,13 +1,13 @@
 import React from "react"
 import { Animated, StyleSheet, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
-import { DraggableProps } from "../../../lib/Draggable"
 import Handle from "../../styled/Handle"
-import type { HandleKey } from "./makeElement"
+import type { GetHandleProps } from "./makeElement"
 
-function ResizeHandles({ animate, getHandleProps }: {
+function ResizeHandles({ animate, getHandleProps, onUpdate }: {
     animate: Animated.ValueXY,
-    getHandleProps: (key: HandleKey) => DraggableProps
+    getHandleProps: GetHandleProps,
+    onUpdate: () => void
 }) {
     return (
         <View style={styles.resizeHandles}>
@@ -18,7 +18,7 @@ function ResizeHandles({ animate, getHandleProps }: {
                         [{ x: animate.x, y: animate.y }],
                         { useNativeDriver: false }
                     )}
-                    {...getHandleProps("resize")}
+                    {...getHandleProps("resize", { onEnd: onUpdate })}
                 >
                     <Icon
                         name="arrow-top-right-bottom-left"

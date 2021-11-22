@@ -15,7 +15,8 @@ export type DraggableProps = React.PropsWithChildren<{
     onDrag?: (pos: { x: number, y: number }) => void,
     onStart?: () => void,
     onEnd?: () => void,
-    controlled?: boolean
+    controlled?: boolean,
+    onLayout?: ViewProps["onLayout"]
 }>
 
 function Draggable({ children, ...partialProps }: DraggableProps) {
@@ -80,6 +81,7 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
         if (!clamp || !hasLayoutChanged(event.nativeEvent.layout)) {
             return
         }
+        props.onLayout?.(event)
         const { width, height } = event.nativeEvent.layout
         rect.current = { width, height }
         setLayout({

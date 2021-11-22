@@ -6,12 +6,18 @@ import { EditorContext } from "../Context"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
 import { withOffset } from "../../../lib/animated"
+import useLayout from "../../../lib/useLayout"
 
 export type ElementProps = {
     setDraggableProps: (props: DraggableProps) => void
 }
 
 export type HandleKey = "move" | "resize" | "rotate"
+
+export type GetHandleProps = (key: HandleKey, options?: {
+    onStart?: () => void,
+    onEnd?: () => void
+}) => void
 
 function makeElement<T extends Element["type"]>(
     Component: React.ComponentType<ElementProps & {
@@ -20,6 +26,8 @@ function makeElement<T extends Element["type"]>(
 ) {
     return ({ element }: Omit<ElementProps, "setDraggableProps"> & { element: PickElement<T> }) => {
         const context = useContext(EditorContext)
+
+        const [getLayout, onLayout] = useLayout()
 
         const size = useRef(withOffset(new Animated.ValueXY(), {
             x: element.rect.width,
@@ -30,18 +38,42 @@ function makeElement<T extends Element["type"]>(
         const [draggableProps, setDraggableProps] = useState<DraggableProps>({})
         const [activeHandle, setActiveHandle] = useState<HandleKey | null>(null)
 
-        const getHandleProps = (key: HandleKey): DraggableProps => ({
-            onStart: () => setActiveHandle(key),
-            onEnd: () => setActiveHandle(null),
+        const getHandleProps: GetHandleProps = (key, options) => ({
+            onStart: () => {
+                setActiveHandle(key)
+                options?.onStart?.()
+            },
+            onEnd: () => {
+                setActiveHandle(null)
+                options?.onEnd?.()
+            },
             disabled: activeHandle !== null && activeHandle !== key
         })
+
+        const updateElement = () => {
+            const layout = getLayout()
+            if (!layout) {
+                return
+            }
+            element.rect = {
+                ...element.rect,
+                x: layout.x,
+                y: layout.y,
+                width: layout.width,
+                height: layout.height,
+                // @ts-ignore
+                rotation: rotation._value
+            }
+            context.set({})
+        }
 
         return (
             <Draggable
                 x={element.rect.x}
                 y={element.rect.y}
                 clamp={[0, 0, context.dimensions.width, context.dimensions.height]}
-                {...getHandleProps("move")}
+                onLayout={onLayout}
+                {...getHandleProps("move", { onEnd: updateElement })}
                 {...draggableProps}
             >
                 <Animated.View
@@ -65,12 +97,14 @@ function makeElement<T extends Element["type"]>(
                             <RotationHandle
                                 animate={rotation}
                                 childRect={element.rect}
+                                onUpdate={updateElement}
                                 getHandleProps={getHandleProps}
                             />
                         </View>
                         <ResizeHandles
                             animate={size}
                             getHandleProps={getHandleProps}
+                            onUpdate={updateElement}
                         />
                     </View>
                 </Animated.View>

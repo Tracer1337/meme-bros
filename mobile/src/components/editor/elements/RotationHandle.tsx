@@ -1,14 +1,14 @@
 import React from "react"
 import { Animated } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
-import { DraggableProps } from "../../../lib/Draggable"
 import Handle from "../../styled/Handle"
-import { HandleKey } from "./makeElement"
+import { GetHandleProps } from "./makeElement"
 
-function RotationHandle({ animate, childRect, getHandleProps }: {
+function RotationHandle({ animate, childRect, getHandleProps, onUpdate }: {
     animate: Animated.Value,
     childRect: { width: number, height: number },
-    getHandleProps: (key: HandleKey) => DraggableProps
+    getHandleProps: GetHandleProps,
+    onUpdate: () => void
 }) {
     const getRotationAngle = (pos: { x: number, y: number }) => {
         const childCenter = { x: childRect.width / 2, y: childRect.height / 2 }
@@ -22,7 +22,11 @@ function RotationHandle({ animate, childRect, getHandleProps }: {
     }
 
     return (
-        <Handle controlled onDrag={handleRotationDrag} {...getHandleProps("rotate")}>
+        <Handle
+            controlled
+            onDrag={handleRotationDrag}
+            {...getHandleProps("rotate", { onEnd: onUpdate })}
+        >
             <Icon name="rotate-left" size={24} color="#000"/>
         </Handle>
     )
