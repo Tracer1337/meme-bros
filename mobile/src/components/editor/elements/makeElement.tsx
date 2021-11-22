@@ -5,18 +5,13 @@ import { Element, PickElement } from "./index"
 import { EditorContext } from "../Context"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
+import { withOffset } from "../../../lib/animated"
 
 export type ElementProps = {
     setDraggableProps: (props: DraggableProps) => void
 }
 
 export type HandleKey = "move" | "resize" | "rotate"
-
-function createSizeObject(rect: Element["rect"]) {
-    const size = new Animated.ValueXY()
-    size.setOffset({ x: rect.width, y: rect.height })
-    return size
-}
 
 function makeElement<T extends Element["type"]>(
     Component: React.ComponentType<ElementProps & {
@@ -26,7 +21,10 @@ function makeElement<T extends Element["type"]>(
     return ({ element }: Omit<ElementProps, "setDraggableProps"> & { element: PickElement<T> }) => {
         const context = useContext(EditorContext)
 
-        const size = useRef(createSizeObject(element.rect)).current
+        const size = useRef(withOffset(new Animated.ValueXY(), {
+            x: element.rect.width,
+            y: element.rect.height
+        })).current
         const rotation = useRef(new Animated.Value(element.rect.rotation)).current
 
         const [draggableProps, setDraggableProps] = useState<DraggableProps>({})

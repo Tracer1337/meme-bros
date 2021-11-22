@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutChangeEvent, PanResponder, StyleSheet } from "react-native"
+import { withOffset } from "./animated"
 
 type Rect = { width: number, height: number }
 
@@ -17,12 +18,6 @@ export type DraggableProps = React.PropsWithChildren<{
     controlled?: boolean
 }>
 
-function createPanObject({ x, y }: { x: number, y: number }) {
-    const pan = new Animated.ValueXY()
-    pan.setOffset({ x, y })
-    return pan
-}
-
 function Draggable({ children, ...partialProps }: DraggableProps) {
     const props = Object.assign({
         x: 0,
@@ -30,7 +25,7 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
         disabled: false
     }, partialProps)
 
-    const pan = useRef(createPanObject(props)).current
+    const pan = useRef(withOffset(new Animated.ValueXY(), props)).current
 
     const handleGestureStart = () => {
         props.onStart?.()
