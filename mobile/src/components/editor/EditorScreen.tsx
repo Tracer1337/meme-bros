@@ -36,7 +36,8 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                             x: 100,
                             y: 100,
                             width: 200,
-                            height: 100
+                            height: 100,
+                            rotation: 0
                         },
                         data: {
                             text: "This is my text",

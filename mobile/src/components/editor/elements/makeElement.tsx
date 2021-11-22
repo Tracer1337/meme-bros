@@ -4,12 +4,13 @@ import Draggable, { DraggableProps } from "../../../lib/Draggable"
 import { Element, PickElement } from "./index"
 import { EditorContext } from "../Context"
 import ResizeHandles from "./ResizeHandles"
+import RotationHandle from "./RotationHandle"
 
 export type ElementProps = {
     setDraggableProps: (props: DraggableProps) => void
 }
 
-export type HandleKey = "move" | "resizeXY"
+export type HandleKey = "move" | "resize" | "rotate"
 
 function createSizeObject(rect: Element["rect"]) {
     const size = new Animated.ValueXY()
@@ -22,10 +23,11 @@ function makeElement<T extends Element["type"]>(
         element: PickElement<T>
     }>
 ) {
-    return ({ element }: ElementProps & { element: PickElement<T> }) => {
+    return ({ element }: Omit<ElementProps, "setDraggableProps"> & { element: PickElement<T> }) => {
         const context = useContext(EditorContext)
 
         const size = useRef(createSizeObject(element.rect)).current
+        const rotation = useRef(new Animated.Value(element.rect.rotation)).current
 
         const [draggableProps, setDraggableProps] = useState<DraggableProps>({})
         const [activeHandle, setActiveHandle] = useState<HandleKey | null>(null)
@@ -45,13 +47,29 @@ function makeElement<T extends Element["type"]>(
                 {...draggableProps}
             >
                 <Animated.View
-                    style={{ width: size.x, height: size.y }}
+                    style={{
+                        width: size.x,
+                        height: size.y,
+                        transform: [{
+                            rotate: rotation.interpolate({
+                                inputRange: [0, 2*Math.PI],
+                                outputRange: ["0deg", "360deg"]
+                            })
+                        }]
+                    }}
                 >
                     <Component
                         element={element}
                         setDraggableProps={setDraggableProps}
                     />
                     <View style={styles.controls}>
+                        <View style={styles.topControls}>
+                            <RotationHandle
+                                animate={rotation}
+                                childRect={element.rect}
+                                getHandleProps={getHandleProps}
+                            />
+                        </View>
                         <ResizeHandles
                             animate={size}
                             getHandleProps={getHandleProps}
@@ -68,6 +86,14 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         position: "absolute"
+    },
+
+    topControls: {
+        position: "absolute",
+        top: -24,
+        width: "100%",
+        flex: 1,
+        alignItems: "center"
     }
 })
 

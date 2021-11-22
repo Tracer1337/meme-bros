@@ -18,7 +18,7 @@ function ResizeHandles({ animate, getHandleProps }: {
                         [{ x: animate.x, y: animate.y }],
                         { useNativeDriver: false }
                     )}
-                    {...getHandleProps("resizeXY")}
+                    {...getHandleProps("resize")}
                 >
                     <Icon
                         name="arrow-top-right-bottom-left"
