@@ -1,7 +1,8 @@
 import React from "react"
-import { Animated, StyleSheet } from "react-native"
+import { Animated } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
-import Draggable, { DraggableProps } from "../../../lib/Draggable"
+import { DraggableProps } from "../../../lib/Draggable"
+import Handle from "../../styled/Handle"
 import { HandleKey } from "./makeElement"
 
 function RotationHandle({ animate, childRect, getHandleProps }: {
@@ -21,24 +22,10 @@ function RotationHandle({ animate, childRect, getHandleProps }: {
     }
 
     return (
-        <Draggable
-            style={styles.handle}
-            controlled
-            onDrag={handleRotationDrag}
-            {...getHandleProps("rotate")}
-        >
+        <Handle controlled onDrag={handleRotationDrag} {...getHandleProps("rotate")}>
             <Icon name="rotate-left" size={24} color="#000"/>
-        </Draggable>
+        </Handle>
     )
 }
-const styles = StyleSheet.create({
-    handle: {
-        backgroundColor: "#fff",
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 4,
-        position: "relative"
-    }
-})
 
 export default RotationHandle

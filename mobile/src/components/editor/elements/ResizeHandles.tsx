@@ -1,7 +1,8 @@
 import React from "react"
 import { Animated, StyleSheet, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
-import Draggable, { DraggableProps } from "../../../lib/Draggable"
+import { DraggableProps } from "../../../lib/Draggable"
+import Handle from "../../styled/Handle"
 import type { HandleKey } from "./makeElement"
 
 function ResizeHandles({ animate, getHandleProps }: {
@@ -11,8 +12,7 @@ function ResizeHandles({ animate, getHandleProps }: {
     return (
         <View style={styles.resizeHandles}>
             <View style={styles.resizeXY}>
-                <Draggable
-                    style={styles.handle}
+                <Handle
                     controlled
                     onDrag={Animated.event(
                         [{ x: animate.x, y: animate.y }],
@@ -26,7 +26,7 @@ function ResizeHandles({ animate, getHandleProps }: {
                         style={{ transform: [{ rotate: "90deg" }] }}
                         color="#000"
                     />
-                </Draggable>
+                </Handle>
             </View>
         </View>
     )
@@ -37,13 +37,6 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         position: "relative"
-    },
-
-    handle: {
-        backgroundColor: "#fff",
-        borderColor: "#000",
-        borderWidth: 1,
-        borderRadius: 4
     },
 
     resizeXY: {
