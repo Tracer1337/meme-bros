@@ -1,12 +1,14 @@
 import React, { useContext, useRef, useState } from "react"
-import { Animated, StyleSheet, View } from "react-native"
+import { Animated, StyleSheet, TouchableOpacity, View } from "react-native"
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import Draggable, { DraggableProps } from "../../../lib/Draggable"
-import { Element, PickElement } from "./index"
-import { EditorContext } from "../Context"
+import { Element, ElementTypes, PickElement } from "./index"
+import { EditorContext, ElementEvents } from "../Context"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
 import { withOffset } from "../../../lib/animated"
 import useLayout from "../../../lib/useLayout"
+import globalStyles from "../../../styles"
 
 export type ElementProps = {
     setDraggableProps: (props: DraggableProps) => void
@@ -18,6 +20,22 @@ export type GetHandleProps = (key: HandleKey, options?: {
     onStart?: () => void,
     onEnd?: () => void
 }) => void
+
+function ActionHandle({ icon, onPress }: {
+    icon: string,
+    onPress: () => void
+}) {
+    return (
+        <TouchableOpacity onPress={onPress}>
+            <Icon
+                name={icon}
+                size={24}
+                color="#000"
+                style={globalStyles.handle}
+            />
+        </TouchableOpacity>
+    )
+}
 
 function makeElement<T extends Element["type"]>(
     Component: React.ComponentType<ElementProps & {
@@ -49,6 +67,10 @@ function makeElement<T extends Element["type"]>(
             },
             disabled: activeHandle !== null && activeHandle !== key
         })
+
+        const event = (name: ElementEvents) => () => {
+            context.events.emit(`element.${name}`, element.id)
+        }
 
         const updateElement = () => {
             const layout = getLayout()
@@ -94,12 +116,15 @@ function makeElement<T extends Element["type"]>(
                     />
                     <View style={styles.controls}>
                         <View style={styles.topControls}>
-                            <RotationHandle
-                                animate={rotation}
-                                childRect={element.rect}
-                                onUpdate={updateElement}
-                                getHandleProps={getHandleProps}
-                            />
+                            <View style={{ marginRight: 8 }}>
+                                <RotationHandle
+                                    animate={rotation}
+                                    childRect={element.rect}
+                                    onUpdate={updateElement}
+                                    getHandleProps={getHandleProps}
+                                />
+                            </View>
+                            <ActionHandle icon="pencil" onPress={event("edit")}/>
                         </View>
                         <ResizeHandles
                             animate={size}
@@ -125,7 +150,8 @@ const styles = StyleSheet.create({
         top: -24,
         width: "100%",
         flex: 1,
-        alignItems: "center"
+        flexDirection: "row",
+        justifyContent: "center"
     }
 })
 

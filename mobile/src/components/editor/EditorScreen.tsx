@@ -20,7 +20,7 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
     }
     
     const handleScreenPress = (event: GestureResponderEvent) => {
-        contextValue.events.emit("press", event)
+        contextValue.events.emit("screen.press", event)
         return false
     }
 
@@ -42,7 +42,8 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                         data: {
                             text: "This is my text",
                             fontFamily: "impact",
-                            fontSize: 32
+                            fontSize: 32,
+                            color: "#000000"
                         }
                     }
                 ]

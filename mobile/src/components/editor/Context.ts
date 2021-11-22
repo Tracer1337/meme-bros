@@ -2,10 +2,15 @@ import { createContext } from "react"
 import { GestureResponderEvent, ImageSourcePropType } from "react-native"
 import { DeepPartial } from "tsdef"
 import EventEmitter from "../../lib/EventEmitter"
-import { Element } from "./elements"
+import { Element, ElementSchema } from "./elements"
+
+export type ScreenEvents = "press"
+
+export type ElementEvents = "edit"
 
 type Events = {
-    press: GestureResponderEvent
+    "screen.press": GestureResponderEvent,
+    "element.edit": ElementSchema["id"]
 }
 
 export type ContextValue = {

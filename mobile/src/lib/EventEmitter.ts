@@ -42,14 +42,4 @@ class EventEmitter<Events extends Record<string, any>> {
     }
 }
 
-export function setListeners<T>(
-    events: EventEmitter<T>,
-    handlers: [keyof T, (data: T[keyof T]) => void][]
-) {
-    handlers.forEach(([event, handler]) => events.addListener(event, handler))
-    return () => {
-        handlers.forEach(([event, handler]) => events.removeListener(event, handler))
-    }
-}
-
 export default EventEmitter

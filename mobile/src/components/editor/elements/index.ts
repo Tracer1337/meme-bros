@@ -9,10 +9,12 @@ type Rect = {
     rotation: number
 }
 
-type ElementSchema = {
+export type ElementTypes = "textbox"
+
+export type ElementSchema = {
     id: number,
     rect: Rect,
-    type: string,
+    type: ElementTypes,
     data: {}
 }
 
@@ -23,16 +25,16 @@ export type Element = ElementSchema & (
     }
 )
 
-export type PickElement<T extends Element["type"]> = Element & { type: T }
+export type PickElement<T extends ElementTypes> = Element & { type: T }
 
 const elementsMap: Record<
-    Element["type"],
+    ElementTypes,
     React.ComponentType<{ element: any }>
 > = {
     "textbox": Textbox
 }
 
-export function getElementByType<T extends Element["type"]>(
+export function getElementByType<T extends ElementTypes>(
     type: T
 ): React.ComponentType<{ element: PickElement<T> }> {
     return elementsMap[type]

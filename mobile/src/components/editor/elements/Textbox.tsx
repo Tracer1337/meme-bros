@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { GestureResponderEvent, StyleSheet, Text, TextInput, View } from "react-native"
-import { setListeners } from "../../../lib/EventEmitter"
+import { consumeEvent, setListeners } from "../../../lib/events"
 import { EditorContext } from "../Context"
 import type { PickElement } from "./index"
 import makeElement, { ElementProps } from "./makeElement"
@@ -13,7 +13,8 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
 export type TextboxData = {
     text: string,
     fontFamily: "Arial" | "impact",
-    fontSize: number
+    fontSize: number,
+    color: "#000000"
 }
 
 function Textbox({ element, setDraggableProps }: ElementProps & {
@@ -22,42 +23,53 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
     const context = useContext(EditorContext)
 
     const containerRef = useRef<View>(null)
-    const inputRef = useRef<TextInput>(null)
     
     const [text, setText] = useState(element.data.text)
-    const [isTyping, setIsTyping] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
     
     const handlePress = (event: GestureResponderEvent) => {
         if (!containerRef.current) {
             return
         }
         if (!hasPressedElement(event, containerRef.current)) {
-            inputRef.current?.blur()
+            setIsEditing(false)
         }
     }
 
+    const handleEdit = (id: number) => {
+        setIsEditing(true)
+    }
+
     useEffect(() =>
-        setListeners(context.events, [["press", handlePress]])
+        setListeners(context.events, [
+            ["screen.press", handlePress],
+            ["element.edit", consumeEvent(element.id, handleEdit)],
+        ])
     )
 
     useEffect(() => {
-        setDraggableProps({ disabled: isTyping })
-    }, [isTyping])
+        setDraggableProps({ disabled: isEditing })
+    }, [isEditing])
+
+    const textStyles = {
+        fontFamily: element.data.fontFamily,
+        fontSize: element.data.fontSize,
+        color: element.data.color
+    }
 
     return (
         <View  ref={containerRef} style={styles.container}>
-            <TextInput
-                style={[styles.input, {
-                    fontFamily: element.data.fontFamily,
-                    fontSize: element.data.fontSize
-                }]}
-                value={text}
-                onChangeText={setText}
-                multiline
-                ref={inputRef}
-                onFocus={() => setIsTyping(true)}
-                onEndEditing={() => setIsTyping(false)}
-            />
+            {isEditing ? (
+                <TextInput
+                    style={[styles.input, textStyles]}
+                    value={text}
+                    onChangeText={setText}
+                    multiline
+                    autoFocus
+                />
+            ) : (
+                <Text style={textStyles}>{text}</Text>
+            )}
         </View>
     )
 }
