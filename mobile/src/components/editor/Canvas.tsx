@@ -4,7 +4,7 @@ import { Text } from "react-native-paper"
 import { setListeners } from "../../lib/events"
 import useId from "../../lib/useId"
 import { EditorContext } from "./Context"
-import { ElementTypes, getDefaultDataByType, getElementByType, PickElement } from "./elements"
+import { Element, ElementTypes, getDefaultDataByType, getElementByType, PickElement } from "./elements"
 
 function Canvas() {    
     const context = useContext(EditorContext)
@@ -47,10 +47,19 @@ function Canvas() {
         })
     }
 
+    const handleRemoveElement = (id: Element["id"]) => {
+        const index = context.canvas.elements.findIndex(
+            (_element) => _element.id === id
+        )
+        context.canvas.elements.splice(index, 1)
+        context.set({})
+    }
+
     useEffect(() =>
         setListeners(context.events, [
             ["screen.press", handleScreenPress],
-            ["element.create", handleCreateElement]
+            ["element.create", handleCreateElement],
+            ["element.remove", handleRemoveElement]
         ])
     )
 

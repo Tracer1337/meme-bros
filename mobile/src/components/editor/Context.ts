@@ -6,12 +6,13 @@ import { Element, ElementSchema } from "./elements"
 
 export type ScreenEvents = "press"
 
-export type ElementEvents = "edit"
+export type ElementEvents = "create" | "edit" | "remove"
 
 type Events = {
     "screen.press": GestureResponderEvent,
     "element.create": ElementSchema["type"],
-    "element.edit": ElementSchema["id"]
+    "element.edit": ElementSchema["id"],
+    "element.remove": ElementSchema["id"]
 }
 
 export type ContextValue = {

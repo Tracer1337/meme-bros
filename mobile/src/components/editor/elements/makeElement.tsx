@@ -136,7 +136,10 @@ function makeElement<T extends Element["type"]>(
                                         getHandleProps={getHandleProps}
                                     />
                                 </View>
-                                <ActionHandle icon="pencil" onPress={event("edit")}/>
+                                <View style={{ marginRight: 8 }}>
+                                    <ActionHandle icon="pencil" onPress={event("edit")}/>
+                                </View>
+                                <ActionHandle icon="delete-outline" onPress={event("remove")}/>
                             </View>
                             <ResizeHandles
                                 animate={size}
