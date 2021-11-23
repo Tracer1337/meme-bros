@@ -1,11 +1,15 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Image, LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
+import { setListeners } from "../../lib/events"
+import useId from "../../lib/useId"
 import { EditorContext } from "./Context"
-import { getElementByType } from "./elements"
+import { ElementTypes, getDefaultDataByType, getElementByType, PickElement } from "./elements"
 
 function Canvas() {    
     const context = useContext(EditorContext)
+
+    const getId = useId()
 
     const [isLayoutLoaded, setIsLayoutLoaded] = useState(false)
 
@@ -18,6 +22,37 @@ function Canvas() {
         })
         setIsLayoutLoaded(true)
     }
+
+    const handleScreenPress = () => {
+        context.set({ canvas: { focus: null } })
+    }
+
+    const handleCreateElement = <T extends ElementTypes>(type: T) => {
+        const newElement: PickElement<T> = {
+            id: getId(),
+            type,
+            rect: {
+                x: 0,
+                y: 0,
+                width: 200,
+                height: 100,
+                rotation: 0
+            },
+            data: getDefaultDataByType(type)
+        }
+        context.set({
+            canvas: {
+                elements: [...context.canvas.elements, newElement]
+            }
+        })
+    }
+
+    useEffect(() =>
+        setListeners(context.events, [
+            ["screen.press", handleScreenPress],
+            ["element.create", handleCreateElement]
+        ])
+    )
 
     if (!context.canvas.imageSource) {
         return (

@@ -42,7 +42,7 @@ function makeElement<T extends Element["type"]>(
         element: PickElement<T>
     }>
 ) {
-    return ({ element }: Omit<ElementProps, "setDraggableProps"> & { element: PickElement<T> }) => {
+    return ({ element }: Omit<ElementProps, "setDraggableProps"> & { element: PickElement<T> }) => {        
         const context = useContext(EditorContext)
 
         const [getLayout, onLayout] = useLayout()
@@ -89,13 +89,25 @@ function makeElement<T extends Element["type"]>(
             context.set({})
         }
 
+        const focusElement = () => {
+            context.set({ canvas: { focus: element.id } })
+        }
+
+        const blurElement = () => {
+            context.set({ canvas: { focus: null } })
+            updateElement()
+        }
+
         return (
             <Draggable
                 x={element.rect.x}
                 y={element.rect.y}
                 clamp={[0, 0, context.dimensions.width, context.dimensions.height]}
                 onLayout={onLayout}
-                {...getHandleProps("move", { onEnd: updateElement })}
+                {...getHandleProps("move", {
+                    onStart: focusElement,
+                    onEnd: blurElement
+                })}
                 {...draggableProps}
             >
                 <Animated.View
@@ -114,24 +126,26 @@ function makeElement<T extends Element["type"]>(
                         element={element}
                         setDraggableProps={setDraggableProps}
                     />
-                    <View style={styles.controls}>
-                        <View style={styles.topControls}>
-                            <View style={{ marginRight: 8 }}>
-                                <RotationHandle
-                                    animate={rotation}
-                                    childRect={element.rect}
-                                    onUpdate={updateElement}
-                                    getHandleProps={getHandleProps}
-                                />
+                    {context.canvas.focus === element.id && (
+                        <View style={styles.controls}>
+                            <View style={styles.topControls}>
+                                <View style={{ marginRight: 8 }}>
+                                    <RotationHandle
+                                        animate={rotation}
+                                        childRect={element.rect}
+                                        onUpdate={updateElement}
+                                        getHandleProps={getHandleProps}
+                                    />
+                                </View>
+                                <ActionHandle icon="pencil" onPress={event("edit")}/>
                             </View>
-                            <ActionHandle icon="pencil" onPress={event("edit")}/>
+                            <ResizeHandles
+                                animate={size}
+                                getHandleProps={getHandleProps}
+                                onUpdate={updateElement}
+                            />
                         </View>
-                        <ResizeHandles
-                            animate={size}
-                            getHandleProps={getHandleProps}
-                            onUpdate={updateElement}
-                        />
-                    </View>
+                    )}
                 </Animated.View>
             </Draggable>
         )

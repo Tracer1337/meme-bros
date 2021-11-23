@@ -62,7 +62,13 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
     }
 
     return (
-        <View ref={containerRef} style={styles.container}>
+        <View
+            ref={containerRef}
+            style={[
+                styles.container,
+                context.canvas.focus === element.id ? styles.focus : {}
+            ]}
+        >
             {isEditing ? (
                 <TextInput
                     style={[styles.input, textStyles]}
@@ -81,7 +87,10 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        height: "100%",
+        height: "100%"
+    },
+
+    focus: {
         borderColor: "#000",
         borderWidth: 1,
         borderStyle: "dashed",

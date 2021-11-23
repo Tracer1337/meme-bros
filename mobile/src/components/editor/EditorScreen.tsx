@@ -8,13 +8,8 @@ import Screen from "../styled/Screen"
 import { contextDefaultValue, ContextValue, EditorContext } from "./Context"
 import Canvas from "./Canvas"
 import BottomBar from "./BottomBar"
-import { setListeners } from "../../lib/events"
-import { ElementTypes, getDefaultDataByType, PickElement } from "./elements"
-import useId from "../../lib/useId"
 
 function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
-    const getId = useId()
-    
     const [context, setContext] = useState<ContextValue>(contextDefaultValue)
 
     context.set = (partial) => {
@@ -30,33 +25,13 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
         return false
     }
 
-    const handleCreateElement = <T extends ElementTypes>(type: T) => {
-        const newElement: PickElement<T> = {
-            id: getId(),
-            type,
-            rect: {
-                x: 0,
-                y: 0,
-                width: 200,
-                height: 100,
-                rotation: 0
-            },
-            data: getDefaultDataByType(type)
-        }
-        context.set({
-            canvas: {
-                elements: [...context.canvas.elements, newElement]
-            }
-        })
-    }
-
     useEffect(() => {
         context.set({
             canvas: {
                 imageSource: require("../../assets/meme.png"),
                 elements: [
                     {
-                        id: getId(),
+                        id: -1,
                         type: "textbox",
                         rect: {
                             x: 100,
@@ -75,12 +50,6 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
             }
         })
     }, [])
-
-    useEffect(() =>
-        setListeners(context.events, [
-            ["element.create", handleCreateElement]
-        ])
-    )
     
     return (
         <Screen style={styles.container} onStartShouldSetResponder={handleScreenPress}>

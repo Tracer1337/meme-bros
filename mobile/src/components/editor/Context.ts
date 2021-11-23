@@ -23,7 +23,8 @@ export type ContextValue = {
     },
     canvas: {
         imageSource: ImageSourcePropType | null,
-        elements: Element[]
+        elements: Element[],
+        focus: Element["id"] | null
     }
 }
 
@@ -33,7 +34,8 @@ export const contextDefaultValue: ContextValue = {
     dimensions: { width: 0, height: 0 },
     canvas: {
         imageSource: null,
-        elements: []
+        elements: [],
+        focus: null
     }
 }
 
