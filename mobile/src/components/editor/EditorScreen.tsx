@@ -7,30 +7,56 @@ import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
 import { contextDefaultValue, ContextValue, EditorContext } from "./Context"
 import Canvas from "./Canvas"
+import BottomBar from "./BottomBar"
+import { setListeners } from "../../lib/events"
+import { ElementTypes, getDefaultDataByType, PickElement } from "./elements"
+import useId from "../../lib/useId"
 
 function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
-    const [contextValue, setContextValue] = useState<ContextValue>(contextDefaultValue)
+    const getId = useId()
+    
+    const [context, setContext] = useState<ContextValue>(contextDefaultValue)
 
-    contextValue.set = (partial) => {
-        const newState = deepmerge(contextValue, partial, {
+    context.set = (partial) => {
+        const newState = deepmerge(context, partial, {
             isMergeableObject: isPlainObject,
             arrayMerge: (_dest, source) => source
         }) as ContextValue
-        setContextValue(newState)
+        setContext(newState)
     }
     
     const handleScreenPress = (event: GestureResponderEvent) => {
-        contextValue.events.emit("screen.press", event)
+        context.events.emit("screen.press", event)
         return false
     }
 
+    const handleCreateElement = <T extends ElementTypes>(type: T) => {
+        const newElement: PickElement<T> = {
+            id: getId(),
+            type,
+            rect: {
+                x: 0,
+                y: 0,
+                width: 200,
+                height: 100,
+                rotation: 0
+            },
+            data: getDefaultDataByType(type)
+        }
+        context.set({
+            canvas: {
+                elements: [...context.canvas.elements, newElement]
+            }
+        })
+    }
+
     useEffect(() => {
-        contextValue.set({
+        context.set({
             canvas: {
                 imageSource: require("../../assets/meme.png"),
                 elements: [
                     {
-                        id: 0,
+                        id: getId(),
                         type: "textbox",
                         rect: {
                             x: 100,
@@ -42,7 +68,6 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                         data: {
                             text: "This is my text",
                             fontFamily: "impact",
-                            fontSize: 32,
                             color: "#000000"
                         }
                     }
@@ -50,11 +75,18 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
             }
         })
     }, [])
+
+    useEffect(() =>
+        setListeners(context.events, [
+            ["element.create", handleCreateElement]
+        ])
+    )
     
     return (
         <Screen style={styles.container} onStartShouldSetResponder={handleScreenPress}>
-            <EditorContext.Provider value={contextValue}>
+            <EditorContext.Provider value={context}>
                 <Canvas/>
+                <BottomBar/>
             </EditorContext.Provider>
         </Screen>
     )

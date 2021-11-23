@@ -10,6 +10,7 @@ export type ElementEvents = "edit"
 
 type Events = {
     "screen.press": GestureResponderEvent,
+    "element.create": ElementSchema["type"],
     "element.edit": ElementSchema["id"]
 }
 

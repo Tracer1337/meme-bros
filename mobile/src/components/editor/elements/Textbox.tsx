@@ -13,7 +13,12 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
 export type TextboxData = {
     text: string,
     fontFamily: "Arial" | "impact",
-    fontSize: number,
+    color: "#000000"
+}
+
+export const textboxDefaultData: TextboxData = {
+    text: "Enter Text...",
+    fontFamily: "impact",
     color: "#000000"
 }
 
@@ -36,7 +41,7 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
         }
     }
 
-    const handleEdit = (id: number) => {
+    const handleEdit = () => {
         setIsEditing(true)
     }
 
@@ -53,7 +58,6 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
 
     const textStyles = {
         fontFamily: element.data.fontFamily,
-        fontSize: element.data.fontSize,
         color: element.data.color
     }
 
@@ -68,7 +72,11 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
                     autoFocus
                 />
             ) : (
-                <Text style={textStyles}>{text}</Text>
+                <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1000}
+                    style={[textStyles, { fontSize: 1000 }]}
+                >{text}</Text>
             )}
         </View>
     )
@@ -87,7 +95,8 @@ const styles = StyleSheet.create({
 
     input: {
         textAlignVertical: "top",
-        padding: 0
+        padding: 0,
+        fontSize: 24
     }
 })
 

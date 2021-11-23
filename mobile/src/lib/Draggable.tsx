@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Animated, LayoutChangeEvent, PanResponder, StyleSheet } from "react-native"
 import { withOffset } from "./animated"
 
@@ -37,7 +37,7 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
         props.onEnd?.()
     }
 
-    const panResponder = useRef(
+    const panResponder = useMemo(() =>
         PanResponder.create({
             onStartShouldSetPanResponder: () => true,
             onPanResponderMove: Animated.event([
@@ -52,8 +52,9 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
             onPanResponderGrant: handleGestureStart,
             onPanResponderRelease: handleGestureEnd,
             onPanResponderTerminate: handleGestureEnd
-        })
-    ).current
+        }),
+        [props.onStart, props.onEnd]
+    )
 
     const [layout, setLayout] = useState<
         Record<string, Animated.Value | Animated.AnimatedDiffClamp>
