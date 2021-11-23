@@ -29,7 +29,7 @@ export type ContextValue = {
 
 export const contextDefaultValue: ContextValue = {
     set: () => {},
-    events: new EventEmitter<Events>(),
+    events: new EventEmitter<Events>({ suppressWarnings: true }),
     dimensions: { width: 0, height: 0 },
     canvas: {
         imageSource: null,

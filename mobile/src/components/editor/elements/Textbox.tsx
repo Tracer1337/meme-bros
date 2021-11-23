@@ -62,7 +62,7 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
     }
 
     return (
-        <View  ref={containerRef} style={styles.container}>
+        <View ref={containerRef} style={styles.container}>
             {isEditing ? (
                 <TextInput
                     style={[styles.input, textStyles]}
@@ -72,11 +72,7 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
                     autoFocus
                 />
             ) : (
-                <Text
-                    adjustsFontSizeToFit
-                    numberOfLines={1000}
-                    style={[textStyles, { fontSize: 1000 }]}
-                >{text}</Text>
+                <Text style={[textStyles, { fontSize: 24 }]}>{text}</Text>
             )}
         </View>
     )
