@@ -102,7 +102,6 @@ function makeElement<T extends Element["type"]>(
             <Draggable
                 x={element.rect.x}
                 y={element.rect.y}
-                clamp={[0, 0, context.dimensions.width, context.dimensions.height]}
                 onLayout={onLayout}
                 {...getHandleProps("move", {
                     onStart: focusElement,

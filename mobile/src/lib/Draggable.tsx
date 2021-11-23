@@ -78,11 +78,14 @@ function Draggable({ children, ...partialProps }: DraggableProps) {
     }
 
     const handleLayout = (event: LayoutChangeEvent) => {
-        const { clamp } = props
-        if (!clamp || !hasLayoutChanged(event.nativeEvent.layout)) {
+        if (!hasLayoutChanged(event.nativeEvent.layout)) {
             return
         }
         props.onLayout?.(event)
+        const { clamp } = props
+        if (!clamp) {
+            return
+        }
         const { width, height } = event.nativeEvent.layout
         rect.current = { width, height }
         setLayout({
