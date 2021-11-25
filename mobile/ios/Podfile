@@ -14,8 +14,6 @@ target 'mobile' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
-
   target 'mobileTests' do
     inherit! :complete
     # Pods for testing

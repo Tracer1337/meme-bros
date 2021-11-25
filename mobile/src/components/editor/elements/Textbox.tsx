@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Animated, GestureResponderEvent, StyleSheet, TextInput, View } from "react-native"
 import { consumeEvent, setListeners } from "../../../lib/events"
-import { WebViewContext } from "../../../lib/WebViewCalls"
+import TextFitModule from "../../../lib/TextFitModule"
 import { EditorContext } from "../Context"
 import type { PickElement } from "./index"
 import makeElement, { ElementProps } from "./makeElement"
@@ -27,7 +27,6 @@ function Textbox({ element, setDraggableProps, size }: ElementProps & {
     element: PickElement<"textbox">
 }) {
     const context = useContext(EditorContext)
-    const webview = useContext(WebViewContext)
 
     const containerRef = useRef<View>(null)
     const fontSize = useRef(new Animated.Value(32)).current
@@ -49,15 +48,16 @@ function Textbox({ element, setDraggableProps, size }: ElementProps & {
     }
 
     const handleResize = async ({ x, y }: { x: number, y: number }) => {
-        const newFontSize = await webview.call({
-            method: "textfit",
-            args: [{
-                text,
-                fontFamily: element.data.fontFamily,
-                fontWeight: "400",
-                width: x,
-                height: y
-            }]
+        const newFontSize = await TextFitModule.fitText({
+            text,
+            fontFamily: element.data.fontFamily,
+            fontWeight: "normal",
+            containerRect: {
+                width: x - 20,
+                height: y - 20
+            },
+            low: 1,
+            high: 1000
         })
         fontSize.setValue(newFontSize)
     }
