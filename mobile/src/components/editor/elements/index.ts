@@ -1,4 +1,5 @@
 import React from "react"
+import { ElementProps } from "./makeElement"
 import Textbox, { TextboxData, textboxDefaultData } from "./Textbox"
 
 type Rect = {
@@ -29,7 +30,7 @@ export type PickElement<T extends ElementTypes> = Element & { type: T }
 
 const elementsMap: Record<
     ElementTypes,
-    React.ComponentType<{ element: any }>
+    React.ComponentType<ElementProps & { element: any }>
 > = {
     "textbox": Textbox
 }
@@ -40,7 +41,7 @@ const defaultDataMap: Record<ElementTypes, any> = {
 
 export function getElementByType<T extends ElementTypes>(
     type: T
-): React.ComponentType<{ element: PickElement<T> }> {
+): React.ComponentType<ElementProps & { element: PickElement<T> }> {
     return elementsMap[type]
 }
 

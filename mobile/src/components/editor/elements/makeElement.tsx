@@ -11,7 +11,9 @@ import useLayout from "../../../lib/useLayout"
 import globalStyles from "../../../styles"
 
 export type ElementProps = {
-    setDraggableProps: (props: DraggableProps) => void
+    setDraggableProps: (props: DraggableProps) => void,
+    size: Animated.ValueXY,
+    rotation: Animated.Value
 }
 
 export type HandleKey = "move" | "resize" | "rotate"
@@ -95,6 +97,8 @@ function makeElement<T extends Element["type"]>(
 
         const blurElement = () => {
             context.set({ canvas: { focus: null } })
+            size.extractOffset()
+            rotation.extractOffset()
             updateElement()
         }
 
@@ -124,6 +128,8 @@ function makeElement<T extends Element["type"]>(
                     <Component
                         element={element}
                         setDraggableProps={setDraggableProps}
+                        size={size}
+                        rotation={rotation}
                     />
                     {context.canvas.focus === element.id && (
                         <View style={styles.controls}>

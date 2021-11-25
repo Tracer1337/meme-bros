@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { GestureResponderEvent, StyleSheet, Text, TextInput, View } from "react-native"
+import { Animated, GestureResponderEvent, StyleSheet, TextInput, View } from "react-native"
 import { consumeEvent, setListeners } from "../../../lib/events"
+import TextFitModule from "../../../lib/TextFitModule"
 import { EditorContext } from "../Context"
 import type { PickElement } from "./index"
 import makeElement, { ElementProps } from "./makeElement"
@@ -22,12 +23,13 @@ export const textboxDefaultData: TextboxData = {
     color: "#000000"
 }
 
-function Textbox({ element, setDraggableProps }: ElementProps & {
+function Textbox({ element, setDraggableProps, size }: ElementProps & {
     element: PickElement<"textbox">
 }) {
     const context = useContext(EditorContext)
 
     const containerRef = useRef<View>(null)
+    const fontSize = useRef(new Animated.Value(32)).current
     
     const [text, setText] = useState(element.data.text)
     const [isEditing, setIsEditing] = useState(false)
@@ -45,12 +47,32 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
         setIsEditing(true)
     }
 
+    const handleResize = async ({ x, y }: { x: number, y: number }) => {
+        const newFontSize = await TextFitModule.fitText({
+            text,
+            fontFamily: element.data.fontFamily,
+            fontWeight: "normal",
+            containerRect: {
+                width: x - 20,
+                height: y - 20
+            },
+            low: 1,
+            high: 1000
+        })
+        fontSize.setValue(newFontSize)
+    }
+
     useEffect(() =>
         setListeners(context.events, [
             ["screen.press", handlePress],
             ["element.edit", consumeEvent(element.id, handleEdit)],
         ])
     )
+
+    useEffect(() => {
+        const id = size.addListener(handleResize)
+        return () => size.removeListener(id)
+    }, [size])
 
     useEffect(() => {
         setDraggableProps({ disabled: isEditing })
@@ -78,7 +100,9 @@ function Textbox({ element, setDraggableProps }: ElementProps & {
                     autoFocus
                 />
             ) : (
-                <Text style={[textStyles, { fontSize: 24 }]}>{text}</Text>
+                <Animated.Text style={[textStyles, { fontSize }]}>
+                    {text}
+                </Animated.Text>
             )}
         </View>
     )
