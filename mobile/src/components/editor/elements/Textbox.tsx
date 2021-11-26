@@ -14,8 +14,8 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
 
 export type TextboxData = {
     text: string,
-    fontFamily: "Arial" | "Impact",
-    color: "#000000"
+    fontFamily: string,
+    color: string
 }
 
 export const textboxDefaultData: TextboxData = {
