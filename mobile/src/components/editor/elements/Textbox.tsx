@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Animated, GestureResponderEvent, StyleSheet, TextInput, View } from "react-native"
+import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
 import TextFitModule from "../../../lib/TextFitModule"
 import { EditorContext } from "../Context"
@@ -13,20 +14,28 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
 
 export type TextboxData = {
     text: string,
-    fontFamily: "Arial" | "impact",
+    fontFamily: "Arial" | "Impact",
     color: "#000000"
 }
 
 export const textboxDefaultData: TextboxData = {
     text: "Enter Text...",
-    fontFamily: "impact",
+    fontFamily: "Impact",
     color: "#000000"
+}
+
+export function getTextStyles(element: PickElement<"textbox">) {
+    return {
+        fontFamily: element.data.fontFamily,
+        color: element.data.color
+    }
 }
 
 function Textbox({ element, setDraggableProps, size }: ElementProps & {
     element: PickElement<"textbox">
 }) {
     const context = useContext(EditorContext)
+    const dialogs = useContext(DialogContext)
 
     const containerRef = useRef<View>(null)
     const fontSize = useRef(new Animated.Value(32)).current
@@ -45,6 +54,11 @@ function Textbox({ element, setDraggableProps, size }: ElementProps & {
 
     const handleEdit = () => {
         setIsEditing(true)
+    }
+
+    const handleConfig = async () => {
+        element.data = await dialogs.openDialog("TextboxConfigDialog", element)
+        context.set({})
     }
 
     const handleResize = async ({ x, y }: { x: number, y: number }) => {
@@ -66,6 +80,7 @@ function Textbox({ element, setDraggableProps, size }: ElementProps & {
         setListeners(context.events, [
             ["screen.press", handlePress],
             ["element.edit", consumeEvent(element.id, handleEdit)],
+            ["element.config", consumeEvent(element.id, handleConfig)]
         ])
     )
 
@@ -78,10 +93,11 @@ function Textbox({ element, setDraggableProps, size }: ElementProps & {
         setDraggableProps({ disabled: isEditing })
     }, [isEditing])
 
-    const textStyles = {
-        fontFamily: element.data.fontFamily,
-        color: element.data.color
-    }
+    useEffect(() => {
+        element.data.text = text
+    }, [text])
+
+    const textStyles = getTextStyles(element)
 
     return (
         <View

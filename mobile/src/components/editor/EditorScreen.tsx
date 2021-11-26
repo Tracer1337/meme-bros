@@ -42,7 +42,7 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                         },
                         data: {
                             text: "This is my text",
-                            fontFamily: "impact",
+                            fontFamily: "Impact",
                             color: "#000000"
                         }
                     }

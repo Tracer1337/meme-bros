@@ -1,9 +1,12 @@
 import React from "react"
+import { Portal } from "react-native-paper"
 import Navigator from "./Navigator"
 
 function App() {
     return (
-        <Navigator/>
+        <Portal.Host>
+            <Navigator/>
+        </Portal.Host>
     )
 }
 

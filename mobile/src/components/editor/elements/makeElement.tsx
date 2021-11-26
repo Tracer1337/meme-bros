@@ -145,7 +145,12 @@ function makeElement<T extends Element["type"]>(
                                 <View style={{ marginRight: 8 }}>
                                     <ActionHandle icon="pencil" onPress={event("edit")}/>
                                 </View>
-                                <ActionHandle icon="delete-outline" onPress={event("remove")}/>
+                                <View style={{ marginRight: 8 }}>
+                                    <ActionHandle icon="cog" onPress={event("config")}/>
+                                </View>
+                                <View>
+                                    <ActionHandle icon="delete-outline" onPress={event("remove")}/>
+                                </View>
                             </View>
                             <ResizeHandles
                                 animate={size}
