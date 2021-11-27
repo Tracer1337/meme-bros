@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import Draggable, { DraggableProps } from "../../../lib/Draggable"
@@ -44,14 +44,21 @@ function makeElement<T extends Element["type"]>(
         element: PickElement<T>
     }>
 ) {
-    return ({ element }: Omit<ElementProps, "setDraggableProps"> & { element: PickElement<T> }) => {        
+    return ({ element }: { element: PickElement<T> }) => {        
         const context = useContext(EditorContext)
 
+        const scaledRect = {
+            width: element.rect.width * context.dimensions.width,
+            height: element.rect.height * context.dimensions.height,
+            x: element.rect.x * context.dimensions.width,
+            y: element.rect.y * context.dimensions.height
+        }
+        
         const [getLayout, onLayout] = useLayout()
 
         const size = useRef(withOffset(new Animated.ValueXY(), {
-            x: element.rect.width,
-            y: element.rect.height
+            x: scaledRect.width,
+            y: scaledRect.height
         })).current
         const rotation = useRef(new Animated.Value(element.rect.rotation)).current
 
@@ -79,12 +86,12 @@ function makeElement<T extends Element["type"]>(
             if (!layout) {
                 return
             }
+            const { width, height } = context.dimensions
             element.rect = {
-                ...element.rect,
-                x: layout.x,
-                y: layout.y,
-                width: layout.width,
-                height: layout.height,
+                x: layout.x / width,
+                y: layout.y / height,
+                width: layout.width / width,
+                height: layout.height / height,
                 // @ts-ignore
                 rotation: rotation._value
             }
@@ -92,20 +99,24 @@ function makeElement<T extends Element["type"]>(
         }
 
         const focusElement = () => {
-            context.set({ canvas: { focus: element.id } })
+            context.set({ interactions: { focus: element.id } })
         }
 
         const blurElement = () => {
-            context.set({ canvas: { focus: null } })
-            size.extractOffset()
-            rotation.extractOffset()
             updateElement()
         }
 
+        useEffect(() => {
+            if (context.interactions.focus !== element.id) {
+                size.extractOffset()
+                rotation.extractOffset()
+            }
+        }, [context.interactions.focus])
+
         return (
             <Draggable
-                x={element.rect.x}
-                y={element.rect.y}
+                x={scaledRect.x}
+                y={scaledRect.y}
                 onLayout={onLayout}
                 {...getHandleProps("move", {
                     onStart: focusElement,
@@ -131,13 +142,13 @@ function makeElement<T extends Element["type"]>(
                         size={size}
                         rotation={rotation}
                     />
-                    {context.canvas.focus === element.id && (
+                    {context.interactions.focus === element.id && (
                         <View style={styles.controls}>
                             <View style={styles.topControls}>
                                 <View style={{ marginRight: 8 }}>
                                     <RotationHandle
                                         animate={rotation}
-                                        childRect={element.rect}
+                                        childRect={scaledRect}
                                         onUpdate={updateElement}
                                         getHandleProps={getHandleProps}
                                     />

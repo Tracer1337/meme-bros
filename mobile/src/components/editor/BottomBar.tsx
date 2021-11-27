@@ -1,13 +1,18 @@
 import React, { useContext } from "react"
 import { StyleSheet, View } from "react-native"
-import { Appbar, IconButton } from "react-native-paper"
+import { Appbar, FAB, IconButton } from "react-native-paper"
 import { EditorContext } from "./Context"
 
-function BottomBar() {
+function BottomBar() {    
     const context = useContext(EditorContext)
 
     return (
         <Appbar style={styles.appbar}>
+            <FAB
+                style={styles.fab}
+                icon="check"
+                onPress={() => context.events.emit("canvas.generate", context.canvas)}
+            />
             <View style={styles.right}>
                 <IconButton
                     icon="format-color-text"
@@ -27,6 +32,12 @@ const styles = StyleSheet.create({
         flex: 1
     },
     
+    fab: {
+        position: "absolute",
+        left: "50%",
+        transform: [{ translateX: -24 }, { translateY: -24 }]
+    },
+
     right: {
         flex: 1,
         flexDirection: "row",

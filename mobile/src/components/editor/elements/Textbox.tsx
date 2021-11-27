@@ -112,7 +112,7 @@ function Textbox({ element, setDraggableProps, size }: ElementProps & {
             ref={containerRef}
             style={[
                 styles.container,
-                context.canvas.focus === element.id ? styles.focus : {}
+                context.interactions.focus === element.id ? styles.focus : {}
             ]}
         >
             {isEditing ? (

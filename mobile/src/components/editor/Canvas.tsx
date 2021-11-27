@@ -3,7 +3,7 @@ import { Image, LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
 import { setListeners } from "../../lib/events"
 import useId from "../../lib/useId"
-import { EditorContext } from "./Context"
+import { ContextValue, EditorContext } from "./Context"
 import { Element, ElementTypes, getDefaultDataByType, getElementByType, PickElement } from "./elements"
 
 function Canvas() {    
@@ -24,7 +24,7 @@ function Canvas() {
     }
 
     const handleScreenPress = () => {
-        context.set({ canvas: { focus: null } })
+        context.set({ interactions: { focus: null } })
     }
 
     const handleCreateElement = <T extends ElementTypes>(type: T) => {
@@ -34,8 +34,8 @@ function Canvas() {
             rect: {
                 x: 0,
                 y: 0,
-                width: 200,
-                height: 100,
+                width: 0.4,
+                height: 0.2,
                 rotation: 0
             },
             data: getDefaultDataByType(type)
@@ -55,15 +55,20 @@ function Canvas() {
         context.set({})
     }
 
+    const handleCanvasGenerate = async (state: ContextValue["canvas"]) => {
+        console.log("Generate", JSON.parse(JSON.stringify(state)))
+    }
+
     useEffect(() =>
         setListeners(context.events, [
             ["screen.press", handleScreenPress],
             ["element.create", handleCreateElement],
-            ["element.remove", handleRemoveElement]
+            ["element.remove", handleRemoveElement],
+            ["canvas.generate", handleCanvasGenerate]
         ])
     )
 
-    if (!context.canvas.imageSource) {
+    if (!context.canvas.image) {
         return (
             <View>
                 <Text>No image selected</Text>
@@ -74,7 +79,7 @@ function Canvas() {
     return (
         <View style={styles.canvas} onLayout={handleCanvasLayout}>
             <Image
-                source={context.canvas.imageSource}
+                source={context.canvas.image}
                 style={styles.image}
             />
             {isLayoutLoaded && context.canvas.elements.map((element) =>
