@@ -1,8 +1,9 @@
 import React, { useState } from "react"
-import { Button, Dialog } from "react-native-paper"
+import { View } from "react-native"
+import { Button, Dialog, Switch, Text } from "react-native-paper"
 import Select, { Item } from "react-native-picker-select"
 import { PickElement } from "../editor/elements"
-import { getTextStyles } from "../editor/elements/Textbox"
+import { getTextStyles, getTransformedText } from "../editor/elements/Textbox"
 
 const fontFamilies: Item[] = [
     { label: "Impact", value: "Impact" },
@@ -37,7 +38,9 @@ function TextboxConfigDialog({ data: element, close }: {
 
     return (
         <Dialog visible={true} onDismiss={() => close(element.data)}>
-            <Dialog.Title style={textStyles}>{element.data.text}</Dialog.Title>
+            <Dialog.Title style={textStyles}>
+                {getTransformedText({ ...element, data })}
+            </Dialog.Title>
             <Dialog.Content>
                 <Select
                     placeholder={{ label: "Color", value: null }}
@@ -57,6 +60,16 @@ function TextboxConfigDialog({ data: element, close }: {
                         fontFamily: value
                     }))}
                 />
+                <View>
+                    <Text>Caps</Text>
+                    <Switch
+                        value={data.caps}
+                        onValueChange={value => setData({
+                            ...data,
+                            caps: value
+                        })}
+                    />
+                </View>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button onPress={() => close(data)} style={{ width: "100%" }}>

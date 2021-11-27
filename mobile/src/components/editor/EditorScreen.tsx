@@ -8,6 +8,7 @@ import Screen from "../styled/Screen"
 import { contextDefaultValue, ContextValue, EditorContext } from "./Context"
 import Canvas from "./Canvas"
 import BottomBar from "./BottomBar"
+import { getDefaultDataByType } from "./elements"
 
 function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
     const [context, setContext] = useState<ContextValue>(contextDefaultValue)
@@ -41,9 +42,8 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                             rotation: 0
                         },
                         data: {
-                            text: "This is my text",
-                            fontFamily: "Impact",
-                            color: "#000000"
+                            ...getDefaultDataByType("textbox"),
+                            text: "This is my text"
                         }
                     }
                 ]

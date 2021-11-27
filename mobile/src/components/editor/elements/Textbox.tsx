@@ -15,13 +15,15 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
 export type TextboxData = {
     text: string,
     fontFamily: string,
-    color: string
+    color: string,
+    caps: boolean
 }
 
 export const textboxDefaultData: TextboxData = {
     text: "Enter Text...",
     fontFamily: "Impact",
-    color: "#000000"
+    color: "#000000",
+    caps: true
 }
 
 export function getTextStyles(element: PickElement<"textbox">) {
@@ -29,6 +31,12 @@ export function getTextStyles(element: PickElement<"textbox">) {
         fontFamily: element.data.fontFamily,
         color: element.data.color
     }
+}
+
+export function getTransformedText(element: PickElement<"textbox">) {
+    return element.data.caps
+        ? element.data.text.toUpperCase()
+        : element.data.text
 }
 
 function Textbox({ element, setDraggableProps, size }: ElementProps & {
@@ -63,7 +71,7 @@ function Textbox({ element, setDraggableProps, size }: ElementProps & {
 
     const handleResize = async ({ x, y }: { x: number, y: number }) => {
         const newFontSize = await TextFitModule.fitText({
-            text,
+            text: getTransformedText(element),
             fontFamily: element.data.fontFamily,
             fontWeight: "normal",
             containerRect: {
@@ -117,7 +125,7 @@ function Textbox({ element, setDraggableProps, size }: ElementProps & {
                 />
             ) : (
                 <Animated.Text style={[textStyles, { fontSize }]}>
-                    {text}
+                    {getTransformedText(element)}
                 </Animated.Text>
             )}
         </View>
