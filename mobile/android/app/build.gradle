@@ -215,6 +215,14 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    
+    implementation (name:'canvas', ext:'aar')
+}
+
+repositories {
+    flatDir {
+        dirs '.'
+    }
 }
 
 // Run this once to be able to run the application with BUCK

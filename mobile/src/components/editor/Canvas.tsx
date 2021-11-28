@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { Image, LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
 import { setListeners } from "../../lib/events"
+import CanvasModule from "../../lib/CanvasModule"
 import useId from "../../lib/useId"
 import { ContextValue, EditorContext } from "./Context"
 import { Element, ElementTypes, getDefaultDataByType, getElementByType, PickElement } from "./elements"
@@ -57,6 +58,8 @@ function Canvas() {
 
     const handleCanvasGenerate = async (state: ContextValue["canvas"]) => {
         console.log("Generate", JSON.parse(JSON.stringify(state)))
+        const res = await CanvasModule.generate(state)
+        console.log(res)
     }
 
     useEffect(() =>

@@ -12,6 +12,8 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.views.text.ReactFontManager;
 
+import canvas.Canvas;
+
 public class TextFitModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext reactContext;
@@ -42,6 +44,12 @@ public class TextFitModule extends ReactContextBaseJavaModule {
         float fontSize = textFitter.fitText(text);
 
         promise.resolve(fontSize);
+    }
+
+    @ReactMethod
+    public void gomobile(String json, Promise promise) {
+        String output = Canvas.generateFromJSON(json);
+        promise.resolve(output);
     }
 
     private int getFontWeight(String fontWeight) {
