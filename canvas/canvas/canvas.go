@@ -13,36 +13,36 @@ import (
 )
 
 type Canvas struct {
-	Image    CanvasImage     `json:"image"`
-	Elements []CanvasElement `json:"elements"`
+	Image    CanvasImage
+	Elements []*CanvasElement
 }
 
 type CanvasImage struct {
-	URI    string `json:"uri"`
-	Width  string `json:"width"`
-	Height string `json:"height"`
+	URI    string
+	Width  float64
+	Height float64
 }
 
 type CanvasElement struct {
-	Id   int16       `json:"id"`
-	Type string      `json:"type"`
-	Rect Rect        `json:"rect"`
-	Data TextboxData `json:"data"`
+	Id   int16
+	Type string
+	Rect *Rect
+	Data *TextboxData
 }
 
 type Rect struct {
-	X        float64 `json:"x"`
-	Y        float64 `json:"y"`
-	Width    float64 `json:"width"`
-	Height   float64 `json:"height"`
-	Rotation float64 `json:"rotation"`
+	X        float64
+	Y        float64
+	Width    float64
+	Height   float64
+	Rotation float64
 }
 
 type TextboxData struct {
-	Text       string `json:"text"`
-	FontFamily string `json:"fontFamily"`
-	Color      string `json:"color"`
-	Caps       bool   `json:"caps"`
+	Text       string
+	FontFamily string
+	Color      string
+	Caps       bool
 }
 
 const LINE_SPACING = 1.2
@@ -64,7 +64,7 @@ func (c *Canvas) DrawElements(dc *gg.Context) {
 	}
 }
 
-func (c *Canvas) DrawTextbox(dc *gg.Context, e CanvasElement) {
+func (c *Canvas) DrawTextbox(dc *gg.Context, e *CanvasElement) {
 	LoadFont(dc, e.Data.FontFamily)
 	dc.SetHexColor(e.Data.Color)
 	rect := ScaleRect(dc, e.Rect)
@@ -75,12 +75,12 @@ func (c *Canvas) DrawTextbox(dc *gg.Context, e CanvasElement) {
 	dc.DrawStringWrapped(text, rect.X, rect.Y, 0, 0, rect.Width, LINE_SPACING, gg.AlignLeft)
 }
 
-func ScaleRect(dc *gg.Context, rect Rect) Rect {
+func ScaleRect(dc *gg.Context, rect *Rect) Rect {
 	return Rect{
 		X:        rect.X * float64(dc.Width()),
-		Y:        rect.X * float64(dc.Height()),
+		Y:        rect.Y * float64(dc.Height()),
 		Width:    rect.X * float64(dc.Width()),
-		Height:   rect.X * float64(dc.Height()),
+		Height:   rect.Y * float64(dc.Height()),
 		Rotation: rect.Rotation,
 	}
 }

@@ -3,13 +3,18 @@ package canvas
 import (
 	"bytes"
 	"encoding/base64"
-	"encoding/json"
+
+	"github.com/valyala/fastjson"
 )
 
 func GenerateFromJSON(jsonString string) string {
-	canvas := Canvas{}
+	var p fastjson.Parser
+	v, err := p.Parse(jsonString)
+	if err != nil {
+		panic(err)
+	}
 
-	_ = json.Unmarshal([]byte(jsonString), &canvas)
+	canvas := parseCanvas(v)
 
 	outputBuffer := canvas.Generate()
 
