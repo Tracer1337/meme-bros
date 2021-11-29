@@ -15,11 +15,7 @@ func canvasFromJSON(jsonString string) *Canvas {
 
 func parseCanvas(v *fastjson.Value) *Canvas {
 	return &Canvas{
-		Image: &CanvasImage{
-			URI:    string(v.GetStringBytes("image", "uri")),
-			Width:  v.GetFloat64("image", "width"),
-			Height: v.GetFloat64("image", "height"),
-		},
+		Image: string(v.GetStringBytes("image")),
 		Elements: &CanvasElements{
 			Textboxes: parseTextboxes(v.GetArray("elements")),
 		},

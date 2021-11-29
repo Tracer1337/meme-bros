@@ -15,24 +15,24 @@ import (
 const LINE_SPACING = 1.2
 
 func (c *Canvas) Generate() *bytes.Buffer {
-	img := utils.ParseBase64Image(c.Image.URI)
+	img := utils.ParseBase64Image(c.Image)
 	dc := gg.NewContextForImage(img)
-	c.DrawElements(dc)
+	c.drawElements(dc)
 	buffer := bytes.NewBuffer([]byte{})
 	dc.EncodePNG(buffer)
 	return buffer
 }
 
-func (c *Canvas) DrawElements(dc *gg.Context) {
+func (c *Canvas) drawElements(dc *gg.Context) {
 	for _, e := range c.Elements.Textboxes {
-		c.DrawTextbox(dc, e)
+		c.drawTextbox(dc, e)
 	}
 }
 
-func (c *Canvas) DrawTextbox(dc *gg.Context, e *TextboxElement) {
-	LoadFont(dc, e.Data.FontFamily)
+func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
+	loadFont(dc, e.Data.FontFamily)
 	dc.SetHexColor(e.Data.Color)
-	rect := ScaleRect(dc, e.Rect)
+	rect := scaleRect(dc, e.Rect)
 	text := e.Data.Text
 	if e.Data.Caps {
 		text = strings.ToUpper(text)
@@ -40,7 +40,7 @@ func (c *Canvas) DrawTextbox(dc *gg.Context, e *TextboxElement) {
 	dc.DrawStringWrapped(text, rect.X, rect.Y, 0, 0, rect.Width, LINE_SPACING, gg.AlignLeft)
 }
 
-func ScaleRect(dc *gg.Context, rect *Rect) Rect {
+func scaleRect(dc *gg.Context, rect *Rect) Rect {
 	return Rect{
 		X:        rect.X * float64(dc.Width()),
 		Y:        rect.Y * float64(dc.Height()),
@@ -50,7 +50,7 @@ func ScaleRect(dc *gg.Context, rect *Rect) Rect {
 	}
 }
 
-func LoadFont(dc *gg.Context, name string) {
+func loadFont(dc *gg.Context, name string) {
 	file, err := asset.Open(fmt.Sprintf("fonts/%s.ttf", name))
 	if err != nil {
 		panic(err)

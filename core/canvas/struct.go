@@ -1,14 +1,8 @@
 package canvas
 
 type Canvas struct {
-	Image    *CanvasImage
+	Image    string
 	Elements *CanvasElements
-}
-
-type CanvasImage struct {
-	URI    string
-	Width  float64
-	Height float64
 }
 
 type CanvasElements struct {
