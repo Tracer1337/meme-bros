@@ -2,8 +2,8 @@ package main
 
 import (
 	"image/png"
-	"meme-bros/canvas"
-	"meme-bros/utils"
+	"meme-bros/core/canvas"
+	"meme-bros/core/utils"
 	"os"
 )
 

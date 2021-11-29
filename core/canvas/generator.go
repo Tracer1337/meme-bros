@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"meme-bros/utils"
+	"meme-bros/core/utils"
 	"strings"
 
 	"github.com/fogleman/gg"
