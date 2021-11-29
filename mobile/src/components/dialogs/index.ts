@@ -1,7 +1,9 @@
 import TextboxConfigDialog from "./TextboxConfigDialog"
+import GeneratedImageDialog from "./GeneratedImageDialog"
 
 const dialogs = {
-    TextboxConfigDialog
+    TextboxConfigDialog,
+    GeneratedImageDialog
 }
 
 export default dialogs

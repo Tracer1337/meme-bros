@@ -23,8 +23,8 @@ export function DialogProvider({ children }: React.PropsWithChildren<{}>) {
     const [activeDialog, setActiveDialog] = useState<JSX.Element | null>(null)
 
     context.openDialog = (type, data) => new Promise((resolve) => {
-        setActiveDialog(React.createElement(dialogs[type], {
-            close: (result) => {
+        setActiveDialog(React.createElement(dialogs[type] as any, {
+            close: (result: any) => {
                 setActiveDialog(null)
                 // @ts-ignore
                 resolve(result)

@@ -6,9 +6,11 @@ import CanvasModule from "../../lib/CanvasModule"
 import useId from "../../lib/useId"
 import { ContextValue, EditorContext } from "./Context"
 import { Element, ElementTypes, getDefaultDataByType, getElementByType, PickElement } from "./elements"
+import { DialogContext } from "../../lib/DialogHandler"
 
-function Canvas() {    
+function Canvas() {
     const context = useContext(EditorContext)
+    const dialog = useContext(DialogContext)
 
     const getId = useId()
 
@@ -58,8 +60,12 @@ function Canvas() {
 
     const handleCanvasGenerate = async (state: ContextValue["canvas"]) => {
         console.log("Generate", JSON.parse(JSON.stringify(state)))
-        const res = await CanvasModule.generate(state)
-        console.log(res)
+        const base64 = await CanvasModule.generate(state)
+        dialog.openDialog("GeneratedImageDialog", {
+            uri: base64,
+            width: context.dimensions.width,
+            height: context.dimensions.height
+        })
     }
 
     useEffect(() =>
