@@ -3,6 +3,7 @@
 ## Project Structure
 
 ```
+|-- canvas
 |-- mobile
 |-- web
 |   |-- website

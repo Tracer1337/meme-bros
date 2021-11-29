@@ -5,9 +5,12 @@ import (
 	"encoding/base64"
 	"fmt"
 	"image"
+	"io/ioutil"
 	"strings"
 
 	"github.com/fogleman/gg"
+	"github.com/golang/freetype/truetype"
+	"golang.org/x/mobile/asset"
 )
 
 type Canvas struct {
@@ -88,11 +91,24 @@ func ScaleRect(dc *gg.Context, rect Rect) Rect {
 	}
 }
 
-func LoadFont(dc *gg.Context, font string) {
-	path := fmt.Sprintf("Library/Fonts/%s.ttf", font)
-	if err := dc.LoadFontFace(path, 32); err != nil {
+func LoadFont(dc *gg.Context, name string) {
+	file, err := asset.Open(fmt.Sprintf("fonts/%s.ttf", name))
+	if err != nil {
 		panic(err)
 	}
+	defer file.Close()
+	raw, err := ioutil.ReadAll(file)
+	if err != nil {
+		panic(err)
+	}
+	font, err := truetype.Parse(raw)
+	if err != nil {
+		panic(err)
+	}
+	face := truetype.NewFace(font, &truetype.Options{
+		Size: 32,
+	})
+	dc.SetFontFace(face)
 }
 
 // func GetFontSize(dc *gg.Context, e CanvasElement) int16 {
