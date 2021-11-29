@@ -15,8 +15,10 @@ import (
 const LINE_SPACING = 1.2
 
 func (c *Canvas) Generate() *bytes.Buffer {
-	img := utils.ParseBase64Image(c.Image)
-	dc := gg.NewContextForImage(img)
+	img := utils.ParseBase64Image(c.Image.URI)
+	dc := gg.NewContext(c.Image.Width, c.Image.Height)
+	dc.Clear()
+	dc.DrawImage(img, 0, 0)
 	c.drawElements(dc)
 	buffer := bytes.NewBuffer([]byte{})
 	dc.EncodePNG(buffer)
