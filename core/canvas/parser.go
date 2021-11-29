@@ -14,6 +14,7 @@ func canvasFromJSON(jsonString string) *Canvas {
 }
 
 func parseCanvas(v *fastjson.Value) *Canvas {
+	elements := parseElements(v.GetArray("elements"))
 	return &Canvas{
 		Image: &CanvasImage{
 			URI:    string(v.GetStringBytes("image", "uri")),
@@ -21,17 +22,28 @@ func parseCanvas(v *fastjson.Value) *Canvas {
 			Height: v.GetInt("image", "height"),
 		},
 		Elements: &CanvasElements{
-			Textboxes: parseTextboxes(v.GetArray("elements")),
+			Textboxes: parseTextboxes(elements["textbox"]),
 		},
 	}
+}
+
+func parseElements(vs []*fastjson.Value) map[string][]*fastjson.Value {
+	elemMap := map[string][]*fastjson.Value{}
+	for _, e := range vs {
+		switch string(e.GetStringBytes("type")) {
+		case "textbox":
+			if _, ok := elemMap["textbox"]; !ok {
+				elemMap["textbox"] = []*fastjson.Value{}
+			}
+			elemMap["textbox"] = append(elemMap["textbox"], e)
+		}
+	}
+	return elemMap
 }
 
 func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 	elements := []*TextboxElement{}
 	for _, e := range vs {
-		if string(e.GetStringBytes("type")) != "textbox" {
-			continue
-		}
 		newElement := &TextboxElement{
 			Type: "textbox",
 			Rect: parseRect(e.Get("rect")),
