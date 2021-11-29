@@ -1,19 +1,23 @@
 package main
 
 import (
-	"encoding/json"
+	"image/png"
 	"meme-bros/canvas"
+	"meme-bros/utils"
 	"os"
 )
 
 func main() {
-	file, _ := os.ReadFile("data.json")
+	fileIn, _ := os.ReadFile("data.json")
 
-	canvas := canvas.Canvas{}
+	output := canvas.GenerateFromJSON(string(fileIn))
 
-	_ = json.Unmarshal(file, &canvas)
+	img := utils.ParseBase64Image(output)
 
-	buffer := canvas.Generate()
+	fileOut, err := os.Create("image.png")
+	if err != nil {
+		panic(err)
+	}
 
-	os.WriteFile("image.png", buffer.Bytes(), os.ModeAppend)
+	png.Encode(fileOut, img)
 }

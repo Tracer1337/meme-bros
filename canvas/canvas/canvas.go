@@ -2,10 +2,9 @@ package canvas
 
 import (
 	"bytes"
-	"encoding/base64"
 	"fmt"
-	"image"
 	"io/ioutil"
+	"meme-bros/utils"
 	"strings"
 
 	"github.com/fogleman/gg"
@@ -49,13 +48,8 @@ type TextboxData struct {
 const LINE_SPACING = 1.2
 
 func (c *Canvas) Generate() *bytes.Buffer {
-	dataURI := strings.Replace(c.Image.URI, "data:image/png;base64,", "", 1)
-	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(dataURI))
-	image, _, err := image.Decode(reader)
-	if err != nil {
-		panic(err)
-	}
-	dc := gg.NewContextForImage(image)
+	img := utils.ParseBase64Image(c.Image.URI)
+	dc := gg.NewContextForImage(img)
 	c.DrawElements(dc)
 	buffer := bytes.NewBuffer([]byte{})
 	dc.EncodePNG(buffer)
