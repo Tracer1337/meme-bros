@@ -1,49 +1,50 @@
 package canvas
 
 import (
-	"fmt"
-
 	"github.com/valyala/fastjson"
 )
 
+func canvasFromJSON(jsonString string) *Canvas {
+	var p fastjson.Parser
+	v, err := p.Parse(jsonString)
+	if err != nil {
+		panic(err)
+	}
+	return parseCanvas(v)
+}
+
 func parseCanvas(v *fastjson.Value) *Canvas {
-	canvas := &Canvas{
-		Image: CanvasImage{
+	return &Canvas{
+		Image: &CanvasImage{
 			URI:    string(v.GetStringBytes("image", "uri")),
 			Width:  v.GetFloat64("image", "width"),
 			Height: v.GetFloat64("image", "height"),
 		},
-		Elements: []*CanvasElement{},
+		Elements: &CanvasElements{
+			Textboxes: parseTextboxes(v.GetArray("elements")),
+		},
 	}
-
-	for _, e := range v.GetArray("elements") {
-		canvas.Elements = append(canvas.Elements, parseElement(e))
-	}
-
-	return canvas
 }
 
-func parseElement(v *fastjson.Value) *CanvasElement {
-	eType := string(v.GetStringBytes("type"))
-	switch eType {
-	case "textbox":
-		return &CanvasElement{
-			Type: "textbox",
-			Rect: parseRect(v.Get("rect")),
-			Data: parseTextboxData(v.Get("data")),
+func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
+	elements := []*TextboxElement{}
+	for _, e := range vs {
+		if string(e.GetStringBytes("type")) != "textbox" {
+			continue
 		}
-	default:
-		panic(fmt.Sprintf("Unknown element type '%s'", eType))
+		newElement := &TextboxElement{
+			Type: "textbox",
+			Rect: parseRect(e.Get("rect")),
+			Data: &TextboxData{
+				Text:       string(e.GetStringBytes("data", "text")),
+				FontFamily: string(e.GetStringBytes("data", "fontFamily")),
+				Color:      string(e.GetStringBytes("data", "color")),
+				Caps:       e.GetBool("data", "caps"),
+			},
+		}
+		elements = append(elements, newElement)
 	}
-}
-
-func parseTextboxData(v *fastjson.Value) *TextboxData {
-	return &TextboxData{
-		Text:       string(v.GetStringBytes("text")),
-		FontFamily: string(v.GetStringBytes("fontFamily")),
-		Color:      string(v.GetStringBytes("color")),
-		Caps:       v.GetBool("caps"),
-	}
+	return elements
 }
 
 func parseRect(v *fastjson.Value) *Rect {

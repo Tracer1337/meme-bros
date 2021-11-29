@@ -12,39 +12,6 @@ import (
 	"golang.org/x/mobile/asset"
 )
 
-type Canvas struct {
-	Image    CanvasImage
-	Elements []*CanvasElement
-}
-
-type CanvasImage struct {
-	URI    string
-	Width  float64
-	Height float64
-}
-
-type CanvasElement struct {
-	Id   int16
-	Type string
-	Rect *Rect
-	Data *TextboxData
-}
-
-type Rect struct {
-	X        float64
-	Y        float64
-	Width    float64
-	Height   float64
-	Rotation float64
-}
-
-type TextboxData struct {
-	Text       string
-	FontFamily string
-	Color      string
-	Caps       bool
-}
-
 const LINE_SPACING = 1.2
 
 func (c *Canvas) Generate() *bytes.Buffer {
@@ -57,14 +24,12 @@ func (c *Canvas) Generate() *bytes.Buffer {
 }
 
 func (c *Canvas) DrawElements(dc *gg.Context) {
-	for _, e := range c.Elements {
-		if e.Type == "textbox" {
-			c.DrawTextbox(dc, e)
-		}
+	for _, e := range c.Elements.Textboxes {
+		c.DrawTextbox(dc, e)
 	}
 }
 
-func (c *Canvas) DrawTextbox(dc *gg.Context, e *CanvasElement) {
+func (c *Canvas) DrawTextbox(dc *gg.Context, e *TextboxElement) {
 	LoadFont(dc, e.Data.FontFamily)
 	dc.SetHexColor(e.Data.Color)
 	rect := ScaleRect(dc, e.Rect)
