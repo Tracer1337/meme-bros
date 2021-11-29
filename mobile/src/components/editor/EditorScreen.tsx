@@ -11,6 +11,10 @@ import BottomBar from "./BottomBar"
 import { getDefaultDataByType } from "./elements"
 import { fetchBase64 } from "../../lib/base64"
 
+function binaryToPNG(base64: string) {
+    return base64.replace("application/octet-stream", "image/png")
+}
+
 function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
     const [context, setContext] = useState<ContextValue>(contextDefaultValue)
 
@@ -33,7 +37,7 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
             context.set({
                 canvas: {
                     image: {
-                        uri: await fetchBase64(image.uri),
+                        uri: binaryToPNG(await fetchBase64(image.uri)),
                         width: image.width,
                         height: image.height
                     },
