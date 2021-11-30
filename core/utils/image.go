@@ -3,13 +3,17 @@ package utils
 import (
 	"encoding/base64"
 	"image"
+	"image/png"
 	"strings"
 )
 
 func ParseBase64Image(dataURI string) image.Image {
 	data := strings.Replace(dataURI, "data:image/png;base64,", "", 1)
-	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(data))
-	img, _, err := image.Decode(reader)
+	decoded, err := base64.StdEncoding.DecodeString(data)
+	if err != nil {
+		panic(err)
+	}
+	img, err := png.Decode(strings.NewReader(string(decoded)))
 	if err != nil {
 		panic(err)
 	}
