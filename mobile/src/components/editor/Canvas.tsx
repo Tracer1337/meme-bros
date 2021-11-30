@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { Image, LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
 import { setListeners } from "../../lib/events"
-import CanvasModule from "../../lib/CanvasModule"
+import CoreModule from "../../lib/CoreModule"
 import useId from "../../lib/useId"
 import { ContextValue, EditorContext } from "./Context"
 import { Element, ElementTypes, getDefaultDataByType, getElementByType, PickElement } from "./elements"
@@ -60,7 +60,7 @@ function Canvas() {
 
     const handleCanvasGenerate = async (state: ContextValue["canvas"]) => {
         console.log("Generate", JSON.parse(JSON.stringify(state)))
-        const base64 = await CanvasModule.generate(state)
+        const base64 = await CoreModule.generate(state)
         dialog.openDialog("GeneratedImageDialog", {
             uri: base64,
             width: context.dimensions.width,

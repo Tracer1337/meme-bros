@@ -216,7 +216,7 @@ dependencies {
         implementation jscFlavor
     }
     
-    implementation (name:'canvas', ext:'aar')
+    implementation (name:'core', ext:'aar')
 }
 
 repositories {
