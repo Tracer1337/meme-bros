@@ -30,13 +30,11 @@ func parseCanvas(v *fastjson.Value) *Canvas {
 func parseElements(vs []*fastjson.Value) map[string][]*fastjson.Value {
 	elemMap := map[string][]*fastjson.Value{}
 	for _, e := range vs {
-		switch string(e.GetStringBytes("type")) {
-		case "textbox":
-			if _, ok := elemMap["textbox"]; !ok {
-				elemMap["textbox"] = []*fastjson.Value{}
-			}
-			elemMap["textbox"] = append(elemMap["textbox"], e)
+		eType := string(e.GetStringBytes("type"))
+		if _, ok := elemMap[eType]; !ok {
+			elemMap[eType] = []*fastjson.Value{}
 		}
+		elemMap[eType] = append(elemMap[eType], e)
 	}
 	return elemMap
 }
