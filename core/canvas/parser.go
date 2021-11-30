@@ -60,9 +60,10 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 
 func parseRect(v *fastjson.Value) *Rect {
 	return &Rect{
-		X:      v.GetFloat64("x"),
-		Y:      v.GetFloat64("y"),
-		Width:  v.GetFloat64("width"),
-		Height: v.GetFloat64("height"),
+		X:        v.GetFloat64("x"),
+		Y:        v.GetFloat64("y"),
+		Width:    v.GetFloat64("width"),
+		Height:   v.GetFloat64("height"),
+		Rotation: v.GetFloat64("rotation"),
 	}
 }

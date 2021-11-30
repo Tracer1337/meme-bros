@@ -33,9 +33,22 @@ func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
 	if e.Data.Caps {
 		text = strings.ToUpper(text)
 	}
+	e.Rect.ApplyRotation(dc)
 	dc.DrawStringWrapped(text, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
 	dc.SetColor(color.Black)
 	dc.SetLineWidth(3)
 	dc.DrawRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height)
 	dc.Stroke()
+	dc.Identity()
+}
+
+func (rect *Rect) ApplyRotation(dc *gg.Context) {
+	x, y := rect.Center()
+	dc.RotateAbout(rect.Rotation, x, y)
+}
+
+func (rect *Rect) Center() (x float64, y float64) {
+	x = rect.X + rect.Width/2
+	y = rect.Y + rect.Height/2
+	return x, y
 }
