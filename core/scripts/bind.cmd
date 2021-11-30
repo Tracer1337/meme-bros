@@ -1,1 +1,1 @@
-gomobile bind -target=android -o=..\mobile\android\app\canvas.aar meme-bros/canvas
+gomobile bind -target=android -o=..\mobile\android\app\core.aar meme-bros/core/api

@@ -2,7 +2,7 @@ package main
 
 import (
 	"image/png"
-	"meme-bros/core/canvas"
+	"meme-bros/core/api"
 	"meme-bros/core/utils"
 	"os"
 )
@@ -10,7 +10,7 @@ import (
 func main() {
 	fileIn, _ := os.ReadFile("data.json")
 
-	output := canvas.GenerateFromJSON(string(fileIn))
+	output := api.GenerateFromJSON(string(fileIn))
 
 	img := utils.ParseBase64Image(output)
 

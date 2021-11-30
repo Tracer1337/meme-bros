@@ -13,7 +13,7 @@ import (
 
 const LINE_SPACING = 1
 
-func fitText(text string, fontFamily string, width float64, height float64) float64 {
+func FitText(text string, fontFamily string, width float64, height float64) float64 {
 	var low, high float64 = 1, 1000
 	dc := gg.NewContext(int(width), int(height))
 

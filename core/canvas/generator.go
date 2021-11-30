@@ -26,7 +26,7 @@ func (c *Canvas) drawElements(dc *gg.Context) {
 }
 
 func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
-	fontSize := fitText(e.Data.Text, e.Data.FontFamily, e.Rect.Width, e.Rect.Height)
+	fontSize := FitText(e.Data.Text, e.Data.FontFamily, e.Rect.Width, e.Rect.Height)
 	loadFont(dc, e.Data.FontFamily, fontSize)
 	dc.SetHexColor(e.Data.Color)
 	text := e.Data.Text
