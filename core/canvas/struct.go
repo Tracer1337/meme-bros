@@ -25,6 +25,7 @@ type TextboxElement struct {
 type TextboxData struct {
 	Text       string
 	FontFamily string
+	TextAlign  string
 	Color      string
 	Caps       bool
 }

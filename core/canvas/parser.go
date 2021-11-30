@@ -48,6 +48,7 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 			Data: &TextboxData{
 				Text:       string(e.GetStringBytes("data", "text")),
 				FontFamily: string(e.GetStringBytes("data", "fontFamily")),
+				TextAlign:  string(e.GetStringBytes("data", "textAlign")),
 				Color:      string(e.GetStringBytes("data", "color")),
 				Caps:       e.GetBool("data", "caps"),
 			},

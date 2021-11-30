@@ -2,6 +2,7 @@ package canvas
 
 import (
 	"bytes"
+	"image/color"
 	"meme-bros/core/utils"
 	"strings"
 
@@ -32,5 +33,9 @@ func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
 	if e.Data.Caps {
 		text = strings.ToUpper(text)
 	}
-	dc.DrawStringWrapped(text, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, gg.AlignLeft)
+	dc.DrawStringWrapped(text, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
+	dc.SetColor(color.Black)
+	dc.SetLineWidth(3)
+	dc.DrawRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height)
+	dc.Stroke()
 }
