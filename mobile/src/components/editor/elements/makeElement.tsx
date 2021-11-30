@@ -47,18 +47,11 @@ function makeElement<T extends Element["type"]>(
     return ({ element }: { element: PickElement<T> }) => {        
         const context = useContext(EditorContext)
 
-        const scaledRect = {
-            width: element.rect.width * context.dimensions.width,
-            height: element.rect.height * context.dimensions.height,
-            x: element.rect.x * context.dimensions.width,
-            y: element.rect.y * context.dimensions.height
-        }
-        
         const [getLayout, onLayout] = useLayout()
 
         const size = useRef(withOffset(new Animated.ValueXY(), {
-            x: scaledRect.width,
-            y: scaledRect.height
+            x: element.rect.width,
+            y: element.rect.height
         })).current
         const rotation = useRef(new Animated.Value(element.rect.rotation)).current
 
@@ -86,12 +79,11 @@ function makeElement<T extends Element["type"]>(
             if (!layout) {
                 return
             }
-            const { width, height } = context.dimensions
             element.rect = {
-                x: layout.x / width,
-                y: layout.y / height,
-                width: layout.width / width,
-                height: layout.height / height,
+                x: layout.x,
+                y: layout.y,
+                width: layout.width,
+                height: layout.height,
                 // @ts-ignore
                 rotation: rotation._value
             }
@@ -115,8 +107,8 @@ function makeElement<T extends Element["type"]>(
 
         return (
             <Draggable
-                x={scaledRect.x}
-                y={scaledRect.y}
+                x={element.rect.x}
+                y={element.rect.y}
                 onLayout={onLayout}
                 {...getHandleProps("move", {
                     onStart: focusElement,
@@ -148,7 +140,7 @@ function makeElement<T extends Element["type"]>(
                                 <View style={{ marginRight: 8 }}>
                                     <RotationHandle
                                         animate={rotation}
-                                        childRect={scaledRect}
+                                        childRect={element.rect}
                                         onUpdate={updateElement}
                                         getHandleProps={getHandleProps}
                                     />

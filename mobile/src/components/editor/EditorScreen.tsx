@@ -46,10 +46,10 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                             id: -1,
                             type: "textbox",
                             rect: {
-                                x: 0.3,
-                                y: 0.3,
-                                width: 0.5,
-                                height: 0.2,
+                                x: 100,
+                                y: 200,
+                                width: 200,
+                                height: 100,
                                 rotation: 0
                             },
                             data: {

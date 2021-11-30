@@ -37,8 +37,8 @@ function Canvas() {
             rect: {
                 x: 0,
                 y: 0,
-                width: 0.4,
-                height: 0.2,
+                width: 200,
+                height: 100,
                 rotation: 0
             },
             data: getDefaultDataByType(type)
