@@ -8,6 +8,7 @@ meme-bros/core generates memes from json files.
 {
     "width": Number,
     "height": Number,
+    "debug": Boolean,
     "elements": Elements[]
 }
 ```
@@ -52,8 +53,9 @@ meme-bros/core generates memes from json files.
     "type": "textbox",
     "data": {
         "text": String,
-        "fontFamily": String,
-        "textAlign": String,
+        "fontFamily": "Arial" | "Comic-Sans" | "Impact",
+        "fontWeight": "normal" | "bold",
+        "textAlign": "left" | "center" | "right",
         "color": String,
         "caps": Boolean
     }

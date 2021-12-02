@@ -4,6 +4,7 @@ type Canvas struct {
 	Width      float64
 	Height     float64
 	Background string
+	Debug      bool
 	Elements   *CanvasElements
 }
 
@@ -32,6 +33,7 @@ type TextboxElement struct {
 type TextboxData struct {
 	Text       string
 	FontFamily string
+	FontWeight string
 	TextAlign  string
 	Color      string
 	Caps       bool

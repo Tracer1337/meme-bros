@@ -15,6 +15,6 @@ func GenerateFromJSON(json string) string {
 	return "data:image/png;base64," + string(encoded)
 }
 
-func FitText(text string, fontFamily string, width float64, height float64) float64 {
-	return canvas.FitText(text, fontFamily, width, height)
+func FitText(text string, fontFamily string, fontWeight string, width float64, height float64) float64 {
+	return canvas.FitText(text, fontFamily, fontWeight, width, height)
 }

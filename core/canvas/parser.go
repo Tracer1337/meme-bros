@@ -19,6 +19,7 @@ func parseCanvas(v *fastjson.Value) *Canvas {
 		Width:      v.GetFloat64("width"),
 		Height:     v.GetFloat64("height"),
 		Background: string(v.GetStringBytes("background")),
+		Debug:      v.GetBool("debug"),
 		Elements: &CanvasElements{
 			Images:    parseImages(elements["image"]),
 			Textboxes: parseTextboxes(elements["textbox"]),
@@ -63,6 +64,7 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 			Data: &TextboxData{
 				Text:       string(e.GetStringBytes("data", "text")),
 				FontFamily: string(e.GetStringBytes("data", "fontFamily")),
+				FontWeight: string(e.GetStringBytes("data", "fontWeight")),
 				TextAlign:  string(e.GetStringBytes("data", "textAlign")),
 				Color:      string(e.GetStringBytes("data", "color")),
 				Caps:       e.GetBool("data", "caps"),

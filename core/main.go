@@ -32,6 +32,6 @@ func generate() {
 }
 
 func textfit() {
-	output := api.FitText("This is my text", "Impact", 100, 100)
+	output := api.FitText("This is my text", "Impact", "light", 100, 100)
 	fmt.Printf("Font-Size: %v\n", output)
 }

@@ -39,6 +39,9 @@ func (c *Canvas) drawImage(dc *gg.Context, e *ImageElement) {
 	dc.DrawRoundedRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height, e.Data.BorderRadius)
 	dc.Clip()
 	dc.DrawImage(img, int(e.Rect.X*(1/sx)), int(e.Rect.Y*(1/sy)))
+	if c.Debug {
+		e.Rect.Draw(dc)
+	}
 }
 
 func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
@@ -47,16 +50,14 @@ func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
 	if e.Data.Caps {
 		text = strings.ToUpper(text)
 	}
-	fontSize := FitText(text, e.Data.FontFamily, e.Rect.Width, e.Rect.Height)
-	loadFont(dc, e.Data.FontFamily, fontSize)
+	fontSize := FitText(text, e.Data.FontFamily, e.Data.FontWeight, e.Rect.Width, e.Rect.Height)
+	loadFont(dc, e.Data.FontFamily, e.Data.FontWeight, fontSize)
 	dc.SetHexColor(e.Data.Color)
 	e.Rect.ApplyRotation(dc)
 	dc.DrawStringWrapped(text, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
-
-	dc.SetColor(color.Black)
-	dc.SetLineWidth(3)
-	dc.DrawRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height)
-	dc.Stroke()
+	if c.Debug {
+		e.Rect.Draw(dc)
+	}
 }
 
 func (rect *Rect) ApplyRotation(dc *gg.Context) {
@@ -69,6 +70,13 @@ func (rect *Rect) ApplyScaling(dc *gg.Context, pWidth, pHeight float64) (sx, sy 
 	sy = rect.Height / float64(pHeight)
 	dc.Scale(sx, sy)
 	return sx, sy
+}
+
+func (rect *Rect) Draw(dc *gg.Context) {
+	dc.SetColor(color.Black)
+	dc.SetLineWidth(3)
+	dc.DrawRectangle(rect.X, rect.Y, rect.Width, rect.Height)
+	dc.Stroke()
 }
 
 func (rect *Rect) Center() (x float64, y float64) {
