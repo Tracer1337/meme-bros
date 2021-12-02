@@ -150,7 +150,7 @@ public class TextFitModule extends ReactContextBaseJavaModule {
                 if (bounds.width() > width) {
                     width = bounds.width();
                 }
-                height += bounds.height();
+                height += bounds.height() + fontSize * 0.5;
             }
             return new Container(width, height);
         }
