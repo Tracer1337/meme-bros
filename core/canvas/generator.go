@@ -19,17 +19,27 @@ func (c *Canvas) Generate() *bytes.Buffer {
 	return buffer
 }
 
+type Element interface {
+	Draw(dc *gg.Context)
+}
+
 func (c *Canvas) drawElements(dc *gg.Context) {
 	for _, e := range c.Elements.Images {
-		c.drawImage(dc, e)
+		e.Draw(dc)
+		if c.Debug {
+			e.Rect.Draw(dc)
+		}
 	}
 
 	for _, e := range c.Elements.Textboxes {
-		c.drawTextbox(dc, e)
+		e.Draw(dc)
+		if c.Debug {
+			e.Rect.Draw(dc)
+		}
 	}
 }
 
-func (c *Canvas) drawImage(dc *gg.Context, e *ImageElement) {
+func (e *ImageElement) Draw(dc *gg.Context) {
 	defer dc.Identity()
 	defer dc.ResetClip()
 	img := utils.ParseBase64Image(e.Data.URI)
@@ -39,12 +49,9 @@ func (c *Canvas) drawImage(dc *gg.Context, e *ImageElement) {
 	dc.DrawRoundedRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height, e.Data.BorderRadius)
 	dc.Clip()
 	dc.DrawImage(img, int(e.Rect.X*(1/sx)), int(e.Rect.Y*(1/sy)))
-	if c.Debug {
-		e.Rect.Draw(dc)
-	}
 }
 
-func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
+func (e *TextboxElement) Draw(dc *gg.Context) {
 	defer dc.Identity()
 	text := e.Data.Text
 	if e.Data.Caps {
@@ -55,9 +62,6 @@ func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
 	dc.SetHexColor(e.Data.Color)
 	e.Rect.ApplyRotation(dc)
 	dc.DrawStringWrapped(text, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
-	if c.Debug {
-		e.Rect.Draw(dc)
-	}
 }
 
 func (rect *Rect) ApplyRotation(dc *gg.Context) {
