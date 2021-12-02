@@ -15,6 +15,7 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
 export type TextboxData = {
     text: string,
     fontFamily: string,
+    textAlign: string,
     color: string,
     caps: boolean
 }
@@ -22,6 +23,7 @@ export type TextboxData = {
 export const textboxDefaultData: TextboxData = {
     text: "Enter Text...",
     fontFamily: "Impact",
+    textAlign: "left",
     color: "#000000",
     caps: true
 }

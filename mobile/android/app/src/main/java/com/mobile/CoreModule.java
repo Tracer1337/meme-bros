@@ -30,10 +30,7 @@ public class CoreModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void textfit(String text, String fontFamily, float width, float height, Promise promise) {
-        long t0 = System.nanoTime();
         double output = Api.fitText(text, fontFamily, width, height);
-        long elapsed = System.nanoTime() - t0;
-        Log.d("Textfit", Long.toString(elapsed));
         promise.resolve(output);
     }
 }

@@ -9,4 +9,4 @@ require (
 	golang.org/x/mobile v0.0.0-20211109191125-d61a72f26a1a
 )
 
-require golang.org/x/image v0.0.0-20190802002840-cff245a6509b // indirect
+require golang.org/x/image v0.0.0-20190802002840-cff245a6509b
