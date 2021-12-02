@@ -57,7 +57,9 @@ meme-bros/core generates memes from json files.
         "fontWeight": "normal" | "bold",
         "textAlign": "left" | "center" | "right",
         "color": String,
-        "caps": Boolean
+        "caps": Boolean,
+        "outlineWidth": Number,
+        "outlineColor": String
     }
 }
 ```

@@ -1,4 +1,4 @@
-package canvas
+package core
 
 import (
 	"github.com/valyala/fastjson"

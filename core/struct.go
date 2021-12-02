@@ -1,4 +1,4 @@
-package canvas
+package core
 
 type Canvas struct {
 	Width      float64
