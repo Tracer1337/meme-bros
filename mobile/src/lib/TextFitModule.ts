@@ -10,8 +10,6 @@ export default TextFitModule as {
         containerRect: {
             width: number,
             height: number
-        },
-        low: number,
-        high: number
+        }
     }): Promise<number>
 }
