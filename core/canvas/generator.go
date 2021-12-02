@@ -43,13 +43,13 @@ func (c *Canvas) drawImage(dc *gg.Context, e *ImageElement) {
 
 func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
 	defer dc.Identity()
-	fontSize := FitText(e.Data.Text, e.Data.FontFamily, e.Rect.Width, e.Rect.Height)
-	loadFont(dc, e.Data.FontFamily, fontSize)
-	dc.SetHexColor(e.Data.Color)
 	text := e.Data.Text
 	if e.Data.Caps {
 		text = strings.ToUpper(text)
 	}
+	fontSize := FitText(text, e.Data.FontFamily, e.Rect.Width, e.Rect.Height)
+	loadFont(dc, e.Data.FontFamily, fontSize)
+	dc.SetHexColor(e.Data.Color)
 	e.Rect.ApplyRotation(dc)
 	dc.DrawStringWrapped(text, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
 
