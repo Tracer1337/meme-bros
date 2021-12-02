@@ -1,23 +1,30 @@
 package canvas
 
 type Canvas struct {
-	Image    *CanvasImage
-	Elements *CanvasElements
-}
-
-type CanvasImage struct {
-	URI    string
-	Width  int
-	Height int
+	Width      float64
+	Height     float64
+	Background string
+	Elements   *CanvasElements
 }
 
 type CanvasElements struct {
+	Images    []*ImageElement
 	Textboxes []*TextboxElement
 }
 
+type ImageElement struct {
+	Id   int
+	Rect *Rect
+	Data *ImageData
+}
+
+type ImageData struct {
+	URI          string
+	BorderRadius float64
+}
+
 type TextboxElement struct {
-	Id   int16
-	Type string
+	Id   int
 	Rect *Rect
 	Data *TextboxData
 }
