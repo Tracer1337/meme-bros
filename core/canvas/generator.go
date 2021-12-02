@@ -31,10 +31,13 @@ func (c *Canvas) drawElements(dc *gg.Context) {
 
 func (c *Canvas) drawImage(dc *gg.Context, e *ImageElement) {
 	defer dc.Identity()
+	defer dc.ResetClip()
 	img := utils.ParseBase64Image(e.Data.URI)
 	bounds := img.Bounds()
 	sx, sy := e.Rect.ApplyScaling(dc, float64(bounds.Max.X), float64(bounds.Max.Y))
 	e.Rect.ApplyRotation(dc)
+	dc.DrawRoundedRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height, e.Data.BorderRadius)
+	dc.Clip()
 	dc.DrawImage(img, int(e.Rect.X*(1/sx)), int(e.Rect.Y*(1/sy)))
 }
 
@@ -49,6 +52,7 @@ func (c *Canvas) drawTextbox(dc *gg.Context, e *TextboxElement) {
 	}
 	e.Rect.ApplyRotation(dc)
 	dc.DrawStringWrapped(text, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
+
 	dc.SetColor(color.Black)
 	dc.SetLineWidth(3)
 	dc.DrawRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height)
