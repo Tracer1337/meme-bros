@@ -31,11 +31,13 @@
             },
             "data": {
                 "text": "This is my text",
-                "fontFamily": "Comic-Sans",
+                "fontFamily": "Impact",
                 "fontWeight": "bold",
                 "textAlign": "left",
-                "color": "#000000",
-                "caps": true
+                "color": "#ffffff",
+                "caps": true,
+                "outlineWidth": 2,
+                "outlineColor": "#000000"
             }
         },
         {
@@ -54,7 +56,9 @@
                 "fontWeight": "normal",
                 "color": "#000000",
                 "caps": true,
-                "textAlign": "center"
+                "textAlign": "center",
+                "outlineWidth": 3,
+                "outlineColor": "#1361D9"
             }
         }
     ]

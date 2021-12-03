@@ -53,18 +53,35 @@ func (e *ImageElement) Draw(dc *gg.Context, c *Canvas) {
 func (e *TextboxElement) Draw(dc *gg.Context, c *Canvas) {
 	defer dc.Identity()
 
-	text := e.Data.Text
-	if e.Data.Caps {
-		text = strings.ToUpper(text)
-	}
+	text := e.getFormattedText()
 	fontSize := FitText(text, e.Data.FontFamily, e.Data.FontWeight, e.Rect.Width, e.Rect.Height)
 	loadFont(dc, e.Data.FontFamily, e.Data.FontWeight, fontSize)
-	dc.SetHexColor(e.Data.Color)
 	e.Rect.ApplyRotation(dc)
+	e.drawTextOutline(dc, c)
+	dc.SetHexColor(e.Data.Color)
 	dc.DrawStringWrapped(text, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
 
 	if c.Debug {
 		e.Rect.Draw(dc)
+	}
+}
+
+func (e *TextboxElement) getFormattedText() string {
+	text := e.Data.Text
+	if e.Data.Caps {
+		text = strings.ToUpper(text)
+	}
+	return text
+}
+
+func (e *TextboxElement) drawTextOutline(dc *gg.Context, c *Canvas) {
+	text := e.getFormattedText()
+	s := e.Data.OutlineWidth
+	for dy := -s; dy <= s; dy++ {
+		for dx := -s; dx <= s; dx++ {
+			dc.SetHexColor(e.Data.OutlineColor)
+			dc.DrawStringWrapped(text, e.Rect.X+dx, e.Rect.Y+dy, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
+		}
 	}
 }
 
