@@ -35,7 +35,7 @@ func (e *ShapeElement) drawRect(c *ShapeDrawingContext) {
 	bw := e.Data.BorderWidth
 	c.dc.SetColor(e.Data.BorderColor)
 	c.dc.SetLineWidth(e.Data.BorderWidth)
-	c.dc.DrawRectangle(e.Rect.X-bw/2, e.Rect.Y-bw/2, e.Rect.Width+bw, e.Rect.Height+bw)
+	c.dc.DrawRectangle(e.Rect.X+bw/2, e.Rect.Y+bw/2, e.Rect.Width-bw, e.Rect.Height-bw)
 	c.dc.Stroke()
 }
 
@@ -51,6 +51,6 @@ func (e *ShapeElement) drawEllipse(c *ShapeDrawingContext) {
 	bw := e.Data.BorderWidth
 	c.dc.SetColor(e.Data.BorderColor)
 	c.dc.SetLineWidth(e.Data.BorderWidth)
-	c.dc.DrawEllipse(cx, cy, rx+bw/2, ry+bw/2)
+	c.dc.DrawEllipse(cx, cy, rx-bw/2, ry-bw/2)
 	c.dc.Stroke()
 }
