@@ -1,14 +1,12 @@
 package core
 
 import (
-	"image/color"
-
 	"github.com/fogleman/gg"
 )
 
 func (rect *Rect) Draw(dc *gg.Context) {
-	dc.SetColor(color.Black)
-	dc.SetLineWidth(3)
+	dc.SetRGB(0, 1, 0)
+	dc.SetLineWidth(2)
 	dc.DrawRectangle(rect.X, rect.Y, rect.Width, rect.Height)
 	dc.Stroke()
 }

@@ -24,4 +24,8 @@ func (c *Canvas) drawElements(dc *gg.Context) {
 	for _, e := range c.Elements.Textboxes {
 		e.Draw(dc, c)
 	}
+
+	for _, e := range c.Elements.Shapes {
+		e.Draw(dc, c)
+	}
 }

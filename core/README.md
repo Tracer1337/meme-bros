@@ -71,3 +71,18 @@ Textbox = {
     }
 }
 ```
+
+### Shape
+
+```ts
+Shape = {
+    ...Common,
+    "type": "shape",
+    "data": {
+        "variant": "rect" | "ellipse",
+        "backgroundColor": Color,
+        "borderColor": Color,
+        "borderWidth": Number
+    }
+}
+```

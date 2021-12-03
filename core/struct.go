@@ -13,6 +13,7 @@ type Canvas struct {
 type CanvasElements struct {
 	Images    []*ImageElement
 	Textboxes []*TextboxElement
+	Shapes    []*ShapeElement
 }
 
 type ImageElement struct {
@@ -42,6 +43,19 @@ type TextboxData struct {
 	OutlineWidth    float64
 	OutlineColor    *color.RGBA
 	BackgroundColor *color.RGBA
+}
+
+type ShapeElement struct {
+	Id   int
+	Rect *Rect
+	Data *ShapeData
+}
+
+type ShapeData struct {
+	Variant         string
+	BackgroundColor *color.RGBA
+	BorderColor     *color.RGBA
+	BorderWidth     float64
 }
 
 type Rect struct {

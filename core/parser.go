@@ -34,6 +34,7 @@ func parseCanvas(v *fastjson.Value) *Canvas {
 		Elements: &CanvasElements{
 			Images:    parseImages(elements["image"]),
 			Textboxes: parseTextboxes(elements["textbox"]),
+			Shapes:    parseShapes(elements["shape"]),
 		},
 	}
 }
@@ -82,6 +83,24 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 				OutlineWidth:    e.GetFloat64("data", "outlineWidth"),
 				OutlineColor:    parseRGBA(e.GetArray("data", "outlineColor")),
 				BackgroundColor: parseRGBA(e.GetArray("data", "backgroundColor")),
+			},
+		}
+		elements = append(elements, newElement)
+	}
+	return elements
+}
+
+func parseShapes(vs []*fastjson.Value) []*ShapeElement {
+	elements := []*ShapeElement{}
+	for _, e := range vs {
+		newElement := &ShapeElement{
+			Id:   e.GetInt("id"),
+			Rect: parseRect(e.Get("rect")),
+			Data: &ShapeData{
+				Variant:         string(e.GetStringBytes("data", "variant")),
+				BackgroundColor: parseRGBA(e.GetArray("data", "backgroundColor")),
+				BorderColor:     parseRGBA(e.GetArray("data", "borderColor")),
+				BorderWidth:     e.GetFloat64("data", "borderWidth"),
 			},
 		}
 		elements = append(elements, newElement)
