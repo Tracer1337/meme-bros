@@ -1,6 +1,8 @@
 package core
 
 import (
+	"image/color"
+
 	"github.com/valyala/fastjson"
 )
 
@@ -13,13 +15,22 @@ func CanvasFromJSON(jsonString string) *Canvas {
 	return parseCanvas(v)
 }
 
+func parseRGBA(v []*fastjson.Value) *color.RGBA {
+	return &color.RGBA{
+		uint8(v[0].GetInt()),
+		uint8(v[1].GetInt()),
+		uint8(v[2].GetInt()),
+		uint8(v[3].GetInt()),
+	}
+}
+
 func parseCanvas(v *fastjson.Value) *Canvas {
 	elements := parseElements(v.GetArray("elements"))
 	return &Canvas{
-		Width:      v.GetFloat64("width"),
-		Height:     v.GetFloat64("height"),
-		Background: string(v.GetStringBytes("background")),
-		Debug:      v.GetBool("debug"),
+		Width:           v.GetFloat64("width"),
+		Height:          v.GetFloat64("height"),
+		BackgroundColor: parseRGBA(v.GetArray("backgroundColor")),
+		Debug:           v.GetBool("debug"),
 		Elements: &CanvasElements{
 			Images:    parseImages(elements["image"]),
 			Textboxes: parseTextboxes(elements["textbox"]),
@@ -66,11 +77,11 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 				FontFamily:      string(e.GetStringBytes("data", "fontFamily")),
 				FontWeight:      string(e.GetStringBytes("data", "fontWeight")),
 				TextAlign:       string(e.GetStringBytes("data", "textAlign")),
-				Color:           string(e.GetStringBytes("data", "color")),
+				Color:           parseRGBA(e.GetArray("data", "color")),
 				Caps:            e.GetBool("data", "caps"),
 				OutlineWidth:    e.GetFloat64("data", "outlineWidth"),
-				OutlineColor:    string(e.GetStringBytes("data", "outlineColor")),
-				BackgroundColor: string(e.GetStringBytes("data", "backgroundColor")),
+				OutlineColor:    parseRGBA(e.GetArray("data", "outlineColor")),
+				BackgroundColor: parseRGBA(e.GetArray("data", "backgroundColor")),
 			},
 		}
 		elements = append(elements, newElement)

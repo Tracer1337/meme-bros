@@ -42,7 +42,7 @@ func (e *TextboxElement) getFormattedText() string {
 }
 
 func (e *TextboxElement) drawBackground(c *TextbotDrawingContext) {
-	c.dc.SetHexColor(e.Data.BackgroundColor)
+	c.dc.SetColor(e.Data.BackgroundColor)
 	c.dc.DrawRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height)
 	c.dc.Fill()
 }
@@ -51,14 +51,14 @@ func (e *TextboxElement) drawTextOutline(c *TextbotDrawingContext) {
 	s := e.Data.OutlineWidth
 	for dy := -s; dy <= s; dy++ {
 		for dx := -s; dx <= s; dx++ {
-			c.dc.SetHexColor(e.Data.OutlineColor)
+			c.dc.SetColor(e.Data.OutlineColor)
 			c.dc.DrawStringWrapped(c.FText, e.Rect.X+dx, e.Rect.Y+dy, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
 		}
 	}
 }
 
 func (e *TextboxElement) drawText(c *TextbotDrawingContext) {
-	c.dc.SetHexColor(e.Data.Color)
+	c.dc.SetColor(e.Data.Color)
 	c.dc.DrawStringWrapped(c.FText, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
 }
 

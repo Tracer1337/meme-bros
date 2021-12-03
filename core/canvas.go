@@ -8,7 +8,7 @@ import (
 
 func (c *Canvas) Generate() *bytes.Buffer {
 	dc := gg.NewContext(int(c.Width), int(c.Height))
-	dc.SetHexColor(c.Background)
+	dc.SetColor(c.BackgroundColor)
 	dc.Clear()
 	c.drawElements(dc)
 	buffer := bytes.NewBuffer([]byte{})

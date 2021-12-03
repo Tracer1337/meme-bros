@@ -1,7 +1,7 @@
 {
     "width": 520,
     "height": 620,
-    "background": "#ffffff",
+    "backgroundColor": [255, 255, 255, 255],
     "debug": true,
     "elements": [
         {
@@ -34,11 +34,11 @@
                 "fontFamily": "Impact",
                 "fontWeight": "bold",
                 "textAlign": "left",
-                "color": "#ffffff",
+                "color": [255, 255, 255, 255],
                 "caps": true,
                 "outlineWidth": 2,
-                "outlineColor": "#000000",
-                "backgroundColor": "#ffffff"
+                "outlineColor": [0, 0, 0, 255],
+                "backgroundColor": [0, 0, 0, 0]
             }
         },
         {
@@ -55,12 +55,12 @@
                 "text": "Enter Text",
                 "fontFamily": "Comic-Sans",
                 "fontWeight": "normal",
-                "color": "#000000",
+                "color": [0, 0, 0, 255],
                 "caps": true,
                 "textAlign": "center",
                 "outlineWidth": 3,
-                "outlineColor": "#1361D9",
-                "backgroundColor": "#0000ff"
+                "outlineColor": [100, 100, 255, 255],
+                "backgroundColor": [0, 0, 0, 0]
             }
         }
     ]

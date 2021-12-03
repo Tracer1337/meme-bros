@@ -1,11 +1,13 @@
 package core
 
+import "image/color"
+
 type Canvas struct {
-	Width      float64
-	Height     float64
-	Background string
-	Debug      bool
-	Elements   *CanvasElements
+	Width           float64
+	Height          float64
+	BackgroundColor *color.RGBA
+	Debug           bool
+	Elements        *CanvasElements
 }
 
 type CanvasElements struct {
@@ -35,11 +37,11 @@ type TextboxData struct {
 	FontFamily      string
 	FontWeight      string
 	TextAlign       string
-	Color           string
+	Color           *color.RGBA
 	Caps            bool
 	OutlineWidth    float64
-	OutlineColor    string
-	BackgroundColor string
+	OutlineColor    *color.RGBA
+	BackgroundColor *color.RGBA
 }
 
 type Rect struct {

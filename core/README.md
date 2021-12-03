@@ -5,12 +5,19 @@ meme-bros/core generates memes from json files.
 ## JSON Schema
 
 ```ts
-{
+Schema = {
     "width": Number,
     "height": Number,
     "debug": Boolean,
+    "backgroundColor": Color,
     "elements": Elements[]
 }
+```
+
+## Color
+
+```ts
+Color = [Number, Number, Number, Number] // (R, G, B, A)
 ```
 
 ## Elements
@@ -18,7 +25,7 @@ meme-bros/core generates memes from json files.
 ### Common
 
 ```ts
-{
+Common = {
     "id": Number,
     "type": String,
     "rect": {
@@ -35,7 +42,7 @@ meme-bros/core generates memes from json files.
 ### Image
 
 ```ts
-{
+Image = {
     ...Common,
     "type": "image",
     "data": {
@@ -48,7 +55,7 @@ meme-bros/core generates memes from json files.
 ### Textbox
 
 ```ts
-{
+Textbox = {
     ...Common,
     "type": "textbox",
     "data": {
@@ -56,11 +63,11 @@ meme-bros/core generates memes from json files.
         "fontFamily": "Arial" | "Comic-Sans" | "Impact",
         "fontWeight": "normal" | "bold",
         "textAlign": "left" | "center" | "right",
-        "color": String,
+        "color": Color,
         "caps": Boolean,
         "outlineWidth": Number,
-        "outlineColor": String,
-        "backgroundColor": String
+        "outlineColor": Color,
+        "backgroundColor": Color
     }
 }
 ```
