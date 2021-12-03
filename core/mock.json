@@ -37,7 +37,8 @@
                 "color": "#ffffff",
                 "caps": true,
                 "outlineWidth": 2,
-                "outlineColor": "#000000"
+                "outlineColor": "#000000",
+                "backgroundColor": "#ffffff"
             }
         },
         {
@@ -58,7 +59,8 @@
                 "caps": true,
                 "textAlign": "center",
                 "outlineWidth": 3,
-                "outlineColor": "#1361D9"
+                "outlineColor": "#1361D9",
+                "backgroundColor": "#0000ff"
             }
         }
     ]

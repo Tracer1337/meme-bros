@@ -31,14 +31,15 @@ type TextboxElement struct {
 }
 
 type TextboxData struct {
-	Text         string
-	FontFamily   string
-	FontWeight   string
-	TextAlign    string
-	Color        string
-	Caps         bool
-	OutlineWidth float64
-	OutlineColor string
+	Text            string
+	FontFamily      string
+	FontWeight      string
+	TextAlign       string
+	Color           string
+	Caps            bool
+	OutlineWidth    float64
+	OutlineColor    string
+	BackgroundColor string
 }
 
 type Rect struct {

@@ -59,7 +59,8 @@ meme-bros/core generates memes from json files.
         "color": String,
         "caps": Boolean,
         "outlineWidth": Number,
-        "outlineColor": String
+        "outlineColor": String,
+        "backgroundColor": String
     }
 }
 ```

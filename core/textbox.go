@@ -24,6 +24,7 @@ func (e *TextboxElement) Draw(dc *gg.Context, c *Canvas) {
 	}
 
 	e.loadFont(context)
+	e.drawBackground(context)
 	e.drawTextOutline(context)
 	e.drawText(context)
 
@@ -38,6 +39,12 @@ func (e *TextboxElement) getFormattedText() string {
 		text = strings.ToUpper(text)
 	}
 	return text
+}
+
+func (e *TextboxElement) drawBackground(c *TextbotDrawingContext) {
+	c.dc.SetHexColor(e.Data.BackgroundColor)
+	c.dc.DrawRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height)
+	c.dc.Fill()
 }
 
 func (e *TextboxElement) drawTextOutline(c *TextbotDrawingContext) {
