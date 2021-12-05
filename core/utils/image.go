@@ -6,14 +6,9 @@ import (
 	"image"
 	"image/jpeg"
 	"image/png"
-	"io"
 	"regexp"
 	"strings"
 )
-
-type Decoder interface {
-	Decode(r io.Reader) (image.Image, error)
-}
 
 func ParseBase64Image(dataURI string) image.Image {
 	mimeType := GetMimeTypeFromBase64(dataURI)
