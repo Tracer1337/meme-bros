@@ -65,7 +65,7 @@ function TextboxConfigDialog({ visible, data: element, close }: {
                     <Text>Caps</Text>
                     <Switch
                         value={data.caps}
-                        onValueChange={value => setData({
+                        onValueChange={(value) => setData({
                             ...data,
                             caps: value
                         })}

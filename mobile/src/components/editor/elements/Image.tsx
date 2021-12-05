@@ -55,5 +55,7 @@ export default makeElement(Image, ({ element }) => ({
     interactions: {
         edit: false
     },
-    aspectRatio: element.rect.height / element.rect.width
+    aspectRatio: !element.data.keepAspectRatio
+        ? undefined
+        : element.rect.height / element.rect.width
 }))

@@ -48,10 +48,7 @@ function makeElement<T extends CanvasElement["type"]>(
     return ({ element }: { element: PickElement<T> }) => {
         const context = useContext(EditorContext)
 
-        const config = useMemo(
-            () => deepmerge(defaultConfig, getElementConfig({ element })) as ElementConfig,
-            [element]
-        )
+        const config = deepmerge(defaultConfig, getElementConfig({ element })) as ElementConfig
 
         const [getLayout, onLayout] = useLayout()
 
