@@ -71,7 +71,7 @@ function Textbox({ element, setDraggableProps, size }: ElementProps<"textbox">) 
             text: getTransformedText(element),
             fontFamily: element.data.fontFamily,
             fontWeight: "normal",
-            containerRect: { width: x - 10, height: y - 10 }
+            containerRect: { width: x, height: y }
         })
         fontSize.setValue(newFontSize)
     }
