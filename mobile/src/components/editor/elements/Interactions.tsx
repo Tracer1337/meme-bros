@@ -48,7 +48,7 @@ function Interactions({
     }
 
     return (
-        <View style={[styles.controls, { display: active ? undefined : "none" }]}>
+        <View style={[styles.controls, { opacity: active ? 1 : 0 }]}>
             <View style={styles.topControls}>
                 {config.interactions.rotate && (
                     <View style={{ marginRight: 8 }}>

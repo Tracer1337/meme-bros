@@ -7,7 +7,6 @@ import { ContextValue, EditorContext } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { DialogContext } from "../../lib/DialogHandler"
 import { CanvasElement, PickElement } from "../../types"
-import { launchCamera } from "react-native-image-picker"
 import { importImage } from "../../lib/media"
 
 function makeId() {
