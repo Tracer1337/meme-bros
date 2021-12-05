@@ -1,6 +1,7 @@
 import React from "react"
 import { Text } from "react-native-paper"
 import { CanvasElement, PickElement } from "../../../types"
+import Image, { imageDefaultData } from "./Image"
 import Textbox, { textboxDefaultData } from "./Textbox"
 
 function NotImplemented() {
@@ -12,13 +13,13 @@ const elementsMap: Record<
     React.ComponentType<{ element: any }>
 > = {
     "textbox": Textbox,
-    "image": NotImplemented,
+    "image": Image,
     "shape": NotImplemented,
 }
 
 const defaultDataMap: Record<CanvasElement["type"], any> = {
     "textbox": textboxDefaultData,
-    "image": {},
+    "image": imageDefaultData,
     "shape": {}
 }
 

@@ -35,8 +35,8 @@ async function loadCanvasDummy(): Promise<CanvasType> {
                     rotation: 0
                 },
                 data: {
-                    uri: binaryToPNG(await fetchBase64(image.uri)),
-                    borderRadius: 0
+                    ...getDefaultDataByType("image") as PickElement<"image">["data"],
+                    uri: binaryToPNG(await fetchBase64(image.uri))
                 }
             },
             {
