@@ -2,15 +2,16 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import Draggable, { DraggableProps } from "../../../lib/Draggable"
-import { Element, PickElement } from "./index"
 import { EditorContext, ElementEvents } from "../Context"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
 import { withOffset } from "../../../lib/animated"
 import useLayout from "../../../lib/useLayout"
 import globalStyles from "../../../styles"
+import { CanvasElement, PickElement } from "../../../types"
 
-export type ElementProps = {
+export type ElementProps<T extends CanvasElement["type"]> = {
+    element: PickElement<T>,
     setDraggableProps: (props: DraggableProps) => void,
     size: Animated.ValueXY,
     rotation: Animated.Value
@@ -39,10 +40,8 @@ function ActionHandle({ icon, onPress }: {
     )
 }
 
-function makeElement<T extends Element["type"]>(
-    Component: React.ComponentType<ElementProps & {
-        element: PickElement<T>
-    }>
+function makeElement<T extends CanvasElement["type"]>(
+    Component: React.ComponentType<ElementProps<T>>
 ) {
     return ({ element }: { element: PickElement<T> }) => {        
         const context = useContext(EditorContext)

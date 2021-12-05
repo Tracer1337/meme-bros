@@ -2,7 +2,7 @@ import { createContext } from "react"
 import { GestureResponderEvent } from "react-native"
 import { DeepPartial } from "tsdef"
 import EventEmitter from "../../lib/EventEmitter"
-import { Element, ElementSchema } from "./elements"
+import { Canvas, CanvasElement } from "../../types"
 
 export type ScreenEvents = "press"
 
@@ -10,10 +10,10 @@ export type ElementEvents = "create" | "edit" | "remove" | "config"
 
 type Events = {
     "screen.press": GestureResponderEvent,
-    "element.create": ElementSchema["type"],
-    "element.edit": ElementSchema["id"],
-    "element.remove": ElementSchema["id"],
-    "element.config": ElementSchema["id"],
+    "element.create": CanvasElement["type"],
+    "element.edit": CanvasElement["id"],
+    "element.remove": CanvasElement["id"],
+    "element.config": CanvasElement["id"],
     "canvas.generate": ContextValue["canvas"]
 }
 
@@ -25,16 +25,9 @@ export type ContextValue = {
         height: number
     },
     interactions: {
-        focus: Element["id"] | null
+        focus: CanvasElement["id"] | null
     },
-    canvas: {
-        image: {
-            uri: string,
-            width: number,
-            height: number
-        } | null,
-        elements: Element[],
-    }
+    canvas: Canvas
 }
 
 export const contextDefaultValue: ContextValue = {
@@ -45,7 +38,10 @@ export const contextDefaultValue: ContextValue = {
         focus: null
     },
     canvas: {
-        image: null,
+        width: 0,
+        height: 0,
+        debug: false,
+        backgroundColor: [255, 255, 255, 255],
         elements: []
     }
 }

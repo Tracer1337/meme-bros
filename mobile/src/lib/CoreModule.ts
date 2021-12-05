@@ -8,5 +8,5 @@ export default {
     textfit: (...args) => CoreModule.textfit(...args)
 } as {
     generate(json: ContextValue["canvas"]): Promise<string>,
-    textfit: (...args: [text: string, fontFamily: string, width: number, height: number]) => Promise<number>
+    textfit: (...args: [text: string, fontFamily: string, fontWeight: string, width: number, height: number]) => Promise<number>
 }

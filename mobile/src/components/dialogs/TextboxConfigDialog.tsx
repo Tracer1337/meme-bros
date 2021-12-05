@@ -2,12 +2,12 @@ import React, { useState } from "react"
 import { View } from "react-native"
 import { Button, Dialog, Switch, Text } from "react-native-paper"
 import Select, { Item } from "react-native-picker-select"
-import { PickElement } from "../editor/elements"
+import { PickElement } from "../../types"
 import { getTextStyles, getTransformedText } from "../editor/elements/Textbox"
 
 const fontFamilies: Item[] = [
-    { label: "Impact", value: "Impact" },
-    { label: "Arial", value: "Arial" }
+    { label: "Impact", value: "Impact_normal" },
+    { label: "Arial", value: "Arial_normal" }
 ]
 
 const colors: Item[] = [

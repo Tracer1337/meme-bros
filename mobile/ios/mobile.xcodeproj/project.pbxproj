@@ -32,6 +32,12 @@
 		166F32B87E2F4D6B9A7A7EF5 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 635B9041C4D7484DBE514609 /* Zocial.ttf */; };
 		9EE88411EA3D4CCBBEC74006 /* impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC8D36A4F57C4142B367F72F /* impact.ttf */; };
 		AFCBF4755E3041C2992C3285 /* Impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D910F42BDFB47F9801E1A78 /* Impact.ttf */; };
+		11DF2F1F2B0D4DACA5002E8B /* Arial_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B78CF845B47043C19A9E1AED /* Arial_bold.ttf */; };
+		C96127A0B8D14119BC2DEF60 /* Arial_normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7CBC71625564B459CE26FCE /* Arial_normal.ttf */; };
+		12927F5C93A64695A05162F5 /* Comic-Sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CC70C8A69B9438D947CDCA8 /* Comic-Sans_bold.ttf */; };
+		7B063068071A44C3A477419B /* Comic-Sans_normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5BF2A514035F40B2B34EE29B /* Comic-Sans_normal.ttf */; };
+		A0191335FE7F4873A475433E /* Impact_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E07DB5E551544ABFB2A2CB4D /* Impact_bold.ttf */; };
+		98F7E95861C241FFB3CCD6DA /* Impact_normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B4C86E1C50342D7B556F538 /* Impact_normal.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +86,12 @@
 		635B9041C4D7484DBE514609 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		AC8D36A4F57C4142B367F72F /* impact.ttf */ = {isa = PBXFileReference; name = "impact.ttf"; path = "../src/assets/fonts/impact.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		0D910F42BDFB47F9801E1A78 /* Impact.ttf */ = {isa = PBXFileReference; name = "Impact.ttf"; path = "../src/assets/fonts/Impact.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B78CF845B47043C19A9E1AED /* Arial_bold.ttf */ = {isa = PBXFileReference; name = "Arial_bold.ttf"; path = "../src/assets/fonts/Arial_bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B7CBC71625564B459CE26FCE /* Arial_normal.ttf */ = {isa = PBXFileReference; name = "Arial_normal.ttf"; path = "../src/assets/fonts/Arial_normal.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2CC70C8A69B9438D947CDCA8 /* Comic-Sans_bold.ttf */ = {isa = PBXFileReference; name = "Comic-Sans_bold.ttf"; path = "../src/assets/fonts/Comic-Sans_bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5BF2A514035F40B2B34EE29B /* Comic-Sans_normal.ttf */ = {isa = PBXFileReference; name = "Comic-Sans_normal.ttf"; path = "../src/assets/fonts/Comic-Sans_normal.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E07DB5E551544ABFB2A2CB4D /* Impact_bold.ttf */ = {isa = PBXFileReference; name = "Impact_bold.ttf"; path = "../src/assets/fonts/Impact_bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1B4C86E1C50342D7B556F538 /* Impact_normal.ttf */ = {isa = PBXFileReference; name = "Impact_normal.ttf"; path = "../src/assets/fonts/Impact_normal.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +219,12 @@
 				635B9041C4D7484DBE514609 /* Zocial.ttf */,
 				AC8D36A4F57C4142B367F72F /* impact.ttf */,
 				0D910F42BDFB47F9801E1A78 /* Impact.ttf */,
+				B78CF845B47043C19A9E1AED /* Arial_bold.ttf */,
+				B7CBC71625564B459CE26FCE /* Arial_normal.ttf */,
+				2CC70C8A69B9438D947CDCA8 /* Comic-Sans_bold.ttf */,
+				5BF2A514035F40B2B34EE29B /* Comic-Sans_normal.ttf */,
+				E07DB5E551544ABFB2A2CB4D /* Impact_bold.ttf */,
+				1B4C86E1C50342D7B556F538 /* Impact_normal.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -326,6 +344,12 @@
 				166F32B87E2F4D6B9A7A7EF5 /* Zocial.ttf in Resources */,
 				9EE88411EA3D4CCBBEC74006 /* impact.ttf in Resources */,
 				AFCBF4755E3041C2992C3285 /* Impact.ttf in Resources */,
+				11DF2F1F2B0D4DACA5002E8B /* Arial_bold.ttf in Resources */,
+				C96127A0B8D14119BC2DEF60 /* Arial_normal.ttf in Resources */,
+				12927F5C93A64695A05162F5 /* Comic-Sans_bold.ttf in Resources */,
+				7B063068071A44C3A477419B /* Comic-Sans_normal.ttf in Resources */,
+				A0191335FE7F4873A475433E /* Impact_bold.ttf in Resources */,
+				98F7E95861C241FFB3CCD6DA /* Impact_normal.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -27,8 +27,8 @@ public class CoreModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void textfit(String text, String fontFamily, float width, float height, Promise promise) {
-        double output = Api.fitText(text, fontFamily, width, height);
+    public void textfit(String text, String fontFamily, String fontWeight, float width, float height, Promise promise) {
+        double output = Api.fitText(text, fontFamily, fontWeight, width, height);
         promise.resolve(output);
     }
 }

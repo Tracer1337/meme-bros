@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Animated, GestureResponderEvent, StyleSheet, TextInput, View } from "react-native"
+import { toRGBAString } from "../../../lib/color"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
 import TextFitModule from "../../../lib/TextFitModule"
+import { PickElement, TextboxElement } from "../../../types"
 import { EditorContext } from "../Context"
-import type { PickElement } from "./index"
 import makeElement, { ElementProps } from "./makeElement"
 
 function hasPressedElement(event: GestureResponderEvent, element: View) {
@@ -12,26 +13,22 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
     return event.target._nativeTag === element._nativeTag
 }
 
-export type TextboxData = {
-    text: string,
-    fontFamily: string,
-    textAlign: string,
-    color: string,
-    caps: boolean
-}
-
-export const textboxDefaultData: TextboxData = {
+export const textboxDefaultData: TextboxElement["data"] = {
     text: "Enter Text...",
     fontFamily: "Impact",
+    fontWeight: "normal",
     textAlign: "left",
-    color: "#000000",
-    caps: true
+    color: [0, 0, 0, 255],
+    caps: true,
+    outlineWidth: 0,
+    outlineColor: [255, 255, 255, 255],
+    backgroundColor: [255, 255, 255, 0]
 }
 
 export function getTextStyles(element: PickElement<"textbox">) {
     return {
         fontFamily: element.data.fontFamily,
-        color: element.data.color
+        color: toRGBAString(element.data.color)
     }
 }
 
@@ -41,9 +38,7 @@ export function getTransformedText(element: PickElement<"textbox">) {
         : element.data.text
 }
 
-function Textbox({ element, setDraggableProps, size }: ElementProps & {
-    element: PickElement<"textbox">
-}) {
+function Textbox({ element, setDraggableProps, size }: ElementProps<"textbox">) {
     const context = useContext(EditorContext)
     const dialogs = useContext(DialogContext)
 

@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react"
-import { Image, LayoutChangeEvent, StyleSheet, View } from "react-native"
+import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
 import { setListeners } from "../../lib/events"
 import CoreModule from "../../lib/CoreModule"
 import useId from "../../lib/useId"
 import { ContextValue, EditorContext } from "./Context"
-import { Element, ElementTypes, getDefaultDataByType, getElementByType, PickElement } from "./elements"
+import { getDefaultDataByType, getElementByType } from "./elements"
 import { DialogContext } from "../../lib/DialogHandler"
+import { CanvasElement, PickElement } from "../../types"
 
 function Canvas() {
     const context = useContext(EditorContext)
@@ -30,7 +31,7 @@ function Canvas() {
         context.set({ interactions: { focus: null } })
     }
 
-    const handleCreateElement = <T extends ElementTypes>(type: T) => {
+    const handleCreateElement = <T extends CanvasElement["type"]>(type: T) => {
         const newElement: PickElement<T> = {
             id: getId(),
             type,
@@ -50,7 +51,7 @@ function Canvas() {
         })
     }
 
-    const handleRemoveElement = (id: Element["id"]) => {
+    const handleRemoveElement = (id: CanvasElement["id"]) => {
         const index = context.canvas.elements.findIndex(
             (_element) => _element.id === id
         )
@@ -77,7 +78,7 @@ function Canvas() {
         ])
     )
 
-    if (!context.canvas.image) {
+    if (context.canvas.elements.length === 0) {
         return (
             <View>
                 <Text>No image selected</Text>
@@ -87,10 +88,6 @@ function Canvas() {
     
     return (
         <View style={styles.canvas} onLayout={handleCanvasLayout}>
-            <Image
-                source={context.canvas.image}
-                style={styles.image}
-            />
             {isLayoutLoaded && context.canvas.elements.map((element) =>
                 React.createElement(getElementByType(element.type), {
                     element,

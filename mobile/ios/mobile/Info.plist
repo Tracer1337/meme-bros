@@ -71,6 +71,12 @@
 		<string>Zocial.ttf</string>
 		<string>impact.ttf</string>
 		<string>Impact.ttf</string>
+		<string>Arial_bold.ttf</string>
+		<string>Arial_normal.ttf</string>
+		<string>Comic-Sans_bold.ttf</string>
+		<string>Comic-Sans_normal.ttf</string>
+		<string>Impact_bold.ttf</string>
+		<string>Impact_normal.ttf</string>
 	</array>
 </dict>
 </plist>

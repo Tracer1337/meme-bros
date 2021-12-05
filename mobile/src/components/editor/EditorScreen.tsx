@@ -10,9 +10,52 @@ import Canvas from "./Canvas"
 import BottomBar from "./BottomBar"
 import { getDefaultDataByType } from "./elements"
 import { fetchBase64 } from "../../lib/base64"
+import { Canvas as CanvasType, PickElement } from "../../types"
 
 function binaryToPNG(base64: string) {
     return base64.replace("application/octet-stream", "image/png")
+}
+
+async function loadCanvasDummy(): Promise<CanvasType> {
+    const image = Image.resolveAssetSource(require("../../assets/meme.png"))
+    return {
+        width: image.width,
+        height: image.height,
+        debug: false,
+        backgroundColor: [255, 255, 255, 255],
+        elements: [
+            {
+                id: -2,
+                type: "image",
+                rect: {
+                    x: 0,
+                    y: 0,
+                    width: image.width,
+                    height: image.height,
+                    rotation: 0
+                },
+                data: {
+                    uri: binaryToPNG(await fetchBase64(image.uri)),
+                    borderRadius: 0
+                }
+            },
+            {
+                id: -1,
+                type: "textbox",
+                rect: {
+                    x: 100,
+                    y: 200,
+                    width: 200,
+                    height: 100,
+                    rotation: 0
+                },
+                data: {
+                    ...getDefaultDataByType("textbox") as PickElement<"textbox">["data"],
+                    text: "This is my text"
+                }
+            }
+        ]
+    }
 }
 
 function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
@@ -32,35 +75,7 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
     }
 
     useEffect(() => {
-        (async () => {
-            const image = Image.resolveAssetSource(require("../../assets/meme.png"))
-            context.set({
-                canvas: {
-                    image: {
-                        uri: binaryToPNG(await fetchBase64(image.uri)),
-                        width: image.width,
-                        height: image.height
-                    },
-                    elements: [
-                        {
-                            id: -1,
-                            type: "textbox",
-                            rect: {
-                                x: 100,
-                                y: 200,
-                                width: 200,
-                                height: 100,
-                                rotation: 0
-                            },
-                            data: {
-                                ...getDefaultDataByType("textbox"),
-                                text: "This is my text"
-                            }
-                        }
-                    ]
-                }
-            })
-        })()
+        loadCanvasDummy().then((canvas) => context.set({ canvas }))
     }, [])
     
     return (

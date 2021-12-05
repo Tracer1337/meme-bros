@@ -1,50 +1,34 @@
 import React from "react"
-import Textbox, { TextboxData, textboxDefaultData } from "./Textbox"
+import { Text } from "react-native-paper"
+import { CanvasElement, PickElement } from "../../../types"
+import Textbox, { textboxDefaultData } from "./Textbox"
 
-type Rect = {
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    rotation: number
+function NotImplemented() {
+    return React.createElement(Text, null, "Not Implemented")
 }
-
-export type ElementTypes = "textbox"
-
-export type ElementSchema = {
-    id: number,
-    rect: Rect,
-    type: ElementTypes,
-    data: {}
-}
-
-export type Element = ElementSchema & (
-    {
-        type: "textbox",
-        data: TextboxData
-    }
-)
-
-export type PickElement<T extends ElementTypes> = Element & { type: T }
 
 const elementsMap: Record<
-    ElementTypes,
+    CanvasElement["type"],
     React.ComponentType<{ element: any }>
 > = {
-    "textbox": Textbox
+    "textbox": Textbox,
+    "image": NotImplemented,
+    "shape": NotImplemented,
 }
 
-const defaultDataMap: Record<ElementTypes, any> = {
-    "textbox": textboxDefaultData
+const defaultDataMap: Record<CanvasElement["type"], any> = {
+    "textbox": textboxDefaultData,
+    "image": {},
+    "shape": {}
 }
 
-export function getElementByType<T extends ElementTypes>(
+export function getElementByType<T extends CanvasElement["type"]>(
     type: T
 ): React.ComponentType<{ element: PickElement<T> }> {
     return elementsMap[type]
 }
 
-export function getDefaultDataByType<T extends ElementTypes>(
+export function getDefaultDataByType<T extends CanvasElement["type"]>(
     type: T
 ): PickElement<T>["data"] {
     return defaultDataMap[type]
