@@ -20,7 +20,8 @@ const colors: Item[] = [
     { label: "Purple", value: "#9b59b6" }
 ]
 
-function TextboxConfigDialog({ data: element, close }: {
+function TextboxConfigDialog({ visible, data: element, close }: {
+    visible: boolean,
     data: PickElement<"textbox">,
     close: (data: PickElement<"textbox">["data"]) => void
 }) {
@@ -37,7 +38,7 @@ function TextboxConfigDialog({ data: element, close }: {
     const textStyles = getTextStyles({ ...element, data })
 
     return (
-        <Dialog visible={true} onDismiss={() => close(element.data)}>
+        <Dialog visible={visible} onDismiss={() => close(element.data)}>
             <Dialog.Title style={textStyles}>
                 {getTransformedText({ ...element, data })}
             </Dialog.Title>

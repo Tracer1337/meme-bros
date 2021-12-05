@@ -2,7 +2,8 @@ import React from "react"
 import { Image } from "react-native"
 import { Button, Dialog } from "react-native-paper"
 
-function GeneratedImageDialog({ data, close }: {
+function GeneratedImageDialog({ visible, data, close }: {
+    visible: boolean,
     data: {
         uri: string,
         width: number,
@@ -11,7 +12,7 @@ function GeneratedImageDialog({ data, close }: {
     close: () => void
 }) {
     return (
-        <Dialog visible={true} onDismiss={close}>
+        <Dialog visible={visible} onDismiss={close}>
             <Dialog.Content>
                 <Image source={data} style={{ width: "100%" }} resizeMode="contain"/>
             </Dialog.Content>

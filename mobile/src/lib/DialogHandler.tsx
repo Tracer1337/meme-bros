@@ -18,24 +18,31 @@ const dialogContextDefaultValue: DialogContextValue = {
 
 export const DialogContext = createContext(dialogContextDefaultValue)
 
-export function DialogProvider({ children }: React.PropsWithChildren<{}>) {
+const animationDuration = 300
+
+export function DialogProvider({ children }: React.PropsWithChildren<{}>) {    
     const [context, setContext] = useState(dialogContextDefaultValue)
     const [activeDialog, setActiveDialog] = useState<JSX.Element | null>(null)
+    const [visible, setVisible] = useState(false)
 
     context.openDialog = (type, data) => new Promise((resolve) => {
         setActiveDialog(React.createElement(dialogs[type] as any, {
             close: (result: any) => {
-                setActiveDialog(null)
+                setVisible(false)
                 // @ts-ignore
                 resolve(result)
+                setTimeout(() => setActiveDialog(null), animationDuration)
             },
             data
         }))
+        requestAnimationFrame(() => setVisible(true))
     })
-    
+
     return (
         <DialogContext.Provider value={context}>
-            {activeDialog && <Portal>{activeDialog}</Portal>}
+            {activeDialog && (
+                <Portal>{React.cloneElement(activeDialog, { visible })}</Portal>
+            )}
             {children}
         </DialogContext.Provider>
     )
