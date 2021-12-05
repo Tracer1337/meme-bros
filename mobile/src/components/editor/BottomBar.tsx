@@ -18,6 +18,10 @@ function BottomBar() {
                     icon="format-color-text"
                     onPress={() => context.events.emit("element.create", "textbox")}
                 />
+                <IconButton
+                    icon="image-plus"
+                    onPress={() => context.events.emit("element.create", "image")}
+                />
             </View>
         </Appbar>
     )

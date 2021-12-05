@@ -7,6 +7,8 @@ import { ContextValue, EditorContext } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { DialogContext } from "../../lib/DialogHandler"
 import { CanvasElement, PickElement } from "../../types"
+import { launchCamera } from "react-native-image-picker"
+import { importImage } from "../../lib/media"
 
 function makeId() {
     return Math.floor(Math.random() * 1e8)
@@ -35,7 +37,7 @@ function Canvas() {
         context.set({ interactions: { focus: null } })
     }
 
-    const handleCreateElement = <T extends CanvasElement["type"]>(type: T) => {
+    const handleCreateElement = async <T extends CanvasElement["type"]>(type: T) => {
         const newElement: PickElement<T> = {
             id: makeId(),
             type,
@@ -47,6 +49,13 @@ function Canvas() {
                 rotation: 0
             },
             data: getDefaultDataByType(type)
+        }
+        if (type === "image") {
+            const image = await importImage()
+            if (!image || !image.base64) {
+                return
+            }
+            ;(newElement as PickElement<"image">).data.uri = image.base64
         }
         context.set({
             canvas: {
