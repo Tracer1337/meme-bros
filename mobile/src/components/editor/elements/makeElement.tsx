@@ -18,7 +18,8 @@ export type ElementProps<T extends CanvasElement["type"]> = {
 
 export type ElementConfig = {
     focusable: boolean,
-    interactions: Record<"rotate" | "resize" | "edit" | "config" | "delete", boolean>
+    interactions: Record<"rotate" | "resize" | "edit" | "config" | "delete", boolean>,
+    aspectRatio?: number
 }
 
 const defaultConfig: ElementConfig = {

@@ -55,6 +55,10 @@ function Canvas() {
                 return
             }
             ;(newElement as PickElement<"image">).data.uri = image.base64
+            if (image.width && image.height) {
+                newElement.rect.width = image.width
+                newElement.rect.height = image.height
+            }
         }
         context.set({
             canvas: {

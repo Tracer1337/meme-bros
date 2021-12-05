@@ -25,7 +25,8 @@ export type ImageElement = {
     type: "image",
     data: {
         uri: string,
-        borderRadius: number
+        borderRadius: number,
+        keepAspectRatio: boolean
     }
 }
 

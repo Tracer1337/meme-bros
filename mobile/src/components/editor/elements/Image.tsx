@@ -8,7 +8,8 @@ import makeElement, { ElementProps } from "./makeElement"
 
 export const imageDefaultData: PickElement<"image">["data"] = {
     uri: "",
-    borderRadius: 0
+    borderRadius: 0,
+    keepAspectRatio: true
 }
 
 export function getImageStyles(element: PickElement<"image">) {
@@ -53,5 +54,6 @@ export default makeElement(Image, ({ element }) => ({
     focusable: element.id !== 0,
     interactions: {
         edit: false
-    }
+    },
+    aspectRatio: element.rect.height / element.rect.width
 }))
