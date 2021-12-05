@@ -11,6 +11,12 @@ export const imageDefaultData: PickElement<"image">["data"] = {
     borderRadius: 0
 }
 
+export function getImageStyles(element: PickElement<"image">) {
+    return {
+        borderRadius: element.data.borderRadius
+    }
+}
+
 function Image({ element, size }: ElementProps<"image">) {
     const context = useContext(EditorContext)
     const dialogs = useContext(DialogContext)
@@ -25,6 +31,8 @@ function Image({ element, size }: ElementProps<"image">) {
             ["element.config", consumeEvent(element.id, handleConfig)]
         ])
     )
+
+    const imageStyles = getImageStyles(element)
     
     return (
         <Animated.Image
@@ -36,6 +44,7 @@ function Image({ element, size }: ElementProps<"image">) {
             resizeMode="stretch"
             width={size.x}
             height={size.y}
+            style={imageStyles}
         />
     )
 }
