@@ -1,17 +1,31 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
-import { Appbar, FAB, IconButton } from "react-native-paper"
+import { Appbar, IconButton, FAB } from "react-native-paper"
+import { setListeners } from "../../lib/events"
 import { EditorContext } from "./Context"
 
 function BottomBar() {    
     const context = useContext(EditorContext)
+
+    const [isGenerating, setIsGenerating] = useState(false)
+
+    useEffect(() =>
+        setListeners(context.events, [
+            ["canvas.generate.done", () => setIsGenerating(false)]
+        ])
+    )
 
     return (
         <Appbar style={styles.appbar}>
             <FAB
                 style={styles.fab}
                 icon="check"
-                onPress={() => context.events.emit("canvas.generate", context.canvas)}
+                onPress={async () => {
+                    setIsGenerating(true)
+                    await new Promise(requestAnimationFrame)
+                    context.events.emit("canvas.generate", context.canvas)
+                }}
+                loading={isGenerating}
             />
             <View style={styles.right}>
                 <IconButton

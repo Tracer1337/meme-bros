@@ -19,7 +19,6 @@ class EventEmitter<Events extends Record<string, any>> {
         }
     }
 
-
     addListener<T extends keyof Events>(event: T, handler: (data: Events[T]) => void) {
         let listeners = this.listeners[event]
         if (!listeners) {

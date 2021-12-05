@@ -14,7 +14,8 @@ type Events = {
     "element.edit": CanvasElement["id"],
     "element.remove": CanvasElement["id"],
     "element.config": CanvasElement["id"],
-    "canvas.generate": ContextValue["canvas"]
+    "canvas.generate": ContextValue["canvas"],
+    "canvas.generate.done": ContextValue["canvas"]
 }
 
 export type ContextValue = {

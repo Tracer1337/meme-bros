@@ -79,6 +79,7 @@ function Canvas() {
             width: context.canvas.width,
             height: context.canvas.height
         })
+        context.events.emit("canvas.generate.done", state)
     }
 
     useEffect(() =>
