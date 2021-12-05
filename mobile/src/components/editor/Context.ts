@@ -20,10 +20,6 @@ type Events = {
 export type ContextValue = {
     set: (partial: DeepPartial<ContextValue>) => void,
     events: EventEmitter<Events>,
-    dimensions: {
-        width: number,
-        height: number
-    },
     interactions: {
         focus: CanvasElement["id"] | null
     },
@@ -33,7 +29,6 @@ export type ContextValue = {
 export const contextDefaultValue: ContextValue = {
     set: () => {},
     events: new EventEmitter<Events>({ suppressWarnings: true }),
-    dimensions: { width: 0, height: 0 },
     interactions: {
         focus: null
     },

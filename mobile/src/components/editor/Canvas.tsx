@@ -3,26 +3,30 @@ import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
 import { setListeners } from "../../lib/events"
 import CoreModule from "../../lib/CoreModule"
-import useId from "../../lib/useId"
 import { ContextValue, EditorContext } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { DialogContext } from "../../lib/DialogHandler"
 import { CanvasElement, PickElement } from "../../types"
 
+function makeId() {
+    return Math.floor(Math.random() * 1e8)
+}
+
 function Canvas() {
     const context = useContext(EditorContext)
     const dialog = useContext(DialogContext)
-
-    const getId = useId()
-
+    
     const [isLayoutLoaded, setIsLayoutLoaded] = useState(false)
+    const [dimensions, setDimensions] = useState<{
+        width: number,
+        height: number
+    }>({ width: 0, height: 0 })
 
-    const handleCanvasLayout = (event: LayoutChangeEvent) => {
-        context.set({
-            dimensions: {
-                width: event.nativeEvent.layout.width,
-                height: event.nativeEvent.layout.height
-            }
+    const handleLayout = (event: LayoutChangeEvent) => {
+        const { layout } = event.nativeEvent
+        setDimensions({
+            width: layout.width,
+            height: layout.width / context.canvas.width * context.canvas.height
         })
         setIsLayoutLoaded(true)
     }
@@ -33,7 +37,7 @@ function Canvas() {
 
     const handleCreateElement = <T extends CanvasElement["type"]>(type: T) => {
         const newElement: PickElement<T> = {
-            id: getId(),
+            id: makeId(),
             type,
             rect: {
                 x: 0,
@@ -64,8 +68,8 @@ function Canvas() {
         const base64 = await CoreModule.generate(state)
         dialog.openDialog("GeneratedImageDialog", {
             uri: base64,
-            width: context.dimensions.width,
-            height: context.dimensions.height
+            width: context.canvas.width,
+            height: context.canvas.height
         })
     }
 
@@ -78,6 +82,17 @@ function Canvas() {
         ])
     )
 
+    useEffect(() => {
+        const image = context.canvas.elements[0]
+        if (!image) {
+            return
+        }
+        image.rect.width = dimensions.width
+        image.rect.height = dimensions.height
+        context.canvas.width = dimensions.width
+        context.canvas.height = dimensions.height
+    }, [dimensions])
+
     if (context.canvas.elements.length === 0) {
         return (
             <View>
@@ -87,7 +102,7 @@ function Canvas() {
     }
     
     return (
-        <View style={styles.canvas} onLayout={handleCanvasLayout}>
+        <View style={[styles.canvas, { height: dimensions.height }]} onLayout={handleLayout}>
             {isLayoutLoaded && context.canvas.elements.map((element) =>
                 React.createElement(getElementByType(element.type), {
                     element,

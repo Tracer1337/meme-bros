@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import Draggable, { DraggableProps } from "../../../lib/Draggable"
@@ -9,12 +9,30 @@ import { withOffset } from "../../../lib/animated"
 import useLayout from "../../../lib/useLayout"
 import globalStyles from "../../../styles"
 import { CanvasElement, PickElement } from "../../../types"
+import { DeepPartial } from "tsdef"
+import deepmerge from "deepmerge"
 
 export type ElementProps<T extends CanvasElement["type"]> = {
     element: PickElement<T>,
     setDraggableProps: (props: DraggableProps) => void,
     size: Animated.ValueXY,
     rotation: Animated.Value
+}
+
+export type ElementConfig = {
+    focusable: boolean,
+    interactions: Record<"rotate" | "resize" | "edit" | "config" | "delete", boolean>
+}
+
+const defaultConfig: ElementConfig = {
+    focusable: true,
+    interactions: {
+        rotate: true,
+        resize: true,
+        edit: true,
+        config: true,
+        delete: true
+    }
 }
 
 export type HandleKey = "move" | "resize" | "rotate"
@@ -41,10 +59,17 @@ function ActionHandle({ icon, onPress }: {
 }
 
 function makeElement<T extends CanvasElement["type"]>(
-    Component: React.ComponentType<ElementProps<T>>
-) {
-    return ({ element }: { element: PickElement<T> }) => {        
+    Component: React.ComponentType<ElementProps<T>>,
+    getElementConfig: ({ element }: { element: PickElement<T> }) =>
+        DeepPartial<ElementConfig> = () => ({})
+) { 
+    return ({ element }: { element: PickElement<T> }) => {
         const context = useContext(EditorContext)
+
+        const config = useMemo(
+            () => deepmerge(defaultConfig, getElementConfig({ element })) as ElementConfig,
+            [element]
+        )
 
         const [getLayout, onLayout] = useLayout()
 
@@ -114,6 +139,7 @@ function makeElement<T extends CanvasElement["type"]>(
                     onEnd: blurElement
                 })}
                 {...draggableProps}
+                {...(!config.focusable ? { disabled: true } : {})}
             >
                 <Animated.View
                     style={{
@@ -133,32 +159,42 @@ function makeElement<T extends CanvasElement["type"]>(
                         size={size}
                         rotation={rotation}
                     />
-                    {context.interactions.focus === element.id && (
+                    {config.focusable && context.interactions.focus === element.id && (
                         <View style={styles.controls}>
                             <View style={styles.topControls}>
-                                <View style={{ marginRight: 8 }}>
-                                    <RotationHandle
-                                        animate={rotation}
-                                        childRect={element.rect}
-                                        onUpdate={updateElement}
-                                        getHandleProps={getHandleProps}
-                                    />
-                                </View>
-                                <View style={{ marginRight: 8 }}>
-                                    <ActionHandle icon="pencil" onPress={event("edit")}/>
-                                </View>
-                                <View style={{ marginRight: 8 }}>
-                                    <ActionHandle icon="cog" onPress={event("config")}/>
-                                </View>
-                                <View>
-                                    <ActionHandle icon="delete-outline" onPress={event("remove")}/>
-                                </View>
+                                {config.interactions.rotate && (
+                                    <View style={{ marginRight: 8 }}>
+                                        <RotationHandle
+                                            animate={rotation}
+                                            childRect={element.rect}
+                                            onUpdate={updateElement}
+                                            getHandleProps={getHandleProps}
+                                        />
+                                    </View>
+                                )}
+                                {config.interactions.edit && (
+                                    <View style={{ marginRight: 8 }}>
+                                        <ActionHandle icon="pencil" onPress={event("edit")}/>
+                                    </View>
+                                )}
+                                {config.interactions.config && (
+                                    <View style={{ marginRight: 8 }}>
+                                        <ActionHandle icon="cog" onPress={event("config")}/>
+                                    </View>
+                                )}
+                                {config.interactions.delete && (
+                                    <View>
+                                        <ActionHandle icon="delete-outline" onPress={event("remove")}/>
+                                    </View>
+                                )}
                             </View>
-                            <ResizeHandles
-                                animate={size}
-                                getHandleProps={getHandleProps}
-                                onUpdate={updateElement}
-                            />
+                            {config.interactions.resize && (
+                                <ResizeHandles
+                                    animate={size}
+                                    getHandleProps={getHandleProps}
+                                    onUpdate={updateElement}
+                                />
+                            )}
                         </View>
                     )}
                 </Animated.View>

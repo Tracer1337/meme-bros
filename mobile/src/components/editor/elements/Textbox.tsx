@@ -22,12 +22,12 @@ export const textboxDefaultData: TextboxElement["data"] = {
     caps: true,
     outlineWidth: 0,
     outlineColor: [255, 255, 255, 255],
-    backgroundColor: [255, 255, 255, 0]
+    backgroundColor: [0, 0, 0, 0]
 }
 
 export function getTextStyles(element: PickElement<"textbox">) {
     return {
-        fontFamily: element.data.fontFamily,
+        fontFamily: `${element.data.fontFamily}_${element.data.fontWeight}`,
         color: toRGBAString(element.data.color)
     }
 }

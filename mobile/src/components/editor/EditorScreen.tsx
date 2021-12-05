@@ -25,7 +25,7 @@ async function loadCanvasDummy(): Promise<CanvasType> {
         backgroundColor: [255, 255, 255, 255],
         elements: [
             {
-                id: -2,
+                id: 0,
                 type: "image",
                 rect: {
                     x: 0,
@@ -40,7 +40,7 @@ async function loadCanvasDummy(): Promise<CanvasType> {
                 }
             },
             {
-                id: -1,
+                id: 1,
                 type: "textbox",
                 rect: {
                     x: 100,
@@ -77,7 +77,7 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
     useEffect(() => {
         loadCanvasDummy().then((canvas) => context.set({ canvas }))
     }, [])
-    
+
     return (
         <Screen style={styles.container} onStartShouldSetResponder={handleScreenPress}>
             <EditorContext.Provider value={context}>
