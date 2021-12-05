@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Animated, StyleSheet, TouchableOpacity, View } from "react-native"
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"
-import Draggable, { DraggableProps } from "../../../lib/Draggable"
-import { EditorContext, ElementEvents } from "../Context"
-import ResizeHandles from "./ResizeHandles"
-import RotationHandle from "./RotationHandle"
-import { withOffset } from "../../../lib/animated"
-import useLayout from "../../../lib/useLayout"
-import globalStyles from "../../../styles"
-import { CanvasElement, PickElement } from "../../../types"
+import { Animated } from "react-native"
 import { DeepPartial } from "tsdef"
 import deepmerge from "deepmerge"
+import Draggable, { DraggableProps } from "../../../lib/Draggable"
+import { EditorContext } from "../Context"
+import { withOffset } from "../../../lib/animated"
+import useLayout from "../../../lib/useLayout"
+import { CanvasElement, PickElement } from "../../../types"
+import Interactions from "./Interactions"
 
 export type ElementProps<T extends CanvasElement["type"]> = {
     element: PickElement<T>,
@@ -41,22 +38,6 @@ export type GetHandleProps = (key: HandleKey, options?: {
     onStart?: () => void,
     onEnd?: () => void
 }) => void
-
-function ActionHandle({ icon, onPress }: {
-    icon: string,
-    onPress: () => void
-}) {
-    return (
-        <TouchableOpacity onPress={onPress}>
-            <Icon
-                name={icon}
-                size={24}
-                color="#000"
-                style={globalStyles.handle}
-            />
-        </TouchableOpacity>
-    )
-}
 
 function makeElement<T extends CanvasElement["type"]>(
     Component: React.ComponentType<ElementProps<T>>,
@@ -93,10 +74,6 @@ function makeElement<T extends CanvasElement["type"]>(
             },
             disabled: activeHandle !== null && activeHandle !== key
         })
-
-        const event = (name: ElementEvents) => () => {
-            context.events.emit(`element.${name}`, element.id)
-        }
 
         const updateElement = () => {
             const layout = getLayout()
@@ -160,64 +137,19 @@ function makeElement<T extends CanvasElement["type"]>(
                         rotation={rotation}
                     />
                     {config.focusable && context.interactions.focus === element.id && (
-                        <View style={styles.controls}>
-                            <View style={styles.topControls}>
-                                {config.interactions.rotate && (
-                                    <View style={{ marginRight: 8 }}>
-                                        <RotationHandle
-                                            animate={rotation}
-                                            childRect={element.rect}
-                                            onUpdate={updateElement}
-                                            getHandleProps={getHandleProps}
-                                        />
-                                    </View>
-                                )}
-                                {config.interactions.edit && (
-                                    <View style={{ marginRight: 8 }}>
-                                        <ActionHandle icon="pencil" onPress={event("edit")}/>
-                                    </View>
-                                )}
-                                {config.interactions.config && (
-                                    <View style={{ marginRight: 8 }}>
-                                        <ActionHandle icon="cog" onPress={event("config")}/>
-                                    </View>
-                                )}
-                                {config.interactions.delete && (
-                                    <View>
-                                        <ActionHandle icon="delete-outline" onPress={event("remove")}/>
-                                    </View>
-                                )}
-                            </View>
-                            {config.interactions.resize && (
-                                <ResizeHandles
-                                    animate={size}
-                                    getHandleProps={getHandleProps}
-                                    onUpdate={updateElement}
-                                />
-                            )}
-                        </View>
+                        <Interactions
+                            element={element}
+                            config={config}
+                            size={size}
+                            rotation={rotation}
+                            onUpdate={updateElement}
+                            getHandleProps={getHandleProps}
+                        />
                     )}
                 </Animated.View>
             </Draggable>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    controls: {
-        width: "100%",
-        height: "100%",
-        position: "absolute"
-    },
-
-    topControls: {
-        position: "absolute",
-        top: -24,
-        width: "100%",
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "center"
-    }
-})
 
 export default makeElement
