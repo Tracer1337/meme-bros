@@ -18,6 +18,7 @@ function binaryToPNG(base64: string) {
 
 async function loadCanvasDummy(): Promise<CanvasType> {
     const image = Image.resolveAssetSource(require("../../assets/meme.png"))
+    const base64 = binaryToPNG(await fetchBase64(image.uri))
     return {
         width: image.width,
         height: image.height,
@@ -36,7 +37,7 @@ async function loadCanvasDummy(): Promise<CanvasType> {
                 },
                 data: {
                     ...getDefaultDataByType("image") as PickElement<"image">["data"],
-                    uri: binaryToPNG(await fetchBase64(image.uri))
+                    uri: base64
                 }
             },
             {
@@ -52,6 +53,21 @@ async function loadCanvasDummy(): Promise<CanvasType> {
                 data: {
                     ...getDefaultDataByType("textbox") as PickElement<"textbox">["data"],
                     text: "This is my text"
+                }
+            },
+            {
+                id: 2,
+                type: "image",
+                rect: {
+                    x: 50,
+                    y: 100,
+                    width: 300,
+                    height: 300,
+                    rotation: 0
+                },
+                data: {
+                    ...getDefaultDataByType("image") as PickElement<"image">["data"],
+                    uri: base64
                 }
             }
         ]
