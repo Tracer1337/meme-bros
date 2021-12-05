@@ -25,6 +25,7 @@ function ActionHandle({ icon, onPress }: {
 }
 
 function Interactions({
+    active,
     element,
     config,
     size,
@@ -32,6 +33,7 @@ function Interactions({
     onUpdate,
     getHandleProps
 }: {
+    active: boolean,
     element: CanvasElement,
     config: ElementConfig,
     size: Animated.ValueXY,
@@ -46,7 +48,7 @@ function Interactions({
     }
 
     return (
-        <View style={styles.controls}>
+        <View style={[styles.controls, { display: active ? undefined : "none" }]}>
             <View style={styles.topControls}>
                 {config.interactions.rotate && (
                     <View style={{ marginRight: 8 }}>

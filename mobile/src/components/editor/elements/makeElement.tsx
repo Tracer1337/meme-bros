@@ -99,13 +99,6 @@ function makeElement<T extends CanvasElement["type"]>(
             updateElement()
         }
 
-        useEffect(() => {
-            if (context.interactions.focus !== element.id) {
-                size.extractOffset()
-                rotation.extractOffset()
-            }
-        }, [context.interactions.focus])
-
         return (
             <Draggable
                 x={element.rect.x}
@@ -136,8 +129,9 @@ function makeElement<T extends CanvasElement["type"]>(
                         size={size}
                         rotation={rotation}
                     />
-                    {config.focusable && context.interactions.focus === element.id && (
+                    {config.focusable && (
                         <Interactions
+                            active={context.interactions.focus === element.id}
                             element={element}
                             config={config}
                             size={size}
