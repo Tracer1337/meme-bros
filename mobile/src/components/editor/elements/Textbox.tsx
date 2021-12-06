@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Animated, GestureResponderEvent, StyleSheet, TextInput, View } from "react-native"
-import { toRGBAString } from "../../../lib/color"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
 import TextFitModule from "../../../lib/TextFitModule"
@@ -18,17 +17,17 @@ export const textboxDefaultData: PickElement<"textbox">["data"] = {
     fontFamily: "Impact",
     fontWeight: "normal",
     textAlign: "left",
-    color: [0, 0, 0, 255],
+    color: "#000000",
     caps: true,
     outlineWidth: 0,
-    outlineColor: [255, 255, 255, 255],
-    backgroundColor: [0, 0, 0, 0]
+    outlineColor: "#ffffff",
+    backgroundColor: "transparent"
 }
 
 export function getTextStyles(element: PickElement<"textbox">) {
     return {
         fontFamily: `${element.data.fontFamily}_${element.data.fontWeight}`,
-        color: toRGBAString(element.data.color)
+        color: element.data.color
     }
 }
 

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react"
 import { Animated } from "react-native"
-import { toRGBAString } from "../../../lib/color"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
 import { PickElement } from "../../../types"
@@ -9,15 +8,15 @@ import makeElement, { ElementProps } from "./makeElement"
 
 export const shapeDefaultData: PickElement<"shape">["data"] = {
     variant: "rect",
-    backgroundColor: [0, 0, 0, 0],
-    borderColor: [255, 0, 0, 255],
+    backgroundColor: "transparent",
+    borderColor: "#ff0000",
     borderWidth: 5
 }
 
 export function getShapeStyles(element: PickElement<"shape">) {
     return {
-        backgroundColor: toRGBAString(element.data.backgroundColor),
-        borderColor: toRGBAString(element.data.borderColor),
+        backgroundColor: element.data.backgroundColor,
+        borderColor: element.data.borderColor,
         borderWidth: element.data.borderWidth
     }
 }

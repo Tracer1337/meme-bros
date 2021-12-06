@@ -13,14 +13,14 @@ const colors: Item[] = [
 
 function ColorPicker({ label, value, onChange }: {
     label: string,
-    value: string | null,
-    onChange: (value: string | null) => void
+    value: string,
+    onChange: (value: string) => void
 }) {
     console.log({ value })
 
     return (        
         <Select
-            placeholder={{ label, value: null }}
+            placeholder={{ label, value: "transparent" }}
             value={value}
             items={colors}
             onValueChange={onChange}

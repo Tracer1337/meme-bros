@@ -8,6 +8,7 @@ import { getDefaultDataByType, getElementByType } from "./elements"
 import { DialogContext } from "../../lib/DialogHandler"
 import { CanvasElement, PickElement } from "../../types"
 import { importImage } from "../../lib/media"
+import { renderCanvasState } from "./utils/render"
 
 function makeId() {
     return Math.floor(Math.random() * 1e8)
@@ -80,8 +81,9 @@ function Canvas() {
     }
 
     const handleCanvasGenerate = async (state: ContextValue["canvas"]) => {
-        console.log("Generate", JSON.parse(JSON.stringify(state)))
-        const base64 = await CoreModule.generate(state)
+        const rendered = renderCanvasState(state)
+        console.log("Generate", rendered)
+        const base64 = await CoreModule.generate(rendered)
         dialog.openDialog("GeneratedImageDialog", {
             uri: base64,
             width: context.canvas.width,

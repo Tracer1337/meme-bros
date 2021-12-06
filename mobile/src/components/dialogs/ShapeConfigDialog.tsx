@@ -1,12 +1,9 @@
 import React, { useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { Button, Dialog } from "react-native-paper"
-import { fromHex, toHex } from "../../lib/color"
-import { Color, PickElement } from "../../types"
+import { PickElement } from "../../types"
 import { getShapeStyles } from "../editor/elements/Shape"
 import ColorPicker from "../inputs/ColorPicker"
-
-const NULL_COLOR = [0, 0, 0, 0] as Color
 
 function ShapeConfigDialog({ visible, data: element, close }: {
     visible: boolean,
@@ -25,10 +22,18 @@ function ShapeConfigDialog({ visible, data: element, close }: {
             <Dialog.Content>
                 <ColorPicker
                     label="Background Color"
-                    value={data.backgroundColor === NULL_COLOR ? null : toHex(data.backgroundColor)}
+                    value={data.backgroundColor}
                     onChange={(value) => setData({
                         ...data,
-                        backgroundColor: value === null ? NULL_COLOR : fromHex(value)
+                        backgroundColor: value
+                    })}
+                />
+                <ColorPicker
+                    label="Border Color"
+                    value={data.borderColor}
+                    onChange={(value) => setData({
+                        ...data,
+                        borderColor: value
                     })}
                 />
             </Dialog.Content>

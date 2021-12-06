@@ -2,7 +2,7 @@ export type Canvas = {
     width: number,
     height: number,
     debug: boolean,
-    backgroundColor: Color,
+    backgroundColor: ColorString,
     elements: CanvasElement[]
 }
 
@@ -39,11 +39,11 @@ export type TextboxElement = {
         fontFamily: "Arial" | "Comic-Sans" | "Impact",
         fontWeight: "normal" | "bold",
         textAlign: "left" | "center" | "right",
-        color: Color,
+        color: ColorString,
         caps: boolean,
         outlineWidth: number,
-        outlineColor: Color,
-        backgroundColor: Color
+        outlineColor: ColorString,
+        backgroundColor: ColorString
     }
 }
 
@@ -51,13 +51,14 @@ export type ShapeElement = {
     type: "shape",
     data: {
         variant: "rect" | "ellipse",
-        backgroundColor: Color,
-        borderColor: Color,
+        backgroundColor: ColorString,
+        borderColor: ColorString,
         borderWidth: number
     }
 }
 
-export type Color = [number, number, number, number]
+export type ColorString = string
+export type ColorRGBA = [number, number, number, number]
 
 export type Rect = {
     x: number,
