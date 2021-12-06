@@ -11,7 +11,7 @@ function ImageConfigDialog({ visible, data: element, close }: {
     const [data, setData] = useState(element.data)
 
     return (
-        <Dialog visible={visible}>
+        <Dialog visible={visible} onDismiss={() => close(element.data)}>
             <Dialog.Content>
                 <TextInput
                     label="Border Radius"

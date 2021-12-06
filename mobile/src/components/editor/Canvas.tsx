@@ -13,6 +13,10 @@ function makeId() {
     return Math.floor(Math.random() * 1e8)
 }
 
+function isImageElement(element: CanvasElement): element is PickElement<"image"> {
+    return element.type === "image"
+}
+
 function Canvas() {
     const context = useContext(EditorContext)
     const dialog = useContext(DialogContext)
@@ -49,15 +53,15 @@ function Canvas() {
             },
             data: getDefaultDataByType(type)
         }
-        if (type === "image") {
+        if (isImageElement(newElement)) {
             const image = await importImage()
             if (!image || !image.base64) {
                 return
             }
-            ;(newElement as PickElement<"image">).data.uri = image.base64
+            newElement.data.uri = image.base64
             if (image.width && image.height) {
-                newElement.rect.width = image.width
-                newElement.rect.height = image.height
+                newElement.rect.width = newElement.data.naturalWidth = image.width
+                newElement.rect.height = newElement.data.naturalHeight = image.height
             }
         }
         context.set({

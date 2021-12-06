@@ -1,4 +1,4 @@
-import React, { Children } from "react"
+import React from "react"
 import { Animated, StyleSheet, View } from "react-native"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import Draggable from "../../../lib/Draggable"

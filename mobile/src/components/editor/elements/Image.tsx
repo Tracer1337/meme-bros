@@ -9,7 +9,9 @@ import makeElement, { ElementProps } from "./makeElement"
 export const imageDefaultData: PickElement<"image">["data"] = {
     uri: "",
     borderRadius: 0,
-    keepAspectRatio: true
+    keepAspectRatio: true,
+    naturalWidth: 0,
+    naturalHeight: 0
 }
 
 export function getImageStyles(element: PickElement<"image">) {
@@ -22,8 +24,21 @@ function Image({ element, size }: ElementProps<"image">) {
     const context = useContext(EditorContext)
     const dialogs = useContext(DialogContext)
 
+    const resetSize = () => {
+        element.rect.width = element.data.naturalWidth
+        element.rect.height = element.data.naturalHeight
+        size.setValue({
+            x: element.rect.width,
+            y: element.rect.height
+        })
+    }
+
     const handleConfig = async () => {
-        element.data = await dialogs.openDialog("ImageConfigDialog", element)
+        const newData = await dialogs.openDialog("ImageConfigDialog", element)
+        if (!element.data.keepAspectRatio && newData.keepAspectRatio) {
+            resetSize()
+        }
+        element.data = newData
         context.set({})
     }
 
