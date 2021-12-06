@@ -1,26 +1,22 @@
 import React from "react"
-import { Text } from "react-native-paper"
 import { CanvasElement, PickElement } from "../../../types"
 import Image, { imageDefaultData } from "./Image"
+import Shape, { shapeDefaultData } from "./Shape"
 import Textbox, { textboxDefaultData } from "./Textbox"
-
-function NotImplemented() {
-    return React.createElement(Text, null, "Not Implemented")
-}
 
 const elementsMap: Record<
     CanvasElement["type"],
-    React.ComponentType<{ element: any }>
+    React.ComponentType<any>
 > = {
     "textbox": Textbox,
     "image": Image,
-    "shape": NotImplemented,
+    "shape": Shape,
 }
 
 const defaultDataMap: Record<CanvasElement["type"], any> = {
     "textbox": textboxDefaultData,
     "image": imageDefaultData,
-    "shape": {}
+    "shape": shapeDefaultData
 }
 
 export function getElementByType<T extends CanvasElement["type"]>(
@@ -34,3 +30,5 @@ export function getDefaultDataByType<T extends CanvasElement["type"]>(
 ): PickElement<T>["data"] {
     return defaultDataMap[type]
 }
+
+getDefaultDataByType("shape")

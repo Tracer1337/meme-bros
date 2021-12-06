@@ -4,7 +4,7 @@ import { toRGBAString } from "../../../lib/color"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
 import TextFitModule from "../../../lib/TextFitModule"
-import { PickElement, TextboxElement } from "../../../types"
+import { PickElement } from "../../../types"
 import { EditorContext } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 
@@ -13,7 +13,7 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
     return event.target._nativeTag === element._nativeTag
 }
 
-export const textboxDefaultData: TextboxElement["data"] = {
+export const textboxDefaultData: PickElement<"textbox">["data"] = {
     text: "Enter Text...",
     fontFamily: "Impact",
     fontWeight: "normal",

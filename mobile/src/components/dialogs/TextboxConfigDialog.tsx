@@ -2,22 +2,16 @@ import React, { useState } from "react"
 import { View } from "react-native"
 import { Button, Dialog, Switch, Text } from "react-native-paper"
 import Select, { Item } from "react-native-picker-select"
+import { fromHex, toHex } from "../../lib/color"
+import { required } from "../../lib/validation"
 import { PickElement } from "../../types"
 import { getTextStyles, getTransformedText } from "../editor/elements/Textbox"
+import ColorPicker from "../inputs/ColorPicker"
 
 const fontFamilies: Item[] = [
-    { label: "Impact", value: "Impact_normal" },
-    { label: "Arial", value: "Arial_normal" }
-]
-
-const colors: Item[] = [
-    { label: "White", value: "#ffffff" },
-    { label: "Black", value: "#000000" },
-    { label: "Green", value: "#2ecc71" },
-    { label: "Red", value: "#e74c3c" },
-    { label: "Blue", value: "#3498db" },
-    { label: "Yellow", value: "#f1c40f" },
-    { label: "Purple", value: "#9b59b6" }
+    { label: "Impact", value: "Impact" },
+    { label: "Arial", value: "Arial" },
+    { label: "Comic Sans", value: "Comic-Sans" }
 ]
 
 function TextboxConfigDialog({ visible, data: element, close }: {
@@ -27,14 +21,6 @@ function TextboxConfigDialog({ visible, data: element, close }: {
 }) {
     const [data, setData] = useState(element.data)
 
-    const required = (setValue: (value: any) => void) => {
-        return (value: any) => {
-            if (value !== null && value !== undefined) {
-                setValue(value)
-            }
-        }
-    }
-
     const textStyles = getTextStyles({ ...element, data })
 
     return (
@@ -43,13 +29,12 @@ function TextboxConfigDialog({ visible, data: element, close }: {
                 {getTransformedText({ ...element, data })}
             </Dialog.Title>
             <Dialog.Content>
-                <Select
-                    placeholder={{ label: "Color", value: null }}
-                    value={data.color}
-                    items={colors}
-                    onValueChange={required((value) => setData({
+                <ColorPicker
+                    label="Color"
+                    value={toHex(data.color)}
+                    onChange={required((value) => setData({
                         ...data,
-                        color: value
+                        color: fromHex(value)
                     }))}
                 />
                 <Select
