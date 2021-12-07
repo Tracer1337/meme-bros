@@ -29,6 +29,15 @@ func NewRenderingContext(c *Canvas) *RenderingContext {
 func (rc *RenderingContext) Render() *gg.Context {
 	done := make(chan int)
 
+	rc.drawLayers(done)
+	rc.mergeLoop(done)
+
+	fmt.Println(rc)
+
+	return rc.Rendered[0]
+}
+
+func (rc *RenderingContext) drawLayers(done chan int) {
 	for i, e := range rc.Layers {
 		go func(i int, e Drawable) {
 			t0 := time.Now()
@@ -39,25 +48,39 @@ func (rc *RenderingContext) Render() *gg.Context {
 			done <- 0
 		}(i, e)
 	}
+}
 
-	for i := 0; i < rc.NLayers; i++ {
+func (rc *RenderingContext) mergeLoop(done chan int) {
+	for range rc.Layers {
 		<-done
-
-		for j := 0; j < rc.NLayers; j++ {
-			if rc.Rendered[j] == nil {
-				continue
-			}
-			k := rc.findNextLayer(j)
-			if k == -1 {
-				continue
-			}
-			t0 := time.Now()
-			rc.mergeLayers(j, k)
-			fmt.Printf("Merged %v -> %v in %s\n", k, j, time.Since(t0))
-		}
+		rc.mergeLayers()
 	}
 
-	return rc.Rendered[0]
+	for rc.hasUnmergedLayers() {
+		rc.mergeLayers()
+	}
+
+	fmt.Println(iter)
+}
+
+var iter int
+
+func (rc *RenderingContext) mergeLayers() {
+	iter++
+	for j := 0; j < rc.NLayers; j++ {
+		if rc.Rendered[j] == nil {
+			continue
+		}
+
+		k := rc.findNextLayer(j)
+		if k == -1 {
+			continue
+		}
+
+		rc.Rendered[j].DrawImage(rc.Rendered[k].Image(), 0, 0)
+		rc.Merged[k] = true
+		rc.Rendered[k] = nil
+	}
 }
 
 func (rc *RenderingContext) findNextLayer(i int) int {
@@ -72,14 +95,16 @@ func (rc *RenderingContext) findNextLayer(i int) int {
 	return -1
 }
 
-func (rc *RenderingContext) mergeLayers(i0 int, i1 int) *gg.Context {
-	l2 := rc.newLayer()
-	l2.DrawImage(rc.Rendered[i0].Image(), 0, 0)
-	l2.DrawImage(rc.Rendered[i1].Image(), 0, 0)
-	rc.Merged[i1] = true
-	rc.Rendered[i1] = nil
-	rc.Rendered[i0] = l2
-	return l2
+func (rc *RenderingContext) hasUnmergedLayers() bool {
+	if len(rc.Merged) <= 1 {
+		return false
+	}
+	for i := 1; i < len(rc.Merged); i++ {
+		if !rc.Merged[i] {
+			return true
+		}
+	}
+	return false
 }
 
 func (rc *RenderingContext) newLayer() *gg.Context {
