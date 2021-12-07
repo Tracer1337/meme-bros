@@ -1,6 +1,14 @@
 package core
 
-import "image/color"
+import (
+	"image/color"
+
+	"github.com/fogleman/gg"
+)
+
+type Drawable interface {
+	Draw(dc *gg.Context, c *Canvas)
+}
 
 type Canvas struct {
 	Width           float64
@@ -8,6 +16,7 @@ type Canvas struct {
 	BackgroundColor *color.RGBA
 	Debug           bool
 	Elements        *CanvasElements
+	Drawables       []Drawable
 }
 
 type CanvasElements struct {

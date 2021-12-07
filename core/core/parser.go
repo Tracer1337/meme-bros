@@ -26,7 +26,7 @@ func parseRGBA(v []*fastjson.Value) *color.RGBA {
 
 func parseCanvas(v *fastjson.Value) *Canvas {
 	elements := parseElements(v.GetArray("elements"))
-	return &Canvas{
+	c := &Canvas{
 		Width:           v.GetFloat64("width"),
 		Height:          v.GetFloat64("height"),
 		BackgroundColor: parseRGBA(v.GetArray("backgroundColor")),
@@ -37,6 +37,22 @@ func parseCanvas(v *fastjson.Value) *Canvas {
 			Shapes:    parseShapes(elements["shape"]),
 		},
 	}
+	c.Drawables = collectDrawables(c)
+	return c
+}
+
+func collectDrawables(c *Canvas) []Drawable {
+	ds := make([]Drawable, 0)
+	for _, e := range c.Elements.Images {
+		ds = append(ds, e)
+	}
+	for _, e := range c.Elements.Textboxes {
+		ds = append(ds, e)
+	}
+	for _, e := range c.Elements.Shapes {
+		ds = append(ds, e)
+	}
+	return ds
 }
 
 func parseElements(vs []*fastjson.Value) map[string][]*fastjson.Value {
