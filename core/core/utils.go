@@ -49,26 +49,21 @@ func FitText(text string, fontFamily string, fontWeight string, width float64, h
 	return fontSize
 }
 
-var fonts = make(map[string]*truetype.Font)
-
 func loadFont(dc *gg.Context, name string, fontWeight string, fontSize float64) font.Face {
 	fileName := fmt.Sprintf("fonts/%s_%s.ttf", name, fontWeight)
-	if _, ok := fonts[name]; !ok {
-		file, err := asset.Open(fileName)
-		if err != nil {
-			panic(err)
-		}
-		raw, err := ioutil.ReadAll(file)
-		if err != nil {
-			panic(err)
-		}
-		font, err := truetype.Parse(raw)
-		if err != nil {
-			panic(err)
-		}
-		fonts[fileName] = font
+	file, err := asset.Open(fileName)
+	if err != nil {
+		panic(err)
 	}
-	face := truetype.NewFace(fonts[fileName], &truetype.Options{
+	raw, err := ioutil.ReadAll(file)
+	if err != nil {
+		panic(err)
+	}
+	font, err := truetype.Parse(raw)
+	if err != nil {
+		panic(err)
+	}
+	face := truetype.NewFace(font, &truetype.Options{
 		Size: float64(fontSize),
 	})
 	dc.SetFontFace(face)

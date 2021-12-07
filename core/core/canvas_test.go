@@ -1,16 +1,20 @@
 package core
 
 import (
+	"fmt"
 	"image/png"
 	"meme-bros/core/utils"
 	"os"
 	"testing"
+	"time"
 )
 
 func TestGenerate(t *testing.T) {
 	fileIn, _ := os.ReadFile("../mock.json")
 
+	t0 := time.Now()
 	output := GenerateFromJSON(string(fileIn))
+	fmt.Printf("Generated in %s\n", time.Since(t0))
 
 	img := utils.ParseBase64Image(output)
 
