@@ -1,9 +1,6 @@
 package core
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/fogleman/gg"
 )
 
@@ -32,19 +29,15 @@ func (rc *RenderingContext) Render() *gg.Context {
 	rc.drawLayers(done)
 	rc.mergeLoop(done)
 
-	fmt.Println(rc)
-
 	return rc.Rendered[0]
 }
 
 func (rc *RenderingContext) drawLayers(done chan int) {
 	for i, e := range rc.Layers {
 		go func(i int, e Drawable) {
-			t0 := time.Now()
 			l := rc.newLayer()
 			e.Draw(l, rc.Canvas)
 			rc.Rendered[i] = l
-			fmt.Printf("Rendered %v in %s\n", i, time.Since(t0))
 			done <- 0
 		}(i, e)
 	}
@@ -59,14 +52,9 @@ func (rc *RenderingContext) mergeLoop(done chan int) {
 	for rc.hasUnmergedLayers() {
 		rc.mergeLayers()
 	}
-
-	fmt.Println(iter)
 }
 
-var iter int
-
 func (rc *RenderingContext) mergeLayers() {
-	iter++
 	for j := 0; j < rc.NLayers; j++ {
 		if rc.Rendered[j] == nil {
 			continue
