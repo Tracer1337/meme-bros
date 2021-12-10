@@ -1,5 +1,5 @@
 import colorConvert from "color-convert"
-import { Canvas, CanvasElement } from "../../../types"
+import { Canvas, CanvasElement, ImageElement } from "../../../types"
 
 type RenderFunction = <
     T extends Record<K, any>,
@@ -26,6 +26,9 @@ const renderElements: RenderFunction = (object, key) => {
             case "shape":
                 renderColor(element.data, "backgroundColor")
                 renderColor(element.data, "borderColor")
+                break
+            case "image":
+                renderImage(element)
         }
     })
 }
@@ -37,4 +40,10 @@ const renderColor: RenderFunction = (object, key) => {
     }
     const rgb = colorConvert.hex.rgb(object[key])
     object[key] = [...rgb, 255] as any
+}
+
+const renderImage = (object: ImageElement) => {
+    if (object.data.uri.startsWith("data:image/gif")) {
+        object.type = "animated" as "image"
+    }
 }

@@ -18,6 +18,33 @@ function isImageElement(element: CanvasElement): element is PickElement<"image">
     return element.type === "image"
 }
 
+async function createNewElement<T extends CanvasElement["type"]>(type: T) {
+    const newElement: PickElement<T> = {
+        id: makeId(),
+        type,
+        rect: {
+            x: 0,
+            y: 0,
+            width: 200,
+            height: 100,
+            rotation: 0
+        },
+        data: getDefaultDataByType(type)
+    }
+    if (isImageElement(newElement)) {
+        const image = await importImage()
+        if (!image || !image.base64) {
+            return
+        }
+        newElement.data.uri = image.base64
+        if (image.width && image.height) {
+            newElement.rect.width = newElement.data.naturalWidth = image.width
+            newElement.rect.height = newElement.data.naturalHeight = image.height
+        }
+    }
+    return newElement
+}
+
 function Canvas() {
     const context = useContext(EditorContext)
     const dialog = useContext(DialogContext)
@@ -41,29 +68,10 @@ function Canvas() {
         context.set({ interactions: { focus: null } })
     }
 
-    const handleCreateElement = async <T extends CanvasElement["type"]>(type: T) => {
-        const newElement: PickElement<T> = {
-            id: makeId(),
-            type,
-            rect: {
-                x: 0,
-                y: 0,
-                width: 200,
-                height: 100,
-                rotation: 0
-            },
-            data: getDefaultDataByType(type)
-        }
-        if (isImageElement(newElement)) {
-            const image = await importImage()
-            if (!image || !image.base64) {
-                return
-            }
-            newElement.data.uri = image.base64
-            if (image.width && image.height) {
-                newElement.rect.width = newElement.data.naturalWidth = image.width
-                newElement.rect.height = newElement.data.naturalHeight = image.height
-            }
+    const handleCreateElement = async (type: CanvasElement["type"]) => {
+        const newElement = await createNewElement(type)
+        if (!newElement) {
+            return
         }
         context.set({
             canvas: {
@@ -83,7 +91,9 @@ function Canvas() {
     const handleCanvasGenerate = async (state: ContextValue["canvas"]) => {
         const rendered = renderCanvasState(state)
         console.log("Generate", rendered)
+        console.time("Render")
         const base64 = await CoreModule.render(rendered)
+        console.timeEnd("Render")
         dialog.openDialog("GeneratedImageDialog", {
             uri: base64,
             width: context.canvas.width,

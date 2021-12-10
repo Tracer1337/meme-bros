@@ -23,7 +23,7 @@ async function loadCanvasDummy(): Promise<CanvasType> {
         width: image.width,
         height: image.height,
         debug: false,
-        backgroundColor: [255, 255, 255, 255],
+        backgroundColor: "#ffffff",
         elements: [
             {
                 id: 0,
