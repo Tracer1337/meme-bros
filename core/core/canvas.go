@@ -2,6 +2,7 @@ package core
 
 import (
 	"bytes"
+	"image"
 	"image/gif"
 
 	"github.com/fogleman/gg"
@@ -26,6 +27,29 @@ func (c *Canvas) prependLayer(l Drawable) {
 	newDrawables[0] = l
 	newDrawables = append(newDrawables, c.Drawables...)
 	c.Drawables = newDrawables
+}
+
+func (c *Canvas) splitLayers() ([]Drawable, []Drawable) {
+	e := c.Elements.Animations[0]
+
+	bottomLayer := make([]Drawable, 0)
+	topLayer := make([]Drawable, 0)
+
+	for _, d := range c.Drawables {
+		if d.GetIndex() < e.Index {
+			bottomLayer = append(bottomLayer, d)
+		} else {
+			topLayer = append(topLayer, d)
+		}
+	}
+
+	return bottomLayer, topLayer
+}
+
+func (c *Canvas) renderLayer(ds []Drawable) image.Image {
+	newCanvas := *c
+	newCanvas.Drawables = ds
+	return NewRenderingContext(&newCanvas).Render().Image()
 }
 
 type Background struct{}

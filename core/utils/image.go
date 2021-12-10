@@ -4,11 +4,14 @@ import (
 	"encoding/base64"
 	"fmt"
 	"image"
+	"image/color/palette"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"regexp"
 	"strings"
+
+	"github.com/andybons/gogif"
 )
 
 func ParseBase64Image(dataURI string) image.Image {
@@ -66,4 +69,11 @@ func ParseBase64GIF(dataURI string) *gif.GIF {
 	CatchError(err)
 
 	return img
+}
+
+func ImageToPaletted(img image.Image) *image.Paletted {
+	p := image.NewPaletted(img.Bounds(), palette.Plan9)
+	quantizer := gogif.MedianCutQuantizer{NumColor: 64}
+	quantizer.Quantize(p, img.Bounds(), img, image.Point{})
+	return p
 }
