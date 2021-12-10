@@ -52,6 +52,19 @@ Image = {
 }
 ```
 
+### Animated
+
+```ts
+Animated = {
+    ...Common,
+    "type": "animated",
+    "data": {
+        "uri": String,
+        "borderRadius": Number
+    }
+}
+```
+
 ### Textbox
 
 ```ts
