@@ -10,6 +10,10 @@ func (e *AnimatedElement) GetIndex() int {
 	return e.Index
 }
 
+func (e *AnimatedElement) GetType() string {
+	return "animated"
+}
+
 func (e *AnimatedElement) Draw(dc *gg.Context, c *Canvas, i int) {
 	e.deriveImageElement(i).Draw(dc, c, i)
 }

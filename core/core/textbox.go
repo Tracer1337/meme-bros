@@ -10,6 +10,10 @@ func (e *TextboxElement) GetIndex() int {
 	return e.Index
 }
 
+func (e *TextboxElement) GetType() string {
+	return "textbox"
+}
+
 func (e *TextboxElement) Draw(dc *gg.Context, c *Canvas, i int) {
 	defer dc.Identity()
 

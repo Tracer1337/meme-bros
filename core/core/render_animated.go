@@ -19,9 +19,34 @@ func NewAnimatedRenderingContext(c *Canvas) *AnimatedRenderingContext {
 }
 
 func (rc *AnimatedRenderingContext) Render() *gif.GIF {
+	rc.prerender()
 	rc.renderDisposedImages()
-	rendered := rc.renderGIF()
-	return rendered
+	return rc.renderGIF()
+}
+
+func (rc *AnimatedRenderingContext) prerender() {
+	prerendered := make([]Drawable, 0)
+	currentLayer := make([]Drawable, 0)
+
+	for _, e := range rc.Canvas.Drawables {
+		if e.GetType() == "animated" {
+			if len(currentLayer) > 0 {
+				c := *rc.Canvas
+				c.Drawables = currentLayer
+				prerendered = append(prerendered, &ImageElement{
+					Index: len(prerendered),
+					Rect:  &Rect{0, 0, rc.Canvas.Width, rc.Canvas.Height, 0},
+					Data:  &ImageData{NewRenderingContext(&c).Render(0).Image(), 0},
+				})
+				currentLayer = nil
+			}
+			prerendered = append(prerendered, e)
+			continue
+		}
+		currentLayer = append(currentLayer, e)
+	}
+
+	rc.Canvas.Drawables = prerendered
 }
 
 func (rc *AnimatedRenderingContext) renderDisposedImages() {

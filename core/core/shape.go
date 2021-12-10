@@ -6,6 +6,10 @@ func (e *ShapeElement) GetIndex() int {
 	return e.Index
 }
 
+func (e *ShapeElement) GetType() string {
+	return "shape"
+}
+
 func (e *ShapeElement) Draw(dc *gg.Context, c *Canvas, i int) {
 	defer dc.Identity()
 

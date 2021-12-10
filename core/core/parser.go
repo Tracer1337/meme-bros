@@ -48,6 +48,7 @@ func parseCanvas(v *fastjson.Value) *Canvas {
 
 func collectDrawables(c *Canvas) []Drawable {
 	ds := make([]Drawable, 0)
+	ds = append(ds, &Background{})
 	for _, e := range c.Elements.Images {
 		ds = append(ds, e)
 	}

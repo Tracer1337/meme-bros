@@ -11,6 +11,7 @@ import (
 type Drawable interface {
 	Draw(dc *gg.Context, c *Canvas, i int)
 	GetIndex() int
+	GetType() string
 }
 
 type Canvas struct {

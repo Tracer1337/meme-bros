@@ -3,13 +3,9 @@ package core
 import (
 	"bytes"
 	"image/gif"
-
-	"github.com/fogleman/gg"
 )
 
 func (c *Canvas) Render() *bytes.Buffer {
-	c.prependLayer(&Background{})
-
 	buffer := bytes.NewBuffer([]byte{})
 
 	if c.Animated {
@@ -19,22 +15,4 @@ func (c *Canvas) Render() *bytes.Buffer {
 	}
 
 	return buffer
-}
-
-func (c *Canvas) prependLayer(l Drawable) {
-	newDrawables := make([]Drawable, 1)
-	newDrawables[0] = l
-	newDrawables = append(newDrawables, c.Drawables...)
-	c.Drawables = newDrawables
-}
-
-type Background struct{}
-
-func (bg *Background) Draw(dc *gg.Context, c *Canvas, i int) {
-	dc.SetColor(c.BackgroundColor)
-	dc.Clear()
-}
-
-func (bg *Background) GetIndex() int {
-	return -1
 }
