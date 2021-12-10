@@ -11,6 +11,7 @@ import BottomBar from "./BottomBar"
 import { getDefaultDataByType } from "./elements"
 import { fetchBase64 } from "../../lib/base64"
 import { Canvas as CanvasType, PickElement } from "../../types"
+import { setListeners } from "../../lib/events"
 
 function binaryToPNG(base64: string) {
     return base64.replace("application/octet-stream", "image/png")
@@ -90,9 +91,15 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
         return false
     }
 
-    useEffect(() => {
+    const handleLoadDummy = () => {
         loadCanvasDummy().then((canvas) => context.set({ canvas }))
-    }, [])
+    }
+
+    useEffect(() =>
+        setListeners(context.events, [
+            ["canvas.base.dummy", handleLoadDummy]
+        ])
+    )
 
     return (
         <Screen style={styles.container} onStartShouldSetResponder={handleScreenPress}>

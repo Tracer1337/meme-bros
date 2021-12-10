@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
 import { LayoutChangeEvent, StyleSheet, View } from "react-native"
-import { Text } from "react-native-paper"
 import { setListeners } from "../../lib/events"
 import CoreModule from "../../lib/CoreModule"
 import { ContextValue, EditorContext } from "./Context"
@@ -9,6 +8,7 @@ import { DialogContext } from "../../lib/DialogHandler"
 import { CanvasElement, PickElement } from "../../types"
 import { importImage } from "../../lib/media"
 import { renderCanvasState } from "./utils/render"
+import BaseSelector from "./BaseSelector"
 
 function makeId() {
     return Math.floor(Math.random() * 1e8)
@@ -18,7 +18,7 @@ function isImageElement(element: CanvasElement): element is PickElement<"image">
     return element.type === "image"
 }
 
-async function createNewElement<T extends CanvasElement["type"]>(type: T) {
+async function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
     const newElement: PickElement<T> = {
         id: makeId(),
         type,
@@ -68,8 +68,24 @@ function Canvas() {
         context.set({ interactions: { focus: null } })
     }
 
+    const handleBaseImport = async () => {
+        const newElement = await createCanvasElement("image")
+        if (!newElement) {
+            return
+        }
+        newElement.id = 0
+        context.set({
+            canvas: {
+                width: newElement.rect.width,
+                height: newElement.rect.height,
+                backgroundColor: "#ffffff",
+                elements: [newElement]
+            }
+        })
+    }
+
     const handleCreateElement = async (type: CanvasElement["type"]) => {
-        const newElement = await createNewElement(type)
+        const newElement = await createCanvasElement(type)
         if (!newElement) {
             return
         }
@@ -91,9 +107,7 @@ function Canvas() {
     const handleCanvasGenerate = async (state: ContextValue["canvas"]) => {
         const rendered = renderCanvasState(state)
         console.log("Generate", rendered)
-        console.time("Render")
         const base64 = await CoreModule.render(rendered)
-        console.timeEnd("Render")
         dialog.openDialog("GeneratedImageDialog", {
             uri: base64,
             width: context.canvas.width,
@@ -102,12 +116,18 @@ function Canvas() {
         context.events.emit("canvas.render.done", state)
     }
 
+    const handleCanvasClear = () => {
+        context.set({ canvas: { elements: [] } })
+    }
+
     useEffect(() =>
         setListeners(context.events, [
             ["screen.press", handleScreenPress],
+            ["canvas.base.import", handleBaseImport],
             ["element.create", handleCreateElement],
             ["element.remove", handleRemoveElement],
-            ["canvas.render", handleCanvasGenerate]
+            ["canvas.render", handleCanvasGenerate],
+            ["canvas.clear", handleCanvasClear]
         ])
     )
 
@@ -123,11 +143,7 @@ function Canvas() {
     }, [dimensions])
 
     if (context.canvas.elements.length === 0) {
-        return (
-            <View>
-                <Text>No image selected</Text>
-            </View>
-        )
+        return <BaseSelector/>
     }
     
     return (

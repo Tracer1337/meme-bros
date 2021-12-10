@@ -27,20 +27,26 @@ function BottomBar() {
                 }}
                 loading={isGenerating}
             />
-            <View style={styles.right}>
-                <IconButton
-                    icon="format-color-text"
-                    onPress={() => context.events.emit("element.create", "textbox")}
-                />
-                <IconButton
-                    icon="image"
-                    onPress={() => context.events.emit("element.create", "image")}
-                />
-                <IconButton
-                    icon="shape"
-                    onPress={() => context.events.emit("element.create", "shape")}
-                />
-            </View>
+            {context.canvas.elements.length > 0 && (
+                <View style={styles.right}>
+                    <IconButton
+                        icon="format-color-text"
+                        onPress={() => context.events.emit("element.create", "textbox")}
+                    />
+                    <IconButton
+                        icon="image"
+                        onPress={() => context.events.emit("element.create", "image")}
+                    />
+                    <IconButton
+                        icon="shape"
+                        onPress={() => context.events.emit("element.create", "shape")}
+                    />
+                    <IconButton
+                        icon="delete"
+                        onPress={() => context.events.emit("canvas.clear", null)}
+                    />
+                </View>
+            )}
         </Appbar>
     )
 }

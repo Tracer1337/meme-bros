@@ -15,7 +15,10 @@ type Events = {
     "element.remove": CanvasElement["id"],
     "element.config": CanvasElement["id"],
     "canvas.render": ContextValue["canvas"],
-    "canvas.render.done": ContextValue["canvas"]
+    "canvas.render.done": ContextValue["canvas"],
+    "canvas.base.import": null,
+    "canvas.base.dummy": null,
+    "canvas.clear": null
 }
 
 export type ContextValue = {
@@ -37,7 +40,7 @@ export const contextDefaultValue: ContextValue = {
         width: 0,
         height: 0,
         debug: false,
-        backgroundColor: [255, 255, 255, 255],
+        backgroundColor: "#fffff",
         elements: []
     }
 }
