@@ -4,10 +4,10 @@ import (
 	"encoding/base64"
 )
 
-func GenerateFromJSON(json string) string {
+func RenderFromJSON(json string) string {
 	canvas := CanvasFromJSON(json)
 
-	output := canvas.Generate()
+	output := canvas.Render()
 
 	encoded := base64.StdEncoding.EncodeToString(output.Bytes())
 

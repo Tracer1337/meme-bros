@@ -48,7 +48,8 @@ type AnimatedElement struct {
 }
 
 type AnimationData struct {
-	GIF *gif.GIF
+	GIF          *gif.GIF
+	BorderRadius float64
 }
 
 type TextboxElement struct {

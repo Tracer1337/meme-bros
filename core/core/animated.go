@@ -3,8 +3,11 @@ package core
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"image/color/palette"
 	"image/gif"
+	"image/png"
+	"meme-bros/core/utils"
 	"sync"
 	"time"
 
@@ -63,14 +66,38 @@ func (rc *AnimatedRenderingContext) Render() *gif.GIF {
 		go func(i int, frame image.Image) {
 			t0 := time.Now()
 
-			newFrame := rc.newFrame()
-			newFrame.DrawImage(bottomRendered, 0, 0)
-			newFrame.DrawImage(frame, 0, 0)
-			newFrame.DrawImage(topRendered, 0, 0)
+			canvas := *rc.Canvas
+			canvas.Drawables = make([]Drawable, 3)
+			canvas.Animated = false
+			canvas.BackgroundColor = &color.RGBA{0, 0, 0, 0}
+			rect := &Rect{0, 0, canvas.Width, canvas.Height, 0}
+			canvas.Drawables[0] = &ImageElement{
+				Index: 0,
+				Rect:  rect,
+				Data:  &ImageData{Image: bottomRendered},
+			}
+			canvas.Drawables[1] = &ImageElement{
+				Index: 1,
+				Rect:  e.Rect,
+				Data:  &ImageData{frame, e.Data.BorderRadius},
+			}
+			canvas.Drawables[2] = &ImageElement{
+				Index: 2,
+				Rect:  rect,
+				Data:  &ImageData{topRendered, 0},
+			}
 
-			anim.Image[i] = toPaletted(newFrame.Image())
+			t1 := time.Now()
+			rendered := canvas.Render()
+			fmt.Printf("Rendered in %s\n", time.Since(t1))
+			newFrame, err := png.Decode(rendered)
+			utils.CatchError(err)
 
-			fmt.Println(time.Since(t0))
+			t2 := time.Now()
+			anim.Image[i] = toPaletted(newFrame)
+			fmt.Printf("Paletted in %s\n", time.Since(t2))
+
+			fmt.Printf("Done in %s\n", time.Since(t0))
 
 			wg.Done()
 		}(i, frame)

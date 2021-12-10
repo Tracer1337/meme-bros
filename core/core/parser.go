@@ -101,7 +101,8 @@ func parseAnimations(vs []*fastjson.Value) []*AnimatedElement {
 			Index: e.GetInt("id"),
 			Rect:  parseRect(e.Get("rect")),
 			Data: &AnimationData{
-				GIF: utils.ParseBase64GIF(string(e.GetStringBytes("data", "uri"))),
+				GIF:          utils.ParseBase64GIF(string(e.GetStringBytes("data", "uri"))),
+				BorderRadius: e.GetFloat64("data", "borderRadius"),
 			},
 		}
 		elements = append(elements, newElement)

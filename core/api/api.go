@@ -2,8 +2,8 @@ package api
 
 import "meme-bros/core/core"
 
-func GenerateFromJSON(json string) string {
-	return core.GenerateFromJSON(json)
+func RenderFromJSON(json string) string {
+	return core.RenderFromJSON(json)
 }
 
 func FitText(text string, fontFamily string, fontWeight string, width float64, height float64) float64 {

@@ -7,7 +7,7 @@ import (
 	"github.com/fogleman/gg"
 )
 
-func (c *Canvas) Generate() *bytes.Buffer {
+func (c *Canvas) Render() *bytes.Buffer {
 	c.prependLayer(&Background{})
 
 	buffer := bytes.NewBuffer([]byte{})

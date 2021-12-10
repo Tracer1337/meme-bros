@@ -14,7 +14,7 @@ func TestGenerate(t *testing.T) {
 	fileIn, _ := os.ReadFile("../mock.json")
 
 	t0 := time.Now()
-	output := GenerateFromJSON(string(fileIn))
+	output := RenderFromJSON(string(fileIn))
 	fmt.Printf("Generated in %s\n", time.Since(t0))
 
 	if canvas := CanvasFromJSON(string(fileIn)); canvas.Animated {
