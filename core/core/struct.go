@@ -9,7 +9,7 @@ import (
 )
 
 type Drawable interface {
-	Draw(dc *gg.Context, c *Canvas)
+	Draw(dc *gg.Context, c *Canvas, i int)
 	GetIndex() int
 }
 
@@ -49,6 +49,7 @@ type AnimatedElement struct {
 
 type AnimationData struct {
 	GIF          *gif.GIF
+	Disposed     []image.Image
 	BorderRadius float64
 }
 

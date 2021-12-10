@@ -2,9 +2,7 @@ package core
 
 import (
 	"image"
-	"image/color"
 	"image/gif"
-	"image/png"
 	"meme-bros/core/utils"
 	"sync"
 
@@ -18,99 +16,106 @@ type AnimatedRenderingContext struct {
 
 func NewAnimatedRenderingContext(c *Canvas) *AnimatedRenderingContext {
 	return &AnimatedRenderingContext{
-		Canvas:           c,
-		RenderingContext: NewRenderingContext(c),
+		Canvas: c,
 	}
 }
 
 func (rc *AnimatedRenderingContext) Render() *gif.GIF {
-	botLayer, topLayer := rc.Canvas.splitLayers()
-
-	botRendered := rc.Canvas.renderLayer(botLayer)
-	topRendered := rc.Canvas.renderLayer(topLayer)
-
-	e := rc.Canvas.Elements.Animations[0]
-
-	e.applyDisposal(2)
-
-	disposed := e.renderDisposedImages()
-
 	var wg sync.WaitGroup
-	wg.Add(len(e.Data.GIF.Image))
 
-	for i, frame := range disposed {
-		go func(i int, frame image.Image) {
-			c := rc.newCanvas(botRendered, frame, topRendered)
-			newFrame, err := png.Decode(c.Render())
-			utils.CatchError(err)
-			e.Data.GIF.Image[i] = utils.ImageToPaletted(newFrame)
+	wg.Add(len(rc.Canvas.Elements.Animations))
+
+	for _, e := range rc.Canvas.Elements.Animations {
+		go func(e *AnimatedElement) {
+			e.renderDisposedImages()
 			wg.Done()
-		}(i, frame)
+		}(e)
 	}
 
 	wg.Wait()
 
-	e.Data.GIF.Config.Width = int(rc.Canvas.Width)
-	e.Data.GIF.Config.Height = int(rc.Canvas.Height)
+	rendered := rc.createTarget()
 
-	return e.Data.GIF
+	wg.Add(len(rendered.Image))
+
+	for i := range rendered.Image {
+		go func(i int) {
+			dc := NewRenderingContext(rc.Canvas).Render(i)
+			rendered.Image[i] = utils.ImageToPaletted(dc.Image())
+			wg.Done()
+		}(i)
+	}
+
+	wg.Wait()
+
+	return rendered
 }
 
-func (rc *AnimatedRenderingContext) renderLayers(ds []Drawable) image.Image {
-	newCanvas := *rc.Canvas
-	newCanvas.Drawables = ds
-	return NewRenderingContext(&newCanvas).Render().Image()
+func (rc *AnimatedRenderingContext) createTarget() *gif.GIF {
+	origin := rc.Canvas.Elements.Animations[0].Data.GIF
+
+	frameCount := rc.findTargetFrameCount()
+
+	img := &gif.GIF{
+		Image:           make([]*image.Paletted, frameCount),
+		Delay:           make([]int, frameCount),
+		Disposal:        make([]byte, frameCount),
+		LoopCount:       0,
+		BackgroundIndex: origin.BackgroundIndex,
+		Config: image.Config{
+			ColorModel: origin.Config.ColorModel,
+			Width:      int(rc.Canvas.Width),
+			Height:     int(rc.Canvas.Height),
+		},
+	}
+
+	for i := range img.Disposal {
+		img.Disposal[i] = byte(2)
+	}
+
+	for i := range img.Delay {
+		img.Delay[i] = 10
+	}
+
+	return img
 }
 
-func (rc *AnimatedRenderingContext) newFrame() *gg.Context {
-	return gg.NewContext(int(rc.Canvas.Width), int(rc.Canvas.Height))
+func (rc *AnimatedRenderingContext) findTargetFrameCount() int {
+	frameCount := 0
+	for _, e := range rc.Canvas.Elements.Animations {
+		if len(e.Data.GIF.Image) > frameCount {
+			frameCount = len(e.Data.GIF.Image)
+		}
+	}
+	return frameCount
 }
 
-func (e *AnimatedElement) applyDisposal(value int) {
-	for i := range e.Data.GIF.Disposal {
-		e.Data.GIF.Disposal[i] = byte(value)
+func (e *AnimatedElement) GetIndex() int {
+	return e.Index
+}
+
+func (e *AnimatedElement) Draw(dc *gg.Context, c *Canvas, i int) {
+	e.deriveImageElement(i).Draw(dc, c, i)
+}
+
+func (e *AnimatedElement) deriveImageElement(i int) *ImageElement {
+	return &ImageElement{
+		Index: e.Index,
+		Rect:  e.Rect,
+		Data: &ImageData{
+			Image:        e.Data.Disposed[i%len(e.Data.Disposed)],
+			BorderRadius: e.Data.BorderRadius,
+		},
 	}
 }
 
-func (e *AnimatedElement) renderDisposedImages() []image.Image {
-	disposed := make([]image.Image, len(e.Data.GIF.Image))
+func (e *AnimatedElement) renderDisposedImages() {
+	e.Data.Disposed = make([]image.Image, len(e.Data.GIF.Image))
 	dc := gg.NewContextForImage(e.Data.GIF.Image[0])
 	for i, frame := range e.Data.GIF.Image {
 		dc.DrawImage(frame, 0, 0)
 		cloned := gg.NewContextForImage(dc.Image())
 		cloned.DrawImage(dc.Image(), 0, 0)
-		disposed[i] = cloned.Image()
+		e.Data.Disposed[i] = cloned.Image()
 	}
-	return disposed
-}
-
-func (rc *AnimatedRenderingContext) newCanvas(bot image.Image, frame image.Image, top image.Image) *Canvas {
-	e := rc.Canvas.Elements.Animations[0]
-
-	canvas := *rc.Canvas
-
-	canvas.Drawables = make([]Drawable, 3)
-	canvas.Animated = false
-	canvas.BackgroundColor = &color.RGBA{0, 0, 0, 0}
-
-	rect := &Rect{0, 0, canvas.Width, canvas.Height, 0}
-
-	canvas.Drawables[0] = &ImageElement{
-		Index: 0,
-		Rect:  rect,
-		Data:  &ImageData{bot, 0},
-	}
-	canvas.Drawables[2] = &ImageElement{
-		Index: 2,
-		Rect:  rect,
-		Data:  &ImageData{top, 0},
-	}
-
-	canvas.Drawables[1] = &ImageElement{
-		Index: 1,
-		Rect:  e.Rect,
-		Data:  &ImageData{frame, e.Data.BorderRadius},
-	}
-
-	return &canvas
 }

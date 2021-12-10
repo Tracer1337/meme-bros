@@ -23,20 +23,20 @@ func NewRenderingContext(c *Canvas) *RenderingContext {
 	}
 }
 
-func (rc *RenderingContext) Render() *gg.Context {
+func (rc *RenderingContext) Render(index int) *gg.Context {
 	done := make(chan int)
 
-	rc.drawLayers(done)
+	rc.drawLayers(done, index)
 	rc.mergeLoop(done)
 
 	return rc.Rendered[0]
 }
 
-func (rc *RenderingContext) drawLayers(done chan int) {
+func (rc *RenderingContext) drawLayers(done chan int, index int) {
 	for i, e := range rc.Layers {
 		go func(i int, e Drawable) {
 			l := rc.newLayer()
-			e.Draw(l, rc.Canvas)
+			e.Draw(l, rc.Canvas, index)
 			rc.Rendered[i] = l
 			done <- 0
 		}(i, e)

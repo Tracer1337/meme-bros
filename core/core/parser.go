@@ -51,6 +51,9 @@ func collectDrawables(c *Canvas) []Drawable {
 	for _, e := range c.Elements.Images {
 		ds = append(ds, e)
 	}
+	for _, e := range c.Elements.Animations {
+		ds = append(ds, e)
+	}
 	for _, e := range c.Elements.Textboxes {
 		ds = append(ds, e)
 	}

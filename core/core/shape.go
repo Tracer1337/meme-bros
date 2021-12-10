@@ -6,7 +6,7 @@ func (e *ShapeElement) GetIndex() int {
 	return e.Index
 }
 
-func (e *ShapeElement) Draw(dc *gg.Context, c *Canvas) {
+func (e *ShapeElement) Draw(dc *gg.Context, c *Canvas, i int) {
 	defer dc.Identity()
 
 	e.Rect.ApplyRotation(dc)

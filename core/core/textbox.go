@@ -10,7 +10,7 @@ func (e *TextboxElement) GetIndex() int {
 	return e.Index
 }
 
-func (e *TextboxElement) Draw(dc *gg.Context, c *Canvas) {
+func (e *TextboxElement) Draw(dc *gg.Context, c *Canvas, i int) {
 	defer dc.Identity()
 
 	e.Rect.ApplyRotation(dc)
