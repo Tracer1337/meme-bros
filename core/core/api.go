@@ -11,5 +11,8 @@ func GenerateFromJSON(json string) string {
 
 	encoded := base64.StdEncoding.EncodeToString(output.Bytes())
 
+	if canvas.Animated {
+		return "data:image/gif;base64," + string(encoded)
+	}
 	return "data:image/png;base64," + string(encoded)
 }

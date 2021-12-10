@@ -2,6 +2,7 @@ package core
 
 import (
 	"image/color"
+	"sort"
 
 	"github.com/valyala/fastjson"
 )
@@ -32,12 +33,15 @@ func parseCanvas(v *fastjson.Value) *Canvas {
 		BackgroundColor: parseRGBA(v.GetArray("backgroundColor")),
 		Debug:           v.GetBool("debug"),
 		Elements: &CanvasElements{
-			Images:    parseImages(elements["image"]),
-			Textboxes: parseTextboxes(elements["textbox"]),
-			Shapes:    parseShapes(elements["shape"]),
+			Images:     parseImages(elements["image"]),
+			Animations: parseAnimations(elements["animated"]),
+			Textboxes:  parseTextboxes(elements["textbox"]),
+			Shapes:     parseShapes(elements["shape"]),
 		},
 	}
 	c.Drawables = collectDrawables(c)
+	sortDrawables(c.Drawables)
+	c.Animated = len(c.Elements.Animations) > 0
 	return c
 }
 
@@ -53,6 +57,12 @@ func collectDrawables(c *Canvas) []Drawable {
 		ds = append(ds, e)
 	}
 	return ds
+}
+
+func sortDrawables(ds []Drawable) {
+	sort.Slice(ds, func(i, j int) bool {
+		return ds[i].GetIndex() < ds[j].GetIndex()
+	})
 }
 
 func parseElements(vs []*fastjson.Value) map[string][]*fastjson.Value {
@@ -71,11 +81,26 @@ func parseImages(vs []*fastjson.Value) []*ImageElement {
 	elements := []*ImageElement{}
 	for _, e := range vs {
 		newElement := &ImageElement{
-			Id:   e.GetInt("id"),
-			Rect: parseRect(e.Get("rect")),
+			Index: e.GetInt("id"),
+			Rect:  parseRect(e.Get("rect")),
 			Data: &ImageData{
 				URI:          string(e.GetStringBytes("data", "uri")),
 				BorderRadius: e.GetFloat64("data", "borderRadius"),
+			},
+		}
+		elements = append(elements, newElement)
+	}
+	return elements
+}
+
+func parseAnimations(vs []*fastjson.Value) []*AnimatedElement {
+	elements := []*AnimatedElement{}
+	for _, e := range vs {
+		newElement := &AnimatedElement{
+			Index: e.GetInt("id"),
+			Rect:  parseRect(e.Get("rect")),
+			Data: &AnimationData{
+				URI: string(e.GetStringBytes("data", "uri")),
 			},
 		}
 		elements = append(elements, newElement)
@@ -87,8 +112,8 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 	elements := []*TextboxElement{}
 	for _, e := range vs {
 		newElement := &TextboxElement{
-			Id:   e.GetInt("id"),
-			Rect: parseRect(e.Get("rect")),
+			Index: e.GetInt("id"),
+			Rect:  parseRect(e.Get("rect")),
 			Data: &TextboxData{
 				Text:            string(e.GetStringBytes("data", "text")),
 				FontFamily:      string(e.GetStringBytes("data", "fontFamily")),
@@ -110,8 +135,8 @@ func parseShapes(vs []*fastjson.Value) []*ShapeElement {
 	elements := []*ShapeElement{}
 	for _, e := range vs {
 		newElement := &ShapeElement{
-			Id:   e.GetInt("id"),
-			Rect: parseRect(e.Get("rect")),
+			Index: e.GetInt("id"),
+			Rect:  parseRect(e.Get("rect")),
 			Data: &ShapeData{
 				Variant:         string(e.GetStringBytes("data", "variant")),
 				BackgroundColor: parseRGBA(e.GetArray("data", "backgroundColor")),

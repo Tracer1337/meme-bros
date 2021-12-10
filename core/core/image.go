@@ -13,6 +13,10 @@ type ImageDrawingContext struct {
 	Img image.Image
 }
 
+func (e *ImageElement) GetIndex() int {
+	return e.Index
+}
+
 func (e *ImageElement) Draw(dc *gg.Context, c *Canvas) {
 	defer dc.Identity()
 	defer dc.ResetClip()

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"image/gif"
 	"image/png"
 	"meme-bros/core/utils"
 	"os"
@@ -16,12 +17,27 @@ func TestGenerate(t *testing.T) {
 	output := GenerateFromJSON(string(fileIn))
 	fmt.Printf("Generated in %s\n", time.Since(t0))
 
-	img := utils.ParseBase64Image(output)
+	if canvas := CanvasFromJSON(string(fileIn)); canvas.Animated {
+		storeGIF(output)
+	} else {
+		storePNG(output)
+	}
+}
+
+func storeGIF(dataURI string) {
+	img := utils.ParseBase64GIF(dataURI)
+
+	fileOut, err := os.Create("../animated.gif")
+	utils.CatchError(err)
+
+	gif.EncodeAll(fileOut, img)
+}
+
+func storePNG(dataURI string) {
+	img := utils.ParseBase64Image(dataURI)
 
 	fileOut, err := os.Create("../image.png")
-	if err != nil {
-		panic(err)
-	}
+	utils.CatchError(err)
 
 	png.Encode(fileOut, img)
 }

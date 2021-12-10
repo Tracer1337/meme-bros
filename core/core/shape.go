@@ -7,6 +7,10 @@ type ShapeDrawingContext struct {
 	c  *Canvas
 }
 
+func (e *ShapeElement) GetIndex() int {
+	return e.Index
+}
+
 func (e *ShapeElement) Draw(dc *gg.Context, c *Canvas) {
 	defer dc.Identity()
 

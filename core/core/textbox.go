@@ -12,6 +12,10 @@ type TextbotDrawingContext struct {
 	FText string
 }
 
+func (e *TextboxElement) GetIndex() int {
+	return e.Index
+}
+
 func (e *TextboxElement) Draw(dc *gg.Context, c *Canvas) {
 	defer dc.Identity()
 

@@ -8,6 +8,7 @@ import (
 
 type Drawable interface {
 	Draw(dc *gg.Context, c *Canvas)
+	GetIndex() int
 }
 
 type Canvas struct {
@@ -15,20 +16,22 @@ type Canvas struct {
 	Height          float64
 	BackgroundColor *color.RGBA
 	Debug           bool
+	Animated        bool
 	Elements        *CanvasElements
 	Drawables       []Drawable
 }
 
 type CanvasElements struct {
-	Images    []*ImageElement
-	Textboxes []*TextboxElement
-	Shapes    []*ShapeElement
+	Images     []*ImageElement
+	Animations []*AnimatedElement
+	Textboxes  []*TextboxElement
+	Shapes     []*ShapeElement
 }
 
 type ImageElement struct {
-	Id   int
-	Rect *Rect
-	Data *ImageData
+	Index int
+	Rect  *Rect
+	Data  *ImageData
 }
 
 type ImageData struct {
@@ -36,10 +39,20 @@ type ImageData struct {
 	BorderRadius float64
 }
 
+type AnimatedElement struct {
+	Index int
+	Rect  *Rect
+	Data  *AnimationData
+}
+
+type AnimationData struct {
+	URI string
+}
+
 type TextboxElement struct {
-	Id   int
-	Rect *Rect
-	Data *TextboxData
+	Index int
+	Rect  *Rect
+	Data  *TextboxData
 }
 
 type TextboxData struct {
@@ -55,9 +68,9 @@ type TextboxData struct {
 }
 
 type ShapeElement struct {
-	Id   int
-	Rect *Rect
-	Data *ShapeData
+	Index int
+	Rect  *Rect
+	Data  *ShapeData
 }
 
 type ShapeData struct {
