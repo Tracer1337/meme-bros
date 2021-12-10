@@ -2,6 +2,7 @@ package core
 
 import (
 	"image/color"
+	"meme-bros/core/utils"
 	"sort"
 
 	"github.com/valyala/fastjson"
@@ -84,7 +85,7 @@ func parseImages(vs []*fastjson.Value) []*ImageElement {
 			Index: e.GetInt("id"),
 			Rect:  parseRect(e.Get("rect")),
 			Data: &ImageData{
-				URI:          string(e.GetStringBytes("data", "uri")),
+				Image:        utils.ParseBase64Image(string(e.GetStringBytes("data", "uri"))),
 				BorderRadius: e.GetFloat64("data", "borderRadius"),
 			},
 		}
@@ -100,7 +101,7 @@ func parseAnimations(vs []*fastjson.Value) []*AnimatedElement {
 			Index: e.GetInt("id"),
 			Rect:  parseRect(e.Get("rect")),
 			Data: &AnimationData{
-				URI: string(e.GetStringBytes("data", "uri")),
+				GIF: utils.ParseBase64GIF(string(e.GetStringBytes("data", "uri"))),
 			},
 		}
 		elements = append(elements, newElement)

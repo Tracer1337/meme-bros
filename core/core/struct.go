@@ -1,7 +1,9 @@
 package core
 
 import (
+	"image"
 	"image/color"
+	"image/gif"
 
 	"github.com/fogleman/gg"
 )
@@ -35,7 +37,7 @@ type ImageElement struct {
 }
 
 type ImageData struct {
-	URI          string
+	Image        image.Image
 	BorderRadius float64
 }
 
@@ -46,7 +48,7 @@ type AnimatedElement struct {
 }
 
 type AnimationData struct {
-	URI string
+	GIF *gif.GIF
 }
 
 type TextboxElement struct {

@@ -2,11 +2,6 @@ package core
 
 import "github.com/fogleman/gg"
 
-type ShapeDrawingContext struct {
-	dc *gg.Context
-	c  *Canvas
-}
-
 func (e *ShapeElement) GetIndex() int {
 	return e.Index
 }
@@ -16,13 +11,11 @@ func (e *ShapeElement) Draw(dc *gg.Context, c *Canvas) {
 
 	e.Rect.ApplyRotation(dc)
 
-	context := &ShapeDrawingContext{dc, c}
-
 	switch e.Data.Variant {
 	case "rect":
-		e.drawRect(context)
+		e.drawRect(dc, c)
 	case "ellipse":
-		e.drawEllipse(context)
+		e.drawEllipse(dc, c)
 	}
 
 	if c.Debug {
@@ -30,31 +23,31 @@ func (e *ShapeElement) Draw(dc *gg.Context, c *Canvas) {
 	}
 }
 
-func (e *ShapeElement) drawRect(c *ShapeDrawingContext) {
-	c.dc.DrawRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height)
+func (e *ShapeElement) drawRect(dc *gg.Context, c *Canvas) {
+	dc.DrawRectangle(e.Rect.X, e.Rect.Y, e.Rect.Width, e.Rect.Height)
 
-	c.dc.SetColor(e.Data.BackgroundColor)
-	c.dc.Fill()
+	dc.SetColor(e.Data.BackgroundColor)
+	dc.Fill()
 
 	bw := e.Data.BorderWidth
-	c.dc.SetColor(e.Data.BorderColor)
-	c.dc.SetLineWidth(e.Data.BorderWidth)
-	c.dc.DrawRectangle(e.Rect.X+bw/2, e.Rect.Y+bw/2, e.Rect.Width-bw, e.Rect.Height-bw)
-	c.dc.Stroke()
+	dc.SetColor(e.Data.BorderColor)
+	dc.SetLineWidth(e.Data.BorderWidth)
+	dc.DrawRectangle(e.Rect.X+bw/2, e.Rect.Y+bw/2, e.Rect.Width-bw, e.Rect.Height-bw)
+	dc.Stroke()
 }
 
-func (e *ShapeElement) drawEllipse(c *ShapeDrawingContext) {
+func (e *ShapeElement) drawEllipse(dc *gg.Context, c *Canvas) {
 	cx, cy := e.Rect.Center()
 	rx, ry := e.Rect.Width/2, e.Rect.Height/2
 
-	c.dc.DrawEllipse(cx, cy, rx, ry)
+	dc.DrawEllipse(cx, cy, rx, ry)
 
-	c.dc.SetColor(e.Data.BackgroundColor)
-	c.dc.Fill()
+	dc.SetColor(e.Data.BackgroundColor)
+	dc.Fill()
 
 	bw := e.Data.BorderWidth
-	c.dc.SetColor(e.Data.BorderColor)
-	c.dc.SetLineWidth(e.Data.BorderWidth)
-	c.dc.DrawEllipse(cx, cy, rx-bw/2, ry-bw/2)
-	c.dc.Stroke()
+	dc.SetColor(e.Data.BorderColor)
+	dc.SetLineWidth(e.Data.BorderWidth)
+	dc.DrawEllipse(cx, cy, rx-bw/2, ry-bw/2)
+	dc.Stroke()
 }

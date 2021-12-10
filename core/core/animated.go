@@ -5,7 +5,6 @@ import (
 	"image"
 	"image/color/palette"
 	"image/gif"
-	"meme-bros/core/utils"
 	"sync"
 	"time"
 
@@ -27,7 +26,7 @@ func NewAnimatedRenderingContext(c *Canvas) *AnimatedRenderingContext {
 
 func (rc *AnimatedRenderingContext) Render() *gif.GIF {
 	e := rc.Canvas.Elements.Animations[0]
-	anim := utils.ParseBase64GIF(e.Data.URI)
+	anim := e.Data.GIF
 
 	bottomLayer := make([]Drawable, 0)
 	topLayer := make([]Drawable, 0)
