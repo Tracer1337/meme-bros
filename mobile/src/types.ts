@@ -15,6 +15,7 @@ export type CanvasElementCommon = {
 
 export type CanvasElement = CanvasElementCommon & (
     ImageElement |
+    AnimatedElement |
     TextboxElement |
     ShapeElement
 )
@@ -29,6 +30,13 @@ export type ImageElement = {
         keepAspectRatio: boolean,
         naturalWidth: number,
         naturalHeight: number
+    }
+}
+
+export type AnimatedElement = {
+    type: "image",
+    data: {
+        uri: string
     }
 }
 

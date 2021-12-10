@@ -11,7 +11,7 @@ function BottomBar() {
 
     useEffect(() =>
         setListeners(context.events, [
-            ["canvas.generate.done", () => setIsGenerating(false)]
+            ["canvas.render.done", () => setIsGenerating(false)]
         ])
     )
 
@@ -23,7 +23,7 @@ function BottomBar() {
                 onPress={async () => {
                     setIsGenerating(true)
                     await new Promise(requestAnimationFrame)
-                    context.events.emit("canvas.generate", context.canvas)
+                    context.events.emit("canvas.render", context.canvas)
                 }}
                 loading={isGenerating}
             />

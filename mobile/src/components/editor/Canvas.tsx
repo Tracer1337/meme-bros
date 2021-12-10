@@ -83,13 +83,13 @@ function Canvas() {
     const handleCanvasGenerate = async (state: ContextValue["canvas"]) => {
         const rendered = renderCanvasState(state)
         console.log("Generate", rendered)
-        const base64 = await CoreModule.generate(rendered)
+        const base64 = await CoreModule.render(rendered)
         dialog.openDialog("GeneratedImageDialog", {
             uri: base64,
             width: context.canvas.width,
             height: context.canvas.height
         })
-        context.events.emit("canvas.generate.done", state)
+        context.events.emit("canvas.render.done", state)
     }
 
     useEffect(() =>
@@ -97,7 +97,7 @@ function Canvas() {
             ["screen.press", handleScreenPress],
             ["element.create", handleCreateElement],
             ["element.remove", handleRemoveElement],
-            ["canvas.generate", handleCanvasGenerate]
+            ["canvas.render", handleCanvasGenerate]
         ])
     )
 

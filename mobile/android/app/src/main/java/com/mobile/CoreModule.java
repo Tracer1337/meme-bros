@@ -21,8 +21,8 @@ public class CoreModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void generate(String json, Promise promise) {
-        String output = Api.generateFromJSON(json);
+    public void render(String json, Promise promise) {
+        String output = Api.renderFromJSON(json);
         promise.resolve(output);
     }
 
