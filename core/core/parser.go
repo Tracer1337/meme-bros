@@ -11,9 +11,7 @@ import (
 func CanvasFromJSON(jsonString string) *Canvas {
 	var p fastjson.Parser
 	v, err := p.Parse(jsonString)
-	if err != nil {
-		panic(err)
-	}
+	utils.CatchError(err)
 	return parseCanvas(v)
 }
 

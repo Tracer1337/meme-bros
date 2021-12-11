@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
+	"meme-bros/core/utils"
 	"strings"
 
 	"github.com/fogleman/gg"
@@ -52,17 +53,11 @@ func FitText(text string, fontFamily string, fontWeight string, width float64, h
 func loadFont(dc *gg.Context, name string, fontWeight string, fontSize float64) font.Face {
 	fileName := fmt.Sprintf("fonts/%s_%s.ttf", name, fontWeight)
 	file, err := asset.Open(fileName)
-	if err != nil {
-		panic(err)
-	}
+	utils.CatchError(err)
 	raw, err := ioutil.ReadAll(file)
-	if err != nil {
-		panic(err)
-	}
+	utils.CatchError(err)
 	font, err := truetype.Parse(raw)
-	if err != nil {
-		panic(err)
-	}
+	utils.CatchError(err)
 	face := truetype.NewFace(font, &truetype.Options{
 		Size: float64(fontSize),
 	})

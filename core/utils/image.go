@@ -18,9 +18,7 @@ func ParseBase64Image(dataURI string) image.Image {
 	data := TrimBase64Prefix(dataURI)
 
 	decoded, err := base64.StdEncoding.DecodeString(data)
-	if err != nil {
-		panic(err)
-	}
+	CatchError(err)
 
 	var img image.Image
 	reader := strings.NewReader(string(decoded))
@@ -35,9 +33,7 @@ func ParseBase64Image(dataURI string) image.Image {
 		panic(fmt.Sprintf("Unsupported image format: '%s'", mimeType))
 	}
 
-	if err != nil {
-		panic(err)
-	}
+	CatchError(err)
 
 	return img
 }
@@ -60,9 +56,7 @@ func ParseBase64GIF(dataURI string) *gif.GIF {
 	data := TrimBase64Prefix(dataURI)
 
 	decoded, err := base64.StdEncoding.DecodeString(data)
-	if err != nil {
-		panic(err)
-	}
+	CatchError(err)
 
 	reader := strings.NewReader(string(decoded))
 	img, err := gif.DecodeAll(reader)
