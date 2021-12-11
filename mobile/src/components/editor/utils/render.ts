@@ -16,7 +16,9 @@ export function renderCanvasState(state: Canvas) {
 }
 
 const renderElements: RenderFunction = (object, key) => {
-    object[key].forEach((element: CanvasElement) => {
+    object[key].forEach((element: CanvasElement, i: number) => {
+        element.id = i
+
         switch (element.type) {
             case "textbox":
                 renderColor(element.data, "color")
