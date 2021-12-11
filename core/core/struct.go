@@ -51,6 +51,7 @@ type AnimatedElement struct {
 type AnimationData struct {
 	GIF          *gif.GIF
 	Disposed     []image.Image
+	Loop         bool
 	BorderRadius float64
 }
 

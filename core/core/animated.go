@@ -20,10 +20,14 @@ func (e *AnimatedElement) Draw(dc *gg.Context, c *Canvas, i int) {
 
 func (e *AnimatedElement) deriveImageElement(i int) *ImageElement {
 	var img image.Image
-	if i < len(e.Data.Disposed) {
-		img = e.Data.Disposed[i]
+	if e.Data.Loop {
+		img = e.Data.Disposed[i%len(e.Data.Disposed)]
 	} else {
-		img = e.Data.Disposed[len(e.Data.Disposed)-1]
+		if i < len(e.Data.Disposed) {
+			img = e.Data.Disposed[i]
+		} else {
+			img = e.Data.Disposed[len(e.Data.Disposed)-1]
+		}
 	}
 	return &ImageElement{
 		Index: e.Index,

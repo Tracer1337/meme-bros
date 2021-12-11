@@ -60,7 +60,8 @@ Animated = {
     "type": "animated",
     "data": {
         "uri": String,
-        "borderRadius": Number
+        "borderRadius": Number,
+        "loop": Boolean
     }
 }
 ```

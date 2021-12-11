@@ -106,6 +106,7 @@ func parseAnimations(vs []*fastjson.Value) []*AnimatedElement {
 			Rect:  parseRect(e.Get("rect")),
 			Data: &AnimationData{
 				GIF:          utils.ParseBase64GIF(string(e.GetStringBytes("data", "uri"))),
+				Loop:         e.GetBool("data", "loop"),
 				BorderRadius: e.GetFloat64("data", "borderRadius"),
 			},
 		}
