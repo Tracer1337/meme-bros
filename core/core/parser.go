@@ -4,6 +4,7 @@ import (
 	"image/color"
 	"meme-bros/core/utils"
 	"sort"
+	"strings"
 
 	"github.com/valyala/fastjson"
 )
@@ -33,7 +34,7 @@ func parseCanvas(v *fastjson.Value) *Canvas {
 		Debug:           v.GetBool("debug"),
 		Elements: &CanvasElements{
 			Images:     parseImages(elements["image"]),
-			Animations: parseAnimations(elements["animated"]),
+			Animations: parseAnimations(elements["image"]),
 			Textboxes:  parseTextboxes(elements["textbox"]),
 			Shapes:     parseShapes(elements["shape"]),
 		},
@@ -80,14 +81,22 @@ func parseElements(vs []*fastjson.Value) map[string][]*fastjson.Value {
 	return elemMap
 }
 
+func isAnimated(dataURI string) bool {
+	return strings.HasPrefix(dataURI, "data:image/gif")
+}
+
 func parseImages(vs []*fastjson.Value) []*ImageElement {
 	elements := []*ImageElement{}
 	for _, e := range vs {
+		imageURI := string(e.GetStringBytes("data", "uri"))
+		if isAnimated(imageURI) {
+			continue
+		}
 		newElement := &ImageElement{
 			Index: e.GetInt("id"),
 			Rect:  parseRect(e.Get("rect")),
 			Data: &ImageData{
-				Image:        utils.ParseBase64Image(string(e.GetStringBytes("data", "uri"))),
+				Image:        utils.ParseBase64Image(imageURI),
 				BorderRadius: e.GetFloat64("data", "borderRadius"),
 			},
 		}
@@ -99,11 +108,15 @@ func parseImages(vs []*fastjson.Value) []*ImageElement {
 func parseAnimations(vs []*fastjson.Value) []*AnimatedElement {
 	elements := []*AnimatedElement{}
 	for _, e := range vs {
+		imageURI := string(e.GetStringBytes("data", "uri"))
+		if !isAnimated(imageURI) {
+			continue
+		}
 		newElement := &AnimatedElement{
 			Index: e.GetInt("id"),
 			Rect:  parseRect(e.Get("rect")),
 			Data: &AnimationData{
-				GIF:          utils.ParseBase64GIF(string(e.GetStringBytes("data", "uri"))),
+				GIF:          utils.ParseBase64GIF(imageURI),
 				Loop:         e.GetBool("data", "loop"),
 				BorderRadius: e.GetFloat64("data", "borderRadius"),
 			},

@@ -47,19 +47,6 @@ Image = {
     "type": "image",
     "data": {
         "uri": String,
-        "borderRadius": Number
-    }
-}
-```
-
-### Animated
-
-```ts
-Animated = {
-    ...Common,
-    "type": "animated",
-    "data": {
-        "uri": String,
         "borderRadius": Number,
         "loop": Boolean
     }

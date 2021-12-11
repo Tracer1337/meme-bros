@@ -65,7 +65,7 @@
         },
         {
             "id": 3,
-            "type": "animated",
+            "type": "image",
             "rect": {
                 "x": 200,
                 "y": 200,
@@ -130,7 +130,7 @@
         },
         {
             "id": 7,
-            "type": "animated",
+            "type": "image",
             "rect": {
                 "x": 250,
                 "y": 400,
