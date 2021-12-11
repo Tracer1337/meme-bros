@@ -32,9 +32,6 @@ func (rc *AnimatedRenderingContext) prerender() {
 
 	renderLayer := func(layer []Drawable, i int) {
 		defer wg.Done()
-		if len(layer) == 0 {
-			return
-		}
 		c := *rc.Canvas
 		c.Drawables = layer
 		prerendered[i] = &ImageElement{
@@ -48,18 +45,25 @@ func (rc *AnimatedRenderingContext) prerender() {
 
 	for _, e := range rc.Canvas.Drawables {
 		if e.GetType() == "animated" {
-			wg.Add(1)
-			go renderLayer(currentLayer, i)
-			prerendered[i+1] = e
-			i += 2
+			if len(currentLayer) > 0 {
+				wg.Add(1)
+				go renderLayer(currentLayer, i)
+				prerendered[i+1] = e
+				i += 2
+			} else {
+				prerendered[i] = e
+				i++
+			}
 			currentLayer = nil
 			continue
 		}
 		currentLayer = append(currentLayer, e)
 	}
 
-	wg.Add(1)
-	go renderLayer(currentLayer, i)
+	if len(currentLayer) > 0 {
+		wg.Add(1)
+		go renderLayer(currentLayer, i)
+	}
 
 	wg.Wait()
 
@@ -105,6 +109,7 @@ func (rc *AnimatedRenderingContext) createTarget() *gif.GIF {
 	origin := rc.Canvas.Elements.Animations[0].Data.GIF
 
 	frameCount := rc.findTargetFrameCount()
+	delay := rc.findTargetDelay()
 
 	img := &gif.GIF{
 		Image:           make([]*image.Paletted, frameCount),
@@ -124,7 +129,7 @@ func (rc *AnimatedRenderingContext) createTarget() *gif.GIF {
 	}
 
 	for i := range img.Delay {
-		img.Delay[i] = 10
+		img.Delay[i] = delay
 	}
 
 	return img
@@ -138,4 +143,14 @@ func (rc *AnimatedRenderingContext) findTargetFrameCount() int {
 		}
 	}
 	return frameCount
+}
+
+func (rc *AnimatedRenderingContext) findTargetDelay() int {
+	delay := -1
+	for _, e := range rc.Canvas.Elements.Animations {
+		if delay == -1 || e.Data.GIF.Delay[0] < delay {
+			delay = e.Data.GIF.Delay[0]
+		}
+	}
+	return delay
 }
