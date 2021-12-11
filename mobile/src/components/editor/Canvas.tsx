@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react"
-import { LayoutChangeEvent, StyleSheet, View } from "react-native"
+import React, { useContext, useEffect } from "react"
+import { Dimensions, View } from "react-native"
 import { setListeners } from "../../lib/events"
 import CoreModule from "../../lib/CoreModule"
 import { ContextValue, EditorContext } from "./Context"
@@ -48,26 +48,22 @@ async function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
 function getCanvasStyles(canvas: ContextValue["canvas"]) {
     return {
         backgroundColor: canvas.backgroundColor,
+        width: canvas.width,
         height: canvas.height
+    }
+}
+
+export function scaleToScreen(rect: { width: number, height: number }) {
+    const width = Dimensions.get("window").width * 0.9
+    return {
+        width: width,
+        height: width / rect.width * rect.height    
     }
 }
 
 function Canvas() {
     const context = useContext(EditorContext)
     const dialog = useContext(DialogContext)
-    
-    const [isLayoutLoaded, setIsLayoutLoaded] = useState(false)
-
-    const handleLayout = (event: LayoutChangeEvent) => {
-        const { layout } = event.nativeEvent
-        context.set({
-            canvas: {
-                width: layout.width,
-                height: layout.width / context.canvas.width * context.canvas.height    
-            }
-        })
-        setIsLayoutLoaded(true)
-    }
 
     const handleScreenPress = () => {
         if (context.interactions.focus) {
@@ -81,10 +77,11 @@ function Canvas() {
             return
         }
         newElement.id = 0
+        const rect = scaleToScreen(newElement.rect)
+        newElement.rect = { ...newElement.rect, ...rect }
         context.set({
             canvas: {
-                width: newElement.rect.width,
-                height: newElement.rect.height,
+                ...rect,
                 backgroundColor: "#ffffff",
                 elements: [newElement]
             }
@@ -101,8 +98,7 @@ function Canvas() {
         newElement.data.borderWidth = 0
         context.set({
             canvas: {
-                width: 500,
-                height: 500,
+                ...scaleToScreen({ width: 500, height: 500 }),
                 backgroundColor: "#ffffff",
                 elements: [newElement]
             }
@@ -171,8 +167,8 @@ function Canvas() {
     }
     
     return (
-        <View style={[styles.canvas, getCanvasStyles(context.canvas)]} onLayout={handleLayout}>
-            {isLayoutLoaded && context.canvas.elements.map((element) =>
+        <View style={getCanvasStyles(context.canvas)}>
+            {context.canvas.elements.map((element) =>
                 React.createElement(getElementByType(element.type), {
                     element,
                     key: element.id
@@ -181,15 +177,5 @@ function Canvas() {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    canvas: {
-        width: "90%"
-    },
-
-    image: {
-        width: "100%"
-    }
-})
 
 export default Canvas

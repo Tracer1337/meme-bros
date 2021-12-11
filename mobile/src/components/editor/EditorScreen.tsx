@@ -6,7 +6,7 @@ import { isPlainObject } from "is-plain-object"
 import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
 import { contextDefaultValue, ContextValue, EditorContext } from "./Context"
-import Canvas from "./Canvas"
+import Canvas, { scaleToScreen } from "./Canvas"
 import BottomBar from "./BottomBar"
 import { getDefaultDataByType } from "./elements"
 import { fetchBase64 } from "../../lib/base64"
@@ -20,9 +20,9 @@ function binaryToPNG(base64: string) {
 async function loadCanvasDummy(): Promise<CanvasType> {
     const image = Image.resolveAssetSource(require("../../assets/meme.png"))
     const base64 = binaryToPNG(await fetchBase64(image.uri))
+    const rect = scaleToScreen(image)
     return {
-        width: image.width,
-        height: image.height,
+        ...rect,
         debug: false,
         backgroundColor: "#ffffff",
         elements: [
@@ -30,10 +30,9 @@ async function loadCanvasDummy(): Promise<CanvasType> {
                 id: 0,
                 type: "image",
                 rect: {
+                    ...rect,
                     x: 0,
                     y: 0,
-                    width: image.width,
-                    height: image.height,
                     rotation: 0
                 },
                 data: {
