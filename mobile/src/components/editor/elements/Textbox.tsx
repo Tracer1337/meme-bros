@@ -12,16 +12,18 @@ function hasPressedElement(event: GestureResponderEvent, element: View) {
     return event.target._nativeTag === element._nativeTag
 }
 
-export const textboxDefaultData: PickElement<"textbox">["data"] = {
-    text: "Enter Text...",
-    fontFamily: "Impact",
-    fontWeight: "normal",
-    textAlign: "left",
-    color: "#000000",
-    caps: true,
-    outlineWidth: 0,
-    outlineColor: "#ffffff",
-    backgroundColor: "transparent"
+export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
+    return {
+        text: "Enter Text...",
+        fontFamily: "Impact",
+        fontWeight: "normal",
+        textAlign: "left",
+        color: "#000000",
+        caps: true,
+        outlineWidth: 0,
+        outlineColor: "#ffffff",
+        backgroundColor: "transparent"
+    }
 }
 
 export function getTextStyles(element: PickElement<"textbox">) {

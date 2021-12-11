@@ -1,8 +1,8 @@
 import React from "react"
 import { CanvasElement, PickElement } from "../../../types"
-import Image, { imageDefaultData } from "./Image"
-import Shape, { shapeDefaultData } from "./Shape"
-import Textbox, { textboxDefaultData } from "./Textbox"
+import Image, { getImageDefaultData } from "./Image"
+import Shape, { getShapeDefaultData } from "./Shape"
+import Textbox, { getTextboxDefaultData } from "./Textbox"
 
 const elementsMap: Record<
     CanvasElement["type"],
@@ -13,10 +13,10 @@ const elementsMap: Record<
     "shape": Shape,
 }
 
-const defaultDataMap: Record<CanvasElement["type"], any> = {
-    "textbox": textboxDefaultData,
-    "image": imageDefaultData,
-    "shape": shapeDefaultData
+const defaultDataMap: Record<CanvasElement["type"], () => any> = {
+    "textbox": getTextboxDefaultData,
+    "image": getImageDefaultData,
+    "shape": getShapeDefaultData
 }
 
 export function getElementByType<T extends CanvasElement["type"]>(
@@ -28,7 +28,7 @@ export function getElementByType<T extends CanvasElement["type"]>(
 export function getDefaultDataByType<T extends CanvasElement["type"]>(
     type: T
 ): PickElement<T>["data"] {
-    return defaultDataMap[type]
+    return defaultDataMap[type]()
 }
 
 getDefaultDataByType("shape")

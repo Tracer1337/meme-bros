@@ -6,12 +6,14 @@ import { PickElement } from "../../../types"
 import { EditorContext } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 
-export const imageDefaultData: PickElement<"image">["data"] = {
-    uri: "",
-    borderRadius: 0,
-    keepAspectRatio: true,
-    naturalWidth: 0,
-    naturalHeight: 0
+export function getImageDefaultData(): PickElement<"image">["data"] {
+    return {
+        uri: "",
+        borderRadius: 0,
+        keepAspectRatio: true,
+        naturalWidth: 0,
+        naturalHeight: 0
+    }
 }
 
 export function getImageStyles(element: PickElement<"image">) {

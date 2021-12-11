@@ -65,7 +65,9 @@ function Canvas() {
     }
 
     const handleScreenPress = () => {
-        context.set({ interactions: { focus: null } })
+        if (context.interactions.focus) {
+            context.set({ interactions: { focus: null } })
+        }
     }
 
     const handleBaseImport = async () => {

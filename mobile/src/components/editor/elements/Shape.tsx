@@ -6,11 +6,13 @@ import { PickElement } from "../../../types"
 import { EditorContext } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 
-export const shapeDefaultData: PickElement<"shape">["data"] = {
-    variant: "rect",
-    backgroundColor: "transparent",
-    borderColor: "#ff0000",
-    borderWidth: 5
+export function getShapeDefaultData(): PickElement<"shape">["data"] {
+    return {
+        variant: "rect",
+        backgroundColor: "transparent",
+        borderColor: "#ff0000",
+        borderWidth: 5
+    }
 }
 
 export function getShapeStyles(element: PickElement<"shape">) {
