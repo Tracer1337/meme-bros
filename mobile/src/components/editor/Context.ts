@@ -17,6 +17,7 @@ type Events = {
     "canvas.render": ContextValue["canvas"],
     "canvas.render.done": ContextValue["canvas"],
     "canvas.base.import": null,
+    "canvas.base.blank": null,
     "canvas.base.dummy": null,
     "canvas.clear": null
 }

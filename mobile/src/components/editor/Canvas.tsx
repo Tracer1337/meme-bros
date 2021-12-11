@@ -45,21 +45,26 @@ async function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
     return newElement
 }
 
+function getCanvasStyles(canvas: ContextValue["canvas"]) {
+    return {
+        backgroundColor: canvas.backgroundColor,
+        height: canvas.height
+    }
+}
+
 function Canvas() {
     const context = useContext(EditorContext)
     const dialog = useContext(DialogContext)
     
     const [isLayoutLoaded, setIsLayoutLoaded] = useState(false)
-    const [dimensions, setDimensions] = useState<{
-        width: number,
-        height: number
-    }>({ width: 0, height: 0 })
 
     const handleLayout = (event: LayoutChangeEvent) => {
         const { layout } = event.nativeEvent
-        setDimensions({
-            width: layout.width,
-            height: layout.width / context.canvas.width * context.canvas.height
+        context.set({
+            canvas: {
+                width: layout.width,
+                height: layout.width / context.canvas.width * context.canvas.height    
+            }
         })
         setIsLayoutLoaded(true)
     }
@@ -80,6 +85,24 @@ function Canvas() {
             canvas: {
                 width: newElement.rect.width,
                 height: newElement.rect.height,
+                backgroundColor: "#ffffff",
+                elements: [newElement]
+            }
+        })
+    }
+
+    const handleBaseBlank = async () => {
+        const newElement = await createCanvasElement("shape")
+        if (!newElement) {
+            return
+        }
+        newElement.rect.width = 0
+        newElement.rect.height = 0
+        newElement.data.borderWidth = 0
+        context.set({
+            canvas: {
+                width: 500,
+                height: 500,
                 backgroundColor: "#ffffff",
                 elements: [newElement]
             }
@@ -126,6 +149,7 @@ function Canvas() {
         setListeners(context.events, [
             ["screen.press", handleScreenPress],
             ["canvas.base.import", handleBaseImport],
+            ["canvas.base.blank", handleBaseBlank],
             ["element.create", handleCreateElement],
             ["element.remove", handleRemoveElement],
             ["canvas.render", handleCanvasGenerate],
@@ -138,18 +162,16 @@ function Canvas() {
         if (!image) {
             return
         }
-        image.rect.width = dimensions.width
-        image.rect.height = dimensions.height
-        context.canvas.width = dimensions.width
-        context.canvas.height = dimensions.height
-    }, [dimensions])
+        image.rect.width = context.canvas.width
+        image.rect.height = context.canvas.height
+    }, [context.canvas.width, context.canvas.height])
 
     if (context.canvas.elements.length === 0) {
         return <BaseSelector/>
     }
     
     return (
-        <View style={[styles.canvas, { height: dimensions.height }]} onLayout={handleLayout}>
+        <View style={[styles.canvas, getCanvasStyles(context.canvas)]} onLayout={handleLayout}>
             {isLayoutLoaded && context.canvas.elements.map((element) =>
                 React.createElement(getElementByType(element.type), {
                     element,

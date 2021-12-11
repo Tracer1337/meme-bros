@@ -11,9 +11,14 @@ function BaseSelector() {
             <Button onPress={() => context.events.emit("canvas.base.import", null)}>
                 Import
             </Button>
-            <Button onPress={() => context.events.emit("canvas.base.dummy", null)}>
-                Load Dummy
+            <Button onPress={() => context.events.emit("canvas.base.blank", null)}>
+                Blank
             </Button>
+            {process.env.NODE_ENV === "development" && (
+                <Button onPress={() => context.events.emit("canvas.base.dummy", null)}>
+                    Load Dummy
+                </Button>
+            )}
         </Surface>
     )
 }
