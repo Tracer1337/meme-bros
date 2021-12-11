@@ -19,11 +19,17 @@ func (e *AnimatedElement) Draw(dc *gg.Context, c *Canvas, i int) {
 }
 
 func (e *AnimatedElement) deriveImageElement(i int) *ImageElement {
+	var img image.Image
+	if i < len(e.Data.Disposed) {
+		img = e.Data.Disposed[i]
+	} else {
+		img = e.Data.Disposed[len(e.Data.Disposed)-1]
+	}
 	return &ImageElement{
 		Index: e.Index,
 		Rect:  e.Rect,
 		Data: &ImageData{
-			Image:        e.Data.Disposed[i%len(e.Data.Disposed)],
+			Image:        img,
 			BorderRadius: e.Data.BorderRadius,
 		},
 	}
