@@ -25,35 +25,45 @@ func (rc *AnimatedRenderingContext) Render() *gif.GIF {
 }
 
 func (rc *AnimatedRenderingContext) prerender() {
-	prerendered := make([]Drawable, 0)
+	prerendered := make([]Drawable, len(rc.Canvas.Drawables))
 	currentLayer := make([]Drawable, 0)
 
-	renderCurrentLayer := func() {
-		if len(currentLayer) == 0 {
+	var wg sync.WaitGroup
+
+	renderLayer := func(layer []Drawable, i int) {
+		defer wg.Done()
+		if len(layer) == 0 {
 			return
 		}
 		c := *rc.Canvas
-		c.Drawables = currentLayer
-		prerendered = append(prerendered, &ImageElement{
+		c.Drawables = layer
+		prerendered[i] = &ImageElement{
 			Index: len(prerendered),
 			Rect:  &Rect{0, 0, rc.Canvas.Width, rc.Canvas.Height, 0},
 			Data:  &ImageData{NewRenderingContext(&c).Render(0).Image(), 0},
-		})
-		currentLayer = nil
+		}
 	}
+
+	i := 0
 
 	for _, e := range rc.Canvas.Drawables {
 		if e.GetType() == "animated" {
-			renderCurrentLayer()
-			prerendered = append(prerendered, e)
+			wg.Add(1)
+			go renderLayer(currentLayer, i)
+			prerendered[i+1] = e
+			i += 2
+			currentLayer = nil
 			continue
 		}
 		currentLayer = append(currentLayer, e)
 	}
 
-	renderCurrentLayer()
+	wg.Add(1)
+	go renderLayer(currentLayer, i)
 
-	rc.Canvas.Drawables = prerendered
+	wg.Wait()
+
+	rc.Canvas.Drawables = prerendered[:i]
 }
 
 func (rc *AnimatedRenderingContext) renderDisposedImages() {
