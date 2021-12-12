@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react"
 import { StyleSheet } from "react-native"
 import { Button, Surface } from "react-native-paper"
-import ColorPicker from "../inputs/ColorPicker"
 import { EditorContext } from "./Context"
 
 function BaseSelector() {
