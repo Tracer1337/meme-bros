@@ -3,7 +3,8 @@ import { StyleSheet, View } from "react-native"
 import { Button, Dialog } from "react-native-paper"
 import { PickElement } from "../../types"
 import { getShapeStyles } from "../editor/elements/Shape"
-import ColorPicker from "../inputs/ColorPicker"
+import { colors } from "../inputs/items"
+import Select from "../inputs/Select"
 
 function ShapeConfigDialog({ visible, data: element, close }: {
     visible: boolean,
@@ -20,16 +21,18 @@ function ShapeConfigDialog({ visible, data: element, close }: {
                 <View style={[shapeStyles, styles.preview]} />
             </Dialog.Title>
             <Dialog.Content>
-                <ColorPicker
+                <Select
                     label="Background Color"
+                    items={colors}
                     value={data.backgroundColor}
                     onChange={(value) => setData({
                         ...data,
                         backgroundColor: value
                     })}
                 />
-                <ColorPicker
+                <Select
                     label="Border Color"
+                    items={colors}
                     value={data.borderColor}
                     onChange={(value) => setData({
                         ...data,

@@ -104,7 +104,9 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
         <Screen style={styles.container} onStartShouldSetResponder={handleScreenPress}>
             <EditorContext.Provider value={context}>
                 <Canvas/>
-                <BottomBar/>
+                {context.canvas.elements.length > 0 && (
+                    <BottomBar/>
+                )}
             </EditorContext.Provider>
         </Screen>
     )

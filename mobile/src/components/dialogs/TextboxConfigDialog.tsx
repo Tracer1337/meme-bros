@@ -1,17 +1,11 @@
 import React, { useState } from "react"
 import { View } from "react-native"
 import { Button, Dialog, Switch, Text } from "react-native-paper"
-import Select, { Item } from "react-native-picker-select"
 import { required } from "../../lib/validation"
 import { PickElement } from "../../types"
 import { getTextStyles, getTransformedText } from "../editor/elements/Textbox"
-import ColorPicker from "../inputs/ColorPicker"
-
-const fontFamilies: Item[] = [
-    { label: "Impact", value: "Impact" },
-    { label: "Arial", value: "Arial" },
-    { label: "Comic Sans", value: "Comic-Sans" }
-]
+import { colors, fontFamilies } from "../inputs/items"
+import Select from "../inputs/Select"
 
 function TextboxConfigDialog({ visible, data: element, close }: {
     visible: boolean,
@@ -28,8 +22,9 @@ function TextboxConfigDialog({ visible, data: element, close }: {
                 {getTransformedText({ ...element, data })}
             </Dialog.Title>
             <Dialog.Content>
-                <ColorPicker
+                <Select
                     label="Color"
+                    items={colors}
                     value={data.color}
                     onChange={required((value) => setData({
                         ...data,
@@ -37,10 +32,10 @@ function TextboxConfigDialog({ visible, data: element, close }: {
                     }))}
                 />
                 <Select
-                    placeholder={{ label: "Font Family", value: null }}
+                    label="Font Family"
                     value={data.fontFamily}
                     items={fontFamilies}
-                    onValueChange={required((value) => setData({
+                    onChange={required((value) => setData({
                         ...data,
                         fontFamily: value
                     }))}

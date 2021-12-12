@@ -1,10 +1,13 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { StyleSheet } from "react-native"
 import { Button, Surface } from "react-native-paper"
+import ColorPicker from "../inputs/ColorPicker"
 import { EditorContext } from "./Context"
 
 function BaseSelector() {
     const context = useContext(EditorContext)
+
+    const [value, setValue] = useState("transparent")
 
     return (
         <Surface style={styles.container}>
