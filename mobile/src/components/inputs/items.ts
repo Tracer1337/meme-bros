@@ -21,3 +21,8 @@ export const fontWeights: Item[] = [
     { label: "Normal", value: "normal" },
     { label: "Bold", value: "bold" }
 ]
+
+export const shapeVariants: Item[] = [
+    { label: "Rectangle", value: "rect" },
+    { label: "Circle", value: "ellipse" }
+]

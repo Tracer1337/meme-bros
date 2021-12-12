@@ -3,7 +3,8 @@ import { StyleSheet, View } from "react-native"
 import { Button, Dialog } from "react-native-paper"
 import { PickElement } from "../../types"
 import { getShapeStyles } from "../editor/elements/Shape"
-import { colors } from "../inputs/items"
+import { colors, shapeVariants } from "../inputs/items"
+import NumberInput from "../inputs/NumberInput"
 import Select from "../inputs/Select"
 
 function ShapeConfigDialog({ visible, data: element, close }: {
@@ -22,23 +23,30 @@ function ShapeConfigDialog({ visible, data: element, close }: {
             </Dialog.Title>
             <Dialog.Content>
                 <Select
+                    label="Shape"
+                    style={styles.input}
+                    items={shapeVariants}
+                    value={data.variant}
+                    onChange={(variant) => setData({ ...data, variant })}
+                />
+                <Select
                     label="Background Color"
                     style={styles.input}
                     items={colors}
                     value={data.backgroundColor}
-                    onChange={(value) => setData({
-                        ...data,
-                        backgroundColor: value
-                    })}
+                    onChange={(backgroundColor) => setData({ ...data, backgroundColor })}
                 />
                 <Select
                     label="Border Color"
+                    style={styles.input}
                     items={colors}
                     value={data.borderColor}
-                    onChange={(value) => setData({
-                        ...data,
-                        borderColor: value
-                    })}
+                    onChange={(borderColor) => setData({ ...data, borderColor })}
+                />
+                <NumberInput
+                    label="Border Width"
+                    value={data.borderWidth}
+                    onChange={(borderWidth) => setData({ ...data, borderWidth })}
                 />
             </Dialog.Content>
             <Dialog.Actions>
