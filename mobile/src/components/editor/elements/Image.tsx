@@ -9,6 +9,8 @@ import makeElement, { ElementProps } from "./makeElement"
 export function getImageDefaultData(): PickElement<"image">["data"] {
     return {
         uri: "",
+        animated: false,
+        loop: true,
         borderRadius: 0,
         keepAspectRatio: true,
         naturalWidth: 0,

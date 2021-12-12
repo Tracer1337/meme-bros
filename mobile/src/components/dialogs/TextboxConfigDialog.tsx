@@ -1,10 +1,11 @@
 import React, { useState } from "react"
-import { View } from "react-native"
-import { Button, Dialog, Switch, Text } from "react-native-paper"
-import { required } from "../../lib/validation"
+import { StyleSheet } from "react-native"
+import { Button, Dialog } from "react-native-paper"
 import { PickElement } from "../../types"
 import { getTextStyles, getTransformedText } from "../editor/elements/Textbox"
-import { colors, fontFamilies } from "../inputs/items"
+import BooleanInput from "../inputs/BooleanInput"
+import { colors, fontFamilies, fontWeights } from "../inputs/items"
+import NumberInput from "../inputs/NumberInput"
 import Select from "../inputs/Select"
 
 function TextboxConfigDialog({ visible, data: element, close }: {
@@ -24,32 +25,50 @@ function TextboxConfigDialog({ visible, data: element, close }: {
             <Dialog.Content>
                 <Select
                     label="Color"
+                    style={styles.input}
                     items={colors}
                     value={data.color}
-                    onChange={required((value) => setData({
-                        ...data,
-                        color: value
-                    }))}
+                    onChange={(color) => setData({ ...data, color })}
                 />
                 <Select
                     label="Font Family"
+                    style={styles.input}
                     value={data.fontFamily}
                     items={fontFamilies}
-                    onChange={required((value) => setData({
-                        ...data,
-                        fontFamily: value
-                    }))}
+                    onChange={(fontFamily) => setData({ ...data, fontFamily })}
                 />
-                <View>
-                    <Text>Caps</Text>
-                    <Switch
-                        value={data.caps}
-                        onValueChange={(value) => setData({
-                            ...data,
-                            caps: value
-                        })}
-                    />
-                </View>
+                <Select
+                    label="Font Weight"
+                    style={styles.input}
+                    value={data.fontWeight}
+                    items={fontWeights}
+                    onChange={(fontWeight) => setData({ ...data, fontWeight })}
+                />
+                <NumberInput
+                    label="Outline Width"
+                    style={styles.input}
+                    value={data.outlineWidth}
+                    onChange={(outlineWidth) => setData({ ...data, outlineWidth })}
+                />
+                <Select
+                    label="Outline Color"
+                    style={styles.input}
+                    value={data.outlineColor}
+                    items={colors}
+                    onChange={(outlineColor) => setData({ ...data, outlineColor })}
+                />
+                <Select
+                    label="Background Color"
+                    style={styles.input}
+                    value={data.backgroundColor}
+                    items={colors}
+                    onChange={(backgroundColor) => setData({ ...data, backgroundColor })}
+                />
+                <BooleanInput
+                    label="Caps"
+                    value={data.caps}
+                    onChange={(caps) => setData({ ...data, caps })}
+                />
             </Dialog.Content>
             <Dialog.Actions>
                 <Button onPress={() => close(data)} style={{ width: "100%" }}>
@@ -59,5 +78,11 @@ function TextboxConfigDialog({ visible, data: element, close }: {
         </Dialog>
     )
 }
+
+const styles = StyleSheet.create({
+    input: {
+        marginBottom: 16
+    }
+})
 
 export default TextboxConfigDialog

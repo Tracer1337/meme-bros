@@ -16,3 +16,8 @@ export const fontFamilies: Item[] = [
     { label: "Arial", value: "Arial" },
     { label: "Comic Sans", value: "Comic-Sans" }
 ]
+
+export const fontWeights: Item[] = [
+    { label: "Normal", value: "normal" },
+    { label: "Bold", value: "bold" }
+]

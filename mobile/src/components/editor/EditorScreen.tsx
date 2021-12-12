@@ -44,8 +44,8 @@ async function loadCanvasDummy(): Promise<CanvasType> {
                 id: 1,
                 type: "textbox",
                 rect: {
-                    x: 100,
-                    y: 200,
+                    x: 50,
+                    y: 50,
                     width: 200,
                     height: 100,
                     rotation: 0
@@ -59,10 +59,10 @@ async function loadCanvasDummy(): Promise<CanvasType> {
                 id: 2,
                 type: "image",
                 rect: {
-                    x: 50,
-                    y: 100,
-                    width: 300,
-                    height: 300,
+                    x: 200,
+                    y: 200,
+                    width: 200,
+                    height: 200,
                     rotation: 0
                 },
                 data: {

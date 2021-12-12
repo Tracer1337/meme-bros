@@ -23,6 +23,7 @@ function ShapeConfigDialog({ visible, data: element, close }: {
             <Dialog.Content>
                 <Select
                     label="Background Color"
+                    style={styles.input}
                     items={colors}
                     value={data.backgroundColor}
                     onChange={(value) => setData({
@@ -50,6 +51,10 @@ function ShapeConfigDialog({ visible, data: element, close }: {
 }
 
 const styles = StyleSheet.create({
+    input: {
+        marginBottom: 16
+    },
+    
     preview: {
         width: 200,
         height: 100

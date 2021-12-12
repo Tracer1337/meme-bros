@@ -25,7 +25,9 @@ export type ImageElement = {
     type: "image",
     data: {
         uri: string,
+        animated: boolean,
         borderRadius: number,
+        loop: boolean,
         keepAspectRatio: boolean,
         naturalWidth: number,
         naturalHeight: number
@@ -36,9 +38,9 @@ export type TextboxElement = {
     type: "textbox",
     data: {
         text: string,
-        fontFamily: "Arial" | "Comic-Sans" | "Impact",
-        fontWeight: "normal" | "bold",
-        textAlign: "left" | "center" | "right",
+        fontFamily: string,
+        fontWeight: string,
+        textAlign: string,
         color: ColorString,
         caps: boolean,
         outlineWidth: number,
@@ -50,7 +52,7 @@ export type TextboxElement = {
 export type ShapeElement = {
     type: "shape",
     data: {
-        variant: "rect" | "ellipse",
+        variant: string,
         backgroundColor: ColorString,
         borderColor: ColorString,
         borderWidth: number

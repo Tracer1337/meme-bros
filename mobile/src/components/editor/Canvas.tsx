@@ -37,6 +37,7 @@ async function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
             return
         }
         newElement.data.uri = image.base64
+        newElement.data.animated = image.base64.startsWith("data:image/gif")
         if (image.width && image.height) {
             newElement.rect.width = newElement.data.naturalWidth = image.width
             newElement.rect.height = newElement.data.naturalHeight = image.height

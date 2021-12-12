@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react"
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View, ViewStyle } from "react-native"
 import { Menu, Text, TouchableRipple, useTheme } from "react-native-paper"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 
@@ -8,11 +8,12 @@ export type Item = {
     value: string
 }
 
-function Select({ items, label, value, onChange }: {
+function Select({ items, label, value, onChange, style }: {
     items: Item[],
     value: string,
     label: string,
-    onChange: (value: string) => void
+    onChange: (value: string) => void,
+    style?: ViewStyle
 }) {
     const theme = useTheme()
 
@@ -33,10 +34,10 @@ function Select({ items, label, value, onChange }: {
 
     const input = (
         <TouchableRipple
-            style={[styles.touchable, {
+            style={StyleSheet.flatten([style, styles.touchable, {
                 backgroundColor: theme.colors.surface,
                 borderRadius: theme.roundness
-            }]}
+            }])}
             onPress={() => setIsOpen(true)}
         >
             <View style={styles.container} ref={(ref) => inputRef.current = ref}>
@@ -45,7 +46,7 @@ function Select({ items, label, value, onChange }: {
                     <Text>{currentItem.label}</Text>
                 </View>
                 <Icon
-                    name="menu-down"
+                    name={isOpen ? "menu-up" : "menu-down"}
                     color="#ffffff"
                     size={24}
                     style={styles.icon}
@@ -75,8 +76,7 @@ function Select({ items, label, value, onChange }: {
 
 const styles = StyleSheet.create({
     touchable: {
-        height: 64,
-        marginBottom: 16
+        height: 64
     },
 
     container: {

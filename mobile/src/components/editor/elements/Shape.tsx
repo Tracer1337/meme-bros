@@ -10,7 +10,7 @@ export function getShapeDefaultData(): PickElement<"shape">["data"] {
     return {
         variant: "rect",
         backgroundColor: "transparent",
-        borderColor: "#ff0000",
+        borderColor: "#e74c3c",
         borderWidth: 5
     }
 }

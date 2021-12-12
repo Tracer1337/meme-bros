@@ -1,7 +1,9 @@
 import React, { useState } from "react"
-import { View } from "react-native"
-import { Button, Dialog, Switch, Text, TextInput } from "react-native-paper"
+import { StyleSheet } from "react-native"
+import { Button, Dialog } from "react-native-paper"
 import { PickElement } from "../../types"
+import BooleanInput from "../inputs/BooleanInput"
+import NumberInput from "../inputs/NumberInput"
 
 function ImageConfigDialog({ visible, data: element, close }: {
     visible: boolean,
@@ -13,26 +15,25 @@ function ImageConfigDialog({ visible, data: element, close }: {
     return (
         <Dialog visible={visible} onDismiss={() => close(element.data)}>
             <Dialog.Content>
-                <TextInput
+                <NumberInput
                     label="Border Radius"
-                    keyboardType="numeric"
+                    style={styles.input}
                     mode="outlined"
-                    value={data.borderRadius.toString()}
-                    onChangeText={(value) => setData({
-                        ...data,
-                        borderRadius: parseInt(value) || 0
-                    })}
+                    value={data.borderRadius}
+                    onChange={(borderRadius) => setData({ ...data, borderRadius })}
                 />
-                <View>
-                    <Text>Keep Aspect Ratio</Text>
-                    <Switch
-                        value={data.keepAspectRatio}
-                        onValueChange={(value) => setData({
-                            ...data,
-                            keepAspectRatio: value
-                        })}
+                <BooleanInput
+                    label="Keep Aspect Ratio"
+                    value={data.keepAspectRatio}
+                    onChange={(keepAspectRatio) => setData({ ...data, keepAspectRatio })}
+                />
+                {data.animated && (
+                    <BooleanInput
+                        label="Loop"
+                        value={data.loop}
+                        onChange={(loop) => setData({ ...data, loop })}
                     />
-                </View>
+                )}
             </Dialog.Content>
             <Dialog.Actions>
                 <Button onPress={() => close(data)} style={{ width: "100%" }}>
@@ -42,4 +43,11 @@ function ImageConfigDialog({ visible, data: element, close }: {
         </Dialog>
     )
 }
+
+const styles = StyleSheet.create({
+    input: {
+        marginBottom: 16
+    }
+})
+
 export default ImageConfigDialog
