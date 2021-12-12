@@ -19,7 +19,7 @@ function TextboxConfigDialog({ visible, data: element, close }: {
 
     return (
         <Dialog visible={visible} onDismiss={() => close(element.data)}>
-            <Dialog.Title style={textStyles}>
+            <Dialog.Title style={[textStyles, { backgroundColor: data.backgroundColor }]}>
                 {getTransformedText({ ...element, data })}
             </Dialog.Title>
             <Dialog.Content>

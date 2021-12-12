@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { Animated, GestureResponderEvent, StyleSheet, TextInput, View } from "react-native"
+import { Animated, GestureResponderEvent, StyleSheet, TextInput, TextStyle, View } from "react-native"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
 import TextFitModule from "../../../lib/TextFitModule"
@@ -26,7 +26,7 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
     }
 }
 
-export function getTextStyles(element: PickElement<"textbox">) {
+export function getTextStyles(element: PickElement<"textbox">): TextStyle {
     return {
         fontFamily: `${element.data.fontFamily}_${element.data.fontWeight}`,
         color: element.data.color
@@ -105,7 +105,8 @@ function Textbox({ element, setDraggableProps, size }: ElementProps<"textbox">) 
             ref={containerRef}
             style={[
                 styles.container,
-                context.interactions.focus === element.id ? styles.focus : {}
+                context.interactions.focus === element.id ? styles.focus : {},
+                { backgroundColor: element.data.backgroundColor }
             ]}
         >
             {isEditing ? (

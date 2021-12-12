@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react"
+import { ViewStyle } from "react-native"
 import { Animated } from "react-native"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
@@ -15,7 +16,7 @@ export function getShapeDefaultData(): PickElement<"shape">["data"] {
     }
 }
 
-export function getShapeStyles(element: PickElement<"shape">) {
+export function getShapeStyles(element: PickElement<"shape">): ViewStyle {
     return {
         backgroundColor: element.data.backgroundColor,
         borderColor: element.data.borderColor,

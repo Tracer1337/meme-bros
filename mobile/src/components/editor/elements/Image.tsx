@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react"
-import { Animated } from "react-native"
+import { Animated, ImageStyle } from "react-native"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
 import { PickElement } from "../../../types"
@@ -18,7 +18,7 @@ export function getImageDefaultData(): PickElement<"image">["data"] {
     }
 }
 
-export function getImageStyles(element: PickElement<"image">) {
+export function getImageStyles(element: PickElement<"image">): ImageStyle {
     return {
         borderRadius: element.data.borderRadius
     }

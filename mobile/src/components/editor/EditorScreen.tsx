@@ -52,7 +52,10 @@ async function loadCanvasDummy(): Promise<CanvasType> {
                 },
                 data: {
                     ...getDefaultDataByType("textbox") as PickElement<"textbox">["data"],
-                    text: "This is my text"
+                    text: "This is my text",
+                    outlineWidth: 5,
+                    outlineColor: "#ffffff",
+                    backgroundColor: "#2ecc71"
                 }
             },
             {
