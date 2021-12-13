@@ -1,26 +1,21 @@
 import React, { useContext } from "react"
-import { Animated, StyleSheet, TouchableOpacity, View } from "react-native"
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import EditIcon from "@mui/icons-material/Edit"
+import SettingsIcon from "@mui/icons-material/Settings"
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
-import globalStyles from "../../../styles"
 import { EditorContext, ElementEvents } from "../Context"
 import { CanvasElement } from "../../../types"
 
 function ActionHandle({ icon, onPress }: {
-    icon: string,
+    icon: React.ComponentType<any>,
     onPress: () => void
 }) {
     return (
-        <TouchableOpacity onPress={onPress}>
-            <Icon
-                name={icon}
-                size={24}
-                color="#000"
-                style={globalStyles.handle}
-            />
-        </TouchableOpacity>
+        <div onClick={onPress}>
+            {React.createElement(icon)}
+        </div>
     )
 }
 
@@ -28,16 +23,12 @@ function Interactions({
     active,
     element,
     config,
-    size,
-    rotation,
     onUpdate,
     getHandleProps
 }: {
     active: boolean,
     element: CanvasElement,
     config: ElementConfig,
-    size: Animated.ValueXY,
-    rotation: Animated.Value,
     onUpdate: () => void,
     getHandleProps: GetHandleProps
 }) {
@@ -48,62 +39,55 @@ function Interactions({
     }
 
     return (
-        <View style={[styles.controls, { display: !active ? "none" : undefined }]}>
-            <View style={styles.topControls}>
+        <div style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            display: !active ? "none" : undefined
+        }}>
+            <div style={{
+                position: "absolute",
+                top: -24,
+                width: "100%",
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "center"
+            }}>
                 {config.interactions.rotate && (
-                    <View style={{ marginRight: 8 }}>
+                    <div style={{ marginRight: 8 }}>
                         <RotationHandle
-                            animate={rotation}
                             childRect={element.rect}
                             onUpdate={onUpdate}
                             getHandleProps={getHandleProps}
                         />
-                    </View>
+                    </div>
                 )}
                 {config.interactions.edit && (
-                    <View style={{ marginRight: 8 }}>
-                        <ActionHandle icon="pencil" onPress={event("edit")}/>
-                    </View>
+                    <div style={{ marginRight: 8 }}>
+                        <ActionHandle icon={EditIcon} onPress={event("edit")}/>
+                    </div>
                 )}
                 {config.interactions.config && (
-                    <View style={{ marginRight: 8 }}>
-                        <ActionHandle icon="cog" onPress={event("config")}/>
-                    </View>
+                    <div style={{ marginRight: 8 }}>
+                        <ActionHandle icon={SettingsIcon} onPress={event("config")}/>
+                    </div>
                 )}
                 {config.interactions.delete && (
-                    <View>
-                        <ActionHandle icon="delete-outline" onPress={event("remove")}/>
-                    </View>
+                    <div>
+                        <ActionHandle icon={DeleteOutlineIcon} onPress={event("remove")}/>
+                    </div>
                 )}
-            </View>
+            </div>
             {config.interactions.resize && (
                 <ResizeHandles
-                    animate={size}
                     getHandleProps={getHandleProps}
                     onUpdate={onUpdate}
                     childRect={element.rect}
                     aspectRatio={config.aspectRatio}
                 />
             )}
-        </View>
+        </div>
     )
 }
-
-const styles = StyleSheet.create({
-    controls: {
-        width: "100%",
-        height: "100%",
-        position: "absolute"
-    },
-
-    topControls: {
-        position: "absolute",
-        top: -24,
-        width: "100%",
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "center"
-    }
-})
 
 export default Interactions

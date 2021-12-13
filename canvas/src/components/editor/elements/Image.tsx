@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react"
-import { Animated, ImageStyle } from "react-native"
+import { useContext, useEffect } from "react"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
 import { PickElement } from "../../../types"
@@ -18,23 +17,23 @@ export function getImageDefaultData(): PickElement<"image">["data"] {
     }
 }
 
-export function getImageStyles(element: PickElement<"image">): ImageStyle {
+export function getImageStyles(element: PickElement<"image">) {
     return {
         borderRadius: element.data.borderRadius
     }
 }
 
-function Image({ element, size }: ElementProps<"image">) {
+function Image({ element }: ElementProps<"image">) {
     const context = useContext(EditorContext)
     const dialogs = useContext(DialogContext)
 
     const resetSize = () => {
         element.rect.width = element.data.naturalWidth
         element.rect.height = element.data.naturalHeight
-        size.setValue({
-            x: element.rect.width,
-            y: element.rect.height
-        })
+        // size.setValue({
+        //     x: element.rect.width,
+        //     y: element.rect.height
+        // })
     }
 
     const handleConfig = async () => {
@@ -51,20 +50,12 @@ function Image({ element, size }: ElementProps<"image">) {
             ["element.config", consumeEvent(element.id, handleConfig)]
         ])
     )
-
-    const imageStyles = getImageStyles(element)
     
     return (
-        <Animated.Image
-            source={{
-                uri: element.data.uri,
-                width: element.rect.width,
-                height: element.rect.height
-            }}
-            resizeMode="stretch"
-            width={size.x}
-            height={size.y}
-            style={imageStyles}
+        <img
+            src={element.data.uri}
+            alt=""
+            style={getImageStyles(element)}
         />
     )
 }

@@ -1,19 +1,16 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Animated } from "react-native"
+import React, { useContext, useState } from "react"
 import { DeepPartial } from "tsdef"
 import deepmerge from "deepmerge"
-import Draggable, { DraggableProps } from "../../../lib/Draggable"
 import { EditorContext } from "../Context"
-import { withOffset } from "../../../lib/animated"
-import useLayout from "../../../lib/useLayout"
 import { CanvasElement, PickElement } from "../../../types"
 import Interactions from "./Interactions"
+import { DraggableCore } from "react-draggable"
+
+type DraggableProps = React.ComponentProps<typeof DraggableCore>
 
 export type ElementProps<T extends CanvasElement["type"]> = {
     element: PickElement<T>,
-    setDraggableProps: (props: DraggableProps) => void,
-    size: Animated.ValueXY,
-    rotation: Animated.Value
+    setDraggableProps: (props: DraggableProps) => void
 }
 
 export type ElementConfig = {
@@ -50,14 +47,6 @@ function makeElement<T extends CanvasElement["type"]>(
 
         const config = deepmerge(defaultConfig, getElementConfig({ element })) as ElementConfig
 
-        const [getLayout, onLayout] = useLayout()
-
-        const size = useRef(withOffset(new Animated.ValueXY(), {
-            x: element.rect.width,
-            y: element.rect.height
-        })).current
-        const rotation = useRef(new Animated.Value(element.rect.rotation)).current
-
         const [draggableProps, setDraggableProps] = useState<DraggableProps>({})
         const [activeHandle, setActiveHandle] = useState<HandleKey | null>(null)
 
@@ -74,19 +63,19 @@ function makeElement<T extends CanvasElement["type"]>(
         })
 
         const updateElement = () => {
-            const layout = getLayout()
-            if (!layout) {
-                return
-            }
-            element.rect = {
-                x: layout.x,
-                y: layout.y,
-                width: layout.width,
-                height: layout.height,
-                // @ts-ignore
-                rotation: rotation._value
-            }
-            context.set({})
+            // const layout = getLayout()
+            // if (!layout) {
+            //     return
+            // }
+            // element.rect = {
+            //     x: layout.x,
+            //     y: layout.y,
+            //     width: layout.width,
+            //     height: layout.height,
+            //     // @ts-ignore
+            //     rotation: rotation._value
+            // }
+            // context.set({})
         }
 
         const focusElement = () => {
@@ -98,10 +87,9 @@ function makeElement<T extends CanvasElement["type"]>(
         }
 
         return (
-            <Draggable
+            <DraggableCore
                 x={element.rect.x}
                 y={element.rect.y}
-                onLayout={onLayout}
                 {...getHandleProps("move", {
                     onStart: focusElement,
                     onEnd: blurElement
@@ -109,37 +97,22 @@ function makeElement<T extends CanvasElement["type"]>(
                 {...draggableProps}
                 {...(!config.focusable ? { disabled: true } : {})}
             >
-                <Animated.View
-                    style={{
-                        width: size.x,
-                        height: size.y,
-                        transform: [{
-                            rotate: rotation.interpolate({
-                                inputRange: [0, 2*Math.PI],
-                                outputRange: ["0deg", "360deg"]
-                            })
-                        }]
-                    }}
-                >
+                <div style={{}}>
                     <Component
                         element={element}
                         setDraggableProps={setDraggableProps}
-                        size={size}
-                        rotation={rotation}
                     />
                     {config.focusable && (
                         <Interactions
                             active={context.interactions.focus === element.id}
                             element={element}
                             config={config}
-                            size={size}
-                            rotation={rotation}
                             onUpdate={updateElement}
                             getHandleProps={getHandleProps}
                         />
                     )}
-                </Animated.View>
-            </Draggable>
+                </div>
+            </DraggableCore>
         )
     }
 }
