@@ -10,6 +10,16 @@ export function setListeners<T>(
     }
 }
 
+export function setDOMListeners(
+    events: any,
+    handlers: [string, (data: any) => void][]
+) {
+    handlers.forEach(([event, handler]) => events.addEventListener(event, handler))
+    return () => {
+        handlers.forEach(([event, handler]) => events.removeEventListener(event, handler))
+    }
+}
+
 export function consumeEvent(id: number, handler: (data: any) => void) {
     return (_id: number) => {
         if (id !== _id) {

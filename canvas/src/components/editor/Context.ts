@@ -3,8 +3,6 @@ import { DeepPartial } from "tsdef"
 import EventEmitter from "../../lib/EventEmitter"
 import { Canvas, CanvasElement } from "../../types"
 
-export type ScreenEvents = "press"
-
 export type ElementEvents = "create" | "edit" | "remove" | "config"
 
 type Events = {

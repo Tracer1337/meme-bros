@@ -6,7 +6,7 @@ import { CanvasElement, PickElement } from "../../../types"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import { AnimatedValue, AnimatedValueXY } from "../../../lib/animation"
-import { setListeners } from "../../../lib/events"
+import { setDOMListeners, setListeners } from "../../../lib/events"
 
 type DraggableProps = React.ComponentProps<typeof DraggableCore>
 
@@ -94,6 +94,10 @@ function makeElement<T extends CanvasElement["type"]>(
             context.set({ interactions: { focus: element.id } })
         }
 
+        const blurElement = () => {
+            context.set({ interactions: { focus: null } })
+        }
+
         const handleMovementDrag: DraggableEventHandler = (_, { deltaX, deltaY }) => {
             pos.emit("update", {
                 x: pos.x.value + deltaX,
@@ -117,6 +121,19 @@ function makeElement<T extends CanvasElement["type"]>(
         useEffect(() => setListeners(size, [["update", updateTransform]]))
         useEffect(() => setListeners(rotation, [["update", updateTransform]]))
         useEffect(() => updateTransform(), [updateTransform])
+
+        useEffect(() => {
+            const handleClick = (event: TouchEvent) => {
+                if (!container.current?.contains(event.target as Node)) {
+                    blurElement()
+                }
+            }
+
+            return setDOMListeners(window, [
+                ["click", handleClick],
+                ["touchstart", handleClick]
+            ])
+        })
 
         return (
             <DraggableCore
