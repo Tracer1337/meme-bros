@@ -20,12 +20,13 @@ function RotationHandle({ getHandleProps, onUpdate }: {
 
     return (
         <DraggableCore
-            style={{ position: "relative" }}
             controlled
             onDrag={handleRotationDrag}
             {...getHandleProps("rotate", { onEnd: onUpdate })}
         >
-            <RotateIcon/>
+            <div style={{ position: "relative" }}>
+                <RotateIcon/>
+            </div>
         </DraggableCore>
     )
 }

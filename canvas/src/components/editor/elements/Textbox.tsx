@@ -21,7 +21,8 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
 
 export function getTextStyles(element: PickElement<"textbox">) {
     return {
-        fontFamily: `${element.data.fontFamily}_${element.data.fontWeight}`,
+        fontFamily: element.data.fontFamily,
+        fontWeight: element.data.fontWeight,
         color: element.data.color
     }
 }
