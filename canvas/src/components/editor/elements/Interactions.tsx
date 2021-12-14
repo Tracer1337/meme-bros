@@ -7,6 +7,7 @@ import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
 import { EditorContext, ElementEvents } from "../Context"
 import { CanvasElement } from "../../../types"
+import { AnimatedValue, AnimatedValueXY } from "../../../lib/animation"
 
 function ActionHandle({ icon, onPress }: {
     icon: React.ComponentType<any>,
@@ -20,17 +21,19 @@ function ActionHandle({ icon, onPress }: {
 }
 
 function Interactions({
-    active,
     element,
     config,
     onUpdate,
-    getHandleProps
+    getHandleProps,
+    size,
+    rotation
 }: {
-    active: boolean,
     element: CanvasElement,
     config: ElementConfig,
     onUpdate: () => void,
-    getHandleProps: GetHandleProps
+    getHandleProps: GetHandleProps,
+    size: AnimatedValueXY,
+    rotation: AnimatedValue
 }) {
     const context = useContext(EditorContext)
 
@@ -42,8 +45,7 @@ function Interactions({
         <div style={{
             width: "100%",
             height: "100%",
-            position: "absolute",
-            display: !active ? "none" : undefined
+            position: "absolute"
         }}>
             <div style={{
                 position: "absolute",
@@ -56,6 +58,7 @@ function Interactions({
                 {config.interactions.rotate && (
                     <div style={{ marginRight: 8 }}>
                         <RotationHandle
+                            animate={rotation}
                             childRect={element.rect}
                             onUpdate={onUpdate}
                             getHandleProps={getHandleProps}
@@ -80,6 +83,7 @@ function Interactions({
             </div>
             {config.interactions.resize && (
                 <ResizeHandles
+                    animate={size}
                     getHandleProps={getHandleProps}
                     onUpdate={onUpdate}
                     childRect={element.rect}

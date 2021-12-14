@@ -1,16 +1,20 @@
-import React, { useContext, useState } from "react"
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { DeepPartial } from "tsdef"
 import deepmerge from "deepmerge"
 import { EditorContext } from "../Context"
 import { CanvasElement, PickElement } from "../../../types"
 import Interactions from "./Interactions"
-import { DraggableCore } from "react-draggable"
+import { DraggableCore, DraggableEventHandler } from "react-draggable"
+import { AnimatedValue, AnimatedValueXY } from "../../../lib/animation"
+import { setListeners } from "../../../lib/events"
 
 type DraggableProps = React.ComponentProps<typeof DraggableCore>
 
 export type ElementProps<T extends CanvasElement["type"]> = {
     element: PickElement<T>,
-    setDraggableProps: (props: DraggableProps) => void
+    setDraggableProps: (props: DraggableProps) => void,
+    size: AnimatedValueXY,
+    rotation: AnimatedValue
 }
 
 export type ElementConfig = {
@@ -47,6 +51,14 @@ function makeElement<T extends CanvasElement["type"]>(
 
         const config = deepmerge(defaultConfig, getElementConfig({ element })) as ElementConfig
 
+        const pos = useRef(new AnimatedValueXY(element.rect)).current
+        const size = useRef(new AnimatedValueXY({
+            x: element.rect.width,
+            y: element.rect.height
+        })).current
+        const rotation = useRef(new AnimatedValue(element.rect.rotation)).current
+        const container = useRef<HTMLDivElement>(null)
+
         const [draggableProps, setDraggableProps] = useState<DraggableProps>({})
         const [activeHandle, setActiveHandle] = useState<HandleKey | null>(null)
 
@@ -82,33 +94,58 @@ function makeElement<T extends CanvasElement["type"]>(
             context.set({ interactions: { focus: element.id } })
         }
 
-        const blurElement = () => {
-            updateElement()
+        const handleMovementDrag: DraggableEventHandler = (_, { deltaX, deltaY }) => {
+            pos.emit("update", {
+                x: pos.x.value + deltaX,
+                y: pos.y.value + deltaY
+            })
         }
+
+        const updateTransform = useCallback(() => {
+            if (!container.current) {
+                return
+            }
+            container.current.style.transform = `
+                translate(${pos.x.value}px, ${pos.y.value}px)
+                rotate(${rotation.value}rad)
+            `
+            container.current.style.width = size.x.value + "px"
+            container.current.style.height = size.y.value + "px"
+        }, [container, pos, size, rotation])
+
+        useEffect(() => setListeners(pos, [["update", updateTransform]]))
+        useEffect(() => setListeners(size, [["update", updateTransform]]))
+        useEffect(() => setListeners(rotation, [["update", updateTransform]]))
+        useEffect(() => updateTransform(), [updateTransform])
 
         return (
             <DraggableCore
-                x={element.rect.x}
-                y={element.rect.y}
                 {...getHandleProps("move", {
                     onStart: focusElement,
-                    onEnd: blurElement
+                    onEnd: updateElement
                 })}
+                onDrag={handleMovementDrag}
                 {...draggableProps}
                 {...(!config.focusable ? { disabled: true } : {})}
             >
-                <div style={{}}>
+                <div ref={container} style={{
+                    transformOrigin: "center, center",
+                    cursor: "move"
+                }}>
                     <Component
                         element={element}
                         setDraggableProps={setDraggableProps}
+                        size={size}
+                        rotation={rotation}
                     />
-                    {config.focusable && (
+                    {config.focusable && context.interactions.focus === element.id && (
                         <Interactions
-                            active={context.interactions.focus === element.id}
                             element={element}
                             config={config}
                             onUpdate={updateElement}
                             getHandleProps={getHandleProps}
+                            size={size}
+                            rotation={rotation}
                         />
                     )}
                 </div>

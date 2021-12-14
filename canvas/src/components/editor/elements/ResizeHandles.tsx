@@ -1,30 +1,33 @@
-import { DraggableCore } from "react-draggable"
+import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import ArrowIcon from "@mui/icons-material/ArrowRightAlt"
 import type { GetHandleProps } from "./makeElement"
+import { AnimatedValueXY } from "../../../lib/animation"
 
 function ResizeHandles({
     getHandleProps,
     onUpdate,
-    // childRect,
-    // aspectRatio
+    childRect,
+    aspectRatio,
+    animate
 }: {
     getHandleProps: GetHandleProps,
     onUpdate: () => void,
     childRect: { width: number, height: number },
-    aspectRatio?: number
+    aspectRatio?: number,
+    animate: AnimatedValueXY
 }) {
-    // const handleDrag = (_e: any, { x, y }: { x: number, y: number }) => {
-    //     if (aspectRatio) {
-    //         const newX = childRect.width + x
-    //         const newY = newX * aspectRatio
-    //         animate.setValue({
-    //             x: newX - childRect.width,
-    //             y: newY - childRect.height
-    //         })
-    //     } else {
-    //         animate.setValue({ x, y })
-    //     }
-    // }
+    const handleDrag: DraggableEventHandler = (_, { x, y }) => {
+        if (aspectRatio) {
+            const newX = childRect.width + x
+            const newY = newX * aspectRatio
+            animate.emit("update", {
+                x: newX - childRect.width,
+                y: newY - childRect.height
+            })
+        } else {
+            animate.emit("update", { x, y })
+        }
+    }
 
     return (
         <div style={{
@@ -39,6 +42,7 @@ function ResizeHandles({
             }}>
                 <DraggableCore
                     controlled
+                    onDrag={handleDrag}
                     {...getHandleProps("resize", { onEnd: onUpdate })}
                 >
                     <ArrowIcon/>
