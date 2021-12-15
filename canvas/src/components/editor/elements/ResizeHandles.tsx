@@ -16,16 +16,16 @@ function ResizeHandles({
     aspectRatio?: number,
     animate: AnimatedValueXY
 }) {
-    const handleDrag: DraggableEventHandler = (_, { x, y }) => {
+    const handleDrag: DraggableEventHandler = (_, { deltaX, deltaY }) => {
+        const newSize = {
+            x: animate.x.value + deltaX,
+            y: animate.y.value + deltaY
+        }
         if (aspectRatio) {
-            const newX = childRect.width + x
-            const newY = newX * aspectRatio
-            animate.emit("update", {
-                x: newX - childRect.width,
-                y: newY - childRect.height
-            })
+            newSize.y = newSize.x * aspectRatio
+            animate.emit("update", newSize)
         } else {
-            animate.emit("update", { x, y })
+            animate.emit("update", newSize)
         }
     }
 
@@ -37,8 +37,10 @@ function ResizeHandles({
         }}>
             <div style={{
                 position: "absolute",
-                right: -14,
-                bottom: -14
+                right: -28,
+                bottom: -28,
+                pointerEvents: "all",
+                cursor: "se-resize"
             }}>
                 <DraggableCore
                     controlled
