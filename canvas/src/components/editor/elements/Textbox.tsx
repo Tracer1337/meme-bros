@@ -1,6 +1,7 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { DialogContext } from "../../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../../lib/events"
+import { textfit } from "../../../lib/textfit"
 import { PickElement } from "../../../types"
 import { EditorContext } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
@@ -33,7 +34,7 @@ export function getTransformedText(element: PickElement<"textbox">) {
         : element.data.text
 }
 
-function Textbox({ element, setDraggableProps }: ElementProps<"textbox">) {
+function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) {
     const context = useContext(EditorContext)
     const dialogs = useContext(DialogContext)
 
@@ -60,6 +61,19 @@ function Textbox({ element, setDraggableProps }: ElementProps<"textbox">) {
         context.set({})
     }
 
+    const updateFontSize = useCallback(() => {
+        if (!textRef.current) {
+            return
+        }
+        const fontSize = textfit({
+            width: size.x.value,
+            height: size.y.value,
+            text,
+            styles: getTextStyles(element)
+        })
+        textRef.current.style.fontSize = fontSize + "px"
+    }, [element, text, size])
+
     useEffect(() =>
         setListeners(context.events, [
             ["element.edit", consumeEvent(element.id, handleEdit)],
@@ -72,13 +86,18 @@ function Textbox({ element, setDraggableProps }: ElementProps<"textbox">) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEditing])
 
+    useEffect(() => setListeners(size, [
+        ["update", updateFontSize]
+    ]))
+
     useEffect(() => {
         if (!textRef.current) {
             return
         }
         element.data.text = text
         textRef.current.textContent = text
-    }, [element.data, text])
+        updateFontSize()
+    }, [element.data, text, updateFontSize])
 
     return (
         <div
