@@ -88,7 +88,6 @@ function Interactions({
                     animate={size}
                     getHandleProps={getHandleProps}
                     onUpdate={onUpdate}
-                    childRect={element.rect}
                     aspectRatio={config.aspectRatio}
                 />
             )}
