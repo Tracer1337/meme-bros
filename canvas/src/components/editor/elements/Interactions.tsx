@@ -14,7 +14,10 @@ function ActionHandle({ icon, onPress }: {
     onPress: () => void
 }) {
     return (
-        <div onClick={onPress}>
+        <div onClick={onPress} style={{
+            pointerEvents: "all",
+            cursor: "pointer"
+        }}>
             {React.createElement(icon)}
         </div>
     )

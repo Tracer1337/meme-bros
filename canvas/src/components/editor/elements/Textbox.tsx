@@ -38,12 +38,21 @@ function Textbox({ element, setDraggableProps }: ElementProps<"textbox">) {
     const dialogs = useContext(DialogContext)
 
     const containerRef = useRef<HTMLDivElement>(null)
+    const textRef = useRef<HTMLDivElement>(null)
     
-    const [text] = useState(element.data.text)
+    const [text, setText] = useState(element.data.text)
     const [isEditing, setIsEditing] = useState(false)
 
     const handleEdit = () => {
+        const handleFocusOut = () => {
+            setIsEditing(false)
+            textRef.current?.removeEventListener("focusout", handleFocusOut)
+        }
+
         setIsEditing(true)
+        requestAnimationFrame(() => textRef.current?.focus())
+
+        textRef.current?.addEventListener("focusout", handleFocusOut)
     }
 
     const handleConfig = async () => {
@@ -64,7 +73,11 @@ function Textbox({ element, setDraggableProps }: ElementProps<"textbox">) {
     }, [isEditing])
 
     useEffect(() => {
+        if (!textRef.current) {
+            return
+        }
         element.data.text = text
+        textRef.current.textContent = text
     }, [element.data, text])
 
     return (
@@ -75,21 +88,22 @@ function Textbox({ element, setDraggableProps }: ElementProps<"textbox">) {
                 height: "100%",
                 backgroundColor: element.data.backgroundColor,
                 ...(context.interactions.focus !== element.id ? {} : {
-                    border: "1px dashed #000"
+                    border: "1px dashed gray"
                 })
             }}
         >
             <div
+                ref={textRef}
                 contentEditable={isEditing}
                 style={{ ...getTextStyles(element), ...{
-                    userSelect: "none"
+                    userSelect: "none",
+                    outline: "none",
+                    fontSize: 24,
+                    resize: "none",
+                    whiteSpace: "pre-wrap",
                 } }}
-                // onTouchStart={() => setIsEditing(true)}
-                // onMouseDown={() => setIsEditing(true)}
-                onInput={(e) => console.log(e.currentTarget.textContent)}
-            >
-                {text}
-            </div>
+                onInput={(e) => setText(e.currentTarget.textContent || "")}
+            />
         </div>
     )
 }
