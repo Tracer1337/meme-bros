@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { DeepPartial } from "tsdef"
-import deepmerge from "deepmerge"
+import { deepmerge } from "@mui/utils"
 import { EditorContext } from "../Context"
 import { CanvasElement, PickElement } from "../../../types"
 import Interactions from "./Interactions"
@@ -37,8 +37,8 @@ const defaultConfig: ElementConfig = {
 export type HandleKey = "move" | "resize" | "rotate"
 
 export type GetHandleProps = (key: HandleKey, options?: {
-    onStart?: () => void,
-    onEnd?: () => void
+    onStart?: DraggableEventHandler,
+    onStop?: DraggableEventHandler
 }) => void
 
 function makeElement<T extends CanvasElement["type"]>(
@@ -63,13 +63,13 @@ function makeElement<T extends CanvasElement["type"]>(
         const [activeHandle, setActiveHandle] = useState<HandleKey | null>(null)
 
         const getHandleProps: GetHandleProps = (key, options) => ({
-            onStart: () => {
+            onStart: (...args: Parameters<DraggableEventHandler>) => {
                 setActiveHandle(key)
-                options?.onStart?.()
+                options?.onStart?.(...args)
             },
-            onEnd: () => {
+            onStop: (...args: Parameters<DraggableEventHandler>) => {
                 setActiveHandle(null)
-                options?.onEnd?.()
+                options?.onStop?.(...args)
             },
             disabled: activeHandle !== null && activeHandle !== key
         })
@@ -128,7 +128,6 @@ function makeElement<T extends CanvasElement["type"]>(
                     blurElement()
                 }
             }
-
             return setDOMListeners(window, [
                 ["click", handleClick],
                 ["touchstart", handleClick]
@@ -139,22 +138,32 @@ function makeElement<T extends CanvasElement["type"]>(
             <DraggableCore
                 {...getHandleProps("move", {
                     onStart: focusElement,
-                    onEnd: updateElement
+                    onStop: updateElement
                 })}
                 onDrag={handleMovementDrag}
+                handle={`#element-${element.id}`}
                 {...draggableProps}
                 {...(!config.focusable ? { disabled: true } : {})}
             >
                 <div ref={container} style={{
                     transformOrigin: "center, center",
-                    cursor: "move"
+                    position: "relative"
                 }}>
-                    <Component
-                        element={element}
-                        setDraggableProps={setDraggableProps}
-                        size={size}
-                        rotation={rotation}
-                    />
+                    <div
+                        id={`element-${element.id}`}
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            cursor: "move"
+                        }}
+                    >
+                        <Component
+                            element={element}
+                            setDraggableProps={setDraggableProps}
+                            size={size}
+                            rotation={rotation}
+                        />
+                    </div>
                     {config.focusable && context.interactions.focus === element.id && (
                         <Interactions
                             element={element}

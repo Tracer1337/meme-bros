@@ -37,13 +37,13 @@ function ResizeHandles({
         }}>
             <div style={{
                 position: "absolute",
-                right: 14,
-                bottom: 14
+                right: -14,
+                bottom: -14
             }}>
                 <DraggableCore
                     controlled
                     onDrag={handleDrag}
-                    {...getHandleProps("resize", { onEnd: onUpdate })}
+                    {...getHandleProps("resize", { onStop: onUpdate })}
                 >
                     <ArrowIcon/>
                 </DraggableCore>

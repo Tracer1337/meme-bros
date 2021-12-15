@@ -45,13 +45,15 @@ function Interactions({
         <div style={{
             width: "100%",
             height: "100%",
-            position: "absolute"
+            position: "absolute",
+            top: 0,
+            pointerEvents: "none"
         }}>
             <div style={{
                 position: "absolute",
                 top: -24,
                 width: "100%",
-                flex: 1,
+                display: "flex",
                 flexDirection: "row",
                 justifyContent: "center"
             }}>

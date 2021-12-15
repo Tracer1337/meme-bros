@@ -81,7 +81,9 @@ function Textbox({ element, setDraggableProps }: ElementProps<"textbox">) {
         >
             <div
                 contentEditable={isEditing}
-                style={getTextStyles(element)}
+                style={{ ...getTextStyles(element), ...{
+                    userSelect: "none"
+                } }}
                 // onTouchStart={() => setIsEditing(true)}
                 // onMouseDown={() => setIsEditing(true)}
                 onInput={(e) => console.log(e.currentTarget.textContent)}

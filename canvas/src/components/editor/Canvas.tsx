@@ -143,15 +143,15 @@ function Canvas() {
         ])
     )
 
-    useEffect(() => {
-        const image = context.canvas.elements[0]
-        if (!image) {
-            return
-        }
-        image.rect.width = context.canvas.width
-        image.rect.height = context.canvas.height
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [context.canvas.width, context.canvas.height])
+    // useEffect(() => {
+    //     const image = context.canvas.elements[0]
+    //     if (!image) {
+    //         return
+    //     }
+    //     image.rect.width = context.canvas.width
+    //     image.rect.height = context.canvas.height
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [context.canvas.width, context.canvas.height])
     
     return (
         <div style={getCanvasStyles(context.canvas)}>

@@ -5,7 +5,7 @@ type AnimatedEvents = {
 }
 
 export class AnimatedValue extends EventEmitter<AnimatedEvents> {
-    constructor(public value: number) {
+    constructor(public value = 0) {
         super()
         this.addListener("update", (newValue) => {
             this.value = newValue
@@ -21,7 +21,7 @@ export class AnimatedValueXY extends EventEmitter<AnimatedXYEvents> {
     public x: AnimatedValue
     public y: AnimatedValue
 
-    constructor({ x, y }: { x: number, y: number }) {
+    constructor({ x, y } = { x: 0, y: 0 }) {
         super()
         this.x = new AnimatedValue(x)
         this.y = new AnimatedValue(y)
