@@ -29,3 +29,9 @@ export const shapeVariants: Item[] = [
     { label: "Rectangle", value: "rect" },
     { label: "Circle", value: "ellipse" }
 ]
+
+export const textAlign: Item[] = [
+    { label: "Left", value: "left" },
+    { label: "Right", value: "right" },
+    { label: "Center", value: "center" }
+]
