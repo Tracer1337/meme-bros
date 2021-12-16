@@ -1,8 +1,8 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { DialogContext } from "../../../lib/DialogHandler"
-import { consumeEvent, setListeners } from "../../../lib/events"
-import { textfit } from "../../../lib/textfit"
-import { PickElement } from "../../../types"
+import { DialogContext } from "../../lib/DialogHandler"
+import { consumeEvent, setListeners } from "../../lib/events"
+import { textfit } from "../../lib/textfit"
+import { PickElement } from "../../types"
 import { EditorContext } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 

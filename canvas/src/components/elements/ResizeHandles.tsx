@@ -1,7 +1,7 @@
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import ArrowIcon from "@mui/icons-material/ArrowRightAlt"
 import type { GetHandleProps } from "./makeElement"
-import { AnimatedValueXY } from "../../../lib/animation"
+import { AnimatedValueXY } from "../../lib/animation"
 
 type MakeDragHandler = (matrix: [number, number]) => DraggableEventHandler
 

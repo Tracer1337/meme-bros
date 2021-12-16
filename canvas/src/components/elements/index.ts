@@ -1,5 +1,5 @@
 import React from "react"
-import { CanvasElement, PickElement } from "../../../types"
+import { CanvasElement, PickElement } from "../../types"
 import Image, { getImageDefaultData } from "./Image"
 import Shape, { getShapeDefaultData } from "./Shape"
 import Textbox, { getTextboxDefaultData } from "./Textbox"

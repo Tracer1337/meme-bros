@@ -1,7 +1,7 @@
 import { createContext } from "react"
 import { DeepPartial } from "tsdef"
-import EventEmitter from "../../lib/EventEmitter"
-import { Canvas, CanvasElement } from "../../types"
+import EventEmitter from "../lib/EventEmitter"
+import { Canvas, CanvasElement } from "../types"
 
 export type ElementEvents = "create" | "edit" | "remove" | "config"
 

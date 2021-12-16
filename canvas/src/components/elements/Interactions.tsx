@@ -6,8 +6,8 @@ import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
 import { EditorContext, ElementEvents } from "../Context"
-import { CanvasElement } from "../../../types"
-import { AnimatedValue, AnimatedValueXY } from "../../../lib/animation"
+import { CanvasElement } from "../../types"
+import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
 
 function ActionHandle({ icon, onPress }: {
     icon: React.ComponentType<any>,

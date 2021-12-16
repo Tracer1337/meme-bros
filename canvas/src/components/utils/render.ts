@@ -1,5 +1,5 @@
 import colorConvert from "color-convert"
-import { Canvas, CanvasElement } from "../../../types"
+import { Canvas, CanvasElement } from "../../types"
 
 type RenderFunction = <
     T extends Record<K, any>,

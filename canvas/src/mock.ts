@@ -1,5 +1,5 @@
-import { ContextValue } from "./components/editor/Context"
-import { getDefaultDataByType } from "./components/editor/elements"
+import { ContextValue } from "./components/Context"
+import { getDefaultDataByType } from "./components/elements"
 import EventEmitter from "./lib/EventEmitter"
 import { PickElement } from "./types"
 

@@ -1,9 +1,9 @@
 import RotateIcon from "@mui/icons-material/Replay"
 import { useEffect, useRef } from "react"
 import { DraggableCore, DraggableData, DraggableEventHandler } from "react-draggable"
-import { AnimatedValue, AnimatedValueXY } from "../../../lib/animation"
-import { setListeners } from "../../../lib/events"
-import { Rect } from "../../../types"
+import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
+import { setListeners } from "../../lib/events"
+import { Rect } from "../../types"
 import { GetHandleProps } from "./makeElement"
 
 function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {

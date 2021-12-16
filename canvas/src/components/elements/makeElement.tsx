@@ -2,11 +2,11 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import { EditorContext } from "../Context"
-import { CanvasElement, PickElement } from "../../../types"
+import { CanvasElement, PickElement } from "../../types"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
-import { AnimatedValue, AnimatedValueXY } from "../../../lib/animation"
-import { setDOMListeners, setListeners } from "../../../lib/events"
+import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
+import { setDOMListeners, setListeners } from "../../lib/events"
 
 type DraggableProps = React.ComponentProps<typeof DraggableCore>
 

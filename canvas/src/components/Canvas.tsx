@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react"
-import { setListeners } from "../../lib/events"
+import { setListeners } from "../lib/events"
 import { ContextValue, EditorContext } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
-import { CanvasElement, PickElement } from "../../types"
+import { CanvasElement, PickElement } from "../types"
 
 function makeId() {
     return Math.floor(Math.random() * 1e8)

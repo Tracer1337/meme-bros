@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { Box, styled } from "@mui/material"
 import { deepmerge } from "@mui/utils"
-import Canvas from "./components/editor/Canvas"
-import { ContextValue, EditorContext } from "./components/editor/Context"
+import Canvas from "./components/Canvas"
+import { ContextValue, EditorContext } from "./components/Context"
 import { contextValue } from "./mock"
-import DebugMenu from "./components/editor/DebugMenu"
+import DebugMenu from "./components/DebugMenu"
 
 const Container = styled(Box)({
     width: "100vw",
