@@ -21,6 +21,11 @@ function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
         },
         data: getDefaultDataByType(type)
     } as any
+    if (type === "image") {
+        const data = newElement.data as PickElement<"image">["data"]
+        data.naturalWidth = 200
+        data.naturalHeight = 100
+    }
     return newElement
 }
 

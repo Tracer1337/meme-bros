@@ -12,15 +12,15 @@ function ShapeConfigDialog({ open, data: element, close }: Props) {
     const { data, getTextFieldProps } = useConfigDialog(element)
     
     const ratio = element.rect.height / element.rect.width
-    const newWidth = 100
+    const width = 100
 
     return (
         <Dialog open={open} onClose={() => close(element.data)} fullWidth>
             <DialogTitle>
                 <div style={{
                     ...getShapeStyles({ ...element, data }),
-                    width: newWidth + "px",
-                    height: ratio * newWidth + "px" 
+                    width: width + "px",
+                    height: ratio * width + "px" 
                 }}/>
             </DialogTitle>
 
