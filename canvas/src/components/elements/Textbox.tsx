@@ -1,17 +1,19 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import * as CSS from "csstype"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { textfit } from "../../lib/textfit"
 import { PickElement } from "../../types"
 import { EditorContext } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
+import { getTextShadow } from "../../lib/styles"
 
 export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
     return {
         text: "Enter Text...",
         fontFamily: "Impact",
         fontWeight: "normal",
-        textAlign: "left",
+        textAlign: "center",
         color: "#000000",
         caps: true,
         outlineWidth: 0,
@@ -20,18 +22,16 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
     }
 }
 
-export function getTextboxStyles(element: PickElement<"textbox">) {
+export function getTextboxStyles(element: PickElement<"textbox">): CSS.Properties {
     return {
+        color: element.data.color,
         fontFamily: element.data.fontFamily,
         fontWeight: element.data.fontWeight,
-        color: element.data.color
+        backgroundColor: element.data.backgroundColor,
+        textAlign: element.data.textAlign as CSS.Property.TextAlign,
+        textTransform: element.data.caps ? "uppercase" : undefined,
+        textShadow: getTextShadow(element.data.outlineWidth, element.data.outlineColor)
     }
-}
-
-export function getTransformedText(element: PickElement<"textbox">) {
-    return element.data.caps
-        ? element.data.text.toUpperCase()
-        : element.data.text
 }
 
 function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) {
