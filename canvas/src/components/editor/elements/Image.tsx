@@ -7,7 +7,7 @@ import makeElement, { ElementProps } from "./makeElement"
 
 export function getImageDefaultData(): PickElement<"image">["data"] {
     return {
-        uri: "",
+        uri: "https://via.placeholder.com/200x100",
         animated: false,
         loop: true,
         borderRadius: 0,
@@ -23,17 +23,17 @@ export function getImageStyles(element: PickElement<"image">) {
     }
 }
 
-function Image({ element }: ElementProps<"image">) {
+function Image({ element, size }: ElementProps<"image">) {
     const context = useContext(EditorContext)
     const dialogs = useContext(DialogContext)
 
     const resetSize = () => {
         element.rect.width = element.data.naturalWidth
         element.rect.height = element.data.naturalHeight
-        // size.setValue({
-        //     x: element.rect.width,
-        //     y: element.rect.height
-        // })
+        size.emit("update", {
+            x: element.rect.width,
+            y: element.rect.height
+        })
     }
 
     const handleConfig = async () => {
@@ -55,7 +55,12 @@ function Image({ element }: ElementProps<"image">) {
         <img
             src={element.data.uri}
             alt=""
-            style={getImageStyles(element)}
+            draggable={false}
+            style={{
+                ...getImageStyles(element),
+                width: "100%",
+                height: "100%"
+            }}
         />
     )
 }

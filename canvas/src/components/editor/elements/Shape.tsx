@@ -18,8 +18,7 @@ export function getShapeStyles(element: PickElement<"shape">) {
     return {
         backgroundColor: element.data.backgroundColor,
         borderColor: element.data.borderColor,
-        borderWidth: element.data.borderWidth,
-        borderStyle: "solid"
+        borderWidth: element.data.borderWidth
     }
 }
 
@@ -41,6 +40,7 @@ function Shape({ element }: ElementProps<"shape">) {
     return (
         <div style={{
             ...getShapeStyles(element),
+            borderStyle: "solid",
             width: "100%",
             height: "100%"
         }} />
