@@ -21,12 +21,12 @@ function TextboxConfigDialog({ open, data: element, close }: Props) {
             </DialogTitle>
 
             <DialogContent>
-                <Select {...getTextFieldProps("Color", "color")} options={colors} />
-                <TextField {...getTextFieldProps("Outline Width", "outlineWidth")} type="number" />
-                <Select {...getTextFieldProps("Outline Color", "outlineColor")} options={colors} />
-                <Select {...getTextFieldProps("Text Align", "textAlign")} options={textAlign} />
-                <Select {...getTextFieldProps("Font Family", "fontFamily")} options={fontFamilies} />
-                <Select {...getTextFieldProps("Font Weight", "fontWeight")} options={fontWeights} />
+                <Select options={colors} {...getTextFieldProps("Color", "color")} />
+                <TextField type="number" {...getTextFieldProps("Outline Width", "outlineWidth")} />
+                <Select options={colors} {...getTextFieldProps("Outline Color", "outlineColor")} />
+                <Select options={textAlign} {...getTextFieldProps("Text Align", "textAlign")} />
+                <Select options={fontFamilies} {...getTextFieldProps("Font Family", "fontFamily")} />
+                <Select options={fontWeights} {...getTextFieldProps("Font Weight", "fontWeight")} />
                 <Switch {...getBooleanFieldProps("Caps", "caps")} />
             </DialogContent>
             

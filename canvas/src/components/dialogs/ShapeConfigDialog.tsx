@@ -25,10 +25,10 @@ function ShapeConfigDialog({ open, data: element, close }: Props) {
             </DialogTitle>
 
             <DialogContent>
-                <Select {...getTextFieldProps("Background Color", "backgroundColor")} options={colors} />
-                <Select {...getTextFieldProps("Border Color", "borderColor")} options={colors} />
-                <TextField {...getTextFieldProps("BorderWidth", "borderWidth")} type="number" />
-                <Select {...getTextFieldProps("Shape", "variant")} options={shapeVariants} />
+                <Select options={colors} {...getTextFieldProps("Background Color", "backgroundColor")} />
+                <Select options={colors} {...getTextFieldProps("Border Color", "borderColor")} />
+                <TextField type="number" {...getTextFieldProps("BorderWidth", "borderWidth")} />
+                <Select options={shapeVariants} {...getTextFieldProps("Shape", "variant")} />
             </DialogContent>
 
             <DialogActions>
