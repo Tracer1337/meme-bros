@@ -22,17 +22,11 @@ function TextboxConfigDialog({ open, data: element, close }: Props) {
 
             <DialogContent>
                 <Select {...getTextFieldProps("Color", "color")} options={colors} />
-
                 <TextField {...getTextFieldProps("Outline Width", "outlineWidth")} type="number" />
-                
                 <Select {...getTextFieldProps("Outline Color", "outlineColor")} options={colors} />
-
                 <Select {...getTextFieldProps("Text Align", "textAlign")} options={textAlign} />
-
                 <Select {...getTextFieldProps("Font Family", "fontFamily")} options={fontFamilies} />
-
                 <Select {...getTextFieldProps("Font Weight", "fontWeight")} options={fontWeights} />
-
                 <Switch {...getBooleanFieldProps("Caps", "caps")} />
             </DialogContent>
             
