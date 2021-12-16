@@ -3,6 +3,7 @@ import { setListeners } from "../lib/events"
 import { ContextValue, EditorContext } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { CanvasElement, PickElement } from "../types"
+import { useBridge } from "./utils/useBridge"
 
 function makeId() {
     return Math.floor(Math.random() * 1e8)
@@ -38,6 +39,8 @@ function getCanvasStyles(canvas: ContextValue["canvas"]) {
 }
 
 function Canvas() {
+    useBridge()
+
     const context = useContext(EditorContext)
 
     const handleCreateElement = (type: CanvasElement["type"]) => {
