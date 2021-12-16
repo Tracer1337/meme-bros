@@ -1,17 +1,18 @@
 import React, { useState } from "react"
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Switch, TextField } from "@mui/material"
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
 import { DialogProps } from "../../lib/DialogHandler"
 import { PickElement } from "../../types"
 import { getTextboxStyles } from "../elements/Textbox"
 import { colors, fontFamilies, fontWeights, textAlign } from "../inputs/items"
 import Select from "../inputs/Select"
+import Switch from "../inputs/Switch"
 
 type Props = DialogProps<PickElement<"textbox">, PickElement<"textbox">["data"]>
 
 function TextboxConfigDialog({ open, data: element, close }: Props) {
     const [data, setData] = useState(element.data)
 
-    const getInputProps = (
+    const getTextFieldProps = (
         label: string,
         key: keyof typeof data
     ): React.ComponentProps<typeof TextField> => ({
@@ -21,8 +22,19 @@ function TextboxConfigDialog({ open, data: element, close }: Props) {
         variant: "standard",
         value: data[key],
         onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
-            const newData = { ...data, [key]: event.target.value }
-            setData(newData)
+            setData({ ...data, [key]: event.target.value })
+        }
+    })
+
+    const getBooleanFieldProps = (
+        label: string,
+        key: keyof typeof data
+    ): React.ComponentProps<typeof Switch> => ({
+        label,
+        checked: data[key] as boolean,
+        sx: { marginTop: 1, marginBottom: 0.5 },
+        onChange: (_, value) => {
+            setData({ ...data, [key]: value })
         }
     })
     
@@ -35,22 +47,19 @@ function TextboxConfigDialog({ open, data: element, close }: Props) {
             </DialogTitle>
 
             <DialogContent>
-                <Select {...getInputProps("Color", "color")} options={colors} />
+                <Select {...getTextFieldProps("Color", "color")} options={colors} />
 
-                <TextField {...getInputProps("Outline Width", "outlineWidth")} type="number" />
+                <TextField {...getTextFieldProps("Outline Width", "outlineWidth")} type="number" />
                 
-                <Select {...getInputProps("Outline Color", "outlineColor")} options={colors} />
+                <Select {...getTextFieldProps("Outline Color", "outlineColor")} options={colors} />
 
-                <Select {...getInputProps("Text Align", "textAlign")} options={textAlign} />
+                <Select {...getTextFieldProps("Text Align", "textAlign")} options={textAlign} />
 
-                <Select {...getInputProps("Font Family", "fontFamily")} options={fontFamilies} />
+                <Select {...getTextFieldProps("Font Family", "fontFamily")} options={fontFamilies} />
 
-                <Select {...getInputProps("Font Weight", "fontWeight")} options={fontWeights} />
+                <Select {...getTextFieldProps("Font Weight", "fontWeight")} options={fontWeights} />
 
-                <FormControlLabel
-                    label="Caps"
-                    control={<Switch onChange={(_, caps) => setData({ ...data, caps })} checked={data.caps}/>}
-                />
+                <Switch {...getBooleanFieldProps("Caps", "caps")} />
             </DialogContent>
             
             <DialogActions>
