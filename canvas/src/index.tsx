@@ -4,6 +4,7 @@ import ReactDOM from "react-dom"
 import { CssBaseline } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import App from "./App"
+import { DialogProvider } from "./lib/DialogHandler"
 
 const theme = createTheme({
     palette: {
@@ -11,13 +12,17 @@ const theme = createTheme({
     }
 })
 
-console.log(theme)
+if (process.env.NODE_ENV === "development") {
+    console.log(theme)
+}
 
 ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <App/>
+            <DialogProvider>
+                <App/>
+            </DialogProvider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")

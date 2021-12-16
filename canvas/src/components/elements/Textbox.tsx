@@ -57,7 +57,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
     }
 
     const handleConfig = async () => {
-        element.data = await dialogs.openDialog("TextboxConfigDialog", element)
+        element.data = await dialogs.open("TextboxConfigDialog", element)
         context.set({})
     }
 

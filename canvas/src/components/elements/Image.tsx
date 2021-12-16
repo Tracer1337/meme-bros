@@ -37,7 +37,7 @@ function Image({ element, size }: ElementProps<"image">) {
     }
 
     const handleConfig = async () => {
-        const newData = await dialogs.openDialog("ImageConfigDialog", element)
+        const newData = await dialogs.open("ImageConfigDialog", element)
         if (!element.data.keepAspectRatio && newData.keepAspectRatio) {
             resetSize()
         }

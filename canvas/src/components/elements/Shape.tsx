@@ -27,7 +27,7 @@ function Shape({ element }: ElementProps<"shape">) {
     const dialogs = useContext(DialogContext)
     
     const handleConfig = async () => {
-        element.data = await dialogs.openDialog("ShapeConfigDialog", element)
+        element.data = await dialogs.open("ShapeConfigDialog", element)
         context.set({})
     }
 
