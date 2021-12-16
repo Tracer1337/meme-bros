@@ -11,7 +11,7 @@ function makeId() {
 function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
     const newElement: PickElement<T> = {
         id: makeId(),
-        type: type as any,
+        type,
         rect: {
             x: 0,
             y: 0,
@@ -19,8 +19,8 @@ function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
             height: 100,
             rotation: 0
         },
-        data: getDefaultDataByType(type) as any
-    }
+        data: getDefaultDataByType(type)
+    } as any
     return newElement
 }
 

@@ -19,7 +19,7 @@ export type CanvasElement = CanvasElementCommon & (
     ShapeElement
 )
 
-export type PickElement<T extends CanvasElement["type"]> = CanvasElement & { type: T }
+export type PickElement<T extends CanvasElement["type"]> = Extract<CanvasElement, { type: T }>
 
 export type ImageElement = {
     type: "image",
