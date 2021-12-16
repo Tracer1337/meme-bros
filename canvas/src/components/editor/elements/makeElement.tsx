@@ -149,7 +149,7 @@ function makeElement<T extends CanvasElement["type"]>(
             >
                 <div ref={container} style={{
                     transformOrigin: "center, center",
-                    position: "relative"
+                    position: "absolute"
                 }}>
                     <div
                         id={`element-${element.id}`}
