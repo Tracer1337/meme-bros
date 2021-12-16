@@ -20,7 +20,7 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
     }
 }
 
-export function getTextStyles(element: PickElement<"textbox">) {
+export function getTextboxStyles(element: PickElement<"textbox">) {
     return {
         fontFamily: element.data.fontFamily,
         fontWeight: element.data.fontWeight,
@@ -69,7 +69,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
             width: size.x.value,
             height: size.y.value,
             text,
-            styles: getTextStyles(element)
+            styles: getTextboxStyles(element)
         })
         textRef.current.style.fontSize = fontSize + "px"
     }, [element, text, size])
@@ -114,7 +114,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
             <div
                 ref={textRef}
                 contentEditable={isEditing}
-                style={{ ...getTextStyles(element), ...{
+                style={{ ...getTextboxStyles(element), ...{
                     userSelect: "none",
                     outline: "none",
                     fontSize: 24,
