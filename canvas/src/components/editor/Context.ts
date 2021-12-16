@@ -5,17 +5,11 @@ import { Canvas, CanvasElement } from "../../types"
 
 export type ElementEvents = "create" | "edit" | "remove" | "config"
 
-type Events = {
+export type Events = {
     "element.create": CanvasElement["type"],
     "element.edit": CanvasElement["id"],
     "element.remove": CanvasElement["id"],
-    "element.config": CanvasElement["id"],
-    "canvas.render": ContextValue["canvas"],
-    "canvas.render.done": ContextValue["canvas"],
-    "canvas.base.import": null,
-    "canvas.base.blank": null,
-    "canvas.base.dummy": null,
-    "canvas.clear": null
+    "element.config": CanvasElement["id"]
 }
 
 export type ContextValue = {

@@ -95,7 +95,9 @@ function makeElement<T extends CanvasElement["type"]>(
         }
 
         const blurElement = () => {
-            context.set({ interactions: { focus: null } })
+            if (context.interactions.focus === element.id) {
+                context.set({ interactions: { focus: null } })
+            }
         }
 
         const handleMovementDrag: DraggableEventHandler = (_, { deltaX, deltaY }) => {

@@ -3,44 +3,8 @@ import { Box, styled } from "@mui/material"
 import { deepmerge } from "@mui/utils"
 import Canvas from "./components/editor/Canvas"
 import { ContextValue, EditorContext } from "./components/editor/Context"
-import { getDefaultDataByType } from "./components/editor/elements"
-import EventEmitter from "./lib/EventEmitter"
-import { PickElement } from "./types"
-
-const contextValue: ContextValue = {
-    events: new EventEmitter(),
-    interactions: {
-        focus: null,
-    },
-    set: () => {},
-    canvas: {
-        width: 500,
-        height: 500,
-        debug: false,
-        backgroundColor: "#444444",
-        elements: [
-            {
-                id: 0,
-                type: "textbox",
-                rect: {
-                    x: 100,
-                    y: 200,
-                    width: 200,
-                    height: 100,
-                    rotation: 0
-                },
-                data: {
-                    ...getDefaultDataByType("textbox") as PickElement<"textbox">["data"],
-                    text: "This is my text",
-                    outlineWidth: 5,
-                    outlineColor: "#000000",
-                    color: "#ffffff",
-                    backgroundColor: "transparent"
-                }
-            }
-        ]
-    }
-}
+import { contextValue } from "./mock"
+import DebugMenu from "./components/editor/DebugMenu"
 
 const Container = styled(Box)({
     width: "100vw",
@@ -49,6 +13,13 @@ const Container = styled(Box)({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "background.default"
+})
+
+const DebugContainer = styled(Box)({
+    position: "absolute",
+    top: "50%",
+    left: 8,
+    transform: "translateY(-50%)"
 })
 
 function App() {
@@ -64,6 +35,10 @@ function App() {
             <Container>
                 <Canvas/>
             </Container>
+
+            <DebugContainer>
+                <DebugMenu/>
+            </DebugContainer>
         </EditorContext.Provider>
     )
 }
