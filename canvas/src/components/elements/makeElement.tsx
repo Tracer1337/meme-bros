@@ -75,19 +75,14 @@ function makeElement<T extends CanvasElement["type"]>(
         })
 
         const updateElement = () => {
-            // const layout = getLayout()
-            // if (!layout) {
-            //     return
-            // }
-            // element.rect = {
-            //     x: layout.x,
-            //     y: layout.y,
-            //     width: layout.width,
-            //     height: layout.height,
-            //     // @ts-ignore
-            //     rotation: rotation._value
-            // }
-            // context.set({})
+            element.rect = {
+                x: pos.x.value,
+                y: pos.y.value,
+                width: size.x.value,
+                height: size.y.value,
+                rotation: rotation.value
+            }
+            context.set({})
         }
 
         const focusElement = () => {
