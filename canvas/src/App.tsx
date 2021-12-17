@@ -24,10 +24,16 @@ const DebugContainer = styled(Box)({
 
 function App() {
     const [context, setContext] = useState<ContextValue>(contextValue)
+    const [debug, setDebug] = useState(false)
 
     context.set = (partial) => {
         const newState = deepmerge(context, partial) as ContextValue
         setContext(newState)
+    }
+
+    // @ts-ignore
+    window.enableDebugging = () => {
+        setDebug(true)
     }
 
     return (
@@ -36,9 +42,11 @@ function App() {
                 <Canvas/>
             </Container>
 
-            <DebugContainer>
-                <DebugMenu/>
-            </DebugContainer>
+            {debug && (
+                <DebugContainer>
+                    <DebugMenu/>
+                </DebugContainer>
+            )}
         </EditorContext.Provider>
     )
 }
