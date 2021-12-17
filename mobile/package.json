@@ -1,5 +1,5 @@
 {
-  "name": "mobile",
+  "name": "@meme-bros/mobile",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -23,7 +23,8 @@
     "react-native-paper": "^4.10.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
-    "react-native-vector-icons": "^9.0.0"
+    "react-native-vector-icons": "^9.0.0",
+    "react-native-webview": "^11.15.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from "react-native"
 import { useTheme } from "react-native-paper"
 
 function Screen({ children, style, ...props }: React.PropsWithChildren<{
-    style: StyleProp<ViewStyle>
+    style?: StyleProp<ViewStyle>
 } & ViewProps>) {
     const theme = useTheme()
 
