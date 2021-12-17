@@ -2,6 +2,8 @@ package com.mobile;
 
 import android.app.Application;
 import android.content.Context;
+import android.webkit.WebView;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
@@ -51,6 +53,7 @@ public class MainApplication extends Application implements ReactApplication {
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     // Make assets accessible in go modules
     Seq.setContext(getApplicationContext());
+    WebView.setWebContentsDebuggingEnabled(true);
   }
 
   /**
