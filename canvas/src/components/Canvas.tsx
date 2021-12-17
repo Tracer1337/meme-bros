@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react"
+import { deepmerge } from "@mui/utils"
 import { setListeners } from "../lib/events"
-import { ContextValue, EditorContext } from "./Context"
+import { ContextValue, EditorContext, Events } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { CanvasElement, PickElement } from "../types"
 import { useBridge } from "./utils/useBridge"
@@ -43,11 +44,10 @@ function Canvas() {
 
     const context = useContext(EditorContext)
 
-    const handleCreateElement = (type: CanvasElement["type"]) => {
-        const newElement = createCanvasElement(type)
-        if (!newElement) {
-            return
-        }
+    const handleCreateElement = (event: Events["element.create"]) => {
+        const newElement = typeof event === "string"
+            ? createCanvasElement(event)
+            : deepmerge(createCanvasElement(event.type), event)
         context.set({
             canvas: {
                 elements: [...context.canvas.elements, newElement]

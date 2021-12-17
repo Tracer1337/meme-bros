@@ -6,7 +6,9 @@ import { Canvas, CanvasElement } from "../types"
 export type ElementEvents = "create" | "edit" | "remove" | "config"
 
 export type Events = {
-    "element.create": CanvasElement["type"],
+    "element.create": CanvasElement["type"] | DeepPartial<CanvasElement> & {
+        type: CanvasElement["type"]
+    },
     "element.edit": CanvasElement["id"],
     "element.remove": CanvasElement["id"],
     "element.config": CanvasElement["id"]
