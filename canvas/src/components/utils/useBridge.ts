@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
 import { setDOMListeners } from "../../lib/events"
-import { CanvasElement } from "../../types"
+import { Canvas, CanvasElement } from "../../types"
 import { EditorContext } from "../Context"
 
 type Events = {
@@ -8,25 +8,43 @@ type Events = {
     "canvas.render": null
 }
 
-type Message<T extends keyof Events> = {
-    target: "@meme-bros/canvas"
-    data: {
-        type: T,
-        data: Events[T]
-    }
+type Responses = {
+    "canvas.render": Canvas
+}
+
+type Event<T extends keyof Events> = {
+    type: T,
+    data: Events[T]
+}
+
+type Response<T extends keyof Responses> = {
+    type: T,
+    data: Responses[T]
 }
 
 export function useBridge() {
     const context = useContext(EditorContext)
 
-    const handleMessage = <T extends keyof Events>(
-        event: MessageEvent<Message<T>>
+    const postMessage = <T extends keyof Responses>(
+        message: Response<T>
     ) => {
-        if (event.data?.target !== "@meme-bros/canvas") {
+        if ("ReactNativeWebView" in window) {
+            // @ts-ignore
+            window.ReactNativeWebView.postMessage(
+                JSON.stringify(message)
+            )
+        }
+        window.postMessage(message)
+    }
+
+    const handleMessage = <T extends keyof Events>(
+        event: MessageEvent<string>
+    ) => {
+        if (typeof event.data !== "string") {
             return
         }
 
-        const message = event.data.data
+        const message = JSON.parse(event.data) as Event<T>
 
         switch (message.type) {
             case "element.create":
@@ -37,8 +55,8 @@ export function useBridge() {
                 break
 
             case "canvas.render":
-                window.postMessage({
-                    type: "response:canvas.render",
+                postMessage({
+                    type: "canvas.render",
                     data: context.canvas
                 })
                 break
@@ -48,7 +66,7 @@ export function useBridge() {
         }
     }
 
-    useEffect(() => setDOMListeners(window, [
+    useEffect(() => setDOMListeners(document, [
         ["message", handleMessage]
     ]))
 }
