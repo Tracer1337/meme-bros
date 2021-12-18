@@ -4,7 +4,7 @@ import { DeepPartial } from "tsdef"
 import { makeListenerQueue } from "../lib/events"
 import { ContextValue, EditorContext, Events } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
-import { Canvas as CanvasType, CanvasElement, PickElement } from "../types"
+import { CanvasElement, PickElement } from "../types"
 import { useBridge } from "./utils/useBridge"
 
 function makeId() {
@@ -80,21 +80,11 @@ function Canvas() {
         context.set({})
     }
 
-    const handleCanvasClear = () => {
-        context.set({ canvas: { elements: [] } })
-    }
-
-    const handleCanvasDimensionsSet = (dim: Pick<CanvasType, "width" | "height">) => {
-        context.set({ canvas: dim })
-    }
-
     useEffect(() =>
         setQueuedListeners(context.events, [
             ["element.create", handleCreateElement],
             ["element.create.default", handleCreateElementDefault],
-            ["element.remove", handleRemoveElement],
-            ["canvas.clear", handleCanvasClear],
-            ["canvas.dimensions.set", handleCanvasDimensionsSet]
+            ["element.remove", handleRemoveElement]
         ])
     )
     
