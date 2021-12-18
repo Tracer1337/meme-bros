@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
-import { setListeners } from "../lib/events"
-import { ContextValue, EditorContext } from "./Context"
-import { getDefaultDataByType, getElementByType } from "./elements"
-import { CanvasElement, PickElement } from "../types"
-import { useBridge } from "./utils/useBridge"
 import { DeepPartial } from "tsdef"
+import { makeListenerQueue } from "../lib/events"
+import { ContextValue, EditorContext, Events } from "./Context"
+import { getDefaultDataByType, getElementByType } from "./elements"
+import { Canvas as CanvasType, CanvasElement, PickElement } from "../types"
+import { useBridge } from "./utils/useBridge"
 
 function makeId() {
     return Math.floor(Math.random() * 1e8)
@@ -45,6 +45,8 @@ function Canvas() {
 
     const context = useContext(EditorContext)
 
+    const setQueuedListeners = useRef(makeListenerQueue<Events>()).current
+
     const setNewElement = (newElement: CanvasElement) => {
         context.set({
             interactions: {
@@ -82,12 +84,17 @@ function Canvas() {
         context.set({ canvas: { elements: [] } })
     }
 
+    const handleCanvasDimensionsSet = (dim: Pick<CanvasType, "width" | "height">) => {
+        context.set({ canvas: dim })
+    }
+
     useEffect(() =>
-        setListeners(context.events, [
+        setQueuedListeners(context.events, [
             ["element.create", handleCreateElement],
             ["element.create.default", handleCreateElementDefault],
             ["element.remove", handleRemoveElement],
-            ["canvas.clear", handleCanvasClear]
+            ["canvas.clear", handleCanvasClear],
+            ["canvas.dimensions.set", handleCanvasDimensionsSet]
         ])
     )
     

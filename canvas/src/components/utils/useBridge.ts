@@ -8,7 +8,8 @@ type Events = {
     "element.create": DeepPartial<CanvasElement>,
     "element.create.default": CanvasElement["type"],
     "canvas.render": null,
-    "canvas.clear": null
+    "canvas.clear": null,
+    "canvas.dimensions.set": Pick<Canvas, "width" | "height">
 }
 
 type Responses = {
@@ -55,14 +56,14 @@ export function useBridge() {
             case "element.create":
                 context.events.emit(
                     "element.create",
-                    message.data as DeepPartial<CanvasElement>
+                    message.data as Events["element.create"]
                 )
                 break
                 
             case "element.create.default":
                 context.events.emit(
                     "element.create.default",
-                    message.data as CanvasElement["type"]
+                    message.data as Events["element.create.default"]
                 )
                 break
 
@@ -76,6 +77,13 @@ export function useBridge() {
 
             case "canvas.clear":
                 context.events.emit("canvas.clear", null)
+                break
+
+            case "canvas.dimensions.set":
+                context.events.emit(
+                    "canvas.dimensions.set",
+                    message.data as Events["canvas.dimensions.set"]
+                )
                 break
 
             default:

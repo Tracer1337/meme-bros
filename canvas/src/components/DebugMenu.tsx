@@ -1,4 +1,4 @@
-import { Button, Paper, Typography, Box } from "@mui/material"
+import { Button, Paper, Typography, Box, TextField } from "@mui/material"
 import { useContext } from "react"
 import { EditorContext, Events } from "./Context"
 
@@ -32,6 +32,30 @@ function DebugMenu() {
             <Action onClick={event("element.create.default", "textbox")}>Add Textbox</Action>
             <Action onClick={event("element.create.default", "image")}>Add Image</Action>
             <Action onClick={event("element.create.default", "shape")}>Add Shape</Action>
+
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>Canvas</Typography>
+            <TextField
+                label="Width"
+                type="number"
+                margin="dense"
+                value={context.canvas.width}
+                onChange={(event) => {
+                    context.set({ canvas: {
+                        width: parseInt(event.target.value)
+                    } })
+                }}
+            />
+            <TextField
+                label="Height"
+                type="number"
+                margin="dense"
+                value={context.canvas.height}
+                onChange={(event) => {
+                    context.set({ canvas: {
+                        height: parseInt(event.target.value)
+                    } })
+                }}
+            />
         </Paper>
     )
 }

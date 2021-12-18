@@ -11,7 +11,8 @@ export type Events = {
     "element.edit": CanvasElement["id"],
     "element.remove": CanvasElement["id"],
     "element.config": CanvasElement["id"],
-    "canvas.clear": null
+    "canvas.clear": null,
+    "canvas.dimensions.set": Pick<Canvas, "width" | "height">
 }
 
 export type ContextValue = {
