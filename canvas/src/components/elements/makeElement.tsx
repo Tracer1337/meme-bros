@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
+import * as CSS from "csstype"
 import { EditorContext } from "../Context"
 import { CanvasElement, PickElement } from "../../types"
 import Interactions from "./Interactions"
@@ -102,17 +103,23 @@ function makeElement<T extends CanvasElement["type"]>(
             })
         }
 
+        const getTransformStyles = useCallback((): CSS.Properties => {
+            return {
+                transform: `
+                    translate(${pos.x.value}px, ${pos.y.value}px)
+                    rotate(${rotation.value}rad)
+                `,
+                width: size.x.value + "px",
+                height: size.y.value + "px"
+            }
+        }, [pos, size, rotation])
+
         const updateTransform = useCallback(() => {
             if (!container.current) {
                 return
             }
-            container.current.style.transform = `
-                translate(${pos.x.value}px, ${pos.y.value}px)
-                rotate(${rotation.value}rad)
-            `
-            container.current.style.width = size.x.value + "px"
-            container.current.style.height = size.y.value + "px"
-        }, [container, pos, size, rotation])
+            Object.assign(container.current.style, getTransformStyles())
+        }, [container, getTransformStyles])
 
         useEffect(() => setListeners(pos, [["update", updateTransform]]))
         useEffect(() => setListeners(size, [["update", updateTransform]]))
@@ -143,6 +150,7 @@ function makeElement<T extends CanvasElement["type"]>(
                 {...(!config.focusable ? { disabled: true } : {})}
             >
                 <div ref={container} style={{
+                    ...getTransformStyles(),
                     transformOrigin: "center, center",
                     position: "absolute"
                 }}>
