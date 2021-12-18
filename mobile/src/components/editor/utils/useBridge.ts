@@ -8,8 +8,8 @@ import { Canvas, CanvasElement } from "../../../types"
 import { EditorContext } from "../Context"
 
 type Events = {
-    "element.create": CanvasElement["type"],
-    "element.create.partial": DeepPartial<CanvasElement>,
+    "element.create": DeepPartial<CanvasElement>,
+    "element.create.default": CanvasElement["type"],
     "canvas.render": null
 }
 
@@ -60,8 +60,8 @@ export function useBridge(webview: RefObject<WebView>) {
         if (!data) {
             return
         }
-        const message: Event<"element.create.partial"> = {
-            type: "element.create.partial",
+        const message: Event<"element.create"> = {
+            type: "element.create",
             data
         }
         webview.current.postMessage(JSON.stringify(message))
