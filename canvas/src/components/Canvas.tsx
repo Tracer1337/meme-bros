@@ -78,11 +78,16 @@ function Canvas() {
         context.set({})
     }
 
+    const handleCanvasClear = () => {
+        context.set({ canvas: { elements: [] } })
+    }
+
     useEffect(() =>
         setListeners(context.events, [
             ["element.create", handleCreateElement],
             ["element.create.default", handleCreateElementDefault],
-            ["element.remove", handleRemoveElement]
+            ["element.remove", handleRemoveElement],
+            ["canvas.clear", handleCanvasClear]
         ])
     )
     

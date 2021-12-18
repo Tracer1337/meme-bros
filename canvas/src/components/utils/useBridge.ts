@@ -7,7 +7,8 @@ import { EditorContext } from "../Context"
 type Events = {
     "element.create": DeepPartial<CanvasElement>,
     "element.create.default": CanvasElement["type"],
-    "canvas.render": null
+    "canvas.render": null,
+    "canvas.clear": null
 }
 
 type Responses = {
@@ -71,6 +72,10 @@ export function useBridge() {
                     type: "canvas.render",
                     data: context.canvas
                 })
+                break
+
+            case "canvas.clear":
+                context.events.emit("canvas.clear", null)
                 break
 
             default:

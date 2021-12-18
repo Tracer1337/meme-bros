@@ -10,7 +10,8 @@ export type Events = {
     "element.create.default": CanvasElement["type"],
     "element.edit": CanvasElement["id"],
     "element.remove": CanvasElement["id"],
-    "element.config": CanvasElement["id"]
+    "element.config": CanvasElement["id"],
+    "canvas.clear": null
 }
 
 export type ContextValue = {
