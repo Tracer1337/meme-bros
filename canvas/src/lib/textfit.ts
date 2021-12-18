@@ -1,29 +1,18 @@
+import textfitLib from "textfit"
 import * as CSS from "csstype"
 
-function getNewFontsize(div: HTMLDivElement, text: string) {
-    const span = document.createElement("span")
-    span.textContent = text
-    
-    div.appendChild(span)
-
-    let low = 1
-    let high = window.innerHeight
-    
-    // Binary search for highest best fit
-    let fontSize = low
-    while (low <= high) {
-        const mid = Math.floor((high + low) / 2)
-        span.style.fontSize = mid + "px"
-        const rect = span.getBoundingClientRect()
-        if (rect.width <= div.clientWidth && rect.height <= div.clientHeight) {
-            fontSize = mid
-            low = mid + 1
-        } else {
-            high = mid - 1
-        }
+function getNewFontsize(div: HTMLDivElement) {
+    textfitLib(div, {
+        multiLine: true,
+        minFontSize: 1,
+        maxFontSize: window.innerHeight
+    })
+    const span = div.querySelector("span")
+    if (!span) {
+        throw new Error("Could not find span element")
     }
-
-    return fontSize
+    const fontSize = getComputedStyle(span).fontSize
+    return parseInt(fontSize)
 }
 
 export function textfit({ width, height, text, styles }: {
@@ -38,20 +27,21 @@ export function textfit({ width, height, text, styles }: {
     if (width <= 0 || height <= 0) {
         return 0
     }
-    
+
     const div = document.createElement("div")
 
     Object.assign(div.style, {
+        ...styles,
         position: "absolute",
         width: width + "px",
         height: height + "px",
-        whiteSpace: "pre-wrap",
-        ...styles
     })
+
+    div.textContent = text
 
     document.body.appendChild(div)
 
-    const fontSize = getNewFontsize(div, text)
+    const fontSize = getNewFontsize(div)
 
     document.body.removeChild(div)
 

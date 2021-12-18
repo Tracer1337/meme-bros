@@ -2079,6 +2079,11 @@
   dependencies:
     "@types/jest" "*"
 
+"@types/textfit@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@types/textfit/-/textfit-2.4.1.tgz#69917084e78cfe6355e89615f8165bda879df8f9"
+  integrity sha512-1jKDAykFZJK+ja/V5dOGZF7jn0n3Pyoq45Rogo+aU7/yH5hV+6hePg5vDx5BEiHhxW/YD0kxno6xTVoDj94e4w==
+
 "@types/uglify-js@*":
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.12.0.tgz#2bb061c269441620d46b946350c8f16d52ef37c5"
@@ -10793,6 +10798,11 @@ text-table@0.2.0, text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
+
+textfit@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/textfit/-/textfit-2.4.0.tgz#80cba8006bfb9c3d9d552739257957bdda95c79c"
+  integrity sha512-/x4aoY5+/tJmu+iwpBH1yw75TFp86M6X15SvaaY/Eep7YySQYtqdOifEtfvVyMwzl7SZ+G4RQw00FD9g5R6i1Q==
 
 throat@^5.0.0:
   version "5.0.0"

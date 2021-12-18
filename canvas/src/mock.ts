@@ -27,11 +27,9 @@ export const contextValue: ContextValue = {
                 },
                 data: {
                     ...getDefaultDataByType("textbox") as PickElement<"textbox">["data"],
-                    text: "This is my text",
-                    outlineWidth: 5,
+                    outlineWidth: 2,
                     outlineColor: "#000000",
-                    color: "#ffffff",
-                    backgroundColor: "transparent"
+                    color: "#ffffff"
                 }
             }
         ]

@@ -24,6 +24,9 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
 
 export function getTextboxStyles(element: PickElement<"textbox">): CSS.Properties {
     return {
+        padding: "8px",
+        whiteSpace: "pre-wrap",
+        lineHeight: 1,
         color: element.data.color,
         fontFamily: element.data.fontFamily,
         fontWeight: element.data.fontWeight,
@@ -117,9 +120,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
                 style={{ ...getTextboxStyles(element), ...{
                     userSelect: "none",
                     outline: "none",
-                    fontSize: 24,
-                    resize: "none",
-                    whiteSpace: "pre-wrap",
+                    resize: "none"
                 } }}
                 onInput={(e) => setText(e.currentTarget.textContent || "")}
             />
