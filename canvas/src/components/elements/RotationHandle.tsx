@@ -4,6 +4,7 @@ import { DraggableCore, DraggableData, DraggableEventHandler } from "react-dragg
 import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
 import { setListeners } from "../../lib/events"
 import { Rect } from "../../types"
+import Handle from "./Handle"
 import { GetHandleProps } from "./makeElement"
 
 function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
@@ -47,21 +48,17 @@ function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
     ]))
 
     return (
-        <DraggableCore
-            onDrag={handleRotationDrag}
-            {...getHandleProps("rotate", {
-                onStart: handleRotationStart,
-                onStop: handleRotationEnd
-            })}
-        >
-            <div style={{
-                position: "relative",
-                pointerEvents: "all",
-                cursor: "pointer"
-            }}>
-                <RotateIcon/>
-            </div>
-        </DraggableCore>
+        <Handle sx={{ mr: 1 }}>
+            <DraggableCore
+                onDrag={handleRotationDrag}
+                {...getHandleProps("rotate", {
+                    onStart: handleRotationStart,
+                    onStop: handleRotationEnd
+                })}
+            >
+                <RotateIcon sx={{ color: "common.black" }}/>
+            </DraggableCore>
+        </Handle>
     )
 }
 

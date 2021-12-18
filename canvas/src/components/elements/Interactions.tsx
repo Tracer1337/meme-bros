@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import { useContext } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import SettingsIcon from "@mui/icons-material/Settings"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
@@ -8,20 +8,7 @@ import RotationHandle from "./RotationHandle"
 import { EditorContext, ElementEvents } from "../Context"
 import { CanvasElement } from "../../types"
 import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
-
-function ActionHandle({ icon, onPress }: {
-    icon: React.ComponentType<any>,
-    onPress: () => void
-}) {
-    return (
-        <div onClick={onPress} style={{
-            pointerEvents: "all",
-            cursor: "pointer"
-        }}>
-            {React.createElement(icon)}
-        </div>
-    )
-}
+import Handle from "./Handle"
 
 function Interactions({
     element,
@@ -61,29 +48,27 @@ function Interactions({
                 justifyContent: "center"
             }}>
                 {config.interactions.rotate && (
-                    <div style={{ marginRight: 8 }}>
-                        <RotationHandle
-                            animate={rotation}
-                            childRect={element.rect}
-                            onUpdate={onUpdate}
-                            getHandleProps={getHandleProps}
-                        />
-                    </div>
+                    <RotationHandle
+                        animate={rotation}
+                        childRect={element.rect}
+                        onUpdate={onUpdate}
+                        getHandleProps={getHandleProps}
+                    />
                 )}
                 {config.interactions.edit && (
-                    <div style={{ marginRight: 8 }}>
-                        <ActionHandle icon={EditIcon} onPress={event("edit")}/>
-                    </div>
+                    <Handle onClick={event("edit")} sx={{ mr: 1 }}>
+                        <EditIcon sx={{ color: "common.black" }}/>
+                    </Handle>
                 )}
                 {config.interactions.config && (
-                    <div style={{ marginRight: 8 }}>
-                        <ActionHandle icon={SettingsIcon} onPress={event("config")}/>
-                    </div>
+                    <Handle onClick={event("config")} sx={{ mr: 1 }}>
+                        <SettingsIcon sx={{ color: "common.black" }}/>
+                    </Handle>
                 )}
                 {config.interactions.delete && (
-                    <div>
-                        <ActionHandle icon={DeleteOutlineIcon} onPress={event("remove")}/>
-                    </div>
+                    <Handle onClick={event("remove")}>
+                        <DeleteOutlineIcon sx={{ color: "common.black" }}/>
+                    </Handle>
                 )}
             </div>
             {config.interactions.resize && (

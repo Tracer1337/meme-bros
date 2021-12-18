@@ -1,7 +1,8 @@
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
-import ArrowIcon from "@mui/icons-material/ArrowRightAlt"
+import ArrowIcon from "@mui/icons-material/Height"
 import type { GetHandleProps } from "./makeElement"
 import { AnimatedValueXY } from "../../lib/animation"
+import Handle from "./Handle"
 
 type MakeDragHandler = (matrix: [number, number]) => DraggableEventHandler
 
@@ -36,52 +37,58 @@ function ResizeHandles({
             height: "100%",
             position: "relative"
         }}>
-            <div style={{
-                position: "absolute",
-                left: "50%",
-                bottom: -28,
-                transform: "translateX(-14px)",
-                pointerEvents: "all",
-                cursor: "n-resize"
-            }}>
+            <Handle
+                sx={{
+                    position: "absolute",
+                    left: "50%",
+                    bottom: -14,
+                    transform: "translateX(-14px)",
+                    cursor: "n-resize"
+                }}
+            >
                 <DraggableCore
                     onDrag={makeDragHandler([0, 1])}
                     {...getHandleProps("resize", { onStop: onUpdate })}
                 >
-                    <ArrowIcon/>
+                    <ArrowIcon sx={{ color: "common.black" }} />
                 </DraggableCore>
-            </div>
+            </Handle>
 
-            <div style={{
-                position: "absolute",
-                top: "50%",
-                right: -28,
-                transform: "translateY(-14px)",
-                pointerEvents: "all",
-                cursor: "e-resize"
-            }}>
+            <Handle
+                sx={{
+                    position: "absolute",
+                    top: "50%",
+                    right: -14,
+                    transform: "translateY(-14px) rotate(90deg)",
+                    pointerEvents: "all",
+                    cursor: "e-resize"
+                }}
+            >
                 <DraggableCore
                     onDrag={makeDragHandler([1, 0])}
                     {...getHandleProps("resize", { onStop: onUpdate })}
                 >
-                    <ArrowIcon/>
+                    <ArrowIcon sx={{ color: "common.black" }} />
                 </DraggableCore>
-            </div>
+            </Handle>
 
-            <div style={{
-                position: "absolute",
-                right: -28,
-                bottom: -28,
-                pointerEvents: "all",
-                cursor: "se-resize"
-            }}>
+            <Handle
+                sx={{
+                    position: "absolute",
+                    right: -14,
+                    bottom: -14,
+                    transform: "rotate(-45deg)",
+                    pointerEvents: "all",
+                    cursor: "se-resize"
+                }}
+            >
                 <DraggableCore
                     onDrag={makeDragHandler([1, 1])}
                     {...getHandleProps("resize", { onStop: onUpdate })}
                 >
-                    <ArrowIcon/>
+                    <ArrowIcon sx={{ color: "common.black" }} />
                 </DraggableCore>
-            </div>
+            </Handle>
         </div>
     )
 }
