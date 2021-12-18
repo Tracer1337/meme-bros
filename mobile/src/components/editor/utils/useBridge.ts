@@ -7,8 +7,7 @@ type Events = {
     "element.create": DeepPartial<CanvasElement>,
     "element.create.default": CanvasElement["type"],
     "canvas.render": null,
-    "canvas.clear": null,
-    "canvas.dimensions.set": Pick<Canvas, "width" | "height">
+    "canvas.set": DeepPartial<Canvas>
 }
 
 type Responses = {
@@ -50,12 +49,8 @@ export function useBridge(webview: RefObject<WebView>) {
                     message = emitCanvasRender()
                     break
 
-                case "canvas.clear":
-                    emitCanvasClear()
-                    break
-
-                case "canvas.dimensions.set":
-                    emitCanvasDimensionsSet(data as Events["canvas.dimensions.set"])
+                case "canvas.set":
+                    emitCanvasSet(data as Events["canvas.set"])
                     break
 
                 default:
@@ -68,59 +63,39 @@ export function useBridge(webview: RefObject<WebView>) {
         })
     }
 
-    const emitElementCreate = async (partial: DeepPartial<CanvasElement>) => {
+    const emit = <T extends keyof Events>(message: Event<T>) => {
         if (!webview.current) {
             return
         }
+        webview.current.postMessage(JSON.stringify(message))
+        return message
+    }
+
+    const emitElementCreate = async (partial: DeepPartial<CanvasElement>) => {
         if (!partial.type) {
             throw new Error("Element type is not defined in 'element.create'")
         }
-        const message: Event<"element.create"> = {
+        return emit<"element.create">({
             id: makeId(),
             type: "element.create",
             data: partial
-        }
-        webview.current.postMessage(JSON.stringify(message))
-        return message
+        })
     }
 
     const emitCanvasRender = () => {
-        if (!webview.current) {
-            return
-        }
-        const message: Event<"canvas.render"> = {
+        return emit<"canvas.render">({
             id: makeId(),
             type: "canvas.render",
             data: null
-        }
-        webview.current.postMessage(JSON.stringify(message))
-        return message
+        })
     }
-
-    const emitCanvasClear = () => {
-        if (!webview.current) {
-            return
-        }
-        const message: Event<"canvas.clear"> = {
+    
+    const emitCanvasSet = (data: Events["canvas.set"]) => {
+        return emit<"canvas.set">({
             id: makeId(),
-            type: "canvas.clear",
-            data: null
-        }
-        webview.current.postMessage(JSON.stringify(message))
-        return message
-    }
-
-    const emitCanvasDimensionsSet = (data: Events["canvas.dimensions.set"]) => {
-        if (!webview.current) {
-            return
-        }
-        const message: Event<"canvas.dimensions.set"> = {
-            id: makeId(),
-            type: "canvas.dimensions.set",
+            type: "canvas.set",
             data
-        }
-        webview.current.postMessage(JSON.stringify(message))
-        return message
+        })
     }
 
     return { onMessage, request }

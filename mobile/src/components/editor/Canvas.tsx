@@ -87,8 +87,7 @@ function Canvas() {
         newElement.rect = { ...newElement.rect, ...rect }
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
-            bridge.request("element.create", newElement)
-            bridge.request("canvas.dimensions.set", rect)
+            bridge.request("canvas.set", { ...rect, elements: [newElement] })
         })
     }
 
@@ -99,13 +98,13 @@ function Canvas() {
         })
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
-            bridge.request("canvas.dimensions.set", dim)
+            bridge.request("canvas.set", dim)
         })
     }
 
     const handleCanvasClear = () => {
         context.set({ renderCanvas: false })
-        bridge.request("canvas.clear", null)
+        bridge.request("canvas.set", { elements: [] })
     }
         
     useEffect(() =>
