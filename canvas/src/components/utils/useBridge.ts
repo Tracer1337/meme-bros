@@ -5,8 +5,8 @@ import { Canvas, CanvasElement } from "../../types"
 import { EditorContext } from "../Context"
 
 type Events = {
-    "element.create": CanvasElement["type"],
-    "element.create.partial": DeepPartial<CanvasElement>,
+    "element.create": DeepPartial<CanvasElement>,
+    "element.create.default": CanvasElement["type"],
     "canvas.render": null
 }
 
@@ -52,14 +52,14 @@ export function useBridge() {
             case "element.create":
                 context.events.emit(
                     "element.create",
-                    message.data as CanvasElement["type"]
+                    message.data as DeepPartial<CanvasElement>
                 )
                 break
-
-            case "element.create.partial":
+                
+            case "element.create.default":
                 context.events.emit(
-                    "element.create.partial",
-                    message.data as DeepPartial<CanvasElement>
+                    "element.create.default",
+                    message.data as CanvasElement["type"]
                 )
                 break
 

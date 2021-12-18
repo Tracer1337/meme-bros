@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import { deepmerge } from "@mui/utils"
 import { setListeners } from "../lib/events"
-import { ContextValue, EditorContext, Events } from "./Context"
+import { ContextValue, EditorContext } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { CanvasElement, PickElement } from "../types"
 import { useBridge } from "./utils/useBridge"
@@ -56,13 +56,7 @@ function Canvas() {
         })
     }
 
-    const handleCreateElement = (type: Events["element.create"]) => {
-        setNewElement(createCanvasElement(type))
-    }
-
-    const handleCreateElementPartial = (
-        partial: DeepPartial<CanvasElement>
-    ) => {
+    const handleCreateElement = (partial: DeepPartial<CanvasElement>) => {
         if (!partial.type) {
             throw new Error("Element type is not defined in 'element.create.partial'")
         }
@@ -70,6 +64,10 @@ function Canvas() {
             createCanvasElement(partial.type),
             partial
         ))
+    }
+
+    const handleCreateElementDefault = (type: CanvasElement["type"]) => {
+        setNewElement(createCanvasElement(type))
     }
 
     const handleRemoveElement = (id: CanvasElement["id"]) => {
@@ -83,7 +81,7 @@ function Canvas() {
     useEffect(() =>
         setListeners(context.events, [
             ["element.create", handleCreateElement],
-            ["element.create.partial", handleCreateElementPartial],
+            ["element.create.default", handleCreateElementDefault],
             ["element.remove", handleRemoveElement]
         ])
     )

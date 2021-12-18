@@ -29,9 +29,9 @@ function DebugMenu() {
             width: 200
         }}>
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Elements</Typography>
-            <Action onClick={event("element.create", "textbox")}>Add Textbox</Action>
-            <Action onClick={event("element.create", "image")}>Add Image</Action>
-            <Action onClick={event("element.create", "shape")}>Add Shape</Action>
+            <Action onClick={event("element.create.default", "textbox")}>Add Textbox</Action>
+            <Action onClick={event("element.create.default", "image")}>Add Image</Action>
+            <Action onClick={event("element.create.default", "shape")}>Add Shape</Action>
         </Paper>
     )
 }
