@@ -46,6 +46,10 @@ function scaleToScreen(rect: { width: number, height: number }) {
     }
 }
 
+const uri = process.env.NODE_ENV === "development"
+    ? "http://10.0.2.2:3000"
+    : "file:///android_asset/canvas/build/index.html"
+
 function Canvas() {
     const context = useContext(EditorContext)
     const dialogs = useContext(DialogContext)
@@ -137,11 +141,12 @@ function Canvas() {
     return (
         <WebView
             originWhitelist={["*"]}
-            source={{ uri: "http://10.0.2.2:3000" }}
+            source={{ uri }}
             ref={canvas}
             onMessage={bridge.onMessage}
             bounces={false}
             scrollEnabled={false}
+            allowFileAccess
         />
     )
 }
