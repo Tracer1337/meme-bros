@@ -1,19 +1,24 @@
 import React, { useRef } from "react"
 import { useContext } from "react"
 import { useEffect } from "react"
+import { Dimensions } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { importImage } from "../../lib/media"
-import { CanvasElement } from "../../types"
+import { CanvasElement, PickElement } from "../../types"
 import { EditorContext } from "./Context"
 import { renderCanvasState } from "./utils/render"
 import { useBridge } from "./utils/useBridge"
 
 async function createPartialElement(type: CanvasElement["type"]) {
-    const newElement: DeepPartial<CanvasElement> = { type }
+    const newElement: DeepPartial<CanvasElement> = {
+        type,
+        rect: {},
+        data: {}
+    }
     if (type === "image") {
         const image = await importImage()
         if (!image || !image.base64) {
@@ -30,6 +35,14 @@ async function createPartialElement(type: CanvasElement["type"]) {
         }
     }
     return newElement
+}
+
+function scaleToScreen(rect: { width: number, height: number }) {
+    const width = Dimensions.get("window").width * 0.9
+    return {
+        width: width,
+        height: width / rect.width * rect.height    
+    }
 }
 
 function Canvas() {
@@ -61,12 +74,33 @@ function Canvas() {
         context.events.emit("canvas.render.done", null)
     }
 
-    const handleBaseImport = () => {
-        context.events.emit("element.create", "image")
+    const handleBaseImport = async () => {
+        const newElement = await createPartialElement("image") as PickElement<"image">
+        if (!newElement) {
+            return
+        }
+        newElement.id = 0
+        const rect = scaleToScreen({
+            width: newElement.rect.width || 0,
+            height: newElement.rect.height || 0
+        })
+        newElement.rect = { ...newElement.rect, ...rect }
+        context.set({ renderCanvas: true })
+        requestAnimationFrame(() => {
+            bridge.request("element.create", newElement)
+            bridge.request("canvas.dimensions.set", rect)
+        })
     }
 
-    const handleBaseBlank = () => {
-        context.events.emit("element.create", "shape")
+    const handleBaseBlank = async () => {
+        const dim = scaleToScreen({
+            width: 500,
+            height: 500
+        })
+        context.set({ renderCanvas: true })
+        requestAnimationFrame(() => {
+            bridge.request("canvas.dimensions.set", dim)
+        })
     }
 
     const handleCanvasClear = () => {

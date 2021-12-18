@@ -7,7 +7,8 @@ type Events = {
     "element.create": DeepPartial<CanvasElement>,
     "element.create.default": CanvasElement["type"],
     "canvas.render": null,
-    "canvas.clear": null
+    "canvas.clear": null,
+    "canvas.dimensions.set": Pick<Canvas, "width" | "height">
 }
 
 type Responses = {
@@ -53,8 +54,12 @@ export function useBridge(webview: RefObject<WebView>) {
                     emitCanvasClear()
                     break
 
-                case "canvas.clear":
+                case "canvas.dimensions.set":
+                    emitCanvasDimensionsSet(data as Events["canvas.dimensions.set"])
+                    break
 
+                default:
+                    console.warn(`Unknown event: '${type}'`)
             }
             if (!message) {
                 return
@@ -100,6 +105,19 @@ export function useBridge(webview: RefObject<WebView>) {
             id: makeId(),
             type: "canvas.clear",
             data: null
+        }
+        webview.current.postMessage(JSON.stringify(message))
+        return message
+    }
+
+    const emitCanvasDimensionsSet = (data: Events["canvas.dimensions.set"]) => {
+        if (!webview.current) {
+            return
+        }
+        const message: Event<"canvas.dimensions.set"> = {
+            id: makeId(),
+            type: "canvas.dimensions.set",
+            data
         }
         webview.current.postMessage(JSON.stringify(message))
         return message
