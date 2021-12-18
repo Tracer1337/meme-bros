@@ -10,6 +10,7 @@ import { setListeners } from "../../lib/events"
 import { importImage } from "../../lib/media"
 import { CanvasElement, PickElement } from "../../types"
 import { EditorContext } from "./Context"
+import { loadCanvasDummy } from "./utils/dummy"
 import { renderCanvasState } from "./utils/render"
 import { useBridge } from "./utils/useBridge"
 
@@ -87,7 +88,11 @@ function Canvas() {
         newElement.rect = { ...newElement.rect, ...rect }
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
-            bridge.request("canvas.set", { ...rect, elements: [newElement] })
+            bridge.request("canvas.set", {
+                ...rect,
+                backgroundColor: "#ffffff",
+                elements: [newElement]
+            })
         })
     }
 
@@ -98,7 +103,18 @@ function Canvas() {
         })
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
-            bridge.request("canvas.set", dim)
+            bridge.request("canvas.set", {
+                ...dim,
+                backgroundColor: "#ffffff"
+            })
+        })
+    }
+
+    const handleBaseDummy = async () => {
+        const dummy = await loadCanvasDummy()
+        context.set({ renderCanvas: true })
+        requestAnimationFrame(() => {
+            bridge.request("canvas.set", dummy)
         })
     }
 
@@ -113,6 +129,7 @@ function Canvas() {
             ["canvas.render", handleCanvasRender],
             ["canvas.base.import", handleBaseImport],
             ["canvas.base.blank", handleBaseBlank],
+            ["canvas.base.dummy", handleBaseDummy],
             ["canvas.clear", handleCanvasClear]
         ])
     )

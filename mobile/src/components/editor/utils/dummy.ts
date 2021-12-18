@@ -1,6 +1,6 @@
 import { Dimensions, Image } from "react-native"
 import { fetchBase64 } from "../../../lib/base64"
-import { Canvas as CanvasType } from "../../../types"
+import { Canvas } from "../../../types"
 
 function binaryToPNG(base64: string) {
     return base64.replace("application/octet-stream", "image/png")
@@ -14,7 +14,7 @@ export function scaleToScreen(rect: { width: number, height: number }) {
     }
 }
 
-export async function loadCanvasDummy(): Promise<CanvasType> {
+export async function loadCanvasDummy(): Promise<Canvas> {
     const image = Image.resolveAssetSource(require("../../../assets/meme.png"))
     const base64 = binaryToPNG(await fetchBase64(image.uri))
     const rect = scaleToScreen(image)

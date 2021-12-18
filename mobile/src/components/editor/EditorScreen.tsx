@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { GestureResponderEvent, StyleSheet, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import deepmerge from "deepmerge"
 import { isPlainObject } from "is-plain-object"
 import { RootStackParamList } from "../../Navigator"
@@ -8,8 +8,6 @@ import Screen from "../styled/Screen"
 import { contextDefaultValue, ContextValue, EditorContext } from "./Context"
 import Canvas from "./Canvas"
 import BottomBar from "./BottomBar"
-import { setListeners } from "../../lib/events"
-import { loadCanvasDummy } from "./utils/dummy"
 import BaseSelector from "./BaseSelector"
 
 function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
@@ -22,25 +20,9 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
         }) as ContextValue
         setContext(newState)
     }
-    
-    const handleScreenPress = (event: GestureResponderEvent) => {
-        context.events.emit("screen.press", event)
-        return false
-    }
-
-    const handleLoadDummy = () => {
-        // loadCanvasDummy().then((canvas) => context.set({ canvas }))
-        context.set({ renderCanvas: true })
-    }
-
-    useEffect(() =>
-        setListeners(context.events, [
-            ["canvas.base.dummy", handleLoadDummy]
-        ])
-    )
 
     return (
-        <Screen style={styles.container} onStartShouldSetResponder={handleScreenPress}>
+        <Screen style={styles.container}>
             <EditorContext.Provider value={context}>
                 <View
                     style={context.renderCanvas

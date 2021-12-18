@@ -1,15 +1,13 @@
 import { createContext } from "react"
-import { GestureResponderEvent } from "react-native"
 import { DeepPartial } from "tsdef"
 import EventEmitter from "../../lib/EventEmitter"
-import { Canvas, CanvasElement } from "../../types"
+import { CanvasElement } from "../../types"
 
 export type ScreenEvents = "press"
 
 export type ElementEvents = "create" | "edit" | "remove" | "config"
 
 type Events = {
-    "screen.press": GestureResponderEvent,
     "element.create": CanvasElement["type"],
     "element.edit": CanvasElement["id"],
     "element.remove": CanvasElement["id"],
