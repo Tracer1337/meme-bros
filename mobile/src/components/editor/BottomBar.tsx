@@ -23,7 +23,7 @@ function BottomBar() {
                 onPress={async () => {
                     setIsGenerating(true)
                     await new Promise(requestAnimationFrame)
-                    context.events.emit("canvas.render", context.canvas)
+                    context.events.emit("canvas.render", null)
                 }}
                 loading={isGenerating}
             />

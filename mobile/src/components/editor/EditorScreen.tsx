@@ -29,7 +29,8 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
     }
 
     const handleLoadDummy = () => {
-        loadCanvasDummy().then((canvas) => context.set({ canvas }))
+        // loadCanvasDummy().then((canvas) => context.set({ canvas }))
+        context.set({ renderCanvas: true })
     }
 
     useEffect(() =>
@@ -38,15 +39,18 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
         ])
     )
 
-    const showCanvas = context.canvas.elements.length > 0
-
     return (
         <Screen style={styles.container} onStartShouldSetResponder={handleScreenPress}>
             <EditorContext.Provider value={context}>
-                <View style={showCanvas ? { width: "100%", height: "100%" } : { width: 0, height: 0 }}>
+                <View
+                    style={context.renderCanvas
+                        ? { width: "100%", height: "100%" }
+                        : { width: 0, height: 0 }
+                    }
+                >
                     <Canvas/>
                 </View>
-                {showCanvas ? (
+                {context.renderCanvas ? (
                     <BottomBar/>
                 ) : (
                     <View style={styles.center}>

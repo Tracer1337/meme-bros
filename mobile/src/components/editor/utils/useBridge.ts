@@ -1,11 +1,7 @@
-import { RefObject, useContext, useEffect, useRef } from "react"
+import { RefObject, useRef } from "react"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import { DeepPartial } from "tsdef"
-import EventEmitter from "../../../lib/EventEmitter"
-import { setListeners } from "../../../lib/events"
-import { importImage } from "../../../lib/media"
 import { Canvas, CanvasElement } from "../../../types"
-import { EditorContext } from "../Context"
 
 type Events = {
     "element.create": DeepPartial<CanvasElement>,
@@ -18,72 +14,75 @@ type Responses = {
 }
 
 type Event<T extends keyof Events> = {
+    id: number,
     type: T,
     data: Events[T]
 }
 
-async function createPartialElement(type: CanvasElement["type"]) {
-    const newElement: DeepPartial<CanvasElement> = { type }
-    if (type === "image") {
-        const image = await importImage()
-        if (!image || !image.base64) {
-            return
-        }
-        newElement.data = {
-            uri: image.base64,
-            animated: image.base64.startsWith("data:image/gif")
-        }
-        if (image.width && image.height) {
-            newElement.rect = {}
-            newElement.rect.width = newElement.data.naturalWidth = image.width
-            newElement.rect.height = newElement.data.naturalHeight = image.height
-        }
-    }
-    return newElement
+function makeId() {
+    return Math.floor(Math.random() * 1e8)
 }
 
 export function useBridge(webview: RefObject<WebView>) {
-    const context = useContext(EditorContext)
-
-    const events = useRef(new EventEmitter<Responses>()).current
+    const resolvers = useRef<Record<number, (data: any) => void>>({}).current
 
     const onMessage = (event: WebViewMessageEvent) => {
-        const data = JSON.parse(event.nativeEvent.data)
-        events.emit(data.type, data.data)
+        const data = JSON.parse(event.nativeEvent.data) as Event<any>
+        if (data.id in resolvers) {
+            resolvers[data.id](data.data)
+            delete resolvers[data.id]
+        }
     }
 
-    const handleElementCreate = async (type: CanvasElement["type"]) => {
+    const request = <T extends keyof Events>(type: T, data: Events[T]) => {
+        return new Promise<
+            T extends keyof Responses ? Responses[T] : void
+        >(async (resolve) => {
+            let message: Event<any> | undefined
+            switch (type) {
+                case "element.create":
+                    message = await emitElementCreate(data as Events["element.create"])
+                    break
+    
+                case "canvas.render":
+                    message = emitCanvasRender()
+                    break
+            }
+            if (!message) {
+                return
+            }
+            resolvers[message.id] = resolve
+        })
+    }
+
+    const emitElementCreate = async (partial: DeepPartial<CanvasElement>) => {
         if (!webview.current) {
             return
         }
-        const data = await createPartialElement(type)
-        if (!data) {
-            return
+        if (!partial.type) {
+            throw new Error("Element type is not defined in 'element.create'")
         }
         const message: Event<"element.create"> = {
+            id: makeId(),
             type: "element.create",
-            data
+            data: partial
         }
         webview.current.postMessage(JSON.stringify(message))
+        return message
     }
 
-    const handleCanvasRender = () => {
+    const emitCanvasRender = () => {
         if (!webview.current) {
             return
         }
         const message: Event<"canvas.render"> = {
+            id: makeId(),
             type: "canvas.render",
             data: null
         }
         webview.current.postMessage(JSON.stringify(message))
+        return message
     }
 
-    useEffect(() =>
-        setListeners(context.events, [
-            ["element.create", handleElementCreate],
-            ["canvas.render", handleCanvasRender]
-        ])
-    )
-
-    return { onMessage, events }
+    return { onMessage, request }
 }
