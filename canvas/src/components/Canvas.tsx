@@ -58,7 +58,7 @@ function Canvas() {
 
     const handleCreateElement = (partial: DeepPartial<CanvasElement>) => {
         if (!partial.type) {
-            throw new Error("Element type is not defined in 'element.create.partial'")
+            throw new Error("Element type is not defined in 'element.create'")
         }
         setNewElement(deepmerge(
             createCanvasElement(partial.type),

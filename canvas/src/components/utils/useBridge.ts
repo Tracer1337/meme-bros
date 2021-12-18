@@ -15,11 +15,13 @@ type Responses = {
 }
 
 type Event<T extends keyof Events> = {
+    id: number,
     type: T,
     data: Events[T]
 }
 
 type Response<T extends keyof Responses> = {
+    id: number,
     type: T,
     data: Responses[T]
 }
@@ -65,6 +67,7 @@ export function useBridge() {
 
             case "canvas.render":
                 postMessage({
+                    id: message.id,
                     type: "canvas.render",
                     data: context.canvas
                 })
