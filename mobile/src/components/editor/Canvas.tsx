@@ -29,9 +29,24 @@ function Canvas() {
         context.events.emit("canvas.render.done", state)
     }
 
+    const handleBaseImport = () => {
+        context.events.emit("element.create", "image")
+    }
+
+    const handleBaseBlank = () => {
+        context.events.emit("element.create", "shape")
+    }
+
+    const handleCanvasClear = () => {
+
+    }
+
     useEffect(() =>
         setListeners(events, [
-            ["canvas.render", handleCanvasRender]
+            ["canvas.render", handleCanvasRender],
+            ["canvas.base.import", handleBaseImport],
+            ["canvas.base.blank", handleBaseBlank],
+            ["canvas.clear", handleCanvasClear]
         ])
     )
 
@@ -41,6 +56,8 @@ function Canvas() {
             source={{ uri: "http://10.0.2.2:3000" }}
             ref={canvas}
             onMessage={onMessage}
+            bounces={false}
+            scrollEnabled={false}
         />
     )
 }

@@ -38,14 +38,16 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
         ])
     )
 
+    const showCanvas = context.canvas.elements.length > 0
+
     return (
         <Screen style={styles.container} onStartShouldSetResponder={handleScreenPress}>
             <EditorContext.Provider value={context}>
-                {context.canvas.elements.length > 0 ? (
-                    <>
-                        <Canvas/>
-                        <BottomBar/>
-                    </>
+                <View style={showCanvas ? { width: "100%", height: "100%" } : { width: 0, height: 0 }}>
+                    <Canvas/>
+                </View>
+                {showCanvas ? (
+                    <BottomBar/>
                 ) : (
                     <View style={styles.center}>
                         <BaseSelector/>

@@ -8,9 +8,8 @@ import { Canvas, CanvasElement } from "../../../types"
 import { EditorContext } from "../Context"
 
 type Events = {
-    "element.create": DeepPartial<CanvasElement> & {
-        type: CanvasElement["type"]
-    },
+    "element.create": CanvasElement["type"],
+    "element.create.partial": DeepPartial<CanvasElement>,
     "canvas.render": null
 }
 
@@ -24,7 +23,7 @@ type Event<T extends keyof Events> = {
 }
 
 async function createPartialElement(type: CanvasElement["type"]) {
-    const newElement: Events["element.create"] = { type }
+    const newElement: DeepPartial<CanvasElement> = { type }
     if (type === "image") {
         const image = await importImage()
         if (!image || !image.base64) {
@@ -61,8 +60,8 @@ export function useBridge(webview: RefObject<WebView>) {
         if (!data) {
             return
         }
-        const message: Event<"element.create"> = {
-            type: "element.create",
+        const message: Event<"element.create.partial"> = {
+            type: "element.create.partial",
             data
         }
         webview.current.postMessage(JSON.stringify(message))
