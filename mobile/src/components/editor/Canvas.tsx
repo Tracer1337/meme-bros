@@ -71,6 +71,7 @@ function Canvas() {
 
     const handleCanvasClear = () => {
         context.set({ renderCanvas: false })
+        bridge.request("canvas.clear", null)
     }
         
     useEffect(() =>

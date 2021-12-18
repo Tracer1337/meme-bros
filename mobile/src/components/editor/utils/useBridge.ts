@@ -6,7 +6,8 @@ import { Canvas, CanvasElement } from "../../../types"
 type Events = {
     "element.create": DeepPartial<CanvasElement>,
     "element.create.default": CanvasElement["type"],
-    "canvas.render": null
+    "canvas.render": null,
+    "canvas.clear": null
 }
 
 type Responses = {
@@ -41,12 +42,19 @@ export function useBridge(webview: RefObject<WebView>) {
             let message: Event<any> | undefined
             switch (type) {
                 case "element.create":
-                    message = await emitElementCreate(data as Events["element.create"])
+                    await emitElementCreate(data as Events["element.create"])
                     break
     
                 case "canvas.render":
                     message = emitCanvasRender()
                     break
+
+                case "canvas.clear":
+                    emitCanvasClear()
+                    break
+
+                case "canvas.clear":
+
             }
             if (!message) {
                 return
@@ -78,6 +86,19 @@ export function useBridge(webview: RefObject<WebView>) {
         const message: Event<"canvas.render"> = {
             id: makeId(),
             type: "canvas.render",
+            data: null
+        }
+        webview.current.postMessage(JSON.stringify(message))
+        return message
+    }
+
+    const emitCanvasClear = () => {
+        if (!webview.current) {
+            return
+        }
+        const message: Event<"canvas.clear"> = {
+            id: makeId(),
+            type: "canvas.clear",
             data: null
         }
         webview.current.postMessage(JSON.stringify(message))
