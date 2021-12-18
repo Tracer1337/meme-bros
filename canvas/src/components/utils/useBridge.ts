@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react"
+import { DeepPartial } from "tsdef"
 import { setDOMListeners } from "../../lib/events"
 import { Canvas, CanvasElement } from "../../types"
 import { EditorContext } from "../Context"
 
 type Events = {
     "element.create": CanvasElement["type"],
+    "element.create.partial": DeepPartial<CanvasElement>,
     "canvas.render": null
 }
 
@@ -51,6 +53,13 @@ export function useBridge() {
                 context.events.emit(
                     "element.create",
                     message.data as CanvasElement["type"]
+                )
+                break
+
+            case "element.create.partial":
+                context.events.emit(
+                    "element.create.partial",
+                    message.data as DeepPartial<CanvasElement>
                 )
                 break
 

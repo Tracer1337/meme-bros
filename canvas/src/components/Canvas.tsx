@@ -5,6 +5,7 @@ import { ContextValue, EditorContext, Events } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { CanvasElement, PickElement } from "../types"
 import { useBridge } from "./utils/useBridge"
+import { DeepPartial } from "tsdef"
 
 function makeId() {
     return Math.floor(Math.random() * 1e8)
@@ -44,15 +45,31 @@ function Canvas() {
 
     const context = useContext(EditorContext)
 
-    const handleCreateElement = (event: Events["element.create"]) => {
-        const newElement = typeof event === "string"
-            ? createCanvasElement(event)
-            : deepmerge(createCanvasElement(event.type), event)
+    const setNewElement = (newElement: CanvasElement) => {
         context.set({
+            interactions: {
+                focus: newElement.id
+            },
             canvas: {
                 elements: [...context.canvas.elements, newElement]
             }
         })
+    }
+
+    const handleCreateElement = (type: Events["element.create"]) => {
+        setNewElement(createCanvasElement(type))
+    }
+
+    const handleCreateElementPartial = (
+        partial: DeepPartial<CanvasElement>
+    ) => {
+        if (!partial.type) {
+            throw new Error("Element type is not defined in 'element.create.partial'")
+        }
+        setNewElement(deepmerge(
+            createCanvasElement(partial.type),
+            partial
+        ))
     }
 
     const handleRemoveElement = (id: CanvasElement["id"]) => {
@@ -66,6 +83,7 @@ function Canvas() {
     useEffect(() =>
         setListeners(context.events, [
             ["element.create", handleCreateElement],
+            ["element.create.partial", handleCreateElementPartial],
             ["element.remove", handleRemoveElement]
         ])
     )
