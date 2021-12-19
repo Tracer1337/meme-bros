@@ -10,12 +10,19 @@ import { getTextShadow } from "../../lib/styles"
 
 const PADDING = 8
 
+const justifyContentStyles: Record<string, string> = {
+    "top": "flex-start",
+    "center": "center",
+    "bottom": "flex-end"
+}
+
 export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
     return {
         text: "Enter Text...",
         fontFamily: "Impact",
         fontWeight: "normal",
         textAlign: "center",
+        verticalAlign: "center",
         color: "#ffffff",
         caps: true,
         outlineWidth: 2,
@@ -28,6 +35,9 @@ export function getTextboxStyles(element: PickElement<"textbox">): CSS.Propertie
     return {
         padding: `${PADDING}px`,
         whiteSpace: "pre-wrap",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
         lineHeight: 1,
         color: element.data.color,
         fontFamily: element.data.fontFamily,
@@ -35,7 +45,8 @@ export function getTextboxStyles(element: PickElement<"textbox">): CSS.Propertie
         backgroundColor: element.data.backgroundColor,
         textAlign: element.data.textAlign as CSS.Property.TextAlign,
         textTransform: element.data.caps ? "uppercase" : undefined,
-        textShadow: getTextShadow(element.data.outlineWidth, element.data.outlineColor)
+        textShadow: getTextShadow(element.data.outlineWidth, element.data.outlineColor),
+        justifyContent: justifyContentStyles[element.data.verticalAlign]
     }
 }
 

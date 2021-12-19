@@ -35,3 +35,9 @@ export const textAlign: Item[] = [
     { label: "Right", value: "right" },
     { label: "Center", value: "center" }
 ]
+
+export const verticalAlign: Item[] = [
+    { label: "Top", value: "top" },
+    { label: "Bottom", value: "bottom" },
+    { label: "Center", value: "center" }
+]

@@ -42,6 +42,7 @@ export type TextboxElement = {
         fontFamily: string,
         fontWeight: string,
         textAlign: string,
+        verticalAlign: string,
         color: ColorString,
         caps: boolean,
         outlineWidth: number,

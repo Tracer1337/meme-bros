@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import { DialogProps } from "../../lib/DialogHandler"
 import { PickElement } from "../../types"
 import { getTextboxStyles } from "../elements/Textbox"
-import { colors, fontFamilies, fontWeights, textAlign } from "../inputs/items"
+import { colors, fontFamilies, fontWeights, textAlign, verticalAlign } from "../inputs/items"
 import Select from "../inputs/Select"
 import Switch from "../inputs/Switch"
 import { useConfigDialog } from "./utils/useConfigDialog"
@@ -25,6 +25,7 @@ function TextboxConfigDialog({ open, data: element, close }: Props) {
                 <TextField type="number" {...getTextFieldProps("Outline Width", "outlineWidth")} />
                 <Select options={colors} {...getTextFieldProps("Outline Color", "outlineColor")} />
                 <Select options={textAlign} {...getTextFieldProps("Text Align", "textAlign")} />
+                <Select options={verticalAlign} {...getTextFieldProps("Vertical Align", "verticalAlign")} />
                 <Select options={fontFamilies} {...getTextFieldProps("Font Family", "fontFamily")} />
                 <Select options={fontWeights} {...getTextFieldProps("Font Weight", "fontWeight")} />
                 <Switch {...getBooleanFieldProps("Caps", "caps")} />
