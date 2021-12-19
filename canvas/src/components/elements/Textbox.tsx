@@ -8,6 +8,8 @@ import { EditorContext } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 import { getTextShadow } from "../../lib/styles"
 
+const PADDING = 8
+
 export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
     return {
         text: "Enter Text...",
@@ -24,7 +26,7 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
 
 export function getTextboxStyles(element: PickElement<"textbox">): CSS.Properties {
     return {
-        padding: "8px",
+        padding: `${PADDING}px`,
         whiteSpace: "pre-wrap",
         lineHeight: 1,
         color: element.data.color,
@@ -68,9 +70,10 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
         if (!textRef.current) {
             return
         }
+        const minSize = PADDING * 2 + 1
         const fontSize = textfit({
-            width: size.x.value,
-            height: size.y.value,
+            width: Math.max(minSize, size.x.value),
+            height: Math.max(minSize, size.y.value),
             text,
             styles: getTextboxStyles(element)
         })
