@@ -34,6 +34,7 @@
                 "fontFamily": "Impact",
                 "fontWeight": "bold",
                 "textAlign": "left",
+                "verticalAlign": "center",
                 "color": [255, 255, 255, 255],
                 "caps": true,
                 "outlineWidth": 2,
@@ -58,6 +59,7 @@
                 "color": [0, 0, 0, 255],
                 "caps": true,
                 "textAlign": "center",
+                "verticalAlign": "center",
                 "outlineWidth": 3,
                 "outlineColor": [100, 100, 255, 255],
                 "backgroundColor": [0, 0, 0, 0]

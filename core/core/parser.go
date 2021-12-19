@@ -137,6 +137,7 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 				FontFamily:      string(e.GetStringBytes("data", "fontFamily")),
 				FontWeight:      string(e.GetStringBytes("data", "fontWeight")),
 				TextAlign:       string(e.GetStringBytes("data", "textAlign")),
+				VerticalAlign:   string(e.GetStringBytes("data", "verticalAlign")),
 				Color:           parseRGBA(e.GetArray("data", "color")),
 				Caps:            e.GetBool("data", "caps"),
 				OutlineWidth:    e.GetFloat64("data", "outlineWidth"),

@@ -66,6 +66,7 @@ type TextboxData struct {
 	FontFamily      string
 	FontWeight      string
 	TextAlign       string
+	VerticalAlign   string
 	Color           *color.RGBA
 	Caps            bool
 	OutlineWidth    float64

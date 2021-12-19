@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/fogleman/gg"
@@ -45,19 +46,50 @@ func (e *TextboxElement) drawBackground(dc *gg.Context, c *Canvas) {
 
 func (e *TextboxElement) drawTextOutline(dc *gg.Context, c *Canvas) {
 	s := e.Data.OutlineWidth
-	fText := e.getFormattedText()
+	dc.SetColor(e.Data.OutlineColor)
 	for dy := -s; dy <= s; dy++ {
 		for dx := -s; dx <= s; dx++ {
-			dc.SetColor(e.Data.OutlineColor)
-			dc.DrawStringWrapped(fText, e.Rect.X+dx, e.Rect.Y+dy, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
+			if dx == 0 && dy == 0 {
+				continue
+			}
+			e.drawAlignedText(dc, c, dx, dy)
 		}
 	}
 }
 
 func (e *TextboxElement) drawText(dc *gg.Context, c *Canvas) {
 	dc.SetColor(e.Data.Color)
+	e.drawAlignedText(dc, c, 0, 0)
+}
+
+func (e *TextboxElement) drawAlignedText(dc *gg.Context, c *Canvas, dx, dy float64) {
 	fText := e.getFormattedText()
-	dc.DrawStringWrapped(fText, e.Rect.X, e.Rect.Y, 0, 0, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
+	x, y, ax, ay := e.resolveVerticalAlign()
+	dc.DrawStringWrapped(fText, x+dx, y+dy, ax, ay, e.Rect.Width, LINE_SPACING, resolveTextAlign(e.Data.TextAlign))
+}
+
+func (e *TextboxElement) resolveVerticalAlign() (x, y, ax, ay float64) {
+	x = e.Rect.X
+	y = e.Rect.Y
+	ax = 0
+	ay = 0
+
+	switch e.Data.VerticalAlign {
+	case "center":
+		y += e.Rect.Height / 2
+		ay = 0.5
+		break
+	case "bottom":
+		y += e.Rect.Height
+		ay = 1
+		break
+	case "top":
+		break
+	default:
+		panic(fmt.Sprintf("Unknown value for vertical-align '%s'", e.Data.VerticalAlign))
+	}
+
+	return x, y, ax, ay
 }
 
 func (e *TextboxElement) loadFont(dc *gg.Context, c *Canvas) {

@@ -64,6 +64,7 @@ Textbox = {
         "fontFamily": "Arial" | "Comic-Sans" | "Impact",
         "fontWeight": "normal" | "bold",
         "textAlign": "left" | "center" | "right",
+        "verticalAlign": "top" | "center" | "bottom",
         "color": Color,
         "caps": Boolean,
         "outlineWidth": Number,
