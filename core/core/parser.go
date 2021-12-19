@@ -2,6 +2,7 @@ package core
 
 import (
 	"image/color"
+	"math"
 	"meme-bros/core/utils"
 	"sort"
 	"strings"
@@ -17,6 +18,9 @@ func CanvasFromJSON(jsonString string) *Canvas {
 }
 
 func parseRGBA(v []*fastjson.Value) *color.RGBA {
+	if len(v) < 4 {
+		return &color.RGBA{0, 0, 0, 0}
+	}
 	return &color.RGBA{
 		uint8(v[0].GetInt()),
 		uint8(v[1].GetInt()),
@@ -28,8 +32,8 @@ func parseRGBA(v []*fastjson.Value) *color.RGBA {
 func parseCanvas(v *fastjson.Value) *Canvas {
 	elements := parseElements(v.GetArray("elements"))
 	c := &Canvas{
-		Width:           v.GetFloat64("width"),
-		Height:          v.GetFloat64("height"),
+		Width:           math.Max(v.GetFloat64("width"), 1),
+		Height:          math.Max(v.GetFloat64("height"), 1),
 		BackgroundColor: parseRGBA(v.GetArray("backgroundColor")),
 		Debug:           v.GetBool("debug"),
 		Elements: &CanvasElements{
@@ -89,7 +93,7 @@ func parseImages(vs []*fastjson.Value) []*ImageElement {
 	elements := []*ImageElement{}
 	for _, e := range vs {
 		imageURI := string(e.GetStringBytes("data", "uri"))
-		if isAnimated(imageURI) {
+		if imageURI == "" || isAnimated(imageURI) {
 			continue
 		}
 		newElement := &ImageElement{
@@ -109,7 +113,7 @@ func parseAnimations(vs []*fastjson.Value) []*AnimatedElement {
 	elements := []*AnimatedElement{}
 	for _, e := range vs {
 		imageURI := string(e.GetStringBytes("data", "uri"))
-		if !isAnimated(imageURI) {
+		if imageURI == "" || !isAnimated(imageURI) {
 			continue
 		}
 		newElement := &AnimatedElement{
@@ -134,10 +138,10 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 			Rect:  parseRect(e.Get("rect")),
 			Data: &TextboxData{
 				Text:            string(e.GetStringBytes("data", "text")),
-				FontFamily:      string(e.GetStringBytes("data", "fontFamily")),
-				FontWeight:      string(e.GetStringBytes("data", "fontWeight")),
-				TextAlign:       string(e.GetStringBytes("data", "textAlign")),
-				VerticalAlign:   string(e.GetStringBytes("data", "verticalAlign")),
+				FontFamily:      stringWithDefault(e.GetStringBytes("data", "fontFamily"), "Impact"),
+				FontWeight:      stringWithDefault(e.GetStringBytes("data", "fontWeight"), "normal"),
+				TextAlign:       stringWithDefault(e.GetStringBytes("data", "textAlign"), "center"),
+				VerticalAlign:   stringWithDefault(e.GetStringBytes("data", "verticalAlign"), "center"),
 				Color:           parseRGBA(e.GetArray("data", "color")),
 				Caps:            e.GetBool("data", "caps"),
 				OutlineWidth:    e.GetFloat64("data", "outlineWidth"),
@@ -157,7 +161,7 @@ func parseShapes(vs []*fastjson.Value) []*ShapeElement {
 			Index: e.GetInt("id"),
 			Rect:  parseRect(e.Get("rect")),
 			Data: &ShapeData{
-				Variant:         string(e.GetStringBytes("data", "variant")),
+				Variant:         stringWithDefault(e.GetStringBytes("data", "variant"), "rectangle"),
 				BackgroundColor: parseRGBA(e.GetArray("data", "backgroundColor")),
 				BorderColor:     parseRGBA(e.GetArray("data", "borderColor")),
 				BorderWidth:     e.GetFloat64("data", "borderWidth"),

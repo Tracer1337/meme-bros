@@ -64,3 +64,11 @@ func loadFont(dc *gg.Context, name string, fontWeight string, fontSize float64) 
 	dc.SetFontFace(face)
 	return face
 }
+
+func stringWithDefault(i []byte, d string) string {
+	s := string(i)
+	if s == "" {
+		return d
+	}
+	return s
+}
