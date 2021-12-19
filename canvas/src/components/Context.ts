@@ -31,6 +31,7 @@ export const contextDefaultValue: ContextValue = {
         focus: null
     },
     canvas: {
+        domRect: null,
         width: 0,
         height: 0,
         debug: false,

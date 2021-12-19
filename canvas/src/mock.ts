@@ -10,6 +10,7 @@ export const contextValue: ContextValue = {
     },
     set: () => {},
     canvas: {
+        domRect: null,
         width: 500,
         height: 500,
         debug: false,

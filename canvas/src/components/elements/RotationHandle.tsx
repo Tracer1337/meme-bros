@@ -1,11 +1,11 @@
-import RotateIcon from "@mui/icons-material/Replay"
-import { useEffect, useRef } from "react"
+import { useContext, useRef } from "react"
 import { DraggableCore, DraggableData, DraggableEventHandler } from "react-draggable"
-import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
-import { setListeners } from "../../lib/events"
+import RotateIcon from "@mui/icons-material/Replay"
+import { AnimatedValue } from "../../lib/animation"
 import { Rect } from "../../types"
 import Handle from "./Handle"
 import { GetHandleProps } from "./makeElement"
+import { EditorContext } from "../Context"
 
 function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
     childRect: Rect,
@@ -13,42 +13,43 @@ function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
     onUpdate: () => void,
     animate: AnimatedValue
 }) {
-    const handlePos = useRef(new AnimatedValueXY()).current
+    const context = useContext(EditorContext)
 
-    const getNextHandlePos = (data: DraggableData) => {
-        return {
-            x: handlePos.x.value + data.deltaX,
-            y: handlePos.y.value + data.deltaY
+    const handleRef = useRef<HTMLDivElement>(null)
+    const lastRotation = useRef(childRect.rotation)
+
+    const getChildCenter = () => ({
+        x: childRect.x + childRect.width / 2,
+        y: childRect.y + childRect.height / 2
+    })
+
+    const getRotationAngle = (data: DraggableData) => {
+        const canvasRect = context.canvas.domRect
+        if (!canvasRect) {
+            return 0
         }
+        const childCenter = getChildCenter()
+        data.x -= canvasRect.x
+        data.y -= canvasRect.y
+        const childToMouse = Math.atan2(childCenter.y - data.y, childCenter.x - data.x)
+        return childToMouse - Math.PI / 2 - lastRotation.current
     }
 
-    const handleRotationStart: DraggableEventHandler = () => {}
+    const handleRotationStart: DraggableEventHandler = (_, data) => {
+        lastRotation.current = getRotationAngle(data)
+    }
 
-    const handleRotationEnd: DraggableEventHandler = () => {
+    const handleRotationEnd: DraggableEventHandler = (_, data) => {
+        lastRotation.current = getRotationAngle(data)
         onUpdate()
     }
 
     const handleRotationDrag: DraggableEventHandler = (_, data) => {
-        handlePos.emit("update", getNextHandlePos(data))
+        animate.emit("update", getRotationAngle(data))
     }
-
-    const handlePositionUpdate = (value: { x: number, y: number }) => {
-        const childCenter = {
-            x: childRect.x + childRect.x / 2,
-            y: childRect.y + childRect.y / 2
-        }
-        value.x += childCenter.x
-        value.y += childCenter.y
-        const newRotation = Math.atan2(childCenter.y - value.y, childCenter.x - value.x) - Math.PI / 2
-        animate.emit("update", newRotation)
-    }
-
-    useEffect(() => setListeners(handlePos, [
-        ["update", handlePositionUpdate]
-    ]))
 
     return (
-        <Handle sx={{ mr: 1 }}>
+        <Handle sx={{ mr: 1 }} ref={handleRef}>
             <DraggableCore
                 onDrag={handleRotationDrag}
                 {...getHandleProps("rotate", {

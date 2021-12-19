@@ -46,6 +46,7 @@ function Canvas() {
     const context = useContext(EditorContext)
 
     const setQueuedListeners = useRef(makeListenerQueue<Events>()).current
+    const canvasRef = useRef<HTMLDivElement>(null)
 
     const setNewElement = (newElement: CanvasElement) => {
         context.set({
@@ -87,9 +88,21 @@ function Canvas() {
             ["element.remove", handleRemoveElement]
         ])
     )
+
+    useEffect(() => {
+        if (!canvasRef.current) {
+            return
+        }
+        context.set({
+            canvas: {
+                domRect: canvasRef.current.getBoundingClientRect()
+            }
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [canvasRef])
     
     return (
-        <div style={getCanvasStyles(context.canvas)}>
+        <div style={getCanvasStyles(context.canvas)} ref={canvasRef}>
             {context.canvas.elements.map((element) =>
                 React.createElement(getElementByType(element.type), {
                     element,

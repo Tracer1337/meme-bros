@@ -1,4 +1,5 @@
 export type Canvas = {
+    domRect: DOMRect | null,
     width: number,
     height: number,
     debug: boolean,
