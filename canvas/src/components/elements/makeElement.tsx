@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import * as CSS from "csstype"
-import { EditorContext } from "../Context"
+import { CanvasContext } from "../Context"
 import { CanvasElement, PickElement } from "../../types"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
@@ -48,7 +48,7 @@ function makeElement<T extends CanvasElement["type"]>(
         DeepPartial<ElementConfig> = () => ({})
 ) { 
     return ({ element }: { element: PickElement<T> }) => {
-        const context = useContext(EditorContext)
+        const context = useContext(CanvasContext)
 
         const config = deepmerge(defaultConfig, getElementConfig({ element })) as ElementConfig
 

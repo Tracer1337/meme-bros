@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react"
 import { DeepPartial } from "tsdef"
 import { setDOMListeners } from "../../lib/events"
 import { Canvas, CanvasElement } from "../../types"
-import { EditorContext } from "../Context"
+import { CanvasContext } from "../Context"
 
 type Events = {
     "element.create": DeepPartial<CanvasElement>,
@@ -28,7 +28,7 @@ type Response<T extends keyof Responses> = {
 }
 
 export function useBridge() {
-    const context = useContext(EditorContext)
+    const context = useContext(CanvasContext)
 
     const postMessage = <T extends keyof Responses>(
         message: Response<T>

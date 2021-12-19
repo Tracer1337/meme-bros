@@ -4,7 +4,7 @@ import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { textfit } from "../../lib/textfit"
 import { PickElement } from "../../types"
-import { EditorContext } from "../Context"
+import { CanvasContext } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 import { getTextShadow } from "../../lib/styles"
 
@@ -16,10 +16,10 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
         fontFamily: "Impact",
         fontWeight: "normal",
         textAlign: "center",
-        color: "#000000",
+        color: "#ffffff",
         caps: true,
-        outlineWidth: 0,
-        outlineColor: "#ffffff",
+        outlineWidth: 2,
+        outlineColor: "#000000",
         backgroundColor: "transparent"
     }
 }
@@ -40,7 +40,7 @@ export function getTextboxStyles(element: PickElement<"textbox">): CSS.Propertie
 }
 
 function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) {
-    const context = useContext(EditorContext)
+    const context = useContext(CanvasContext)
     const dialogs = useContext(DialogContext)
 
     const containerRef = useRef<HTMLDivElement>(null)

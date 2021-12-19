@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Box, styled } from "@mui/material"
 import { deepmerge } from "@mui/utils"
 import Canvas from "./components/Canvas"
-import { ContextValue, EditorContext } from "./components/Context"
+import { ContextValue, CanvasContext } from "./components/Context"
 import { contextValue } from "./mock"
 import DebugMenu from "./components/DebugMenu"
 
@@ -37,7 +37,7 @@ function App() {
     }
 
     return (
-        <EditorContext.Provider value={context}>
+        <CanvasContext.Provider value={context}>
             <Container>
                 <Canvas/>
             </Container>
@@ -47,7 +47,7 @@ function App() {
                     <DebugMenu/>
                 </DebugContainer>
             )}
-        </EditorContext.Provider>
+        </CanvasContext.Provider>
     )
 }
 

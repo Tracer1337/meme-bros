@@ -1,6 +1,6 @@
 import { Button, Paper, Typography, Box, TextField } from "@mui/material"
 import { useContext } from "react"
-import { EditorContext, Events } from "./Context"
+import { CanvasContext, Events } from "./Context"
 
 function Action({ children, onClick }: {
     children: string,
@@ -14,7 +14,7 @@ function Action({ children, onClick }: {
 }
 
 function DebugMenu() {
-    const context = useContext(EditorContext)
+    const context = useContext(CanvasContext)
 
     const event = <T extends keyof Events>(
         event: T,

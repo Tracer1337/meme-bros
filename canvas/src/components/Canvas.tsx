@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import { makeListenerQueue } from "../lib/events"
-import { ContextValue, EditorContext, Events } from "./Context"
+import { ContextValue, CanvasContext, Events } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { CanvasElement, PickElement } from "../types"
 import { useBridge } from "./utils/useBridge"
@@ -43,7 +43,7 @@ function getCanvasStyles(canvas: ContextValue["canvas"]) {
 function Canvas() {
     useBridge()
 
-    const context = useContext(EditorContext)
+    const context = useContext(CanvasContext)
 
     const setQueuedListeners = useRef(makeListenerQueue<Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)

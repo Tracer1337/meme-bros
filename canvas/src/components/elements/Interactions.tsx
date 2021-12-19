@@ -5,7 +5,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
-import { EditorContext, ElementEvents } from "../Context"
+import { CanvasContext, ElementEvents } from "../Context"
 import { CanvasElement } from "../../types"
 import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
 import Handle from "./Handle"
@@ -25,7 +25,7 @@ function Interactions({
     size: AnimatedValueXY,
     rotation: AnimatedValue
 }) {
-    const context = useContext(EditorContext)
+    const context = useContext(CanvasContext)
 
     const event = (name: ElementEvents) => () => {
         context.events.emit(`element.${name}`, element.id)

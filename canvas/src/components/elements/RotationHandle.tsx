@@ -5,7 +5,7 @@ import { AnimatedValue } from "../../lib/animation"
 import { Rect } from "../../types"
 import Handle from "./Handle"
 import { GetHandleProps } from "./makeElement"
-import { EditorContext } from "../Context"
+import { CanvasContext } from "../Context"
 
 function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
     childRect: Rect,
@@ -13,7 +13,7 @@ function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
     onUpdate: () => void,
     animate: AnimatedValue
 }) {
-    const context = useContext(EditorContext)
+    const context = useContext(CanvasContext)
 
     const handleRef = useRef<HTMLDivElement>(null)
     const lastRotation = useRef(childRect.rotation)

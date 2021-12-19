@@ -40,6 +40,6 @@ export const contextDefaultValue: ContextValue = {
     }
 }
 
-export const EditorContext = createContext<ContextValue>(
+export const CanvasContext = createContext<ContextValue>(
     contextDefaultValue
 )
