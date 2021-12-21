@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { PickElement } from "../../types"
-import { CanvasContext } from "../Context"
+import { CanvasContext, updateElementData } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 
 export function getShapeDefaultData(): PickElement<"shape">["data"] {
@@ -29,8 +29,8 @@ function Shape({ element }: ElementProps<"shape">) {
     const dialogs = useContext(DialogContext)
     
     const handleConfig = async () => {
-        element.data = await dialogs.open("ShapeConfigDialog", element)
-        context.set({})
+        const data = await dialogs.open("ShapeConfigDialog", element)
+        context.set(updateElementData(context, element, data))
     }
 
     useEffect(() =>

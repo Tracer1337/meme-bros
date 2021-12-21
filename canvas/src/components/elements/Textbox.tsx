@@ -1,12 +1,13 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import * as CSS from "csstype"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { textfit } from "../../lib/textfit"
 import { PickElement } from "../../types"
-import { CanvasContext } from "../Context"
+import { CanvasContext, ContextValue, updateElementData } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 import { getTextShadow } from "../../lib/styles"
+import produce from "immer"
 
 const PADDING = 8
 
@@ -29,6 +30,22 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
         outlineColor: "#000000",
         backgroundColor: "transparent"
     }
+}
+
+function updateTextboxText(
+    state: ContextValue,
+    element: PickElement<"textbox">,
+    text: string
+) {
+    return produce(state, (draft) => {
+        const newElement = draft.canvas.elements.find(
+            (e) => e.id === element.id
+        ) as PickElement<"textbox">
+        if (!newElement) {
+            return
+        }
+        newElement.data.text = text
+    })
 }
 
 export function getTextboxStyles(element: PickElement<"textbox">): CSS.Properties {
@@ -57,7 +74,6 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
     const containerRef = useRef<HTMLDivElement>(null)
     const textRef = useRef<HTMLDivElement>(null)
     
-    const [text, setText] = useState(element.data.text)
     const [isEditing, setIsEditing] = useState(false)
 
     const handleEdit = () => {
@@ -73,8 +89,16 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
     }
 
     const handleConfig = async () => {
-        element.data = await dialogs.open("TextboxConfigDialog", element)
-        context.set({})
+        const data = await dialogs.open("TextboxConfigDialog", element)
+        context.set(updateElementData(context, element, data))
+    }
+
+    const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+        if (!textRef.current) {
+            return
+        }
+        const text = e.currentTarget.textContent || ""
+        context.set(updateTextboxText(context, element, text))
     }
 
     const updateFontSize = useCallback(() => {
@@ -85,11 +109,11 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
         const fontSize = textfit({
             width: Math.max(minSize, size.x.value),
             height: Math.max(minSize, size.y.value),
-            text,
+            text: element.data.text,
             styles: getTextboxStyles(element)
         })
         textRef.current.style.fontSize = fontSize + "px"
-    }, [element, text, size])
+    }, [element, size])
 
     useEffect(() =>
         setListeners(context.events, [
@@ -111,10 +135,9 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
         if (!textRef.current) {
             return
         }
-        element.data.text = text
-        textRef.current.textContent = text
+        textRef.current.textContent = element.data.text
         updateFontSize()
-    }, [element.data, text, updateFontSize])
+    }, [element.data.text, updateFontSize])
 
     return (
         <div
@@ -136,7 +159,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
                     outline: "none",
                     resize: "none"
                 } }}
-                onInput={(e) => setText(e.currentTarget.textContent || "")}
+                onInput={handleInput}
             />
         </div>
     )

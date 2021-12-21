@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import { makeListenerQueue } from "../lib/events"
-import { ContextValue, CanvasContext, Events } from "./Context"
+import { ContextValue, CanvasContext, Events, removeElement } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { CanvasElement, PickElement } from "../types"
 import { useBridge } from "./utils/useBridge"
@@ -74,11 +74,7 @@ function Canvas() {
     }
 
     const handleRemoveElement = (id: CanvasElement["id"]) => {
-        const index = context.canvas.elements.findIndex(
-            (_element) => _element.id === id
-        )
-        context.canvas.elements.splice(index, 1)
-        context.set({})
+        context.set(removeElement(context, id))
     }
 
     useEffect(() =>

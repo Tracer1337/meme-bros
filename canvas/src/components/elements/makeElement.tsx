@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import * as CSS from "csstype"
-import { CanvasContext } from "../Context"
+import { CanvasContext, updateElementRect } from "../Context"
 import { CanvasElement, PickElement } from "../../types"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
@@ -76,14 +76,13 @@ function makeElement<T extends CanvasElement["type"]>(
         })
 
         const updateElement = () => {
-            element.rect = {
+            context.set(updateElementRect(context, element, {
                 x: pos.x.value,
                 y: pos.y.value,
                 width: size.x.value,
                 height: size.y.value,
                 rotation: rotation.value
-            }
-            context.set({})
+            }))
         }
 
         const focusElement = () => {
@@ -137,6 +136,13 @@ function makeElement<T extends CanvasElement["type"]>(
                 ["touchstart", handleClick]
             ])
         })
+
+        useEffect(() => {
+            pos.emit("update", {
+                x: element.rect.x,
+                y: element.rect.y
+            })
+        }, [element.rect, pos])
 
         return (
             <DraggableCore
