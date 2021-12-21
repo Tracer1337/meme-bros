@@ -8,8 +8,7 @@ import (
 )
 
 type AnimatedRenderingContext struct {
-	Canvas           *Canvas
-	RenderingContext *RenderingContext
+	Canvas *Canvas
 }
 
 func NewAnimatedRenderingContext(c *Canvas) *AnimatedRenderingContext {
@@ -63,6 +62,7 @@ func (rc *AnimatedRenderingContext) prerender() {
 	if len(currentLayer) > 0 {
 		wg.Add(1)
 		go renderLayer(currentLayer, i)
+		i++
 	}
 
 	wg.Wait()

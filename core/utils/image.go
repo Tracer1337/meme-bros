@@ -67,7 +67,7 @@ func ParseBase64GIF(dataURI string) *gif.GIF {
 
 func ImageToPaletted(img image.Image) *image.Paletted {
 	p := image.NewPaletted(img.Bounds(), palette.Plan9)
-	quantizer := gogif.MedianCutQuantizer{NumColor: 64}
+	quantizer := gogif.MedianCutQuantizer{NumColor: 255}
 	quantizer.Quantize(p, img.Bounds(), img, image.Point{})
 	return p
 }
