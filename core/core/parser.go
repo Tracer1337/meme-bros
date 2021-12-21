@@ -1,6 +1,7 @@
 package core
 
 import (
+	"errors"
 	"image/color"
 	"math"
 	"meme-bros/core/utils"
@@ -9,6 +10,8 @@ import (
 
 	"github.com/valyala/fastjson"
 )
+
+var errInvalidColor = errors.New("Invalid color value")
 
 var elemIndices = make(map[*fastjson.Value]int)
 
@@ -19,24 +22,12 @@ func CanvasFromJSON(jsonString string) *Canvas {
 	return parseCanvas(v)
 }
 
-func parseRGBA(v []*fastjson.Value) *color.RGBA {
-	if len(v) < 4 {
-		return &color.RGBA{0, 0, 0, 0}
-	}
-	return &color.RGBA{
-		uint8(v[0].GetInt()),
-		uint8(v[1].GetInt()),
-		uint8(v[2].GetInt()),
-		uint8(v[3].GetInt()),
-	}
-}
-
 func parseCanvas(v *fastjson.Value) *Canvas {
 	elements := parseElements(v.GetArray("elements"))
 	c := &Canvas{
 		Width:           math.Max(v.GetFloat64("width"), 1),
 		Height:          math.Max(v.GetFloat64("height"), 1),
-		BackgroundColor: parseRGBA(v.GetArray("backgroundColor")),
+		BackgroundColor: parseRGBA(v.Get("backgroundColor")),
 		Debug:           v.GetBool("debug"),
 		Elements: &CanvasElements{
 			Background: &Background{},
@@ -146,11 +137,11 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 				FontWeight:      stringWithDefault(e.GetStringBytes("data", "fontWeight"), "normal"),
 				TextAlign:       stringWithDefault(e.GetStringBytes("data", "textAlign"), "center"),
 				VerticalAlign:   stringWithDefault(e.GetStringBytes("data", "verticalAlign"), "center"),
-				Color:           parseRGBA(e.GetArray("data", "color")),
+				Color:           parseRGBA(e.Get("data", "color")),
 				Caps:            e.GetBool("data", "caps"),
 				OutlineWidth:    e.GetFloat64("data", "outlineWidth"),
-				OutlineColor:    parseRGBA(e.GetArray("data", "outlineColor")),
-				BackgroundColor: parseRGBA(e.GetArray("data", "backgroundColor")),
+				OutlineColor:    parseRGBA(e.Get("data", "outlineColor")),
+				BackgroundColor: parseRGBA(e.Get("data", "backgroundColor")),
 			},
 		}
 		elements = append(elements, newElement)
@@ -166,8 +157,8 @@ func parseShapes(vs []*fastjson.Value) []*ShapeElement {
 			Rect:  parseRect(e.Get("rect")),
 			Data: &ShapeData{
 				Variant:         stringWithDefault(e.GetStringBytes("data", "variant"), "rectangle"),
-				BackgroundColor: parseRGBA(e.GetArray("data", "backgroundColor")),
-				BorderColor:     parseRGBA(e.GetArray("data", "borderColor")),
+				BackgroundColor: parseRGBA(e.Get("data", "backgroundColor")),
+				BorderColor:     parseRGBA(e.Get("data", "borderColor")),
 				BorderWidth:     e.GetFloat64("data", "borderWidth"),
 			},
 		}
@@ -184,4 +175,30 @@ func parseRect(v *fastjson.Value) *Rect {
 		Height:   v.GetFloat64("height"),
 		Rotation: v.GetFloat64("rotation"),
 	}
+}
+
+func parseRGBA(v *fastjson.Value) *color.RGBA {
+	switch v.Type().String() {
+	case "array":
+		vs := v.GetArray()
+		if len(vs) < 4 {
+			panic(errInvalidColor)
+		}
+		return &color.RGBA{
+			uint8(vs[0].GetInt()),
+			uint8(vs[1].GetInt()),
+			uint8(vs[2].GetInt()),
+			uint8(vs[3].GetInt()),
+		}
+	case "string":
+		s := string(v.GetStringBytes())
+		if s != "transparent" {
+			c, err := utils.ParseHexColorString(s)
+			if err != nil {
+				panic(errInvalidColor)
+			}
+			return &c
+		}
+	}
+	return &color.RGBA{0, 0, 0, 0}
 }

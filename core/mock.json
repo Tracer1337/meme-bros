@@ -1,7 +1,7 @@
 {
     "width": 520,
     "height": 620,
-    "backgroundColor": [255, 255, 255, 255],
+    "backgroundColor": "#fff",
     "debug": true,
     "elements": [
         {
@@ -33,11 +33,11 @@
                 "fontWeight": "bold",
                 "textAlign": "left",
                 "verticalAlign": "center",
-                "color": [255, 255, 255, 255],
+                "color": "#fff",
                 "caps": true,
                 "outlineWidth": 2,
-                "outlineColor": [0, 0, 0, 255],
-                "backgroundColor": [0, 0, 0, 0]
+                "outlineColor": "#000",
+                "backgroundColor": "transparent"
             }
         },
         {
@@ -50,16 +50,16 @@
                 "rotation": -0.2
             },
             "data": {
-                "text": "Enter Text",
+                "text": "Enter Text...",
                 "fontFamily": "Comic-Sans",
                 "fontWeight": "normal",
-                "color": [0, 0, 0, 255],
+                "color": "#000",
                 "caps": true,
                 "textAlign": "center",
                 "verticalAlign": "center",
                 "outlineWidth": 3,
-                "outlineColor": [100, 100, 255, 255],
-                "backgroundColor": [0, 0, 0, 0]
+                "outlineColor": "#66f",
+                "backgroundColor": "transparent"
             }
         },
         {
@@ -88,8 +88,8 @@
             },
             "data": {
                 "variant": "rect",
-                "backgroundColor": [100, 100, 100, 255],
-                "borderColor": [0, 0, 0, 255],
+                "backgroundColor": "#888",
+                "borderColor": "#000",
                 "borderWidth": 5
             }
         },
@@ -104,8 +104,8 @@
             },
             "data": {
                 "variant": "ellipse",
-                "backgroundColor": [255, 255, 255, 255],
-                "borderColor": [0, 0, 0, 255],
+                "backgroundColor": "#fff",
+                "borderColor": "#000",
                 "borderWidth": 10
             }
         },
