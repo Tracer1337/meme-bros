@@ -26,7 +26,6 @@ Color = [Number, Number, Number, Number] // (R, G, B, A)
 
 ```ts
 Common = {
-    "id": Number,
     "type": String,
     "rect": {
         "x": Number,

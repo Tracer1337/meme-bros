@@ -10,6 +10,8 @@ import (
 	"github.com/valyala/fastjson"
 )
 
+var elemIndices = make(map[*fastjson.Value]int)
+
 func CanvasFromJSON(jsonString string) *Canvas {
 	var p fastjson.Parser
 	v, err := p.Parse(jsonString)
@@ -76,12 +78,13 @@ func sortDrawables(ds []Drawable) {
 
 func parseElements(vs []*fastjson.Value) map[string][]*fastjson.Value {
 	elemMap := map[string][]*fastjson.Value{}
-	for _, e := range vs {
+	for i, e := range vs {
 		eType := string(e.GetStringBytes("type"))
 		if _, ok := elemMap[eType]; !ok {
 			elemMap[eType] = []*fastjson.Value{}
 		}
 		elemMap[eType] = append(elemMap[eType], e)
+		elemIndices[e] = i
 	}
 	return elemMap
 }
@@ -98,7 +101,7 @@ func parseImages(vs []*fastjson.Value) []*ImageElement {
 			continue
 		}
 		newElement := &ImageElement{
-			Index: e.GetInt("id"),
+			Index: elemIndices[e],
 			Rect:  parseRect(e.Get("rect")),
 			Data: &ImageData{
 				Image:        utils.ParseBase64Image(imageURI),
@@ -118,7 +121,7 @@ func parseAnimations(vs []*fastjson.Value) []*AnimatedElement {
 			continue
 		}
 		newElement := &AnimatedElement{
-			Index: e.GetInt("id"),
+			Index: elemIndices[e],
 			Rect:  parseRect(e.Get("rect")),
 			Data: &AnimationData{
 				GIF:          utils.ParseBase64GIF(imageURI),
@@ -135,7 +138,7 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 	elements := []*TextboxElement{}
 	for _, e := range vs {
 		newElement := &TextboxElement{
-			Index: e.GetInt("id"),
+			Index: elemIndices[e],
 			Rect:  parseRect(e.Get("rect")),
 			Data: &TextboxData{
 				Text:            string(e.GetStringBytes("data", "text")),
@@ -159,7 +162,7 @@ func parseShapes(vs []*fastjson.Value) []*ShapeElement {
 	elements := []*ShapeElement{}
 	for _, e := range vs {
 		newElement := &ShapeElement{
-			Index: e.GetInt("id"),
+			Index: elemIndices[e],
 			Rect:  parseRect(e.Get("rect")),
 			Data: &ShapeData{
 				Variant:         stringWithDefault(e.GetStringBytes("data", "variant"), "rectangle"),
