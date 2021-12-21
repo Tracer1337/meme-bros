@@ -25,6 +25,7 @@ type Canvas struct {
 }
 
 type CanvasElements struct {
+	Background *Background
 	Images     []*ImageElement
 	Animations []*AnimatedElement
 	Textboxes  []*TextboxElement
