@@ -27,7 +27,7 @@ function BottomBar() {
                 }}
                 loading={isGenerating}
             />
-            <View style={styles.right}>
+            <View style={styles.actions}>
                 <IconButton
                     icon="format-color-text"
                     onPress={() => context.events.emit("element.create", "textbox")}
@@ -64,14 +64,13 @@ const styles = StyleSheet.create({
     
     fab: {
         position: "absolute",
-        left: "50%",
-        transform: [{ translateX: -24 }, { translateY: -24 }]
+        right: 24,
+        top: -24
     },
 
-    right: {
+    actions: {
         flex: 1,
-        flexDirection: "row",
-        justifyContent: "flex-end"
+        flexDirection: "row"
     }
 })
 
