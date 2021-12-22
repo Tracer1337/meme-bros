@@ -126,6 +126,10 @@ function Canvas() {
         context.set({ renderCanvas: false })
         bridge.request("canvas.set", { elements: [] })
     }
+
+    const handleCanvasUndo = () => {
+        bridge.request("canvas.undo", null)
+    }
         
     useEffect(() =>
         setListeners(context.events, [
@@ -134,7 +138,8 @@ function Canvas() {
             ["canvas.base.import", handleBaseImport],
             ["canvas.base.blank", handleBaseBlank],
             ["canvas.base.dummy", handleBaseDummy],
-            ["canvas.clear", handleCanvasClear]
+            ["canvas.clear", handleCanvasClear],
+            ["canvas.undo", handleCanvasUndo]
         ])
     )
 

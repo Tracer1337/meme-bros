@@ -13,6 +13,7 @@ type Events = {
     "element.remove": CanvasElement["id"],
     "element.config": CanvasElement["id"],
     "canvas.render": null,
+    "canvas.undo": null,
     "canvas.render.done": null,
     "canvas.base.import": null,
     "canvas.base.blank": null,

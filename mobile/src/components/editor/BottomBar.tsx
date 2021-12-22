@@ -44,6 +44,10 @@ function BottomBar() {
                     icon="delete"
                     onPress={() => context.events.emit("canvas.clear", null)}
                 />
+                <IconButton
+                    icon="undo"
+                    onPress={() => context.events.emit("canvas.undo", null)}
+                />
             </View>
         </Appbar>
     )

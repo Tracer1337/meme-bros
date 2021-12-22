@@ -7,6 +7,7 @@ type Events = {
     "element.create": DeepPartial<CanvasElement>,
     "element.create.default": CanvasElement["type"],
     "canvas.render": null,
+    "canvas.undo": null,
     "canvas.set": DeepPartial<Canvas>
 }
 
@@ -49,6 +50,10 @@ export function useBridge(webview: RefObject<WebView>) {
                     message = emitCanvasRender()
                     break
 
+                case "canvas.undo":
+                    emitCanvasUndo()
+                    break
+
                 case "canvas.set":
                     emitCanvasSet(data as Events["canvas.set"])
                     break
@@ -86,6 +91,14 @@ export function useBridge(webview: RefObject<WebView>) {
         return emit<"canvas.render">({
             id: makeId(),
             type: "canvas.render",
+            data: null
+        })
+    }
+
+    const emitCanvasUndo = () => {
+        return emit<"canvas.undo">({
+            id: makeId(),
+            type: "canvas.undo",
             data: null
         })
     }
