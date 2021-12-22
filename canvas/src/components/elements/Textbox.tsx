@@ -8,8 +8,6 @@ import { CanvasContext, updateElementData, updateTextboxText } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 import { getTextShadow } from "../../lib/styles"
 
-const PADDING = 8
-
 const justifyContentStyles: Record<string, string> = {
     "top": "flex-start",
     "center": "center",
@@ -27,13 +25,14 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
         caps: true,
         outlineWidth: 2,
         outlineColor: "#000000",
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
+        padding: 8
     }
 }
 
 export function getTextboxStyles(element: PickElement<"textbox">): CSS.Properties {
     return {
-        padding: `${PADDING}px`,
+        padding: `${element.data.padding}px`,
         whiteSpace: "pre-wrap",
         display: "flex",
         flexDirection: "column",
@@ -95,7 +94,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
         if (!textRef.current) {
             return
         }
-        const minSize = PADDING * 2 + 1
+        const minSize = element.data.padding * 2 + 1
         const fontSize = textfit({
             width: Math.max(minSize, size.x.value),
             height: Math.max(minSize, size.y.value),

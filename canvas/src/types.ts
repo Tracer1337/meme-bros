@@ -47,7 +47,8 @@ export type TextboxElement = {
         caps: boolean,
         outlineWidth: number,
         outlineColor: ColorString,
-        backgroundColor: ColorString
+        backgroundColor: ColorString,
+        padding: number
     }
 }
 

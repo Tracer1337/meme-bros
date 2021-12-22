@@ -61,7 +61,8 @@ export async function loadCanvasDummy(): Promise<Canvas> {
                     fontWeight: "normal",
                     textAlign: "left",
                     color: "#000000",
-                    caps: true
+                    caps: true,
+                    padding: 8
                 }
             },
             {
