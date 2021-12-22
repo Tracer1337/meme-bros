@@ -36,6 +36,7 @@ function App() {
     context.set = (partial) => {
         const newState = deepmerge(context, partial) as ContextValue
         setContext(newState)
+        return newState
     }
 
     context.push = () => {

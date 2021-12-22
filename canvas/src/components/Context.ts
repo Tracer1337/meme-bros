@@ -1,4 +1,4 @@
-import produce from "immer"
+import produce, { setAutoFreeze } from "immer"
 import { createContext } from "react"
 import { DeepPartial } from "tsdef"
 import EventEmitter from "../lib/EventEmitter"
@@ -17,7 +17,7 @@ export type Events = {
 }
 
 export type ContextValue = {
-    set: (partial: DeepPartial<ContextValue>) => void,
+    set: (partial: DeepPartial<ContextValue>) => ContextValue,
     push: () => void,
     pop: () => void,
     events: EventEmitter<Events>,
@@ -28,7 +28,7 @@ export type ContextValue = {
 }
 
 export const defaultContextValue: ContextValue = {
-    set: () => {},
+    set: () => defaultContextValue,
     push: () => {},
     pop: () => {},
     events: new EventEmitter<Events>({ suppressWarnings: true }),
@@ -48,6 +48,8 @@ export const defaultContextValue: ContextValue = {
 export const CanvasContext = createContext<ContextValue>(
     defaultContextValue
 )
+
+setAutoFreeze(false)
 
 export function updateElementData<T extends CanvasElement["type"]>(
     state: ContextValue,

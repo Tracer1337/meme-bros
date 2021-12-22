@@ -6,12 +6,13 @@ import { ContextValue, CanvasContext, Events, removeElement } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { CanvasElement, PickElement } from "../types"
 import { useBridge } from "./utils/useBridge"
+import { getImageDimensions } from "../lib/image"
 
 function makeId() {
     return Math.floor(Math.random() * 1e8)
 }
 
-function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
+async function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
     const newElement: PickElement<T> = {
         id: makeId(),
         type,
@@ -26,8 +27,9 @@ function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
     } as any
     if (type === "image") {
         const data = newElement.data as PickElement<"image">["data"]
-        data.naturalWidth = 200
-        data.naturalHeight = 100
+        const { width, height } = await getImageDimensions(data.uri)
+        data.naturalWidth = width
+        data.naturalHeight = height
     }
     return newElement
 }
@@ -60,18 +62,18 @@ function Canvas() {
         })
     }
 
-    const handleCreateElement = (partial: DeepPartial<CanvasElement>) => {
+    const handleCreateElement = async (partial: DeepPartial<CanvasElement>) => {
         if (!partial.type) {
             throw new Error("Element type is not defined in 'element.create'")
         }
         setNewElement(deepmerge(
-            createCanvasElement(partial.type),
+            await createCanvasElement(partial.type),
             partial
         ))
     }
 
-    const handleCreateElementDefault = (type: CanvasElement["type"]) => {
-        setNewElement(createCanvasElement(type))
+    const handleCreateElementDefault = async (type: CanvasElement["type"]) => {
+        setNewElement(await createCanvasElement(type))
     }
 
     const handleRemoveElement = (id: CanvasElement["id"]) => {

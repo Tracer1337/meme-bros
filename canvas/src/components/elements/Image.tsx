@@ -3,7 +3,7 @@ import * as CSS from "csstype"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { PickElement } from "../../types"
-import { CanvasContext, updateElementData } from "../Context"
+import { CanvasContext, updateElementData, updateElementRect } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 
 export function getImageDefaultData(): PickElement<"image">["data"] {
@@ -30,21 +30,24 @@ function Image({ element, size }: ElementProps<"image">) {
     const dialogs = useContext(DialogContext)
 
     const resetSize = () => {
-        element.rect.width = element.data.naturalWidth
-        element.rect.height = element.data.naturalHeight
         size.emit("update", {
             x: element.rect.width,
             y: element.rect.height
         })
+        return context.set(updateElementRect(context, element, {
+            ...element.rect,
+            width: element.data.naturalWidth,
+            height: element.data.naturalHeight
+        }))
     }
 
     const handleConfig = async () => {
         const data = await dialogs.open("ImageConfigDialog", element)
-        if (!element.data.keepAspectRatio && data.keepAspectRatio) {
-            resetSize()
-        }
         context.push()
-        context.set(updateElementData(context, element, data))
+        const newContext = !element.data.keepAspectRatio && data.keepAspectRatio
+            ? resetSize()
+            : context
+        context.set(updateElementData(newContext, element, data))
     }
 
     useEffect(() =>

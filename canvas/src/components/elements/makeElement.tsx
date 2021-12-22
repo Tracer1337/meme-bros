@@ -46,7 +46,7 @@ function makeElement<T extends CanvasElement["type"]>(
     Component: React.ComponentType<ElementProps<T>>,
     getElementConfig: ({ element }: { element: PickElement<T> }) =>
         DeepPartial<ElementConfig> = () => ({})
-) { 
+) {
     return ({ element }: { element: PickElement<T> }) => {
         const context = useContext(CanvasContext)
 

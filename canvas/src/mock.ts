@@ -8,7 +8,7 @@ export const mockContextValue: ContextValue = {
     interactions: {
         focus: null,
     },
-    set: () => {},
+    set: () => mockContextValue,
     push: () => {},
     pop: () => {},
     canvas: {
