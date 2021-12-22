@@ -11,7 +11,6 @@ import { importImage } from "../../lib/media"
 import { CanvasElement, PickElement } from "../../types"
 import { EditorContext } from "./Context"
 import { loadCanvasDummy } from "./utils/dummy"
-import { renderCanvasState } from "./utils/render"
 import { useBridge } from "./utils/useBridge"
 
 async function createPartialElement(type: CanvasElement["type"]) {
@@ -67,14 +66,13 @@ function Canvas() {
     }
 
     const handleCanvasRender = async () => {
-        const state = await bridge.request("canvas.render", null)
-        const rendered = renderCanvasState(state)
-        console.log("Generate", rendered)
-        const base64 = await CoreModule.render(rendered)
+        const canvas = await bridge.request("canvas.render", null)
+        console.log("Generate", canvas)
+        const base64 = await CoreModule.render(canvas)
         dialogs.open("GeneratedImageDialog", {
             uri: base64,
-            width: state.width,
-            height: state.height
+            width: canvas.width,
+            height: canvas.height
         })
         context.events.emit("canvas.render.done", null)
     }
