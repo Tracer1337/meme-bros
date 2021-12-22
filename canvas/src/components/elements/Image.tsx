@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react"
+import * as CSS from "csstype"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { PickElement } from "../../types"
@@ -17,9 +18,10 @@ export function getImageDefaultData(): PickElement<"image">["data"] {
     }
 }
 
-export function getImageStyles(element: PickElement<"image">) {
+export function getImageStyles(element: PickElement<"image">): CSS.Properties {
     return {
-        borderRadius: element.data.borderRadius
+        borderRadius: element.data.borderRadius + "px",
+        userSelect: "none"
     }
 }
 
@@ -41,6 +43,7 @@ function Image({ element, size }: ElementProps<"image">) {
         if (!element.data.keepAspectRatio && data.keepAspectRatio) {
             resetSize()
         }
+        context.push()
         context.set(updateElementData(context, element, data))
     }
 

@@ -8,6 +8,7 @@ type Events = {
     "element.create": DeepPartial<CanvasElement>,
     "element.create.default": CanvasElement["type"],
     "canvas.render": null,
+    "canvas.undo": null,
     "canvas.set": DeepPartial<Canvas>
 }
 
@@ -77,6 +78,10 @@ export function useBridge() {
             case "canvas.set":
                 context.set({ canvas: message.data as Events["canvas.set"] })
                 break
+
+            case "canvas.undo":
+                context.pop()
+                break;
 
             default:
                 console.warn(`Unsupported event: '${message.type}'`, message)

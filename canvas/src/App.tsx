@@ -6,6 +6,8 @@ import { ContextValue, CanvasContext, defaultContextValue } from "./components/C
 import { mockContextValue } from "./mock"
 import DebugMenu from "./components/DebugMenu"
 
+const HISTORY_LENGTH = 100
+
 const contextValue = process.env.NODE_ENV === "development"
     ? mockContextValue
     : defaultContextValue
@@ -28,6 +30,7 @@ const DebugContainer = styled(Box)({
 
 function App() {
     const [context, setContext] = useState<ContextValue>(contextValue)
+    const history = useRef<ContextValue[]>([]).current
     const [debug, setDebug] = useState(false)
 
     context.set = (partial) => {
@@ -35,6 +38,21 @@ function App() {
         setContext(newState)
     }
 
+    context.push = () => {
+        history.push(context)
+        if (history.length > HISTORY_LENGTH) {
+            history.shift()
+        }
+    }
+
+    context.pop = () => {
+        const newState = history.pop()
+        if (!newState) {
+            return
+        }
+        setContext(newState)
+    }
+    
     // @ts-ignore
     window.enableDebugging = () => {
         setDebug(true)

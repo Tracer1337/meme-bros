@@ -2,7 +2,7 @@ import produce from "immer"
 import { createContext } from "react"
 import { DeepPartial } from "tsdef"
 import EventEmitter from "../lib/EventEmitter"
-import { Canvas, CanvasElement, PickElement } from "../types"
+import { Canvas, CanvasElement, PickElement, Rect } from "../types"
 
 export type ElementEvents = "create" | "edit" | "remove" | "config"
 
@@ -18,6 +18,8 @@ export type Events = {
 
 export type ContextValue = {
     set: (partial: DeepPartial<ContextValue>) => void,
+    push: () => void,
+    pop: () => void,
     events: EventEmitter<Events>,
     interactions: {
         focus: CanvasElement["id"] | null
@@ -25,8 +27,10 @@ export type ContextValue = {
     canvas: Canvas
 }
 
-export const contextDefaultValue: ContextValue = {
+export const defaultContextValue: ContextValue = {
     set: () => {},
+    push: () => {},
+    pop: () => {},
     events: new EventEmitter<Events>({ suppressWarnings: true }),
     interactions: {
         focus: null
@@ -82,5 +86,21 @@ export function removeElement(state: ContextValue, id: number) {
             (e) => e.id === id
         )
         draft.canvas.elements.splice(index, 1)
+    })
+}
+
+export function updateTextboxText(
+    state: ContextValue,
+    element: PickElement<"textbox">,
+    text: string
+) {
+    return produce(state, (draft) => {
+        const newElement = draft.canvas.elements.find(
+            (e) => e.id === element.id
+        ) as PickElement<"textbox">
+        if (!newElement) {
+            return
+        }
+        newElement.data.text = text
     })
 }

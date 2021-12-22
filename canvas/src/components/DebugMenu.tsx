@@ -1,17 +1,12 @@
-import { Button, Paper, Typography, Box, TextField } from "@mui/material"
+import { Button, Paper, Typography, TextField, styled } from "@mui/material"
 import { useContext } from "react"
 import { CanvasContext, Events } from "./Context"
 
-function Action({ children, onClick }: {
-    children: string,
-    onClick: () => void
-}) {
-    return (
-        <Box sx={{ marginBottom: 1 }}>
-            <Button onClick={onClick}>{children}</Button>
-        </Box>
-    )
-}
+const Action = styled(Button)(({ theme }) => ({
+    marginBottom: theme.spacing(1),
+    width: "100%",
+    justifyContent: "flex-start"
+}))
 
 function DebugMenu() {
     const context = useContext(CanvasContext)
@@ -49,6 +44,7 @@ function DebugMenu() {
                 label="Height"
                 type="number"
                 margin="dense"
+                sx={{ marginBottom: 2 }}
                 value={context.canvas.height}
                 onChange={(event) => {
                     context.set({ canvas: {
@@ -56,6 +52,10 @@ function DebugMenu() {
                     } })
                 }}
             />
+
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>History</Typography>
+            <Action onClick={() => context.push()}>Push</Action>
+            <Action onClick={() => context.pop()}>Pop</Action>
         </Paper>
     )
 }

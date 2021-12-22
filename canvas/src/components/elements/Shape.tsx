@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react"
+import * as CSS from "csstype"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { PickElement } from "../../types"
@@ -14,11 +15,11 @@ export function getShapeDefaultData(): PickElement<"shape">["data"] {
     }
 }
 
-export function getShapeStyles(element: PickElement<"shape">) {
+export function getShapeStyles(element: PickElement<"shape">): CSS.Properties {
     return {
         backgroundColor: element.data.backgroundColor,
         borderColor: element.data.borderColor,
-        borderWidth: element.data.borderWidth,
+        borderWidth: element.data.borderWidth + "px",
         borderStyle: "solid",
         borderRadius: element.data.variant === "ellipse" ? "50%" : undefined
     }
@@ -30,6 +31,7 @@ function Shape({ element }: ElementProps<"shape">) {
     
     const handleConfig = async () => {
         const data = await dialogs.open("ShapeConfigDialog", element)
+        context.push()
         context.set(updateElementData(context, element, data))
     }
 

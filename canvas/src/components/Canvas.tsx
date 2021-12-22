@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
-import { makeListenerQueue } from "../lib/events"
+import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { ContextValue, CanvasContext, Events, removeElement } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { CanvasElement, PickElement } from "../types"
@@ -49,6 +49,7 @@ function Canvas() {
     const canvasRef = useRef<HTMLDivElement>(null)
 
     const setNewElement = (newElement: CanvasElement) => {
+        context.push()
         context.set({
             interactions: {
                 focus: newElement.id
@@ -74,6 +75,7 @@ function Canvas() {
     }
 
     const handleRemoveElement = (id: CanvasElement["id"]) => {
+        context.push()
         context.set(removeElement(context, id))
     }
 
@@ -84,6 +86,22 @@ function Canvas() {
             ["element.remove", handleRemoveElement]
         ])
     )
+
+    useEffect(() => {
+        const handleClick = (event: TouchEvent) => {
+            if (!canvasRef.current) {
+                return
+            }
+            if (event.target === canvasRef.current ||
+                event.target === canvasRef.current.parentElement) {
+                context.set({ interactions: { focus: null } })
+            }
+        }
+        return setDOMListeners(window, [
+            ["click", handleClick],
+            ["touchstart", handleClick]
+        ])
+    })
 
     useEffect(() => {
         if (!canvasRef.current) {

@@ -4,10 +4,9 @@ import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { textfit } from "../../lib/textfit"
 import { PickElement } from "../../types"
-import { CanvasContext, ContextValue, updateElementData } from "../Context"
+import { CanvasContext, updateElementData, updateTextboxText } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 import { getTextShadow } from "../../lib/styles"
-import produce from "immer"
 
 const PADDING = 8
 
@@ -30,22 +29,6 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
         outlineColor: "#000000",
         backgroundColor: "transparent"
     }
-}
-
-function updateTextboxText(
-    state: ContextValue,
-    element: PickElement<"textbox">,
-    text: string
-) {
-    return produce(state, (draft) => {
-        const newElement = draft.canvas.elements.find(
-            (e) => e.id === element.id
-        ) as PickElement<"textbox">
-        if (!newElement) {
-            return
-        }
-        newElement.data.text = text
-    })
 }
 
 export function getTextboxStyles(element: PickElement<"textbox">): CSS.Properties {
@@ -90,6 +73,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
 
     const handleConfig = async () => {
         const data = await dialogs.open("TextboxConfigDialog", element)
+        context.push()
         context.set(updateElementData(context, element, data))
     }
 
@@ -123,6 +107,9 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
     )
 
     useEffect(() => {
+        if (isEditing) {
+            context.push() 
+        }
         setDraggableProps({ disabled: isEditing })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEditing])

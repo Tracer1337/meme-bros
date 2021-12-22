@@ -3,12 +3,14 @@ import { getDefaultDataByType } from "./components/elements"
 import EventEmitter from "./lib/EventEmitter"
 import { PickElement } from "./types"
 
-export const contextValue: ContextValue = {
+export const mockContextValue: ContextValue = {
     events: new EventEmitter(),
     interactions: {
         focus: null,
     },
     set: () => {},
+    push: () => {},
+    pop: () => {},
     canvas: {
         domRect: null,
         width: 500,
