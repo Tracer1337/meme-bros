@@ -5,7 +5,7 @@ function getNewFontsize(div: HTMLDivElement) {
     textfitLib(div, {
         multiLine: true,
         minFontSize: 1,
-        maxFontSize: window.innerHeight
+        maxFontSize: div.clientHeight
     })
     const span = div.querySelector("span")
     if (!span) {
