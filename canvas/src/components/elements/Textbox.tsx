@@ -58,6 +58,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
     const textRef = useRef<HTMLDivElement>(null)
     
     const [isEditing, setIsEditing] = useState(false)
+    const [touched, setTouched] = useState(false)
 
     const handleEdit = () => {
         const handleFocusOut = () => {
@@ -67,6 +68,11 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
 
         setIsEditing(true)
         requestAnimationFrame(() => textRef.current?.focus())
+
+        if (!touched) {
+            context.set(updateTextboxText(context, element, ""))
+            setTouched(true)
+        }
 
         textRef.current?.addEventListener("focusout", handleFocusOut)
     }
