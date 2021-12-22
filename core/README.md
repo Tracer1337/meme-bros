@@ -68,7 +68,8 @@ Textbox = {
         "caps": Boolean,
         "outlineWidth": Number,
         "outlineColor": Color,
-        "backgroundColor": Color
+        "backgroundColor": Color,
+        "padding": Number
     }
 }
 ```

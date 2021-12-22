@@ -73,6 +73,7 @@ type TextboxData struct {
 	OutlineWidth    float64
 	OutlineColor    *color.RGBA
 	BackgroundColor *color.RGBA
+	Padding         float64
 }
 
 type ShapeElement struct {

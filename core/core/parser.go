@@ -142,6 +142,7 @@ func parseTextboxes(vs []*fastjson.Value) []*TextboxElement {
 				OutlineWidth:    e.GetFloat64("data", "outlineWidth"),
 				OutlineColor:    parseRGBA(e.Get("data", "outlineColor")),
 				BackgroundColor: parseRGBA(e.Get("data", "backgroundColor")),
+				Padding:         e.GetFloat64("data", "padding"),
 			},
 		}
 		elements = append(elements, newElement)
@@ -178,26 +179,28 @@ func parseRect(v *fastjson.Value) *Rect {
 }
 
 func parseRGBA(v *fastjson.Value) *color.RGBA {
-	switch v.Type().String() {
-	case "array":
-		vs := v.GetArray()
-		if len(vs) < 4 {
-			panic(errInvalidColor)
-		}
-		return &color.RGBA{
-			uint8(vs[0].GetInt()),
-			uint8(vs[1].GetInt()),
-			uint8(vs[2].GetInt()),
-			uint8(vs[3].GetInt()),
-		}
-	case "string":
-		s := string(v.GetStringBytes())
-		if s != "transparent" {
-			c, err := utils.ParseHexColorString(s)
-			if err != nil {
+	if v != nil {
+		switch v.Type().String() {
+		case "array":
+			vs := v.GetArray()
+			if len(vs) < 4 {
 				panic(errInvalidColor)
 			}
-			return &c
+			return &color.RGBA{
+				uint8(vs[0].GetInt()),
+				uint8(vs[1].GetInt()),
+				uint8(vs[2].GetInt()),
+				uint8(vs[3].GetInt()),
+			}
+		case "string":
+			s := string(v.GetStringBytes())
+			if s != "transparent" {
+				c, err := utils.ParseHexColorString(s)
+				if err != nil {
+					panic(errInvalidColor)
+				}
+				return &c
+			}
 		}
 	}
 	return &color.RGBA{0, 0, 0, 0}
