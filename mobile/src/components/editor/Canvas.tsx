@@ -1,7 +1,7 @@
 import React, { useRef } from "react"
 import { useContext } from "react"
 import { useEffect } from "react"
-import { Dimensions, Image } from "react-native"
+import { Dimensions } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import CoreModule from "../../lib/CoreModule"
@@ -71,7 +71,6 @@ function Canvas() {
         const canvas = await bridge.request("canvas.render", null)
         console.log("Generate", canvas)
         const base64 = await CoreModule.render(canvas)
-        Image.getSize(base64, (width, height) => console.log({ width, height }))
         dialogs.open("GeneratedImageDialog", {
             uri: base64,
             width: canvas.width,
@@ -90,12 +89,13 @@ function Canvas() {
             width: newElement.rect.width || 0,
             height: newElement.rect.height || 0
         })
+        const pixelRatio = Math.max(newElement.data.naturalWidth / rect.width, 1)
         newElement.rect = { ...newElement.rect, ...rect }
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
             bridge.request("canvas.set", {
                 ...rect,
-                pixelRatio: newElement.data.naturalWidth / rect.width,
+                pixelRatio,
                 backgroundColor: "#ffffff",
                 elements: [newElement]
             })
