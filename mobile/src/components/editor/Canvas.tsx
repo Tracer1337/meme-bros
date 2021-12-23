@@ -4,19 +4,19 @@ import { useEffect } from "react"
 import { Dimensions } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
+import * as Core from "@meme-bros/core"
 import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { importImage } from "../../lib/media"
-import { CanvasElement, PickElement } from "../../types"
 import { EditorContext } from "./Context"
 import { loadCanvasDummy } from "./utils/dummy"
 import { useBridge } from "./utils/useBridge"
 
 const BLANK_SIZE = 500
 
-async function createPartialElement(type: CanvasElement["type"]) {
-    const newElement: DeepPartial<CanvasElement> = {
+async function createPartialElement(type: Core.CanvasElement["type"]) {
+    const newElement: DeepPartial<Core.CanvasElement> = {
         type,
         rect: {},
         data: {}
@@ -59,7 +59,7 @@ function Canvas() {
 
     const bridge = useBridge(canvas)
 
-    const handleElementCreate = async (type: CanvasElement["type"]) => {
+    const handleElementCreate = async (type: Core.CanvasElement["type"]) => {
         const partial = await createPartialElement(type)
         if (!partial) {
             return
@@ -80,7 +80,7 @@ function Canvas() {
     }
 
     const handleBaseImport = async () => {
-        const newElement = await createPartialElement("image") as PickElement<"image">
+        const newElement = await createPartialElement("image") as Core.PickElement<"image">
         if (!newElement) {
             return
         }

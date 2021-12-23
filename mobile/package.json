@@ -2,6 +2,9 @@
   "name": "@meme-bros/mobile",
   "version": "0.0.1",
   "private": true,
+  "workspaces": {
+    "nohoist": ["**"]
+  },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -10,6 +13,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@meme-bros/core": "*",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "@types/color-convert": "^2.0.0",
