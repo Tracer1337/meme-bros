@@ -17,6 +17,7 @@ type Drawable interface {
 type Canvas struct {
 	Width           float64
 	Height          float64
+	PixelRatio      float64
 	BackgroundColor *color.RGBA
 	Debug           bool
 	Animated        bool

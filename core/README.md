@@ -8,6 +8,7 @@ meme-bros/core generates memes from json files.
 Schema = {
     "width": Number,
     "height": Number,
+    "pixelRatio": Number,
     "debug": Boolean,
     "backgroundColor": Color,
     "elements": Elements[]
