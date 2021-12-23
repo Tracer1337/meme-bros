@@ -37,6 +37,10 @@ const methods: (keyof Methods)[] = [
     "canvas.set"
 ]
 
+const willResolve = new Set([
+    "canvas.render"
+] as (keyof Methods)[])
+
 function makeId() {
     return Math.floor(Math.random() * 1e8)
 }
@@ -51,7 +55,9 @@ export function useBridge(
     const request = <T extends keyof Methods>(event: T, data: Events[T]) => {
         return new Promise<ReturnType<Methods[T]>>((resolve) => {
             const id = makeId()
-            resolvers[id] = resolve
+            if (willResolve.has(event)) {
+                resolvers[id] = resolve
+            }
             send({ id, event, data })
         })
     }
