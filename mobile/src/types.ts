@@ -1,6 +1,7 @@
 export type Canvas = {
     width: number,
     height: number,
+    pixelRatio: number,
     debug: boolean,
     backgroundColor: ColorString,
     elements: CanvasElement[]

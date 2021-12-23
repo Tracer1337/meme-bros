@@ -1,7 +1,7 @@
 import React, { useRef } from "react"
 import { useContext } from "react"
 import { useEffect } from "react"
-import { Dimensions } from "react-native"
+import { Dimensions, Image } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import CoreModule from "../../lib/CoreModule"
@@ -12,6 +12,8 @@ import { CanvasElement, PickElement } from "../../types"
 import { EditorContext } from "./Context"
 import { loadCanvasDummy } from "./utils/dummy"
 import { useBridge } from "./utils/useBridge"
+
+const BLANK_SIZE = 500
 
 async function createPartialElement(type: CanvasElement["type"]) {
     const newElement: DeepPartial<CanvasElement> = {
@@ -69,6 +71,7 @@ function Canvas() {
         const canvas = await bridge.request("canvas.render", null)
         console.log("Generate", canvas)
         const base64 = await CoreModule.render(canvas)
+        Image.getSize(base64, (width, height) => console.log({ width, height }))
         dialogs.open("GeneratedImageDialog", {
             uri: base64,
             width: canvas.width,
@@ -92,6 +95,7 @@ function Canvas() {
         requestAnimationFrame(() => {
             bridge.request("canvas.set", {
                 ...rect,
+                pixelRatio: newElement.data.naturalWidth / rect.width,
                 backgroundColor: "#ffffff",
                 elements: [newElement]
             })
@@ -100,13 +104,14 @@ function Canvas() {
 
     const handleBaseBlank = async () => {
         const dim = scaleToScreen({
-            width: 500,
-            height: 500
+            width: BLANK_SIZE,
+            height: BLANK_SIZE
         })
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
             bridge.request("canvas.set", {
                 ...dim,
+                pixelRatio: BLANK_SIZE / dim.width,
                 backgroundColor: "#ffffff"
             })
         })

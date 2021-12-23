@@ -20,6 +20,7 @@ export async function loadCanvasDummy(): Promise<Canvas> {
     const rect = scaleToScreen(image)
     return {
         ...rect,
+        pixelRatio: 1,
         debug: false,
         backgroundColor: "#ffffff",
         elements: [
