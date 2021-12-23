@@ -3,5 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "author": "Tracer1337 <merlin.moelter@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "workspaces": [
+    "core/types",
+    "canvas",
+    "mobile"
+  ]
 }
