@@ -1,7 +1,7 @@
+import * as Core from "@meme-bros/core"
 import { ContextValue } from "./components/Context"
 import { getDefaultDataByType } from "./components/elements"
 import EventEmitter from "./lib/EventEmitter"
-import { PickElement } from "./types"
 
 export const mockContextValue: ContextValue = {
     events: new EventEmitter(),
@@ -11,8 +11,8 @@ export const mockContextValue: ContextValue = {
     set: () => mockContextValue,
     push: () => {},
     pop: () => {},
+    canvasDomRect: null,
     canvas: {
-        domRect: null,
         width: 500,
         height: 500,
         pixelRatio: 1,
@@ -30,7 +30,7 @@ export const mockContextValue: ContextValue = {
                     rotation: 0
                 },
                 data: {
-                    ...getDefaultDataByType("textbox") as PickElement<"textbox">["data"],
+                    ...getDefaultDataByType("textbox") as Core.PickElement<"textbox">["data"],
                     outlineWidth: 2,
                     outlineColor: "#000000",
                     color: "#ffffff"

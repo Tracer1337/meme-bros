@@ -1,19 +1,19 @@
 import produce, { setAutoFreeze } from "immer"
 import { createContext } from "react"
 import { DeepPartial } from "tsdef"
+import * as Core from "@meme-bros/core"
 import EventEmitter from "../lib/EventEmitter"
-import { Canvas, CanvasElement, PickElement, Rect } from "../types"
 
 export type ElementEvents = "create" | "edit" | "remove" | "config"
 
 export type Events = {
-    "element.create": DeepPartial<CanvasElement>,
-    "element.create.default": CanvasElement["type"],
-    "element.edit": CanvasElement["id"],
-    "element.remove": CanvasElement["id"],
-    "element.config": CanvasElement["id"],
+    "element.create": DeepPartial<Core.CanvasElement>,
+    "element.create.default": Core.CanvasElement["type"],
+    "element.edit": Core.CanvasElement["id"],
+    "element.remove": Core.CanvasElement["id"],
+    "element.config": Core.CanvasElement["id"],
     "canvas.clear": null,
-    "canvas.dimensions.set": Pick<Canvas, "width" | "height">
+    "canvas.dimensions.set": Pick<Core.Canvas, "width" | "height">
 }
 
 export type ContextValue = {
@@ -22,9 +22,10 @@ export type ContextValue = {
     pop: () => void,
     events: EventEmitter<Events>,
     interactions: {
-        focus: CanvasElement["id"] | null
+        focus: Core.CanvasElement["id"] | null
     },
-    canvas: Canvas
+    canvasDomRect: DOMRect | null,
+    canvas: Core.Canvas
 }
 
 export const defaultContextValue: ContextValue = {
@@ -35,8 +36,8 @@ export const defaultContextValue: ContextValue = {
     interactions: {
         focus: null
     },
+    canvasDomRect: null,
     canvas: {
-        domRect: null,
         width: 0,
         height: 0,
         pixelRatio: 1,
@@ -52,15 +53,15 @@ export const CanvasContext = createContext<ContextValue>(
 
 setAutoFreeze(false)
 
-export function updateElementData<T extends CanvasElement["type"]>(
+export function updateElementData<T extends Core.CanvasElement["type"]>(
     state: ContextValue,
-    element: PickElement<T>,
-    data: PickElement<T>["data"]
+    element: Core.PickElement<T>,
+    data: Core.PickElement<T>["data"]
 ) {
     return produce(state, (draft) => {
         const newElement = draft.canvas.elements.find(
             (e) => e.id === element.id
-        ) as PickElement<T>
+        ) as Core.PickElement<T>
         if (newElement) {
             newElement.data = data
         }
@@ -69,8 +70,8 @@ export function updateElementData<T extends CanvasElement["type"]>(
 
 export function updateElementRect(
     state: ContextValue,
-    element: CanvasElement,
-    rect: Rect
+    element: Core.CanvasElement,
+    rect: Core.Rect
 ) {
     return produce(state, (draft) => {
         const newElement = draft.canvas.elements.find(
@@ -94,13 +95,13 @@ export function removeElement(state: ContextValue, id: number) {
 
 export function updateTextboxText(
     state: ContextValue,
-    element: PickElement<"textbox">,
+    element: Core.PickElement<"textbox">,
     text: string
 ) {
     return produce(state, (draft) => {
         const newElement = draft.canvas.elements.find(
             (e) => e.id === element.id
-        ) as PickElement<"textbox">
+        ) as Core.PickElement<"textbox">
         if (!newElement) {
             return
         }

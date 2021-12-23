@@ -2,8 +2,8 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import * as CSS from "csstype"
+import * as Core from "@meme-bros/core"
 import { CanvasContext, updateElementRect } from "../Context"
-import { CanvasElement, PickElement } from "../../types"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
@@ -11,8 +11,8 @@ import { setListeners } from "../../lib/events"
 
 type DraggableProps = React.ComponentProps<typeof DraggableCore>
 
-export type ElementProps<T extends CanvasElement["type"]> = {
-    element: PickElement<T>,
+export type ElementProps<T extends Core.CanvasElement["type"]> = {
+    element: Core.PickElement<T>,
     setDraggableProps: (props: DraggableProps) => void,
     size: AnimatedValueXY,
     rotation: AnimatedValue
@@ -42,12 +42,12 @@ export type GetHandleProps = (key: HandleKey, options?: {
     onStop?: DraggableEventHandler
 }) => void
 
-function makeElement<T extends CanvasElement["type"]>(
+function makeElement<T extends Core.CanvasElement["type"]>(
     Component: React.ComponentType<ElementProps<T>>,
-    getElementConfig: ({ element }: { element: PickElement<T> }) =>
+    getElementConfig: ({ element }: { element: Core.PickElement<T> }) =>
         DeepPartial<ElementConfig> = () => ({})
 ) {
-    return ({ element }: { element: PickElement<T> }) => {
+    return ({ element }: { element: Core.PickElement<T> }) => {
         const context = useContext(CanvasContext)
 
         const config = deepmerge(

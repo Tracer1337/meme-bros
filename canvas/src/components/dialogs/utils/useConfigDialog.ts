@@ -1,19 +1,19 @@
 import React, { useState } from "react"
 import { TextField } from "@mui/material"
-import { CanvasElement, PickElement } from "../../../types"
+import * as Core from "@meme-bros/core"
 import Switch from "../../inputs/Switch"
 
-type GetPropsFunction<T extends CanvasElement["type"], C extends React.ComponentType<any>> =
-    (label: string, key: keyof PickElement<T>["data"]) => React.ComponentProps<C>
+type GetPropsFunction<T extends Core.CanvasElement["type"], C extends React.ComponentType<any>> =
+    (label: string, key: keyof Core.PickElement<T>["data"]) => React.ComponentProps<C>
 
-export type ConfigDialogHook<T extends CanvasElement["type"]> = {
-    data: PickElement<T>["data"],
+export type ConfigDialogHook<T extends Core.CanvasElement["type"]> = {
+    data: Core.PickElement<T>["data"],
     getTextFieldProps: GetPropsFunction<T, typeof TextField>,
     getBooleanFieldProps: GetPropsFunction<T, typeof Switch>,
 }
 
-export function useConfigDialog<T extends CanvasElement["type"]>(
-    element: PickElement<T>
+export function useConfigDialog<T extends Core.CanvasElement["type"]>(
+    element: Core.PickElement<T>
 ): ConfigDialogHook<T> {
     const [data, setData] = useState(element.data)
 

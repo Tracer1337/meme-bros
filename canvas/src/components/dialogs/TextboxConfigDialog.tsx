@@ -1,13 +1,13 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
+import * as Core from "@meme-bros/core"
 import { DialogProps } from "../../lib/DialogHandler"
-import { PickElement } from "../../types"
 import { getTextboxStyles } from "../elements/Textbox"
 import { colors, fontFamilies, fontWeights, textAlign, verticalAlign } from "../inputs/items"
 import Select from "../inputs/Select"
 import Switch from "../inputs/Switch"
 import { useConfigDialog } from "./utils/useConfigDialog"
 
-type Props = DialogProps<PickElement<"textbox">, PickElement<"textbox">["data"]>
+type Props = DialogProps<Core.PickElement<"textbox">, Core.PickElement<"textbox">["data"]>
 
 function TextboxConfigDialog({ open, data: element, close }: Props) {
     const { data, getTextFieldProps, getBooleanFieldProps } = useConfigDialog(element)

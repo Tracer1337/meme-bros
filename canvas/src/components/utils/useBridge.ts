@@ -1,19 +1,19 @@
 import { useContext, useEffect } from "react"
 import { DeepPartial } from "tsdef"
+import * as Core from "@meme-bros/core"
 import { setDOMListeners } from "../../lib/events"
-import { Canvas, CanvasElement } from "../../types"
 import { CanvasContext } from "../Context"
 
 type Events = {
-    "element.create": DeepPartial<CanvasElement>,
-    "element.create.default": CanvasElement["type"],
+    "element.create": DeepPartial<Core.CanvasElement>,
+    "element.create.default": Core.CanvasElement["type"],
     "canvas.render": null,
     "canvas.undo": null,
-    "canvas.set": DeepPartial<Canvas>
+    "canvas.set": DeepPartial<Core.Canvas>
 }
 
 type Responses = {
-    "canvas.render": Canvas
+    "canvas.render": Core.Canvas
 }
 
 type Event<T extends keyof Events> = {

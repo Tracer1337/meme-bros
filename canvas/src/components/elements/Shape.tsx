@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react"
 import * as CSS from "csstype"
+import * as Core from "@meme-bros/core"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
-import { PickElement } from "../../types"
 import { CanvasContext, updateElementData } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 
-export function getShapeDefaultData(): PickElement<"shape">["data"] {
+export function getShapeDefaultData(): Core.PickElement<"shape">["data"] {
     return {
         variant: "rect",
         backgroundColor: "transparent",
@@ -15,7 +15,7 @@ export function getShapeDefaultData(): PickElement<"shape">["data"] {
     }
 }
 
-export function getShapeStyles(element: PickElement<"shape">): CSS.Properties {
+export function getShapeStyles(element: Core.PickElement<"shape">): CSS.Properties {
     return {
         backgroundColor: element.data.backgroundColor,
         borderColor: element.data.borderColor,

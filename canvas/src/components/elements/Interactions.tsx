@@ -2,11 +2,11 @@ import { useContext } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import SettingsIcon from "@mui/icons-material/Settings"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
+import * as Core from "@meme-bros/core"
 import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
 import { CanvasContext, ElementEvents } from "../Context"
-import { CanvasElement } from "../../types"
 import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
 import Handle from "./Handle"
 
@@ -18,7 +18,7 @@ function Interactions({
     size,
     rotation
 }: {
-    element: CanvasElement,
+    element: Core.CanvasElement,
     config: ElementConfig,
     onUpdate: () => void,
     getHandleProps: GetHandleProps,

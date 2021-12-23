@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import * as CSS from "csstype"
+import * as Core from "@meme-bros/core"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { textfit } from "../../lib/textfit"
-import { PickElement } from "../../types"
 import { CanvasContext, updateElementData, updateTextboxText } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 import { getTextShadow } from "../../lib/styles"
@@ -14,7 +14,7 @@ const justifyContentStyles: Record<string, string> = {
     "bottom": "flex-end"
 }
 
-export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
+export function getTextboxDefaultData(): Core.PickElement<"textbox">["data"] {
     return {
         text: "Enter Text...",
         fontFamily: "Impact",
@@ -30,7 +30,7 @@ export function getTextboxDefaultData(): PickElement<"textbox">["data"] {
     }
 }
 
-export function getTextboxStyles(element: PickElement<"textbox">): CSS.Properties {
+export function getTextboxStyles(element: Core.PickElement<"textbox">): CSS.Properties {
     return {
         padding: `${element.data.padding}px`,
         whiteSpace: "pre-wrap",

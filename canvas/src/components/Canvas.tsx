@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
+import * as CSS from "csstype"
+import * as Core from "@meme-bros/core"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { ContextValue, CanvasContext, Events, removeElement } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
-import { CanvasElement, PickElement } from "../types"
 import { useBridge } from "./utils/useBridge"
 import { getImageDimensions } from "../lib/image"
 
@@ -12,8 +13,8 @@ function makeId() {
     return Math.floor(Math.random() * 1e8)
 }
 
-async function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
-    const newElement: PickElement<T> = {
+async function createCanvasElement<T extends Core.CanvasElement["type"]>(type: T) {
+    const newElement: Core.PickElement<T> = {
         id: makeId(),
         type,
         rect: {
@@ -26,7 +27,7 @@ async function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
         data: getDefaultDataByType(type)
     } as any
     if (type === "image") {
-        const data = newElement.data as PickElement<"image">["data"]
+        const data = newElement.data as Core.PickElement<"image">["data"]
         const { width, height } = await getImageDimensions(data.uri)
         data.naturalWidth = width
         data.naturalHeight = height
@@ -34,11 +35,11 @@ async function createCanvasElement<T extends CanvasElement["type"]>(type: T) {
     return newElement
 }
 
-function getCanvasStyles(canvas: ContextValue["canvas"]) {
+function getCanvasStyles(canvas: ContextValue["canvas"]): CSS.Properties {
     return {
         backgroundColor: canvas.backgroundColor,
-        width: canvas.width,
-        height: canvas.height
+        width: canvas.width + "px",
+        height: canvas.height + "px"
     }
 }
 
@@ -50,7 +51,7 @@ function Canvas() {
     const setQueuedListeners = useRef(makeListenerQueue<Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
 
-    const setNewElement = (newElement: CanvasElement) => {
+    const setNewElement = (newElement: Core.CanvasElement) => {
         context.push()
         context.set({
             interactions: {
@@ -62,7 +63,7 @@ function Canvas() {
         })
     }
 
-    const handleCreateElement = async (partial: DeepPartial<CanvasElement>) => {
+    const handleCreateElement = async (partial: DeepPartial<Core.CanvasElement>) => {
         if (!partial.type) {
             throw new Error("Element type is not defined in 'element.create'")
         }
@@ -72,11 +73,11 @@ function Canvas() {
         ))
     }
 
-    const handleCreateElementDefault = async (type: CanvasElement["type"]) => {
+    const handleCreateElementDefault = async (type: Core.CanvasElement["type"]) => {
         setNewElement(await createCanvasElement(type))
     }
 
-    const handleRemoveElement = (id: CanvasElement["id"]) => {
+    const handleRemoveElement = (id: Core.CanvasElement["id"]) => {
         context.push()
         context.set(removeElement(context, id))
     }
@@ -110,9 +111,7 @@ function Canvas() {
             return
         }
         context.set({
-            canvas: {
-                domRect: canvasRef.current.getBoundingClientRect()
-            }
+            canvasDomRect: canvasRef.current.getBoundingClientRect()
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [canvasRef])

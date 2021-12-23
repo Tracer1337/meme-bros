@@ -1,14 +1,14 @@
 import { useContext, useRef } from "react"
 import { DraggableCore, DraggableData, DraggableEventHandler } from "react-draggable"
 import RotateIcon from "@mui/icons-material/Replay"
+import * as Core from "@meme-bros/core"
 import { AnimatedValue } from "../../lib/animation"
-import { Rect } from "../../types"
 import Handle from "./Handle"
 import { GetHandleProps } from "./makeElement"
 import { CanvasContext } from "../Context"
 
 function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
-    childRect: Rect,
+    childRect: Core.Rect,
     getHandleProps: GetHandleProps,
     onUpdate: () => void,
     animate: AnimatedValue
@@ -24,13 +24,12 @@ function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
     })
 
     const getRotationAngle = (data: DraggableData) => {
-        const canvasRect = context.canvas.domRect
-        if (!canvasRect) {
+        if (!context.canvasDomRect) {
             return 0
         }
         const childCenter = getChildCenter()
-        data.x -= canvasRect.x
-        data.y -= canvasRect.y
+        data.x -= context.canvasDomRect.x
+        data.y -= context.canvasDomRect.y
         const childToMouse = Math.atan2(childCenter.y - data.y, childCenter.x - data.x)
         return childToMouse - Math.PI / 2 - lastRotation.current
     }

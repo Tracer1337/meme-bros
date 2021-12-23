@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react"
 import * as CSS from "csstype"
+import * as Core from "@meme-bros/core"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
-import { PickElement } from "../../types"
 import { CanvasContext, updateElementData, updateElementRect } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 
-export function getImageDefaultData(): PickElement<"image">["data"] {
+export function getImageDefaultData(): Core.PickElement<"image">["data"] {
     return {
         uri: "https://via.placeholder.com/200x100",
         animated: false,
@@ -18,7 +18,7 @@ export function getImageDefaultData(): PickElement<"image">["data"] {
     }
 }
 
-export function getImageStyles(element: PickElement<"image">): CSS.Properties {
+export function getImageStyles(element: Core.PickElement<"image">): CSS.Properties {
     return {
         borderRadius: element.data.borderRadius + "px",
         userSelect: "none"
