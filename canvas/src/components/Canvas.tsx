@@ -3,10 +3,10 @@ import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
+import { useBridge, useWindowMessaging } from "@meme-bros/bridge"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { ContextValue, CanvasContext, Events, removeElement } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
-import { useBridge } from "./utils/useBridge"
 import { getImageDimensions } from "../lib/image"
 
 function makeId() {
@@ -44,9 +44,16 @@ function getCanvasStyles(canvas: ContextValue["canvas"]): CSS.Properties {
 }
 
 function Canvas() {
-    useBridge()
-
     const context = useContext(CanvasContext)
+
+    const { messages, send } = useWindowMessaging()
+    useBridge(messages, send, {
+        "element.create": (e) => context.events.emit("element.create", e),
+        "element.create.default": (e) => context.events.emit("element.create.default", e),
+        "canvas.render": () => context.canvas,
+        "canvas.set": (partial) => context.set({ canvas: partial }),
+        "canvas.undo": () => context.pop()
+    })
 
     const setQueuedListeners = useRef(makeListenerQueue<Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
