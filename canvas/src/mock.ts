@@ -15,6 +15,7 @@ export const mockContextValue: ContextValue = {
         domRect: null,
         width: 500,
         height: 500,
+        pixelRatio: 1,
         debug: false,
         backgroundColor: "#444444",
         elements: [

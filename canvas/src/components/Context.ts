@@ -39,6 +39,7 @@ export const defaultContextValue: ContextValue = {
         domRect: null,
         width: 0,
         height: 0,
+        pixelRatio: 1,
         debug: false,
         backgroundColor: "#fffff",
         elements: []

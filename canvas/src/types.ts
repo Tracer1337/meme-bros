@@ -2,6 +2,7 @@ export type Canvas = {
     domRect: DOMRect | null,
     width: number,
     height: number,
+    pixelRatio: number,
     debug: boolean,
     backgroundColor: ColorString,
     elements: CanvasElement[]
