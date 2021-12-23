@@ -17,7 +17,7 @@ Schema = {
 ## Color
 
 ```ts
-Color = [Number, Number, Number, Number] // (R, G, B, A)
+Color = String /* Hex */ | "transparent" | [Number, Number, Number, Number] /* RGBA */
 ```
 
 ## Elements
