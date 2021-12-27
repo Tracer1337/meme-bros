@@ -5,12 +5,11 @@ import Canvas from "./components/Canvas"
 import { ContextValue, CanvasContext, defaultContextValue } from "./components/Context"
 import { mockContextValue } from "./mock"
 import DebugMenu from "./components/DebugMenu"
+import config from "./config"
 
 const HISTORY_LENGTH = 100
 
-const contextValue = process.env.NODE_ENV === "development"
-    ? mockContextValue
-    : defaultContextValue
+const contextValue = config.debug ? mockContextValue : defaultContextValue
 
 const Container = styled(Box)({
     width: "100vw",

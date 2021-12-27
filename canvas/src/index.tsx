@@ -5,6 +5,7 @@ import { CssBaseline } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import App from "./App"
 import { DialogProvider } from "./lib/DialogHandler"
+import config from "./config"
 
 const theme = createTheme({
     palette: {
@@ -12,7 +13,7 @@ const theme = createTheme({
     }
 })
 
-if (process.env.NODE_ENV === "development") {
+if (config.debug) {
     console.log(theme)
 }
 
