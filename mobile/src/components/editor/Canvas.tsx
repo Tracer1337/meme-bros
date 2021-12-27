@@ -1,17 +1,15 @@
-import React, { useRef } from "react"
-import { useContext } from "react"
-import { useEffect } from "react"
+import React, { useRef, useContext, useEffect } from "react"
 import { Dimensions } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import * as Core from "@meme-bros/core"
+import { useBridge, useRNWebViewMessaging } from "@meme-bros/bridge"
 import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { importImage } from "../../lib/media"
 import { EditorContext } from "./Context"
 import { loadCanvasDummy } from "./utils/dummy"
-import { useBridge } from "./utils/useBridge"
 
 const BLANK_SIZE = 500
 
@@ -57,18 +55,19 @@ function Canvas() {
     
     const canvas = useRef<WebView>(null)
 
-    const bridge = useBridge(canvas)
+    const { messages, send, onMessage } = useRNWebViewMessaging(canvas)
+    const request = useBridge(messages, send, {})
 
     const handleElementCreate = async (type: Core.CanvasElement["type"]) => {
         const partial = await createPartialElement(type)
         if (!partial) {
             return
         }
-        bridge.request("element.create", partial)
+        request("element.create", partial)
     }
 
     const handleCanvasRender = async () => {
-        const canvas = await bridge.request("canvas.render", null)
+        const canvas = await request("canvas.render", null)
         console.log("Generate", canvas)
         const base64 = await CoreModule.render(canvas)
         dialogs.open("GeneratedImageDialog", {
@@ -93,7 +92,7 @@ function Canvas() {
         newElement.rect = { ...newElement.rect, ...rect }
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
-            bridge.request("canvas.set", {
+            request("canvas.set", {
                 ...rect,
                 pixelRatio,
                 backgroundColor: "#ffffff",
@@ -109,7 +108,7 @@ function Canvas() {
         })
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
-            bridge.request("canvas.set", {
+            request("canvas.set", {
                 ...dim,
                 pixelRatio: BLANK_SIZE / dim.width,
                 backgroundColor: "#ffffff"
@@ -121,17 +120,17 @@ function Canvas() {
         const dummy = await loadCanvasDummy()
         context.set({ renderCanvas: true })
         requestAnimationFrame(() => {
-            bridge.request("canvas.set", dummy)
+            request("canvas.set", dummy)
         })
     }
 
     const handleCanvasClear = () => {
         context.set({ renderCanvas: false })
-        bridge.request("canvas.set", { elements: [] })
+        request("canvas.set", { elements: [] })
     }
 
     const handleCanvasUndo = () => {
-        bridge.request("canvas.undo", null)
+        request("canvas.undo", null)
     }
         
     useEffect(() =>
@@ -151,7 +150,7 @@ function Canvas() {
             originWhitelist={["*"]}
             source={{ uri }}
             ref={canvas}
-            onMessage={bridge.onMessage}
+            onMessage={onMessage}
             bounces={false}
             scrollEnabled={false}
             allowFileAccess
