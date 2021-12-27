@@ -11,6 +11,7 @@ type Events = {
     "element.create": Core.CanvasElement["type"],
     "element.edit": Core.CanvasElement["id"],
     "element.remove": Core.CanvasElement["id"],
+    "element.copy": Core.CanvasElement["id"],
     "element.config": Core.CanvasElement["id"],
     "canvas.render": null,
     "canvas.undo": null,
@@ -24,13 +25,19 @@ type Events = {
 export type ContextValue = {
     set: (partial: DeepPartial<ContextValue>) => void,
     events: EventEmitter<Events>,
-    renderCanvas: boolean
+    renderCanvas: boolean,
+    interactions: {
+        focus: number | null
+    }
 }
 
 export const contextDefaultValue: ContextValue = {
     set: () => {},
     events: new EventEmitter<Events>({ suppressWarnings: true }),
-    renderCanvas: false
+    renderCanvas: false,
+    interactions: {
+        focus: null
+    }
 }
 
 export const EditorContext = createContext<ContextValue>(

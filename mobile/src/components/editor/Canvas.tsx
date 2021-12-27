@@ -56,7 +56,11 @@ function Canvas() {
     const canvas = useRef<WebView>(null)
 
     const { messages, send, onMessage } = useRNWebViewMessaging(canvas)
-    const request = useBridge(messages, send, {})
+    const request = useBridge(messages, send, {
+        "element.focus": (id) => {
+            context.set({ interactions: { focus: id } })
+        }
+    })
 
     const handleElementCreate = async (type: Core.CanvasElement["type"]) => {
         const partial = await createPartialElement(type)
@@ -64,6 +68,10 @@ function Canvas() {
             return
         }
         request("element.create", partial)
+    }
+
+    const handleElementCopy = (id: Core.CanvasElement["id"]) => {
+        request("element.copy", id)
     }
 
     const handleCanvasRender = async () => {
@@ -136,6 +144,7 @@ function Canvas() {
     useEffect(() =>
         setListeners(context.events, [
             ["element.create", handleElementCreate],
+            ["element.copy", handleElementCopy],
             ["canvas.render", handleCanvasRender],
             ["canvas.base.import", handleBaseImport],
             ["canvas.base.blank", handleBaseBlank],

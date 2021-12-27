@@ -7,7 +7,7 @@ import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
 import { contextDefaultValue, ContextValue, EditorContext } from "./Context"
 import Canvas from "./Canvas"
-import BottomBar from "./BottomBar"
+import ActionBar from "./ActionBar"
 import BaseSelector from "./BaseSelector"
 
 function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
@@ -33,7 +33,7 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                     <Canvas/>
                 </View>
                 {context.renderCanvas ? (
-                    <BottomBar/>
+                    <ActionBar/>
                 ) : (
                     <View style={styles.center}>
                         <BaseSelector/>
