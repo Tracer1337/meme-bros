@@ -3,6 +3,7 @@ import { createContext } from "react"
 import { DeepPartial } from "tsdef"
 import * as Core from "@meme-bros/core"
 import EventEmitter from "../lib/EventEmitter"
+import { clone, makeId } from "./utils"
 
 export type ElementEvents = "create" | "edit" | "remove" | "config"
 
@@ -90,6 +91,24 @@ export function removeElement(state: ContextValue, id: number) {
             (e) => e.id === id
         )
         draft.canvas.elements.splice(index, 1)
+        if (draft.interactions.focus === id) {
+            draft.interactions.focus = null
+        }
+    })
+}
+
+export function copyElement(state: ContextValue, id: number) {
+    return produce(state, (draft) => {
+        const element = draft.canvas.elements.find((e) => e.id === id)
+        if (!element) {
+            return
+        }
+        const newElement = clone(element)
+        newElement.id = makeId()
+        newElement.rect.x = 0
+        newElement.rect.y = 0
+        draft.canvas.elements.push(newElement)
+        draft.interactions.focus = newElement.id
     })
 }
 

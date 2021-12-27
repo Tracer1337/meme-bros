@@ -5,13 +5,10 @@ import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
 import { useBridge, useWindowMessaging } from "@meme-bros/bridge"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
-import { ContextValue, CanvasContext, Events, removeElement } from "./Context"
+import { ContextValue, CanvasContext, Events, removeElement, copyElement } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
-
-function makeId() {
-    return Math.floor(Math.random() * 1e8)
-}
+import { makeId } from "./utils"
 
 async function createCanvasElement<T extends Core.CanvasElement["type"]>(type: T) {
     const newElement: Core.PickElement<T> = {
@@ -47,9 +44,10 @@ function Canvas() {
     const context = useContext(CanvasContext)
 
     const { messages, send } = useWindowMessaging()
-    useBridge(messages, send, {
+    const request = useBridge(messages, send, {
         "element.create": (e) => context.events.emit("element.create", e),
         "element.create.default": (e) => context.events.emit("element.create.default", e),
+        "element.copy": (id) => context.set(copyElement(context, id)),
         "canvas.render": () => context.canvas,
         "canvas.set": (partial) => context.set({ canvas: partial }),
         "canvas.undo": () => context.pop()
@@ -122,6 +120,11 @@ function Canvas() {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [canvasRef])
+    
+    useEffect(() => {
+        request("element.focus", context.interactions.focus)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [context.interactions.focus])
     
     return (
         <div style={getCanvasStyles(context.canvas)} ref={canvasRef}>
