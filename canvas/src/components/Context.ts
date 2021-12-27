@@ -124,6 +124,8 @@ export function layerElement(state: ContextValue, id: number, layer: -1 | 1) {
         draft.canvas.elements.splice(index, 1)
         if (layer === 1) {
             draft.canvas.elements.push(element)
+        } else if (draft.canvas.elements[0]?.type === "image") {
+            draft.canvas.elements.splice(1, 0, element)
         } else {
             draft.canvas.elements.unshift(element)
         }
