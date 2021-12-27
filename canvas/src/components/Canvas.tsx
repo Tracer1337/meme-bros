@@ -5,7 +5,7 @@ import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
 import { useBridge, useWindowMessaging } from "@meme-bros/bridge"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
-import { ContextValue, CanvasContext, Events, removeElement, copyElement } from "./Context"
+import { ContextValue, CanvasContext, Events, removeElement, copyElement, layerElement } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
 import { makeId } from "./utils"
@@ -48,6 +48,7 @@ function Canvas() {
         "element.create": (e) => context.events.emit("element.create", e),
         "element.create.default": (e) => context.events.emit("element.create.default", e),
         "element.copy": (id) => context.set(copyElement(context, id)),
+        "element.layer": ({ id, layer }) => context.set(layerElement(context, id, layer)),
         "canvas.render": () => context.canvas,
         "canvas.set": (partial) => context.set({ canvas: partial }),
         "canvas.undo": () => context.pop()

@@ -112,6 +112,24 @@ export function copyElement(state: ContextValue, id: number) {
     })
 }
 
+export function layerElement(state: ContextValue, id: number, layer: -1 | 1) {
+    return produce(state, (draft) => {
+        const index = draft.canvas.elements.findIndex(
+            (e) => e.id === id
+        )
+        const element = draft.canvas.elements[index]
+        if (!element) {
+            return
+        }
+        draft.canvas.elements.splice(index, 1)
+        if (layer === 1) {
+            draft.canvas.elements.push(element)
+        } else {
+            draft.canvas.elements.unshift(element)
+        }
+    })
+}
+
 export function updateTextboxText(
     state: ContextValue,
     element: Core.PickElement<"textbox">,

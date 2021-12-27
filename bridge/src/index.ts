@@ -9,13 +9,14 @@ type Methods = {
     "element.create": (e: DeepPartial<Core.CanvasElement>) => void,
     "element.create.default": (t: Core.CanvasElement["type"]) => void,
     "element.copy": (id: Core.CanvasElement["id"]) => void,
+    "element.layer": (args: { id: Core.CanvasElement["id"], layer: -1 | 1 }) => void,
     "element.focus": (id: Core.CanvasElement["id"] | null) => void,
     "canvas.render": () => Core.Canvas,
     "canvas.undo": () => void,
     "canvas.set": (c: DeepPartial<Core.Canvas>) => void
 }
 
-type Events = {
+export type Events = {
     [K in keyof Methods]: FirstArgument<Methods[K]>
 } & {
     [K in keyof Methods as `r:${K}`]: ReturnType<Methods[K]>
@@ -35,6 +36,7 @@ const methods: (keyof Methods)[] = [
     "element.create",
     "element.create.default",
     "element.copy",
+    "element.layer",
     "element.focus",
     "canvas.render",
     "canvas.undo",

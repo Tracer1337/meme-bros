@@ -41,14 +41,21 @@ function CanvasActions() {
 function ElementActions() {
     const context = useContext(EditorContext)
 
+    const id = context.interactions.focus || 0
+
     return (   
         <View style={styles.actions}>
             <IconButton
                 icon="content-copy"
-                onPress={() => context.events.emit(
-                    "element.copy",
-                    context.interactions.focus || 0
-                )}
+                onPress={() => context.events.emit("element.copy", id)}
+            />
+            <IconButton
+                icon="flip-to-back"
+                onPress={() => context.events.emit("element.layer", { id, layer: -1 })}
+            />
+            <IconButton
+                icon="flip-to-front"
+                onPress={() => context.events.emit("element.layer", { id, layer: 1 })}
             />
         </View>
     )

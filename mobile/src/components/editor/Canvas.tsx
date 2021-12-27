@@ -8,7 +8,7 @@ import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { importImage } from "../../lib/media"
-import { EditorContext } from "./Context"
+import { ContextEvents, EditorContext } from "./Context"
 import { loadCanvasDummy } from "./utils/dummy"
 
 const BLANK_SIZE = 500
@@ -68,10 +68,6 @@ function Canvas() {
             return
         }
         request("element.create", partial)
-    }
-
-    const handleElementCopy = (id: Core.CanvasElement["id"]) => {
-        request("element.copy", id)
     }
 
     const handleCanvasRender = async () => {
@@ -136,21 +132,22 @@ function Canvas() {
         context.set({ renderCanvas: false })
         request("canvas.set", { elements: [] })
     }
-
-    const handleCanvasUndo = () => {
-        request("canvas.undo", null)
-    }
         
     useEffect(() =>
         setListeners(context.events, [
             ["element.create", handleElementCreate],
-            ["element.copy", handleElementCopy],
+            ["element.copy", (id: ContextEvents["element.copy"]) => {
+                request("element.copy", id)
+            }],
+            ["element.layer", (args: ContextEvents["element.layer"]) => {
+                request("element.layer", args)
+            }],
             ["canvas.render", handleCanvasRender],
             ["canvas.base.import", handleBaseImport],
             ["canvas.base.blank", handleBaseBlank],
             ["canvas.base.dummy", handleBaseDummy],
             ["canvas.clear", handleCanvasClear],
-            ["canvas.undo", handleCanvasUndo]
+            ["canvas.undo", () => request("canvas.undo", null)]
         ])
     )
 
