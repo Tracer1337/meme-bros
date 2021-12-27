@@ -8,6 +8,8 @@ import { setDOMListeners, setListeners } from "./events"
 type Methods = {
     "element.create": (e: DeepPartial<Core.CanvasElement>) => void,
     "element.create.default": (t: Core.CanvasElement["type"]) => void,
+    "element.copy": (id: Core.CanvasElement["id"]) => void,
+    "element.focus": (id: Core.CanvasElement["id"] | null) => void,
     "canvas.render": () => Core.Canvas,
     "canvas.undo": () => void,
     "canvas.set": (c: DeepPartial<Core.Canvas>) => void
@@ -32,6 +34,8 @@ type Messages = {
 const methods: (keyof Methods)[] = [
     "element.create",
     "element.create.default",
+    "element.copy",
+    "element.focus",
     "canvas.render",
     "canvas.undo",
     "canvas.set"
@@ -137,35 +141,3 @@ export function useRNWebViewMessaging(webview: RefObject<WebView>) {
 
     return { messages, send, onMessage }
 }
-
-// function Web() {
-//     const { messages, send } = useWindowMessaging()
-//     const request = useBridge(messages, send, {
-//         "canvas.render": () => {
-//             return context.canvas
-//         }
-//     })
-
-//     const handleFocusElement = async (id: number) => {
-//         await request("element.focus", id)
-//     }
-
-//     return React.createElement("div")
-// }
-
-// function Mobile() {
-//     const webview = useRef<WebView>(null)
-    
-//     const { messages, send, onMessage } = useRNWebViewMessaging(webview)
-//     const request = useBridge(messages, send, {
-//         "element.focus": (id) => {
-//             context.set({ focus: { id } })
-//         }
-//     })
-
-//     const handleRender = async () => {
-//         const canvas = await request("canvas.render", null)
-//     }
-
-//     return React.createElement(WebView, { onMessage, ref: webview })
-// }
