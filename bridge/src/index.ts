@@ -99,13 +99,12 @@ export function useWindowMessaging() {
     const messages = useRef(new EventEmitter<Messages>()).current
 
     const send = (message: Message) => {
+        const json = JSON.stringify(message)
         if ("ReactNativeWebView" in window) {
             // @ts-ignore
-            window.ReactNativeWebView.postMessage(
-                JSON.stringify(message)
-            )
+            window.ReactNativeWebView.postMessage(json)
         }
-        window.postMessage(message)
+        window.postMessage(json)
     }
 
     useEffect(() => setDOMListeners(document, [
