@@ -1,7 +1,7 @@
 import { createContext } from "react"
 import { DeepPartial } from "tsdef"
 import * as Core from "@meme-bros/core"
-import { Events as BridgeEvents } from "@meme-bros/bridge"
+import { Events as BridgeEvents } from "@meme-bros/shared"
 import EventEmitter from "../../lib/EventEmitter"
 
 export type ScreenEvents = "press"
