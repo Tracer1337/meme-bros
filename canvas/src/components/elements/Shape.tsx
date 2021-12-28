@@ -32,7 +32,7 @@ function Shape({ element }: ElementProps<"shape">) {
     
     const handleConfig = async () => {
         const data = await dialogs.open("ShapeConfigDialog", element)
-        context.push()
+        context.events.emit("history.push", null)
         context.set(updateElementData(context, element, data))
     }
 

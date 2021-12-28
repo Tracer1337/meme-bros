@@ -46,7 +46,7 @@ function Canvas() {
     const canvasRef = useRef<HTMLDivElement>(null)
 
     const setNewElement = (newElement: Core.CanvasElement) => {
-        context.push()
+        context.events.emit("history.push", null)
         context.set({
             interactions: {
                 focus: newElement.id
@@ -72,7 +72,7 @@ function Canvas() {
     }
 
     const handleRemoveElement = (id: Core.CanvasElement["id"]) => {
-        context.push()
+        context.events.emit("history.push", null)
         context.set(removeElement(context, id))
     }
 

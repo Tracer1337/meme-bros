@@ -63,8 +63,8 @@ function DebugMenu() {
             <Action onClick={() => context.set(copyElement(context, copyId))}>Copy</Action>
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>History</Typography>
-            <Action onClick={() => context.push()}>Push</Action>
-            <Action onClick={() => context.pop()}>Pop</Action>
+            <Action onClick={event("history.push", null)}>Push</Action>
+            <Action onClick={event("history.pop", null)}>Pop</Action>
         </Paper>
     )
 }

@@ -79,7 +79,7 @@ function makeElement<T extends Core.CanvasElement["type"]>(
         })
 
         const updateElement = () => {
-            context.push()
+            context.events.emit("history.push", null)
             context.set(updateElementRect(context, element, {
                 x: pos.x.value,
                 y: pos.y.value,
