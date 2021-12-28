@@ -5,7 +5,8 @@ import deepmerge from "deepmerge"
 import { isPlainObject } from "is-plain-object"
 import EventEmitter from "./EventEmitter"
 import { useBridge } from "./bridge"
-import { useQueuedListeners } from "./events"
+import { useQueuedListeners, useListeners } from "./events"
+import { Bridge } from "."
 
 export namespace SharedContext {
     export type ElementEvents = "create" | "edit" | "remove" | "config"
@@ -16,38 +17,36 @@ export namespace SharedContext {
         "element.edit": Core.CanvasElement["id"],
         "element.remove": Core.CanvasElement["id"],
         "element.config": Core.CanvasElement["id"],
-        "canvas.render": null,
-        "canvas.undo": null,
+        "element.copy": Core.CanvasElement["id"],
+        "element.layer": { id: Core.CanvasElement["id"], layer: -1 | 1 },
         "canvas.render.done": null,
         "canvas.base.import": null,
         "canvas.base.blank": null,
         "canvas.base.dummy": null,
-        "canvas.clear": null,
-        "canvas.dimensions.set": Pick<Core.Canvas, "width" | "height">
+        "history.push": null,
+        "history.pop": null
     }
 
     export type ContextValue = {
-        set: (partial: DeepPartial<ContextValue>) => void,
-        push: () => void,
-        pop: () => void,
+        set: (partial: DeepPartial<ContextValue>, emit?: boolean) => void,
         events: EventEmitter<Events>,
         interactions: {
             focus: Core.CanvasElement["id"] | null
         },
         canvasDomRect: DOMRect | null,
+        renderCanvas: boolean,
         canvas: Core.Canvas
     }
 }
 
 export const defaultContextValue: SharedContext.ContextValue = {
     set: () => defaultContextValue,
-    push: () => {},
-    pop: () => {},
     events: new EventEmitter<SharedContext.Events>({ suppressWarnings: true }),
     interactions: {
         focus: null
     },
     canvasDomRect: null,
+    renderCanvas: false,
     canvas: {
         width: 0,
         height: 0,
@@ -71,18 +70,39 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
 
     const [context, setContext] = useState(defaultContextValue)
 
-    context.set = (partial) => {
-        bridge.emit("context.set", partial)
+    context.set = (partial, emit = true) => {
+        const newState = deepmerge(context, partial, {
+            isMergeableObject: isPlainObject,
+            arrayMerge: (_dest, source) => source
+        }) as SharedContext.ContextValue
+        newState.events = defaultContextValue.events
+        setContext(newState)
+        if (emit) {
+            bridge.send({
+                event: "context.set",
+                data: partial
+            })
+        }
     }
 
-    useQueuedListeners(bridge, [
-        ["context.set", (partial) => {
-            const newState = deepmerge(context, partial, {
-                isMergeableObject: isPlainObject,
-                arrayMerge: (_dest, source) => source
-            }) as SharedContext.ContextValue
-            setContext(newState)
+    useListeners(context.events, [
+        // @ts-ignore
+        ["emit", ({ event, data }) => {
+            console.log({ event, data })
+            bridge.send({
+                event: "context.event",
+                data: { event, data }
+            })
         }]
+    ])
+
+    useQueuedListeners(bridge.messages, [
+        ["context.set", (partial: Bridge.Events["context.set"]) =>
+            context.set(partial, false)
+        ],
+        ["context.event", ({ event, data }: Bridge.Events["context.event"]) =>
+            context.events.emit(event, data)
+        ]
     ])
 
     console.log(context)

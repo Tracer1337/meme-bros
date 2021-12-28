@@ -11,6 +11,7 @@ export const mockContextValue: SharedContext.ContextValue = {
     set: () => mockContextValue,
     push: () => {},
     pop: () => {},
+    renderCanvas: false,
     canvasDomRect: null,
     canvas: {
         width: 500,

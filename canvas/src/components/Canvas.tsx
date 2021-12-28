@@ -3,7 +3,7 @@ import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
-import { setListeners, useBridge, useSharedContext, SharedContext, removeElement } from "@meme-bros/shared"
+import { useSharedContext, SharedContext, removeElement } from "@meme-bros/shared"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
@@ -41,14 +41,6 @@ function getCanvasStyles(canvas: SharedContext.ContextValue["canvas"]): CSS.Prop
 
 function Canvas() {
     const context = useSharedContext()
-
-    const bridge = useBridge()
-
-    useEffect(() => setListeners(bridge, [
-        ["element.create", (e) => context.events.emit("element.create", e)],
-        ["element.create.default", (e) => context.events.emit("element.create.default", e)],
-        ["canvas.undo", context.pop],
-    ]))
 
     const setQueuedListeners = useRef(makeListenerQueue<SharedContext.Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)

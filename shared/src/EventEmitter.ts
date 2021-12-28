@@ -45,6 +45,10 @@ class EventEmitter<Events extends Record<string, any>> {
     }
 
     emit<T extends keyof Events>(event: T, data: Events[T]) {
+        if (event !== "emit") {
+            // @ts-ignore
+            this.emit("emit", { event, data })
+        }
         const listeners = this.listeners[event]
         if (!listeners) {
             return

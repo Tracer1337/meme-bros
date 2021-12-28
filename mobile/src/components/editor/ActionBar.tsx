@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
+import { copyElement, layerElement, useSharedContext } from "@meme-bros/shared"
 import { StyleSheet, View } from "react-native"
 import { Appbar, IconButton, FAB } from "react-native-paper"
 import { setListeners } from "../../lib/events"
-import { EditorContext } from "./Context"
 
 enum ActionBarMode {
     CANVAS,
@@ -10,36 +10,39 @@ enum ActionBarMode {
 }
 
 function CanvasActions() {
-    const context = useContext(EditorContext)
+    const context = useSharedContext()
 
     return (   
         <View style={styles.actions}>
             <IconButton
                 icon="format-color-text"
-                onPress={() => context.events.emit("element.create", "textbox")}
+                onPress={() => context.events.emit("element.create", { type: "textbox" })}
             />
             <IconButton
                 icon="image"
-                onPress={() => context.events.emit("element.create", "image")}
+                onPress={() => context.events.emit("element.create", { type: "image" })}
             />
             <IconButton
                 icon="shape"
-                onPress={() => context.events.emit("element.create", "shape")}
+                onPress={() => context.events.emit("element.create", { type: "shape" })}
             />
             <IconButton
                 icon="delete"
-                onPress={() => context.events.emit("canvas.clear", null)}
+                onPress={() => context.set({
+                    renderCanvas: false,
+                    canvas: { elements: [] }
+                })}
             />
             <IconButton
                 icon="undo"
-                onPress={() => context.events.emit("canvas.undo", null)}
+                onPress={() => context.events.emit("history.pop", null)}
             />
         </View>
     )
 }
 
 function ElementActions() {
-    const context = useContext(EditorContext)
+    const context = useSharedContext()
 
     const id = context.interactions.focus || 0
 
@@ -47,22 +50,22 @@ function ElementActions() {
         <View style={styles.actions}>
             <IconButton
                 icon="content-copy"
-                onPress={() => context.events.emit("element.copy", id)}
+                onPress={() => context.set(copyElement(context, id))}
             />
             <IconButton
                 icon="flip-to-back"
-                onPress={() => context.events.emit("element.layer", { id, layer: -1 })}
+                onPress={() => context.set(layerElement(context, id, -1))}
             />
             <IconButton
                 icon="flip-to-front"
-                onPress={() => context.events.emit("element.layer", { id, layer: 1 })}
+                onPress={() => context.set(layerElement(context, id, 1))}
             />
         </View>
     )
 }
 
 function ActionBar() {    
-    const context = useContext(EditorContext)
+    const context = useSharedContext()
 
     const [isGenerating, setIsGenerating] = useState(false)
     const [mode, setMode] = useState<ActionBarMode>(ActionBarMode.CANVAS)

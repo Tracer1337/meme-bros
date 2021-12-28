@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Box, styled } from "@mui/material"
-import { SharedContext, useSharedContext, useWindowMessaging } from "@meme-bros/shared"
+import { SharedContext, useListeners, useSharedContext, useWindowMessaging } from "@meme-bros/shared"
 import Canvas from "./components/Canvas"
 import { mockContextValue } from "./mock"
 import DebugMenu from "./components/DebugMenu"
@@ -32,20 +32,25 @@ function App() {
     const history = useRef<SharedContext.ContextValue[]>([]).current
     const [debug, setDebug] = useState(false)
 
-    context.push = () => {
+    const handleHistoryPush = () => {
         history.push(context)
         if (history.length > HISTORY_LENGTH) {
             history.shift()
         }
     }
 
-    context.pop = () => {
+    const handleHistoryPop = () => {
         const newState = history.pop()
         if (!newState) {
             return
         }
         context.set(newState)
     }
+
+    useListeners(context.events, [
+        ["history.push", handleHistoryPush],
+        ["history.pop", handleHistoryPop]
+    ])
 
     useEffect(() => {
         if (config.debug) {

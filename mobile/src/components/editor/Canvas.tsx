@@ -3,12 +3,11 @@ import { Dimensions } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import * as Core from "@meme-bros/core"
-import { useBridge, useRNWebViewMessaging } from "@meme-bros/shared"
+import { SharedContext, useRNWebViewMessaging, useSharedContext } from "@meme-bros/shared"
 import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { importImage } from "../../lib/media"
-import { ContextEvents, EditorContext } from "./Context"
 import { loadCanvasDummy } from "./utils/dummy"
 
 const BLANK_SIZE = 500
@@ -50,34 +49,34 @@ const uri = process.env.NODE_ENV === "development"
     : "file:///android_asset/canvas/build/index.html"
 
 function Canvas() {
-    const context = useContext(EditorContext)
+    const context = useSharedContext()
+
     const dialogs = useContext(DialogContext)
     
     const canvas = useRef<WebView>(null)
+    
+    const { onMessage } = useRNWebViewMessaging(canvas)
 
-    const { messages, send, onMessage } = useRNWebViewMessaging(canvas)
-    const request = useBridge(messages, send, {
-        "element.focus": (id) => {
-            context.set({ interactions: { focus: id } })
+    const handleElementCreate = async ({
+        type
+    }: SharedContext.Events["element.create"]) => {
+        if (!type) {
+            return
         }
-    })
-
-    const handleElementCreate = async (type: Core.CanvasElement["type"]) => {
         const partial = await createPartialElement(type)
         if (!partial) {
             return
         }
-        request("element.create", partial)
+        context.events.emit("element.create", partial)
     }
 
     const handleCanvasRender = async () => {
-        const canvas = await request("canvas.render", null)
         console.log("Generate", canvas)
-        const base64 = await CoreModule.render(canvas)
+        const base64 = await CoreModule.render(context.canvas)
         dialogs.open("GeneratedImageDialog", {
             uri: base64,
-            width: canvas.width,
-            height: canvas.height
+            width: context.canvas.width,
+            height: context.canvas.height
         })
         context.events.emit("canvas.render.done", null)
     }
@@ -94,14 +93,14 @@ function Canvas() {
         })
         const pixelRatio = Math.max(newElement.data.naturalWidth / rect.width, 1)
         newElement.rect = { ...newElement.rect, ...rect }
-        context.set({ renderCanvas: true })
-        requestAnimationFrame(() => {
-            request("canvas.set", {
+        context.set({
+            renderCanvas: true,
+            canvas: {
                 ...rect,
                 pixelRatio,
                 backgroundColor: "#ffffff",
                 elements: [newElement]
-            })
+            }
         })
     }
 
@@ -110,44 +109,30 @@ function Canvas() {
             width: BLANK_SIZE,
             height: BLANK_SIZE
         })
-        context.set({ renderCanvas: true })
-        requestAnimationFrame(() => {
-            request("canvas.set", {
+        context.set({
+            renderCanvas: true,
+            canvas: {
                 ...dim,
                 pixelRatio: BLANK_SIZE / dim.width,
                 backgroundColor: "#ffffff"
-            })
+            }
         })
     }
 
     const handleBaseDummy = async () => {
-        const dummy = await loadCanvasDummy()
-        context.set({ renderCanvas: true })
-        requestAnimationFrame(() => {
-            request("canvas.set", dummy)
+        context.set({
+            renderCanvas: true,
+            canvas: await loadCanvasDummy()
         })
-    }
-
-    const handleCanvasClear = () => {
-        context.set({ renderCanvas: false })
-        request("canvas.set", { elements: [] })
     }
         
     useEffect(() =>
         setListeners(context.events, [
             ["element.create", handleElementCreate],
-            ["element.copy", (id: ContextEvents["element.copy"]) => {
-                request("element.copy", id)
-            }],
-            ["element.layer", (args: ContextEvents["element.layer"]) => {
-                request("element.layer", args)
-            }],
             ["canvas.render", handleCanvasRender],
             ["canvas.base.import", handleBaseImport],
             ["canvas.base.blank", handleBaseBlank],
-            ["canvas.base.dummy", handleBaseDummy],
-            ["canvas.clear", handleCanvasClear],
-            ["canvas.undo", () => request("canvas.undo", null)]
+            ["canvas.base.dummy", handleBaseDummy]
         ])
     )
 
