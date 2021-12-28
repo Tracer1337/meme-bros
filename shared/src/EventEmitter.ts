@@ -44,8 +44,8 @@ class EventEmitter<Events extends Record<string, any>> {
         listeners.splice(index, 1)
     }
 
-    emit<T extends keyof Events>(event: T, data: Events[T]) {
-        if (event !== "emit") {
+    emit<T extends keyof Events>(event: T, data: Events[T], notify = true) {
+        if (event !== "emit" && notify) {
             // @ts-ignore
             this.emit("emit", { event, data })
         }

@@ -88,7 +88,6 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
     useListeners(context.events, [
         // @ts-ignore
         ["emit", ({ event, data }) => {
-            console.log({ event, data })
             bridge.send({
                 event: "context.event",
                 data: { event, data }
@@ -101,11 +100,9 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
             context.set(partial, false)
         ],
         ["context.event", ({ event, data }: Bridge.Events["context.event"]) =>
-            context.events.emit(event, data)
+            context.events.emit(event, data, false)
         ]
     ])
-
-    console.log(context)
 
     return React.createElement(
         SharedContext.Provider,
