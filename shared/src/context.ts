@@ -1,12 +1,13 @@
-import { createContext } from "react"
+import React, { createContext, useContext, useState } from "react"
 import { DeepPartial } from "tsdef"
 import * as Core from "@meme-bros/core"
+import deepmerge from "deepmerge"
+import { isPlainObject } from "is-plain-object"
 import EventEmitter from "./EventEmitter"
-import { Events as BridgeEvents } from "./bridge"
+import { useBridge } from "./bridge"
+import { useQueuedListeners } from "./events"
 
 export namespace SharedContext {
-    export type ScreenEvents = "press"
-
     export type ElementEvents = "create" | "edit" | "remove" | "config"
 
     export type Events = {
@@ -15,8 +16,6 @@ export namespace SharedContext {
         "element.edit": Core.CanvasElement["id"],
         "element.remove": Core.CanvasElement["id"],
         "element.config": Core.CanvasElement["id"],
-        "element.copy": Core.CanvasElement["id"],
-        "element.layer": BridgeEvents["element.layer"],
         "canvas.render": null,
         "canvas.undo": null,
         "canvas.render.done": null,
@@ -28,7 +27,7 @@ export namespace SharedContext {
     }
 
     export type ContextValue = {
-        set: (partial: DeepPartial<ContextValue>) => ContextValue,
+        set: (partial: DeepPartial<ContextValue>) => void,
         push: () => void,
         pop: () => void,
         events: EventEmitter<Events>,
@@ -62,3 +61,35 @@ export const defaultContextValue: SharedContext.ContextValue = {
 export const SharedContext = createContext<SharedContext.ContextValue>(
     defaultContextValue
 )
+
+export function useSharedContext() {
+    return useContext(SharedContext)
+}
+
+export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
+    const bridge = useBridge()
+
+    const [context, setContext] = useState(defaultContextValue)
+
+    context.set = (partial) => {
+        bridge.emit("context.set", partial)
+    }
+
+    useQueuedListeners(bridge, [
+        ["context.set", (partial) => {
+            const newState = deepmerge(context, partial, {
+                isMergeableObject: isPlainObject,
+                arrayMerge: (_dest, source) => source
+            }) as SharedContext.ContextValue
+            setContext(newState)
+        }]
+    ])
+
+    console.log(context)
+
+    return React.createElement(
+        SharedContext.Provider,
+        { value: context },
+        props.children
+    )
+}
