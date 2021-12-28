@@ -1,6 +1,6 @@
 import { Button, Paper, Typography, TextField, styled } from "@mui/material"
-import { useContext, useState } from "react"
-import { CanvasContext, copyElement, Events } from "./Context"
+import { useState } from "react"
+import { copyElement, SharedContext, useSharedContext } from "@meme-bros/shared"
 
 const Action = styled(Button)(({ theme }) => ({
     marginBottom: theme.spacing(1),
@@ -9,13 +9,13 @@ const Action = styled(Button)(({ theme }) => ({
 }))
 
 function DebugMenu() {
-    const context = useContext(CanvasContext)
+    const context = useSharedContext()
 
     const [copyId, setCopyId] = useState(0)
 
-    const event = <T extends keyof Events>(
+    const event = <T extends keyof SharedContext.Events>(
         event: T,
-        data: Events[T]
+        data: SharedContext.Events[T]
     ) => () => {
         context.events.emit(event, data)
     }

@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
-import { useBridge, useWindowMessaging } from "@meme-bros/shared"
+import { setListeners, useBridge, useSharedContext, SharedContext, removeElement } from "@meme-bros/shared"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
-import { ContextValue, CanvasContext, Events, removeElement, copyElement, layerElement } from "./Context"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
 import { makeId } from "./utils"
@@ -32,7 +31,7 @@ async function createCanvasElement<T extends Core.CanvasElement["type"]>(type: T
     return newElement
 }
 
-function getCanvasStyles(canvas: ContextValue["canvas"]): CSS.Properties {
+function getCanvasStyles(canvas: SharedContext.ContextValue["canvas"]): CSS.Properties {
     return {
         backgroundColor: canvas.backgroundColor,
         width: canvas.width + "px",
@@ -41,20 +40,17 @@ function getCanvasStyles(canvas: ContextValue["canvas"]): CSS.Properties {
 }
 
 function Canvas() {
-    const context = useContext(CanvasContext)
+    const context = useSharedContext()
 
-    const { messages, send } = useWindowMessaging()
-    const request = useBridge(messages, send, {
-        "element.create": (e) => context.events.emit("element.create", e),
-        "element.create.default": (e) => context.events.emit("element.create.default", e),
-        "element.copy": (id) => context.set(copyElement(context, id)),
-        "element.layer": ({ id, layer }) => context.set(layerElement(context, id, layer)),
-        "canvas.render": () => context.canvas,
-        "canvas.set": (partial) => context.set({ canvas: partial }),
-        "canvas.undo": () => context.pop()
-    })
+    const bridge = useBridge()
 
-    const setQueuedListeners = useRef(makeListenerQueue<Events>()).current
+    useEffect(() => setListeners(bridge, [
+        ["element.create", (e) => context.events.emit("element.create", e)],
+        ["element.create.default", (e) => context.events.emit("element.create.default", e)],
+        ["canvas.undo", context.pop],
+    ]))
+
+    const setQueuedListeners = useRef(makeListenerQueue<SharedContext.Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
 
     const setNewElement = (newElement: Core.CanvasElement) => {
@@ -113,19 +109,16 @@ function Canvas() {
     })
 
     useEffect(() => {
-        if (!canvasRef.current) {
-            return
-        }
-        context.set({
-            canvasDomRect: canvasRef.current.getBoundingClientRect()
+        requestAnimationFrame(() => {
+            if (!canvasRef.current) {
+                return
+            }
+            context.set({
+                canvasDomRect: canvasRef.current.getBoundingClientRect()
+            })
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [canvasRef])
-    
-    useEffect(() => {
-        request("element.focus", context.interactions.focus)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [context.interactions.focus])
     
     return (
         <div style={getCanvasStyles(context.canvas)} ref={canvasRef}>

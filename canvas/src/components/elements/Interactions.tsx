@@ -1,12 +1,11 @@
-import { useContext } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import SettingsIcon from "@mui/icons-material/Settings"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import * as Core from "@meme-bros/core"
+import { SharedContext, useSharedContext } from "@meme-bros/shared"
 import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
-import { CanvasContext, ElementEvents } from "../Context"
 import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
 import Handle from "./Handle"
 
@@ -25,9 +24,9 @@ function Interactions({
     size: AnimatedValueXY,
     rotation: AnimatedValue
 }) {
-    const context = useContext(CanvasContext)
+    const context = useSharedContext()
 
-    const event = (name: ElementEvents) => () => {
+    const event = (name: SharedContext.ElementEvents) => () => {
         context.events.emit(`element.${name}`, element.id)
     }
 

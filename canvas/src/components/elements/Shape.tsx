@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react"
 import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
+import { updateElementData, useSharedContext } from "@meme-bros/shared"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
-import { CanvasContext, updateElementData } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 
 export function getShapeDefaultData(): Core.PickElement<"shape">["data"] {
@@ -26,7 +26,8 @@ export function getShapeStyles(element: Core.PickElement<"shape">): CSS.Properti
 }
 
 function Shape({ element }: ElementProps<"shape">) {
-    const context = useContext(CanvasContext)
+    const context = useSharedContext()
+
     const dialogs = useContext(DialogContext)
     
     const handleConfig = async () => {

@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
+import { updateElementData, updateTextboxText, useSharedContext } from "@meme-bros/shared"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import { textfit } from "../../lib/textfit"
-import { CanvasContext, updateElementData, updateTextboxText } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
 import { getTextShadow } from "../../lib/styles"
 
@@ -50,7 +50,8 @@ export function getTextboxStyles(element: Core.PickElement<"textbox">): CSS.Prop
 }
 
 function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) {
-    const context = useContext(CanvasContext)
+    const context = useSharedContext()
+
     const dialogs = useContext(DialogContext)
 
     const containerRef = useRef<HTMLDivElement>(null)

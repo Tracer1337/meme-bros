@@ -1,11 +1,11 @@
-import { useContext, useRef } from "react"
+import { useRef } from "react"
 import { DraggableCore, DraggableData, DraggableEventHandler } from "react-draggable"
 import RotateIcon from "@mui/icons-material/Replay"
 import * as Core from "@meme-bros/core"
+import { useSharedContext } from "@meme-bros/shared"
 import { AnimatedValue } from "../../lib/animation"
 import Handle from "./Handle"
 import { GetHandleProps } from "./makeElement"
-import { CanvasContext } from "../Context"
 
 function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
     childRect: Core.Rect,
@@ -13,7 +13,7 @@ function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
     onUpdate: () => void,
     animate: AnimatedValue
 }) {
-    const context = useContext(CanvasContext)
+    const context = useSharedContext()
 
     const handleRef = useRef<HTMLDivElement>(null)
     const lastRotation = useRef(childRect.rotation)

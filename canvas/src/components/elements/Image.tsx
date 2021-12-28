@@ -3,8 +3,8 @@ import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
-import { CanvasContext, updateElementData, updateElementRect } from "../Context"
 import makeElement, { ElementProps } from "./makeElement"
+import { updateElementData, updateElementRect, useSharedContext } from "@meme-bros/shared"
 
 export function getImageDefaultData(): Core.PickElement<"image">["data"] {
     return {
@@ -26,7 +26,8 @@ export function getImageStyles(element: Core.PickElement<"image">): CSS.Properti
 }
 
 function Image({ element, size }: ElementProps<"image">) {
-    const context = useContext(CanvasContext)
+    const context = useSharedContext()
+
     const dialogs = useContext(DialogContext)
 
     const resetSize = () => {
@@ -34,11 +35,11 @@ function Image({ element, size }: ElementProps<"image">) {
             x: element.rect.width,
             y: element.rect.height
         })
-        return context.set(updateElementRect(context, element, {
+        return updateElementRect(context, element, {
             ...element.rect,
             width: element.data.naturalWidth,
             height: element.data.naturalHeight
-        }))
+        })
     }
 
     const handleConfig = async () => {

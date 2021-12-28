@@ -1,15 +1,12 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Box, styled } from "@mui/material"
-import { deepmerge } from "@mui/utils"
+import { SharedContext, useSharedContext, useWindowMessaging } from "@meme-bros/shared"
 import Canvas from "./components/Canvas"
-import { ContextValue, CanvasContext, defaultContextValue } from "./components/Context"
 import { mockContextValue } from "./mock"
 import DebugMenu from "./components/DebugMenu"
 import config from "./config"
 
 const HISTORY_LENGTH = 100
-
-const contextValue = config.debug ? mockContextValue : defaultContextValue
 
 const Container = styled(Box)({
     width: "100vw",
@@ -28,15 +25,12 @@ const DebugContainer = styled(Box)({
 })
 
 function App() {
-    const [context, setContext] = useState<ContextValue>(contextValue)
-    const history = useRef<ContextValue[]>([]).current
-    const [debug, setDebug] = useState(false)
+    useWindowMessaging()
 
-    context.set = (partial) => {
-        const newState = deepmerge(context, partial) as ContextValue
-        setContext(newState)
-        return newState
-    }
+    const context = useSharedContext()
+
+    const history = useRef<SharedContext.ContextValue[]>([]).current
+    const [debug, setDebug] = useState(false)
 
     context.push = () => {
         history.push(context)
@@ -50,8 +44,17 @@ function App() {
         if (!newState) {
             return
         }
-        setContext(newState)
+        context.set(newState)
     }
+
+    useEffect(() => {
+        if (config.debug) {
+            requestAnimationFrame(() =>
+                context.set(mockContextValue)
+            )
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     
     // @ts-ignore
     window.enableDebugging = () => {
@@ -59,7 +62,7 @@ function App() {
     }
 
     return (
-        <CanvasContext.Provider value={context}>
+        <>
             <Container>
                 <Canvas/>
             </Container>
@@ -69,7 +72,7 @@ function App() {
                     <DebugMenu/>
                 </DebugContainer>
             )}
-        </CanvasContext.Provider>
+        </>
     )
 }
 

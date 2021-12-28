@@ -1,9 +1,9 @@
 import * as Core from "@meme-bros/core"
-import { ContextValue } from "./components/Context"
+import { SharedContext } from "@meme-bros/shared"
 import { getDefaultDataByType } from "./components/elements"
 import EventEmitter from "./lib/EventEmitter"
 
-export const mockContextValue: ContextValue = {
+export const mockContextValue: SharedContext.ContextValue = {
     events: new EventEmitter(),
     interactions: {
         focus: null,

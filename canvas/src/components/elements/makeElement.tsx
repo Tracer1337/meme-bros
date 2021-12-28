@@ -1,9 +1,9 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import * as CSS from "csstype"
 import * as Core from "@meme-bros/core"
-import { CanvasContext, updateElementRect } from "../Context"
+import { updateElementRect, useSharedContext } from "@meme-bros/shared"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
@@ -48,7 +48,7 @@ function makeElement<T extends Core.CanvasElement["type"]>(
         DeepPartial<ElementConfig> = () => ({})
 ) {
     return ({ element }: { element: Core.PickElement<T> }) => {
-        const context = useContext(CanvasContext)
+        const context = useSharedContext()
 
         const config = deepmerge(
             defaultConfig,
