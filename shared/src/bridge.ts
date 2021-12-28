@@ -4,35 +4,41 @@ import { FirstArgument, AnyFunction, DeepPartial } from "tsdef"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import EventEmitter from "./EventEmitter"
 import { setDOMListeners, setListeners } from "./events"
+import { makeId } from "./utils"
 
-type Methods = {
-    "element.create": (e: DeepPartial<Core.CanvasElement>) => void,
-    "element.create.default": (t: Core.CanvasElement["type"]) => void,
-    "element.copy": (id: Core.CanvasElement["id"]) => void,
-    "element.layer": (args: { id: Core.CanvasElement["id"], layer: -1 | 1 }) => void,
-    "element.focus": (id: Core.CanvasElement["id"] | null) => void,
-    "canvas.render": () => Core.Canvas,
-    "canvas.undo": () => void,
-    "canvas.set": (c: DeepPartial<Core.Canvas>) => void
+export namespace Bridge {
+    export type Methods = {
+        "element.create": (e: DeepPartial<Core.CanvasElement>) => void,
+        "element.create.default": (t: Core.CanvasElement["type"]) => void,
+        "element.copy": (id: Core.CanvasElement["id"]) => void,
+        "element.layer": (args: {
+            id: Core.CanvasElement["id"],
+            layer: -1 | 1
+        }) => void,
+        "element.focus": (id: Core.CanvasElement["id"] | null) => void,
+        "canvas.render": () => Core.Canvas,
+        "canvas.undo": () => void,
+        "canvas.set": (c: DeepPartial<Core.Canvas>) => void
+    }
+    
+    export type Events = {
+        [K in keyof Methods]: FirstArgument<Methods[K]>
+    } & {
+        [K in keyof Methods as `r:${K}`]: ReturnType<Methods[K]>
+    }
+    
+    export type Message<K extends keyof Events = any> = {
+        id: number,
+        event: K,
+        data: Events[K]
+    }
+    
+    export type Messages = {
+        [K in keyof Events]: Message<K>
+    }
 }
 
-export type Events = {
-    [K in keyof Methods]: FirstArgument<Methods[K]>
-} & {
-    [K in keyof Methods as `r:${K}`]: ReturnType<Methods[K]>
-}
-
-type Message<K extends keyof Events = any> = {
-    id: number,
-    event: K,
-    data: Events[K]
-}
-
-type Messages = {
-    [K in keyof Events]: Message<K>
-}
-
-const methods: (keyof Methods)[] = [
+const methods: (keyof Bridge.Methods)[] = [
     "element.create",
     "element.create.default",
     "element.copy",
@@ -45,21 +51,19 @@ const methods: (keyof Methods)[] = [
 
 const willResolve = new Set([
     "canvas.render"
-] as (keyof Methods)[])
-
-function makeId() {
-    return Math.floor(Math.random() * 1e8)
-}
+] as (keyof Bridge.Methods)[])
 
 export function useBridge(
-    messages: EventEmitter<Events>,
-    send: (message: Message) => void,
-    implementations: Partial<Methods>
+    messages: EventEmitter<Bridge.Events>,
+    send: (message:Bridge. Message) => void,
+    implementations: Partial<Bridge.Methods>
 ) {
     const resolvers = useRef<Record<number, AnyFunction>>({}).current
     
-    const request = <T extends keyof Methods>(event: T, data: Events[T]) => {
-        return new Promise<ReturnType<Methods[T]>>((resolve) => {
+    const request = <
+        T extends keyof Bridge.Methods
+    >(event: T, data: Bridge.Events[T]) => {
+        return new Promise<ReturnType<Bridge.Methods[T]>>((resolve) => {
             const id = makeId()
             if (willResolve.has(event)) {
                 resolvers[id] = resolve
@@ -68,21 +72,22 @@ export function useBridge(
         })
     }
 
-    const getImplementation = (key: keyof Methods): AnyFunction => {
+    const getImplementation = (key: keyof Bridge.Methods): AnyFunction => {
         return implementations[key] || (() => {
             throw new Error(`Method '${key}' not implemented`)
         })
     }
 
-    const handleRequest = (event: keyof Methods) => (req: Message) => {
-        send({
-            id: req.id,
-            event: `r:${event}`,
-            data: getImplementation(event)(req.data)
-        })
-    }
+    const handleRequest = (event: keyof Bridge.Methods) =>
+        (req: Bridge.Message) => {
+            send({
+                id: req.id,
+                event: `r:${event}`,
+                data: getImplementation(event)(req.data)
+            })
+        }
 
-    const handleResponse = (res: Message) => {
+    const handleResponse = (res: Bridge.Message) => {
         if (res.id in resolvers) {
             resolvers[res.id](res.data)
             delete resolvers[res.id]
@@ -93,7 +98,7 @@ export function useBridge(
         setListeners(messages, methods.flatMap(
             (event) => [
                 [event, handleRequest(event)],
-                [`r:${event}` as keyof Events, handleResponse]
+                [`r:${event}` as keyof Bridge.Events, handleResponse]
             ]
         ))
     )
@@ -102,9 +107,9 @@ export function useBridge(
 }
 
 export function useWindowMessaging() {
-    const messages = useRef(new EventEmitter<Messages>()).current
+    const messages = useRef(new EventEmitter<Bridge.Messages>()).current
 
-    const send = (message: Message) => {
+    const send = (message: Bridge.Message) => {
         const json = JSON.stringify(message)
         if ("ReactNativeWebView" in window) {
             // @ts-ignore
@@ -118,7 +123,7 @@ export function useWindowMessaging() {
             if (typeof event.data !== "string") {
                 return
             }
-            const message = JSON.parse(event.data) as Message
+            const message = JSON.parse(event.data) as Bridge.Message
             messages.emit(message.event, message)
         }]
     ]))
@@ -127,9 +132,9 @@ export function useWindowMessaging() {
 }
 
 export function useRNWebViewMessaging(webview: RefObject<WebView>) {
-    const messages = useRef(new EventEmitter<Messages>()).current
+    const messages = useRef(new EventEmitter<Bridge.Messages>()).current
 
-    const send = (message: Message) => {
+    const send = (message: Bridge.Message) => {
         if (!webview.current) {
             return
         }
@@ -137,7 +142,7 @@ export function useRNWebViewMessaging(webview: RefObject<WebView>) {
     }
 
     const onMessage = (event: WebViewMessageEvent) => {
-        const message = JSON.parse(event.nativeEvent.data) as Message
+        const message = JSON.parse(event.nativeEvent.data) as Bridge.Message
         messages.emit(message.event, message)
     }
 
