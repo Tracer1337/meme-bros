@@ -1,17 +1,10 @@
-import { Dimensions, Image } from "react-native"
+import { Image } from "react-native"
 import * as Core from "@meme-bros/core"
 import { fetchBase64 } from "../../../lib/base64"
+import { scaleToScreen } from "./canvas"
 
 function binaryToPNG(base64: string) {
     return base64.replace("application/octet-stream", "image/png")
-}
-
-export function scaleToScreen(rect: { width: number, height: number }) {
-    const width = Dimensions.get("window").width * 0.9
-    return {
-        width: width,
-        height: width / rect.width * rect.height    
-    }
 }
 
 export async function loadCanvasDummy(): Promise<Core.Canvas> {

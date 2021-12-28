@@ -1,48 +1,14 @@
 import React, { useRef, useContext, useEffect } from "react"
-import { Dimensions } from "react-native"
 import WebView from "react-native-webview"
-import { DeepPartial } from "tsdef"
 import * as Core from "@meme-bros/core"
-import { SharedContext, useRNWebViewMessaging, useSharedContext } from "@meme-bros/shared"
+import { useRNWebViewMessaging, useSharedContext } from "@meme-bros/shared"
 import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
-import { importImage } from "../../lib/media"
 import { loadCanvasDummy } from "./utils/dummy"
+import { createPartialElement, scaleToScreen } from "./utils/canvas"
 
 const BLANK_SIZE = 500
-
-async function createPartialElement(type: Core.CanvasElement["type"]) {
-    const newElement: DeepPartial<Core.CanvasElement> = {
-        type,
-        rect: {},
-        data: {}
-    }
-    if (type === "image") {
-        const image = await importImage()
-        if (!image || !image.base64) {
-            return
-        }
-        newElement.data = {
-            uri: image.base64,
-            animated: image.base64.startsWith("data:image/gif")
-        }
-        if (image.width && image.height) {
-            newElement.rect = {}
-            newElement.rect.width = newElement.data.naturalWidth = image.width
-            newElement.rect.height = newElement.data.naturalHeight = image.height
-        }
-    }
-    return newElement
-}
-
-function scaleToScreen(rect: { width: number, height: number }) {
-    const width = Dimensions.get("window").width * 0.9
-    return {
-        width: width,
-        height: width / rect.width * rect.height    
-    }
-}
 
 const uri = process.env.NODE_ENV === "development"
     ? "http://10.0.2.2:3000"
@@ -57,21 +23,8 @@ function Canvas() {
     
     const { onMessage } = useRNWebViewMessaging(canvas)
 
-    const handleElementCreate = async ({
-        type
-    }: SharedContext.Events["element.create"]) => {
-        if (!type) {
-            return
-        }
-        const partial = await createPartialElement(type)
-        if (!partial) {
-            return
-        }
-        context.events.emit("element.create", partial)
-    }
-
     const handleCanvasRender = async () => {
-        console.log("Generate", canvas)
+        console.log("Generate", context.canvas)
         const base64 = await CoreModule.render(context.canvas)
         dialogs.open("GeneratedImageDialog", {
             uri: base64,
@@ -128,7 +81,6 @@ function Canvas() {
         
     useEffect(() =>
         setListeners(context.events, [
-            ["element.create", handleElementCreate],
             ["canvas.render", handleCanvasRender],
             ["canvas.base.import", handleBaseImport],
             ["canvas.base.blank", handleBaseBlank],

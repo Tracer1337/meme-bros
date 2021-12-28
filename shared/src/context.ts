@@ -4,9 +4,8 @@ import * as Core from "@meme-bros/core"
 import deepmerge from "deepmerge"
 import { isPlainObject } from "is-plain-object"
 import EventEmitter from "./EventEmitter"
-import { useBridge } from "./bridge"
+import { useBridge, Bridge } from "./bridge"
 import { useQueuedListeners, useListeners } from "./events"
-import { Bridge } from "."
 
 export namespace SharedContext {
     export type ElementEvents = "create" | "edit" | "remove" | "config"
@@ -19,6 +18,7 @@ export namespace SharedContext {
         "element.config": Core.CanvasElement["id"],
         "element.copy": Core.CanvasElement["id"],
         "element.layer": { id: Core.CanvasElement["id"], layer: -1 | 1 },
+        "canvas.render": null,
         "canvas.render.done": null,
         "canvas.base.import": null,
         "canvas.base.blank": null,

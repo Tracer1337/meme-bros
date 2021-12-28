@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { copyElement, layerElement, useSharedContext } from "@meme-bros/shared"
 import { StyleSheet, View } from "react-native"
 import { Appbar, IconButton, FAB } from "react-native-paper"
+import { copyElement, layerElement, useSharedContext } from "@meme-bros/shared"
+import * as Core from "@meme-bros/core"
 import { setListeners } from "../../lib/events"
+import { createPartialElement } from "./utils/canvas"
 
 enum ActionBarMode {
     CANVAS,
@@ -12,19 +14,30 @@ enum ActionBarMode {
 function CanvasActions() {
     const context = useSharedContext()
 
+    const handleElementCreate = async (type: Core.CanvasElement["type"]) => {
+        if (!type) {
+            return
+        }
+        const partial = await createPartialElement(type)
+        if (!partial) {
+            return
+        }
+        context.events.emit("element.create", partial)
+    }
+
     return (   
         <View style={styles.actions}>
             <IconButton
                 icon="format-color-text"
-                onPress={() => context.events.emit("element.create", { type: "textbox" })}
+                onPress={() => handleElementCreate("textbox")}
             />
             <IconButton
                 icon="image"
-                onPress={() => context.events.emit("element.create", { type: "image" })}
+                onPress={() => handleElementCreate("image")}
             />
             <IconButton
                 icon="shape"
-                onPress={() => context.events.emit("element.create", { type: "shape" })}
+                onPress={() => handleElementCreate("shape")}
             />
             <IconButton
                 icon="delete"
