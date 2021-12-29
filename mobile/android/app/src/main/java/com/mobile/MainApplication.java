@@ -53,6 +53,7 @@ public class MainApplication extends Application implements ReactApplication {
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     // Make assets accessible in go modules
     Seq.setContext(getApplicationContext());
+    // WebView.setWebContentsDebuggingEnabled(true);
   }
 
   /**

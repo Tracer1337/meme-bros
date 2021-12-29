@@ -13,8 +13,7 @@ const Container = styled(Box)({
     height: "100vh",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "background.default"
+    alignItems: "center"
 })
 
 const DebugContainer = styled(Box)({
