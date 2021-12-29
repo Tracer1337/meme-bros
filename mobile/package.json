@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "apk:build": "cd android && gradlew assembleRelease",
+    "apk:install": "adb install -r android\\app\\build\\outputs\\apk\\release\\app-release.apk"
   },
   "dependencies": {
     "@meme-bros/shared": "*",
