@@ -5,7 +5,7 @@ import deepmerge from "deepmerge"
 import { isPlainObject } from "is-plain-object"
 import EventEmitter from "./EventEmitter"
 import { useBridge, Bridge } from "./bridge"
-import { useQueuedListeners, useListeners } from "./events"
+import { useListeners } from "./events"
 
 export namespace SharedContext {
     export type ElementEvents = "create" | "edit" | "remove" | "config"
@@ -87,15 +87,15 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
 
     useListeners(context.events, [
         // @ts-ignore
-        ["emit", ({ event, data }) => {
+        ["emit", ({ event, data }) =>
             bridge.send({
                 event: "context.event",
                 data: { event, data }
             })
-        }]
+        ]
     ])
 
-    useQueuedListeners(bridge.messages, [
+    useListeners(bridge.messages, [
         ["context.set", (partial: Bridge.Events["context.set"]) =>
             context.set(partial, false)
         ],

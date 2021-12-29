@@ -55,7 +55,7 @@ export function BridgeProvider(props: React.PropsWithChildren<{}>) {
 }
 
 export function useWindowMessaging() {
-    const bridge = useContext(BridgeContext)
+    const bridge = useBridge()
 
     bridge.send = (message) => {
         const json = JSON.stringify(message)
@@ -78,7 +78,7 @@ export function useWindowMessaging() {
 }
 
 export function useRNWebViewMessaging(webview: RefObject<WebView>) {
-    const bridge = useContext(BridgeContext)
+    const bridge = useBridge()
 
     bridge.send = (message) => {
         if (!webview.current) {
