@@ -715,7 +715,7 @@ func (dc *Context) drawString(im *image.RGBA, s string, x, y float64) {
 			continue
 		}
 		sr := dr.Sub(dr.Min)
-		transformer := draw.BiLinear
+		transformer := draw.ApproxBiLinear
 		fx, fy := float64(dr.Min.X), float64(dr.Min.Y)
 		m := dc.matrix.Translate(fx, fy)
 		s2d := f64.Aff3{m.XX, m.XY, m.X0, m.YX, m.YY, m.Y0}
