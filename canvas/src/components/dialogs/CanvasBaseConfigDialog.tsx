@@ -23,11 +23,11 @@ function CanvasBaseConfigDialog({ open, data: input, close }: Props) {
                 />
                 <Switch
                     label="Spacing"
-                    checked={data.margin}
+                    checked={data.padding}
                     sx={{ marginTop: 1, marginBottom: 0.5 }}
                     onChange={(_, value) => setData({
                         ...data,
-                        margin: value
+                        padding: value
                     })}
                 />
             </DialogContent>

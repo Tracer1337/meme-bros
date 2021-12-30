@@ -50,19 +50,19 @@ function Canvas() {
         if (!newElement) {
             return
         }
-        newElement.id = 0
-        newElement.interactive = false
         const rect = scaleToScreen({
             width: newElement.rect.width || 0,
             height: newElement.rect.height || 0
         })
-        const pixelRatio = Math.max(newElement.data.naturalWidth / rect.width, 1)
+        newElement.id = 0
+        newElement.interactive = false
         newElement.rect = { ...newElement.rect, ...rect }
-        const base = {
+        const base: Editor.CanvasBase = {
             id: newElement.id,
-            rounded: true,
-            margin: true
+            rounded: false,
+            padding: false
         }
+        const pixelRatio = Math.max(newElement.data.naturalWidth / rect.width, 1)
         const newContext = deepmerge<
             DeepPartial<SharedContext.ContextValue>
         >(context, {

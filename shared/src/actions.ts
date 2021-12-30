@@ -6,18 +6,31 @@ import { clone, makeId } from "./utils"
 
 setAutoFreeze(false)
 
+const BASE_PADDING = 16
+const BASE_BORDER_RADIUS = 16
+
 export function updateCanvasBase(
     state: SharedContext.ContextValue,
     base: Editor.CanvasBase
 ): DeepPartial<SharedContext.ContextValue> {
     const baseElement = state.canvas.elements[base.id] as Editor.PickElement<"image">
+    const rect = base.rect || baseElement.rect
     return {
         canvas: {
-            base,
+            base: {
+                ...base,
+                rect
+            },
             elements: {
                 [baseElement.id]: {
+                    rect: !base.padding ? rect : {
+                        x: rect.x + BASE_PADDING,
+                        y: rect.y + BASE_PADDING,
+                        width: rect.width - BASE_PADDING * 2,
+                        height: rect.height - BASE_PADDING * 2
+                    },
                     data: {
-                        borderRadius: base.rounded ? 16 : 0
+                        borderRadius: base.rounded ? BASE_BORDER_RADIUS : 0
                     }
                 }
             }

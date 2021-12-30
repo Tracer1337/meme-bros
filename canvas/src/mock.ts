@@ -15,12 +15,7 @@ export const mockContextValue: SharedContext.ContextValue = {
         height: 500,
         pixelRatio: 1,
         debug: false,
-        mode: Editor.CanvasMode.CLASSIC,
-        base: {
-            id: 0,
-            rounded: true,
-            margin: true
-        },
+        mode: Editor.CanvasMode.BLANK,
         backgroundColor: "#444444",
         elements: {
             0: {

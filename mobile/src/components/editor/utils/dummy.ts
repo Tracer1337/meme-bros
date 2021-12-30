@@ -18,8 +18,8 @@ export async function loadCanvasDummy(): Promise<Editor.Canvas> {
         mode: Editor.CanvasMode.CLASSIC,
         base: {
             id: 0,
-            rounded: true,
-            margin: true
+            rounded: false,
+            padding: false
         },
         backgroundColor: "#ffffff",
         elements: {

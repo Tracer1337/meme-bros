@@ -25,7 +25,8 @@ export namespace Editor {
     export type CanvasBase = {
         id: CanvasElement["id"],
         rounded: boolean,
-        margin: boolean
+        padding: boolean,
+        rect?: Rect
     }
 
     export type CanvasElementCommon = Core.CanvasElementCommon & {
