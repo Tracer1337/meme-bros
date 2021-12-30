@@ -53,7 +53,8 @@ function Canvas() {
                 ...rect,
                 pixelRatio,
                 backgroundColor: "#ffffff",
-                elements: [newElement]
+                elements: [newElement],
+                layers: [newElement.id]
             }
         })
     }
