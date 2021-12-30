@@ -7,7 +7,7 @@ import (
 	"meme-bros/core/utils"
 	"strings"
 
-	"github.com/fogleman/gg"
+	"github.com/Tracer1337/gg"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 	"golang.org/x/mobile/asset"

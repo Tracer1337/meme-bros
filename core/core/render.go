@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/fogleman/gg"
+	"github.com/Tracer1337/gg"
 )
 
 type RenderingContext struct {

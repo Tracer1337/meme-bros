@@ -1,6 +1,6 @@
 package core
 
-import "github.com/fogleman/gg"
+import "github.com/Tracer1337/gg"
 
 func (e *ShapeElement) GetIndex() int {
 	return e.Index

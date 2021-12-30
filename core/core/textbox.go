@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/fogleman/gg"
+	"github.com/Tracer1337/gg"
 )
 
 func (e *TextboxElement) GetIndex() int {

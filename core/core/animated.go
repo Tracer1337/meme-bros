@@ -3,7 +3,7 @@ package core
 import (
 	"image"
 
-	"github.com/fogleman/gg"
+	"github.com/Tracer1337/gg"
 )
 
 func (e *AnimatedElement) GetIndex() int {

@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"image/gif"
 
-	"github.com/fogleman/gg"
+	"github.com/Tracer1337/gg"
 )
 
 type Drawable interface {
