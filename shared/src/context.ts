@@ -53,7 +53,8 @@ export const defaultContextValue: SharedContext.ContextValue = {
         pixelRatio: 1,
         debug: false,
         backgroundColor: "#fffff",
-        elements: []
+        elements: {},
+        layers: []
     }
 }
 

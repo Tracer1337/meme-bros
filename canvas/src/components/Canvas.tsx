@@ -54,7 +54,10 @@ function Canvas() {
                 focus: newElement.id
             },
             canvas: {
-                elements: [...context.canvas.elements, newElement]
+                elements: {
+                    [newElement.id]: newElement
+                },
+                layers: [...context.canvas.layers, newElement.id]
             }
         })
     }
@@ -116,12 +119,13 @@ function Canvas() {
     
     return (
         <div style={getCanvasStyles(context.canvas)} ref={canvasRef}>
-            {context.canvas.elements.map((element) =>
-                React.createElement(getElementByType(element.type), {
+            {context.canvas.layers.map((id) => {
+                const element = context.canvas.elements[id]
+                return React.createElement(getElementByType(element.type), {
                     element,
                     key: element.id
                 })
-            )}
+            })}
         </div>
     )
 }

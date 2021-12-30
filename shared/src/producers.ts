@@ -5,18 +5,13 @@ import { clone, makeId } from "./utils"
 
 setAutoFreeze(false)
 
-export function updateElementData<T extends Editor.CanvasElement["type"]>(
+export function updateElementData(
     state: SharedContext.ContextValue,
-    element: Editor.PickElement<T>,
-    data: Editor.PickElement<T>["data"]
+    element: Editor.CanvasElement,
+    data: Editor.CanvasElement["data"]
 ) {
     return produce(state, (draft) => {
-        const newElement = draft.canvas.elements.find(
-            (e) => e.id === element.id
-        ) as Editor.PickElement<T>
-        if (newElement) {
-            newElement.data = data
-        }
+        draft.canvas.elements[element.id].data = data
     })
 }
 
@@ -26,22 +21,15 @@ export function updateElementRect(
     rect: Editor.Rect
 ) {
     return produce(state, (draft) => {
-        const newElement = draft.canvas.elements.find(
-            (e) => e.id === element.id
-        )
-        if (!newElement) {
-            return
-        }
-        newElement.rect = rect
+        draft.canvas.elements[element.id].rect = rect
     })
 }
 
 export function removeElement(state: SharedContext.ContextValue, id: number) {
     return produce(state, (draft) => {
-        const index = draft.canvas.elements.findIndex(
-            (e) => e.id === id
-        )
-        draft.canvas.elements.splice(index, 1)
+        const index = draft.canvas.layers.findIndex((_id) => id === _id)
+        draft.canvas.layers.splice(index, 1)
+        delete draft.canvas.elements[id]
         if (draft.interactions.focus === id) {
             draft.interactions.focus = null
         }
@@ -50,35 +38,28 @@ export function removeElement(state: SharedContext.ContextValue, id: number) {
 
 export function copyElement(state: SharedContext.ContextValue, id: number) {
     return produce(state, (draft) => {
-        const element = draft.canvas.elements.find((e) => e.id === id)
-        if (!element) {
-            return
-        }
+        const element = draft.canvas.elements[id]
         const newElement = clone(element)
         newElement.id = makeId()
         newElement.rect.x = 0
         newElement.rect.y = 0
-        draft.canvas.elements.push(newElement)
+        draft.canvas.elements[newElement.id] = newElement
+        draft.canvas.layers.push(newElement.id)
         draft.interactions.focus = newElement.id
     })
 }
 
 export function layerElement(state: SharedContext.ContextValue, id: number, layer: -1 | 1) {
     return produce(state, (draft) => {
-        const index = draft.canvas.elements.findIndex(
-            (e) => e.id === id
-        )
-        const element = draft.canvas.elements[index]
-        if (!element) {
-            return
-        }
-        draft.canvas.elements.splice(index, 1)
+        const index = draft.canvas.layers.findIndex((_id) => id === _id)
+        draft.canvas.layers.splice(index, 1)
+        const firstElement = draft.canvas.elements[draft.canvas.layers[0]]
         if (layer === 1) {
-            draft.canvas.elements.push(element)
-        } else if (draft.canvas.elements[0]?.type === "image") {
-            draft.canvas.elements.splice(1, 0, element)
+            draft.canvas.layers.push(id)
+        } else if (firstElement?.type === "image") {
+            draft.canvas.layers.splice(1, 0, id)
         } else {
-            draft.canvas.elements.unshift(element)
+            draft.canvas.layers.unshift(id)
         }
     })
 }
@@ -89,12 +70,7 @@ export function updateTextboxText(
     text: string
 ) {
     return produce(state, (draft) => {
-        const newElement = draft.canvas.elements.find(
-            (e) => e.id === element.id
-        ) as Editor.PickElement<"textbox">
-        if (!newElement) {
-            return
-        }
+        const newElement = draft.canvas.elements[element.id] as Editor.PickElement<"textbox">
         newElement.data.text = text
     })
 }

@@ -17,8 +17,8 @@ export const mockContextValue: SharedContext.ContextValue = {
         pixelRatio: 1,
         debug: false,
         backgroundColor: "#444444",
-        elements: [
-            {
+        elements: {
+            0: {
                 id: 0,
                 type: "textbox",
                 rect: {
@@ -35,6 +35,7 @@ export const mockContextValue: SharedContext.ContextValue = {
                     color: "#ffffff"
                 }
             }
-        ]
+        },
+        layers: [0]
     }
 }

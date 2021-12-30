@@ -1,6 +1,6 @@
 import React, { useRef, useContext, useEffect } from "react"
 import WebView from "react-native-webview"
-import { Editor } from "@meme-bros/shared"
+import { Editor, renderCanvas } from "@meme-bros/shared"
 import { useRNWebViewMessaging, useSharedContext } from "@meme-bros/shared"
 import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
@@ -24,8 +24,9 @@ function Canvas() {
     const { onMessage } = useRNWebViewMessaging(canvas)
 
     const handleCanvasRender = async () => {
-        console.log("Generate", context.canvas)
-        const base64 = await CoreModule.render(context.canvas)
+        const rendered = renderCanvas(context.canvas)
+        console.log("Generate", { raw: context.canvas, rendered })
+        const base64 = await CoreModule.render(rendered)
         dialogs.open("GeneratedImageDialog", {
             uri: base64,
             width: context.canvas.width,

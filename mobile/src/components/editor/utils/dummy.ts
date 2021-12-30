@@ -16,8 +16,8 @@ export async function loadCanvasDummy(): Promise<Editor.Canvas> {
         pixelRatio: 1,
         debug: false,
         backgroundColor: "#ffffff",
-        elements: [
-            {
+        elements: {
+            0: {
                 id: 0,
                 type: "image",
                 rect: {
@@ -36,7 +36,7 @@ export async function loadCanvasDummy(): Promise<Editor.Canvas> {
                     naturalHeight: 0
                 }
             },
-            {
+            1: {
                 id: 1,
                 type: "textbox",
                 rect: {
@@ -60,7 +60,7 @@ export async function loadCanvasDummy(): Promise<Editor.Canvas> {
                     padding: 8
                 }
             },
-            {
+            2: {
                 id: 2,
                 type: "image",
                 rect: {
@@ -80,6 +80,7 @@ export async function loadCanvasDummy(): Promise<Editor.Canvas> {
                     naturalHeight: 0
                 }
             }
-        ]
+        },
+        layers: [0, 1, 2]
     }
 }

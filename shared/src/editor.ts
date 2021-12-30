@@ -11,7 +11,8 @@ export namespace Editor {
 
     export type Canvas = OverwriteProps<Core.Canvas, {
         backgroundColor: Color,
-        elements: CanvasElement[]
+        elements: Record<CanvasElement["id"], CanvasElement>,
+        layers: CanvasElement["id"][]
     }>
 
     export type CanvasElement = Core.CanvasElementCommon & (
@@ -52,4 +53,11 @@ export namespace Editor {
             }>
         }
     >
+}
+
+export function renderCanvas(editorCanvas: Editor.Canvas): Core.Canvas {
+    return {
+        ...editorCanvas,
+        elements: editorCanvas.layers.map((id) => editorCanvas.elements[id])
+    }
 }
