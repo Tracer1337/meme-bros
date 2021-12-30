@@ -6,8 +6,8 @@ import { clone, makeId } from "./utils"
 
 setAutoFreeze(false)
 
-const BASE_PADDING = 16
-const BASE_BORDER_RADIUS = 16
+const BASE_PADDING = 24
+const BASE_BORDER_RADIUS = 24
 
 export function updateCanvasBase(
     state: SharedContext.ContextValue,
