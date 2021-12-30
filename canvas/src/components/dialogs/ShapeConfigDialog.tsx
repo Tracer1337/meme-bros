@@ -1,12 +1,12 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { DialogProps } from "../../lib/DialogHandler"
 import { getShapeStyles } from "../elements/Shape"
 import { colors, shapeVariants } from "../inputs/items"
 import Select from "../inputs/Select"
 import { useConfigDialog } from "./utils/useConfigDialog"
 
-type Props = DialogProps<Core.PickElement<"shape">, Core.PickElement<"shape">["data"]>
+type Props = DialogProps<Editor.PickElement<"shape">, Editor.PickElement<"shape">["data"]>
 
 function ShapeConfigDialog({ open, data: element, close }: Props) {
     const { data, getTextFieldProps } = useConfigDialog(element)

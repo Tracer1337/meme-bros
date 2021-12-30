@@ -1,23 +1,23 @@
 import React, { createContext, useContext, useState } from "react"
 import { DeepPartial } from "tsdef"
-import * as Core from "@meme-bros/core"
 import deepmerge from "deepmerge"
 import { isPlainObject } from "is-plain-object"
 import EventEmitter from "./EventEmitter"
 import { useBridge, Bridge } from "./bridge"
 import { useListeners } from "./events"
+import { Editor } from "./editor"
 
 export namespace SharedContext {
     export type ElementEvents = "create" | "edit" | "remove" | "config"
 
     export type Events = {
-        "element.create": DeepPartial<Core.CanvasElement>,
-        "element.create.default": Core.CanvasElement["type"],
-        "element.edit": Core.CanvasElement["id"],
-        "element.remove": Core.CanvasElement["id"],
-        "element.config": Core.CanvasElement["id"],
-        "element.copy": Core.CanvasElement["id"],
-        "element.layer": { id: Core.CanvasElement["id"], layer: -1 | 1 },
+        "element.create": DeepPartial<Editor.CanvasElement>,
+        "element.create.default": Editor.CanvasElement["type"],
+        "element.edit": Editor.CanvasElement["id"],
+        "element.remove": Editor.CanvasElement["id"],
+        "element.config": Editor.CanvasElement["id"],
+        "element.copy": Editor.CanvasElement["id"],
+        "element.layer": { id: Editor.CanvasElement["id"], layer: -1 | 1 },
         "canvas.render": null,
         "canvas.render.done": null,
         "canvas.base.import": null,
@@ -31,11 +31,11 @@ export namespace SharedContext {
         set: (partial: DeepPartial<ContextValue>, emit?: boolean) => void,
         events: EventEmitter<Events>,
         interactions: {
-            focus: Core.CanvasElement["id"] | null
+            focus: Editor.CanvasElement["id"] | null
         },
         canvasDomRect: DOMRect | null,
         renderCanvas: boolean,
-        canvas: Core.Canvas
+        canvas: Editor.Canvas
     }
 }
 

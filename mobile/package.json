@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@meme-bros/shared": "*",
-    "@meme-bros/core": "*",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "@types/color-convert": "^2.0.0",

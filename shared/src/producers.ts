@@ -1,19 +1,19 @@
 import produce, { setAutoFreeze } from "immer"
-import * as Core from "@meme-bros/core"
+import { Editor } from "./editor"
 import { SharedContext } from "./context"
 import { clone, makeId } from "./utils"
 
 setAutoFreeze(false)
 
-export function updateElementData<T extends Core.CanvasElement["type"]>(
+export function updateElementData<T extends Editor.CanvasElement["type"]>(
     state: SharedContext.ContextValue,
-    element: Core.PickElement<T>,
-    data: Core.PickElement<T>["data"]
+    element: Editor.PickElement<T>,
+    data: Editor.PickElement<T>["data"]
 ) {
     return produce(state, (draft) => {
         const newElement = draft.canvas.elements.find(
             (e) => e.id === element.id
-        ) as Core.PickElement<T>
+        ) as Editor.PickElement<T>
         if (newElement) {
             newElement.data = data
         }
@@ -22,8 +22,8 @@ export function updateElementData<T extends Core.CanvasElement["type"]>(
 
 export function updateElementRect(
     state: SharedContext.ContextValue,
-    element: Core.CanvasElement,
-    rect: Core.Rect
+    element: Editor.CanvasElement,
+    rect: Editor.Rect
 ) {
     return produce(state, (draft) => {
         const newElement = draft.canvas.elements.find(
@@ -85,13 +85,13 @@ export function layerElement(state: SharedContext.ContextValue, id: number, laye
 
 export function updateTextboxText(
     state: SharedContext.ContextValue,
-    element: Core.PickElement<"textbox">,
+    element: Editor.PickElement<"textbox">,
     text: string
 ) {
     return produce(state, (draft) => {
         const newElement = draft.canvas.elements.find(
             (e) => e.id === element.id
-        ) as Core.PickElement<"textbox">
+        ) as Editor.PickElement<"textbox">
         if (!newElement) {
             return
         }

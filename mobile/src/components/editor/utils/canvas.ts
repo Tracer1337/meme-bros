@@ -1,12 +1,12 @@
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { Dimensions } from "react-native"
 import { DeepPartial } from "tsdef"
 import { importImage } from "../../../lib/media"
 
 export async function createPartialElement(
-    type: Core.CanvasElement["type"]
+    type: Editor.CanvasElement["type"]
 ) {
-    const newElement: DeepPartial<Core.CanvasElement> = {
+    const newElement: DeepPartial<Editor.CanvasElement> = {
         type,
         rect: {},
         data: {}

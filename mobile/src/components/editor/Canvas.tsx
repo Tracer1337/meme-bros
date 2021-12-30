@@ -1,6 +1,6 @@
 import React, { useRef, useContext, useEffect } from "react"
 import WebView from "react-native-webview"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { useRNWebViewMessaging, useSharedContext } from "@meme-bros/shared"
 import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
@@ -35,7 +35,7 @@ function Canvas() {
     }
 
     const handleBaseImport = async () => {
-        const newElement = await createPartialElement("image") as Core.PickElement<"image">
+        const newElement = await createPartialElement("image") as Editor.PickElement<"image">
         if (!newElement) {
             return
         }

@@ -1,11 +1,11 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { DialogProps } from "../../lib/DialogHandler"
 import { getImageStyles } from "../elements/Image"
 import Switch from "../inputs/Switch"
 import { useConfigDialog } from "./utils/useConfigDialog"
 
-type Props = DialogProps<Core.PickElement<"image">, Core.PickElement<"image">["data"]>
+type Props = DialogProps<Editor.PickElement<"image">, Editor.PickElement<"image">["data"]>
 
 function ImageConfigDialog({ open, data: element, close }: Props) {
     const { data, getBooleanFieldProps } = useConfigDialog(element)

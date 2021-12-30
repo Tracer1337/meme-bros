@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import * as CSS from "csstype"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { updateElementData, updateTextboxText, useSharedContext } from "@meme-bros/shared"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
@@ -14,7 +14,7 @@ const justifyContentStyles: Record<string, string> = {
     "bottom": "flex-end"
 }
 
-export function getTextboxDefaultData(): Core.PickElement<"textbox">["data"] {
+export function getTextboxDefaultData(): Editor.PickElement<"textbox">["data"] {
     return {
         text: "Enter Text...",
         fontFamily: "Impact",
@@ -30,7 +30,7 @@ export function getTextboxDefaultData(): Core.PickElement<"textbox">["data"] {
     }
 }
 
-export function getTextboxStyles(element: Core.PickElement<"textbox">): CSS.Properties {
+export function getTextboxStyles(element: Editor.PickElement<"textbox">): CSS.Properties {
     return {
         padding: `${element.data.padding}px`,
         whiteSpace: "pre-wrap",

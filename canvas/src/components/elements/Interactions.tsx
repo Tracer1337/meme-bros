@@ -1,7 +1,7 @@
 import EditIcon from "@mui/icons-material/Edit"
 import SettingsIcon from "@mui/icons-material/Settings"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { SharedContext, useSharedContext } from "@meme-bros/shared"
 import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"
@@ -17,7 +17,7 @@ function Interactions({
     size,
     rotation
 }: {
-    element: Core.CanvasElement,
+    element: Editor.CanvasElement,
     config: ElementConfig,
     onUpdate: () => void,
     getHandleProps: GetHandleProps,

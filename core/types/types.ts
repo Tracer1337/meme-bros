@@ -28,12 +28,8 @@ export type ImageElement = {
     type: "image",
     data: {
         uri: string,
-        animated: boolean,
         borderRadius: number,
-        loop: boolean,
-        keepAspectRatio: boolean,
-        naturalWidth: number,
-        naturalHeight: number
+        loop: boolean
     }
 }
 
@@ -66,7 +62,7 @@ export type ShapeElement = {
 
 export type ColorString = string
 export type ColorRGBA = [number, number, number, number]
-export type Color = ColorString
+export type Color = ColorRGBA | ColorString
 
 export type Rect = {
     x: number,

@@ -1,14 +1,14 @@
 import { useRef } from "react"
 import { DraggableCore, DraggableData, DraggableEventHandler } from "react-draggable"
 import RotateIcon from "@mui/icons-material/Replay"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { useSharedContext } from "@meme-bros/shared"
 import { AnimatedValue } from "../../lib/animation"
 import Handle from "./Handle"
 import { GetHandleProps } from "./makeElement"
 
 function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {
-    childRect: Core.Rect,
+    childRect: Editor.Rect,
     getHandleProps: GetHandleProps,
     onUpdate: () => void,
     animate: AnimatedValue

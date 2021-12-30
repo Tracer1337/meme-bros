@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { Appbar, IconButton, FAB } from "react-native-paper"
 import { copyElement, layerElement, useSharedContext } from "@meme-bros/shared"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { setListeners } from "../../lib/events"
 import { createPartialElement } from "./utils/canvas"
 
@@ -14,7 +14,7 @@ enum ActionBarMode {
 function CanvasActions() {
     const context = useSharedContext()
 
-    const handleElementCreate = async (type: Core.CanvasElement["type"]) => {
+    const handleElementCreate = async (type: Editor.CanvasElement["type"]) => {
         if (!type) {
             return
         }

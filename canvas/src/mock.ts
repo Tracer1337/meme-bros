@@ -1,4 +1,4 @@
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { SharedContext } from "@meme-bros/shared"
 import { getDefaultDataByType } from "./components/elements"
 import EventEmitter from "./lib/EventEmitter"
@@ -29,7 +29,7 @@ export const mockContextValue: SharedContext.ContextValue = {
                     rotation: 0
                 },
                 data: {
-                    ...getDefaultDataByType("textbox") as Core.PickElement<"textbox">["data"],
+                    ...getDefaultDataByType("textbox") as Editor.PickElement<"textbox">["data"],
                     outlineWidth: 2,
                     outlineColor: "#000000",
                     color: "#ffffff"

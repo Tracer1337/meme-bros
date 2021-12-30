@@ -2,15 +2,17 @@ import React, { useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { useSharedContext, SharedContext, removeElement } from "@meme-bros/shared"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { getDefaultDataByType, getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
 import { makeId } from "./utils"
 
-async function createCanvasElement<T extends Core.CanvasElement["type"]>(type: T) {
-    const newElement: Core.PickElement<T> = {
+async function createCanvasElement<
+    T extends Editor.CanvasElement["type"]
+>(type: T) {
+    const newElement: Editor.PickElement<T> = {
         id: makeId(),
         type,
         rect: {
@@ -23,7 +25,7 @@ async function createCanvasElement<T extends Core.CanvasElement["type"]>(type: T
         data: getDefaultDataByType(type)
     } as any
     if (type === "image") {
-        const data = newElement.data as Core.PickElement<"image">["data"]
+        const data = newElement.data as Editor.PickElement<"image">["data"]
         const { width, height } = await getImageDimensions(data.uri)
         data.naturalWidth = width
         data.naturalHeight = height
@@ -45,7 +47,7 @@ function Canvas() {
     const setQueuedListeners = useRef(makeListenerQueue<SharedContext.Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
 
-    const setNewElement = (newElement: Core.CanvasElement) => {
+    const setNewElement = (newElement: Editor.CanvasElement) => {
         context.events.emit("history.push", null)
         context.set({
             interactions: {
@@ -57,7 +59,7 @@ function Canvas() {
         })
     }
 
-    const handleCreateElement = async (partial: DeepPartial<Core.CanvasElement>) => {
+    const handleCreateElement = async (partial: DeepPartial<Editor.CanvasElement>) => {
         if (!partial.type) {
             throw new Error("Element type is not defined in 'element.create'")
         }
@@ -67,11 +69,11 @@ function Canvas() {
         ))
     }
 
-    const handleCreateElementDefault = async (type: Core.CanvasElement["type"]) => {
+    const handleCreateElementDefault = async (type: Editor.CanvasElement["type"]) => {
         setNewElement(await createCanvasElement(type))
     }
 
-    const handleRemoveElement = (id: Core.CanvasElement["id"]) => {
+    const handleRemoveElement = (id: Editor.CanvasElement["id"]) => {
         context.events.emit("history.push", null)
         context.set(removeElement(context, id))
     }

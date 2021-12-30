@@ -1,5 +1,5 @@
 import { Image } from "react-native"
-import * as Core from "@meme-bros/core"
+import { Editor } from "@meme-bros/shared"
 import { fetchBase64 } from "../../../lib/base64"
 import { scaleToScreen } from "./canvas"
 
@@ -7,7 +7,7 @@ function binaryToPNG(base64: string) {
     return base64.replace("application/octet-stream", "image/png")
 }
 
-export async function loadCanvasDummy(): Promise<Core.Canvas> {
+export async function loadCanvasDummy(): Promise<Editor.Canvas> {
     const image = Image.resolveAssetSource(require("../../../assets/meme.png"))
     const base64 = binaryToPNG(await fetchBase64(image.uri))
     const rect = scaleToScreen(image)
