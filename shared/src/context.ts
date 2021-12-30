@@ -22,9 +22,9 @@ export namespace SharedContext {
         "canvas.base.import": null,
         "canvas.base.blank": null,
         "canvas.base.dummy": null,
+        "canvas.base.config": null,
         "history.push": null,
-        "history.pop": null,
-        "classic.base.config": null
+        "history.pop": null
     }
 
     export type ContextValue = {

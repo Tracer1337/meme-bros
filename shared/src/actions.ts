@@ -6,6 +6,25 @@ import { clone, makeId } from "./utils"
 
 setAutoFreeze(false)
 
+export function updateCanvasBase(
+    state: SharedContext.ContextValue,
+    base: Editor.CanvasBase
+): DeepPartial<SharedContext.ContextValue> {
+    const baseElement = state.canvas.elements[base.id] as Editor.PickElement<"image">
+    return {
+        canvas: {
+            base,
+            elements: {
+                [baseElement.id]: {
+                    data: {
+                        borderRadius: base.rounded ? 16 : 0
+                    }
+                }
+            }
+        }
+    }
+}
+
 export function updateElementData<T extends Editor.CanvasElement["type"]>(
     _state: SharedContext.ContextValue,
     element: Editor.PickElement<T>,

@@ -1,7 +1,15 @@
 import React, { useRef, useContext, useEffect } from "react"
 import WebView from "react-native-webview"
-import { Editor, renderCanvas } from "@meme-bros/shared"
-import { useRNWebViewMessaging, useSharedContext } from "@meme-bros/shared"
+import { DeepPartial } from "tsdef"
+import {
+    deepmerge,
+    Editor,
+    renderCanvas,
+    SharedContext,
+    updateCanvasBase,
+    useRNWebViewMessaging,
+    useSharedContext
+} from "@meme-bros/shared"
 import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
@@ -50,24 +58,33 @@ function Canvas() {
         })
         const pixelRatio = Math.max(newElement.data.naturalWidth / rect.width, 1)
         newElement.rect = { ...newElement.rect, ...rect }
-        context.set({
+        const base = {
+            id: newElement.id,
+            rounded: true,
+            margin: true
+        }
+        const newContext = deepmerge<
+            DeepPartial<SharedContext.ContextValue>
+        >(context, {
             renderCanvas: true,
             canvas: {
                 ...rect,
                 pixelRatio,
                 backgroundColor: "#ffffff",
                 mode: Editor.CanvasMode.CLASSIC,
-                base: {
-                    id: newElement.id,
-                    rounded: true,
-                    padding: true
-                },
+                base,
                 elements: {
                     [newElement.id]: newElement
                 },
                 layers: [newElement.id]
             }
-        })
+        }) as typeof context
+        context.set(deepmerge<
+            DeepPartial<SharedContext.ContextValue>
+        >(
+            newContext,
+            updateCanvasBase(newContext, base)
+        ))
     }
 
     const handleBaseBlank = async () => {

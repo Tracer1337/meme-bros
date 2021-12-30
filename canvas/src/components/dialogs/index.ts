@@ -1,13 +1,13 @@
 import TextboxConfigDialog from "./TextboxConfigDialog"
 import ImageConfigDialog from "./ImageConfigDialog" 
 import ShapeConfigDialog from "./ShapeConfigDialog"
-import ClassicBaseConfigDialog from "./ClassicBaseConfigDialog"
+import CanvasBaseConfigDialog from "./CanvasBaseConfigDialog"
 
 const dialogs = {
     TextboxConfigDialog,
     ImageConfigDialog,
     ShapeConfigDialog,
-    ClassicBaseConfigDialog
+    CanvasBaseConfigDialog
 }
 
 export default dialogs

@@ -2,8 +2,15 @@ import React, { useContext, useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
-import { Editor, addElement, getDefaultDataByType } from "@meme-bros/shared"
-import { useSharedContext, SharedContext, removeElement } from "@meme-bros/shared"
+import {
+    Editor,
+    addElement,
+    getDefaultDataByType,
+    updateCanvasBase,
+    useSharedContext,
+    SharedContext,
+    removeElement
+} from "@meme-bros/shared"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
@@ -72,12 +79,12 @@ function Canvas() {
         context.set(removeElement(context, id))
     }
 
-    const handleClassicBaseConfig = async () => {
+    const handleCanvasBaseConfig = async () => {
         if (!context.canvas.base) {
             return
         }
-        const base = await dialogs.open("ClassicBaseConfigDialog", context.canvas.base)
-        context.set({ canvas: { base } })
+        const base = await dialogs.open("CanvasBaseConfigDialog", context.canvas.base)
+        context.set(updateCanvasBase(context, base))
     }
 
     useEffect(() =>
@@ -85,7 +92,7 @@ function Canvas() {
             ["element.create", handleCreateElement],
             ["element.create.default", handleCreateElementDefault],
             ["element.remove", handleRemoveElement],
-            ["classic.base.config", handleClassicBaseConfig]
+            ["canvas.base.config", handleCanvasBaseConfig]
         ])
     )
 

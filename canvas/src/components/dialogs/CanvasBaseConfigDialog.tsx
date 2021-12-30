@@ -6,7 +6,7 @@ import Switch from "../inputs/Switch"
 
 type Props = DialogProps<Editor.CanvasBase, Editor.CanvasBase>
 
-function ClassicBaseConfigDialog({ open, data: input, close }: Props) {
+function CanvasBaseConfigDialog({ open, data: input, close }: Props) {
     const [data, setData] = useState(input)
 
     return (
@@ -23,11 +23,11 @@ function ClassicBaseConfigDialog({ open, data: input, close }: Props) {
                 />
                 <Switch
                     label="Spacing"
-                    checked={data.padding}
+                    checked={data.margin}
                     sx={{ marginTop: 1, marginBottom: 0.5 }}
                     onChange={(_, value) => setData({
                         ...data,
-                        padding: value
+                        margin: value
                     })}
                 />
             </DialogContent>
@@ -41,4 +41,4 @@ function ClassicBaseConfigDialog({ open, data: input, close }: Props) {
     )
 }
 
-export default ClassicBaseConfigDialog
+export default CanvasBaseConfigDialog

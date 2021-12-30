@@ -29,7 +29,7 @@ function CanvasActions() {
             {context.canvas.mode === Editor.CanvasMode.CLASSIC && (
                 <IconButton
                     icon="cog"
-                    onPress={() => context.events.emit("classic.base.config", null)}
+                    onPress={() => context.events.emit("canvas.base.config", null)}
                 />
             )}
             <IconButton

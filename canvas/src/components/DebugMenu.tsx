@@ -67,7 +67,7 @@ function DebugMenu() {
             <Action onClick={event("history.pop", null)}>Pop</Action>
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Dialogs</Typography>
-            <Action onClick={event("classic.base.config", null)}>Base Config</Action>
+            <Action onClick={event("canvas.base.config", null)}>Base Config</Action>
         </Paper>
     )
 }
