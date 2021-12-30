@@ -3,7 +3,7 @@ module meme-bros/core
 go 1.17
 
 require (
-	github.com/Tracer1337/gg v1.3.0
+	github.com/Tracer1337/gg v1.3.1
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/valyala/fastjson v1.6.3
 	golang.org/x/mobile v0.0.0-20211109191125-d61a72f26a1a
