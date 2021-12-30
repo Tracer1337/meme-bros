@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState } from "react"
 import { DeepPartial } from "tsdef"
-import deepmerge from "deepmerge"
-import { isPlainObject } from "is-plain-object"
 import EventEmitter from "./EventEmitter"
 import { useBridge, Bridge } from "./bridge"
 import { useListeners } from "./events"
 import { Editor } from "./editor"
+import { deepmerge } from "./utils"
 
 export namespace SharedContext {
     export type ElementEvents = "create" | "edit" | "remove" | "config"
@@ -72,10 +71,7 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
     const [context, setContext] = useState(defaultContextValue)
 
     context.set = (partial, emit = true) => {
-        const newState = deepmerge(context, partial, {
-            isMergeableObject: isPlainObject,
-            arrayMerge: (_dest, source) => source
-        }) as SharedContext.ContextValue
+        const newState = deepmerge(context, partial) as SharedContext.ContextValue
         newState.events = defaultContextValue.events
         setContext(newState)
         if (emit) {
