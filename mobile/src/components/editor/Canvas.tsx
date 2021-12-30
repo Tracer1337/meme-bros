@@ -47,15 +47,19 @@ function Canvas() {
         })
         const pixelRatio = Math.max(newElement.data.naturalWidth / rect.width, 1)
         newElement.rect = { ...newElement.rect, ...rect }
-        context.set({
-            renderCanvas: true,
-            canvas: {
-                ...rect,
-                pixelRatio,
-                backgroundColor: "#ffffff",
-                elements: [newElement],
-                layers: [newElement.id]
-            }
+        context.events.emit("element.create", newElement)
+        requestAnimationFrame(() => {
+            context.set({
+                renderCanvas: true,
+                interactions: {
+                    focus: null
+                },
+                canvas: {
+                    ...rect,
+                    pixelRatio,
+                    backgroundColor: "#ffffff",
+                }
+            })
         })
     }
 

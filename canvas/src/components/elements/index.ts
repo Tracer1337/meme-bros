@@ -30,5 +30,3 @@ export function getDefaultDataByType<T extends Editor.CanvasElement["type"]>(
 ): Editor.PickElement<T>["data"] {
     return defaultDataMap[type]()
 }
-
-getDefaultDataByType("shape")
