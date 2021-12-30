@@ -1,4 +1,5 @@
 import produce, { setAutoFreeze } from "immer"
+import { DeepPartial } from "tsdef"
 import { Editor } from "./editor"
 import { SharedContext } from "./context"
 import { clone, makeId } from "./utils"
@@ -23,6 +24,23 @@ export function updateElementRect(
     return produce(state, (draft) => {
         draft.canvas.elements[element.id].rect = rect
     })
+}
+
+export function addElement(
+    state: SharedContext.ContextValue,
+    element: Editor.CanvasElement
+): DeepPartial<SharedContext.ContextValue> {
+    return {
+        interactions: {
+            focus: element.id
+        },
+        canvas: {
+            elements: {
+                [element.id]: element
+            },
+            layers: [...state.canvas.layers, element.id]
+        }
+    }
 }
 
 export function removeElement(state: SharedContext.ContextValue, id: number) {

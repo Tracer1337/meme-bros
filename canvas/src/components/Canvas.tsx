@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
-import { Editor } from "@meme-bros/shared"
+import { Editor, addElement } from "@meme-bros/shared"
 import { useSharedContext, SharedContext, removeElement } from "@meme-bros/shared"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { getDefaultDataByType, getElementByType } from "./elements"
@@ -47,33 +47,20 @@ function Canvas() {
     const setQueuedListeners = useRef(makeListenerQueue<SharedContext.Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
 
-    const setNewElement = (newElement: Editor.CanvasElement) => {
-        context.events.emit("history.push", null)
-        context.set({
-            interactions: {
-                focus: newElement.id
-            },
-            canvas: {
-                elements: {
-                    [newElement.id]: newElement
-                },
-                layers: [...context.canvas.layers, newElement.id]
-            }
-        })
-    }
-
     const handleCreateElement = async (partial: DeepPartial<Editor.CanvasElement>) => {
         if (!partial.type) {
             throw new Error("Element type is not defined in 'element.create'")
         }
-        setNewElement(deepmerge(
+        context.events.emit("history.push", null)
+        context.set(addElement(context, deepmerge(
             await createCanvasElement(partial.type),
             partial
-        ))
+        )))
     }
 
     const handleCreateElementDefault = async (type: Editor.CanvasElement["type"]) => {
-        setNewElement(await createCanvasElement(type))
+        context.events.emit("history.push", null)
+        context.set(addElement(context, await createCanvasElement(type)))
     }
 
     const handleRemoveElement = (id: Editor.CanvasElement["id"]) => {
