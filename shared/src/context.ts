@@ -23,7 +23,8 @@ export namespace SharedContext {
         "canvas.base.blank": null,
         "canvas.base.dummy": null,
         "history.push": null,
-        "history.pop": null
+        "history.pop": null,
+        "classic.base.config": null
     }
 
     export type ContextValue = {
@@ -51,6 +52,7 @@ export const defaultContextValue: SharedContext.ContextValue = {
         height: 0,
         pixelRatio: 1,
         debug: false,
+        mode: Editor.CanvasMode.BLANK,
         backgroundColor: "#fffff",
         elements: {},
         layers: []

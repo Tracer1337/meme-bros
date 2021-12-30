@@ -15,11 +15,13 @@ export const mockContextValue: SharedContext.ContextValue = {
         height: 500,
         pixelRatio: 1,
         debug: false,
+        mode: Editor.CanvasMode.BLANK,
         backgroundColor: "#444444",
         elements: {
             0: {
                 id: 0,
                 type: "textbox",
+                interactive: true,
                 rect: {
                     x: 100,
                     y: 200,

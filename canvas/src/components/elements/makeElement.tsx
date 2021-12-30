@@ -19,13 +19,11 @@ export type ElementProps<T extends Editor.CanvasElement["type"]> = {
 }
 
 export type ElementConfig = {
-    focusable: boolean,
     interactions: Record<"rotate" | "resize" | "edit" | "config" | "delete", boolean>,
     aspectRatio?: number
 }
 
 const defaultConfig: ElementConfig = {
-    focusable: true,
     interactions: {
         rotate: true,
         resize: true,
@@ -144,13 +142,13 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
                 onDrag={handleMovementDrag}
                 handle={`#element-${element.id}`}
                 {...draggableProps}
-                {...(!config.focusable ? { disabled: true } : {})}
+                {...(!element.interactive ? { disabled: true } : {})}
             >
                 <div ref={container} style={{
                     ...getTransformStyles(),
                     transformOrigin: "center, center",
                     position: "absolute",
-                    pointerEvents: !config.focusable ? "none" : "unset"
+                    pointerEvents: !element.interactive ? "none" : "unset"
                 }}>
                     <div
                         id={`element-${element.id}`}
@@ -167,7 +165,7 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
                             rotation={rotation}
                         />
                     </div>
-                    {config.focusable && context.interactions.focus === element.id && (
+                    {element.interactive && context.interactions.focus === element.id && (
                         <Interactions
                             element={element}
                             config={config}

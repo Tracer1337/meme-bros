@@ -65,6 +65,9 @@ function DebugMenu() {
             <Typography variant="h5" sx={{ marginBottom: 2 }}>History</Typography>
             <Action onClick={event("history.push", null)}>Push</Action>
             <Action onClick={event("history.pop", null)}>Pop</Action>
+
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>Dialogs</Typography>
+            <Action onClick={event("classic.base.config", null)}>Base Config</Action>
         </Paper>
     )
 }

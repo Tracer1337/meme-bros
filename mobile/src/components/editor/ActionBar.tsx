@@ -24,8 +24,14 @@ function CanvasActions() {
         context.events.emit("element.create", partial)
     }
 
-    return (   
+    return (
         <View style={styles.actions}>
+            {context.canvas.mode === Editor.CanvasMode.CLASSIC && (
+                <IconButton
+                    icon="cog"
+                    onPress={() => context.events.emit("classic.base.config", null)}
+                />
+            )}
             <IconButton
                 icon="format-color-text"
                 onPress={() => handleElementCreate("textbox")}

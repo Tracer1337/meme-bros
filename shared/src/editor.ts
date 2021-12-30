@@ -5,17 +5,34 @@ export namespace Editor {
     export type Color = Core.ColorString
     export type Rect = Core.Rect
 
+    export enum CanvasMode {
+        CLASSIC,
+        BLANK,
+    }
+
     export type PickElement<
         T extends CanvasElement["type"]
     > = Extract<CanvasElement, { type: T }>
 
     export type Canvas = OverwriteProps<Core.Canvas, {
         backgroundColor: Color,
+        mode: CanvasMode,
+        base?: CanvasBase,
         elements: Record<CanvasElement["id"], CanvasElement>,
         layers: CanvasElement["id"][]
     }>
 
-    export type CanvasElement = Core.CanvasElementCommon & (
+    export type CanvasBase = {
+        id: CanvasElement["id"],
+        rounded: boolean,
+        padding: boolean
+    }
+
+    export type CanvasElementCommon = Core.CanvasElementCommon & {
+        interactive: boolean
+    }
+
+    export type CanvasElement = CanvasElementCommon & (
         ImageElement |
         TextboxElement |
         ShapeElement

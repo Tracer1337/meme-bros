@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
@@ -8,6 +8,7 @@ import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
 import { makeId } from "./utils"
+import { DialogContext } from "../lib/DialogHandler"
 
 async function createCanvasElement<
     T extends Editor.CanvasElement["type"]
@@ -15,6 +16,7 @@ async function createCanvasElement<
     const newElement: Editor.PickElement<T> = {
         id: makeId(),
         type,
+        interactive: true,
         rect: {
             x: 0,
             y: 0,
@@ -43,6 +45,8 @@ function getCanvasStyles(canvas: SharedContext.ContextValue["canvas"]): CSS.Prop
 
 function Canvas() {
     const context = useSharedContext()
+    
+    const dialogs = useContext(DialogContext)
 
     const setQueuedListeners = useRef(makeListenerQueue<SharedContext.Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
@@ -68,11 +72,20 @@ function Canvas() {
         context.set(removeElement(context, id))
     }
 
+    const handleClassicBaseConfig = async () => {
+        if (!context.canvas.base) {
+            return
+        }
+        const base = await dialogs.open("ClassicBaseConfigDialog", context.canvas.base)
+        context.set({ canvas: { base } })
+    }
+
     useEffect(() =>
         setQueuedListeners(context.events, [
             ["element.create", handleCreateElement],
             ["element.create.default", handleCreateElementDefault],
-            ["element.remove", handleRemoveElement]
+            ["element.remove", handleRemoveElement],
+            ["classic.base.config", handleClassicBaseConfig]
         ])
     )
 

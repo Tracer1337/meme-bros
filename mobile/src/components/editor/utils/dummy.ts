@@ -15,11 +15,18 @@ export async function loadCanvasDummy(): Promise<Editor.Canvas> {
         ...rect,
         pixelRatio: 1,
         debug: false,
+        mode: Editor.CanvasMode.CLASSIC,
+        base: {
+            id: 0,
+            rounded: true,
+            padding: true
+        },
         backgroundColor: "#ffffff",
         elements: {
             0: {
                 id: 0,
                 type: "image",
+                interactive: false,
                 rect: {
                     ...rect,
                     x: 0,
@@ -39,6 +46,7 @@ export async function loadCanvasDummy(): Promise<Editor.Canvas> {
             1: {
                 id: 1,
                 type: "textbox",
+                interactive: true,
                 rect: {
                     x: 50,
                     y: 50,
@@ -63,6 +71,7 @@ export async function loadCanvasDummy(): Promise<Editor.Canvas> {
             2: {
                 id: 2,
                 type: "image",
+                interactive: true,
                 rect: {
                     x: 200,
                     y: 200,

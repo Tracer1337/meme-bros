@@ -63,7 +63,6 @@ function Image({ element, size }: ElementProps<"image">) {
 }
 
 export default makeElement(Image, ({ element }) => ({
-    focusable: element.id !== 0,
     interactions: {
         edit: false
     },

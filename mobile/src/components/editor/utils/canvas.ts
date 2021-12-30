@@ -8,6 +8,7 @@ export async function createCanvasElement<
     const newElement: Editor.PickElement<T> = {
         id: makeId(),
         type,
+        interactive: true,
         rect: {
             x: 0,
             y: 0,

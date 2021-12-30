@@ -23,6 +23,8 @@ function Canvas() {
     
     const { onMessage } = useRNWebViewMessaging(canvas)
 
+    console.log(context)
+
     const handleCanvasRender = async () => {
         const rendered = renderCanvas(context.canvas)
         console.log("Generate", { raw: context.canvas, rendered })
@@ -41,6 +43,7 @@ function Canvas() {
             return
         }
         newElement.id = 0
+        newElement.interactive = false
         const rect = scaleToScreen({
             width: newElement.rect.width || 0,
             height: newElement.rect.height || 0
@@ -53,6 +56,12 @@ function Canvas() {
                 ...rect,
                 pixelRatio,
                 backgroundColor: "#ffffff",
+                mode: Editor.CanvasMode.CLASSIC,
+                base: {
+                    id: newElement.id,
+                    rounded: true,
+                    padding: true
+                },
                 elements: {
                     [newElement.id]: newElement
                 },
@@ -70,6 +79,7 @@ function Canvas() {
             renderCanvas: true,
             canvas: {
                 ...dim,
+                mode: Editor.CanvasMode.BLANK,
                 pixelRatio: BLANK_SIZE / dim.width,
                 backgroundColor: "#ffffff"
             }
