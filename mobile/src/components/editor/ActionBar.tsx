@@ -43,7 +43,10 @@ function CanvasActions() {
                 icon="delete"
                 onPress={() => context.set({
                     renderCanvas: false,
-                    canvas: { elements: [] }
+                    canvas: {
+                        elements: {},
+                        layers: []
+                    }
                 })}
             />
             <IconButton
