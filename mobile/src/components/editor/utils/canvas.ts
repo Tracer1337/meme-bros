@@ -1,31 +1,40 @@
-import { Editor } from "@meme-bros/shared"
 import { Dimensions } from "react-native"
-import { DeepPartial } from "tsdef"
+import { Editor, makeId, getDefaultDataByType } from "@meme-bros/shared"
 import { importImage } from "../../../lib/media"
 
-export async function createPartialElement(
-    type: Editor.CanvasElement["type"]
-) {
-    const newElement: DeepPartial<Editor.CanvasElement> = {
+export async function createCanvasElement<
+    T extends Editor.CanvasElement["type"]
+>(type: T): Promise<Editor.PickElement<T> | undefined> {
+    const newElement: Editor.PickElement<T> = {
+        id: makeId(),
         type,
-        rect: {},
-        data: {}
-    }
+        rect: {
+            x: 0,
+            y: 0,
+            width: 200,
+            height: 100,
+            rotation: 0
+        },
+        data: getDefaultDataByType(type)
+    } as any
+
     if (type === "image") {
         const image = await importImage()
         if (!image || !image.base64) {
             return
         }
-        newElement.data = {
+        const element = newElement as Editor.PickElement<"image">
+        element.data = {
+            ...element.data,
             uri: image.base64,
             animated: image.base64.startsWith("data:image/gif")
         }
         if (image.width && image.height) {
-            newElement.rect = {}
-            newElement.rect.width = newElement.data.naturalWidth = image.width
-            newElement.rect.height = newElement.data.naturalHeight = image.height
+            element.rect.width = element.data.naturalWidth = image.width
+            element.rect.height = element.data.naturalHeight = image.height
         }
     }
+
     return newElement
 }
 

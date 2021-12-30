@@ -14,22 +14,6 @@ const justifyContentStyles: Record<string, string> = {
     "bottom": "flex-end"
 }
 
-export function getTextboxDefaultData(): Editor.PickElement<"textbox">["data"] {
-    return {
-        text: "Enter Text...",
-        fontFamily: "Impact",
-        fontWeight: "normal",
-        textAlign: "center",
-        verticalAlign: "center",
-        color: "#ffffff",
-        caps: true,
-        outlineWidth: 2,
-        outlineColor: "#000000",
-        backgroundColor: "transparent",
-        padding: 8
-    }
-}
-
 export function getTextboxStyles(element: Editor.PickElement<"textbox">): CSS.Properties {
     return {
         padding: `${element.data.padding}px`,

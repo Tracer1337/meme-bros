@@ -6,15 +6,6 @@ import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import makeElement, { ElementProps } from "./makeElement"
 
-export function getShapeDefaultData(): Editor.PickElement<"shape">["data"] {
-    return {
-        variant: "rect",
-        backgroundColor: "transparent",
-        borderColor: "#e74c3c",
-        borderWidth: 5
-    }
-}
-
 export function getShapeStyles(element: Editor.PickElement<"shape">): CSS.Properties {
     return {
         backgroundColor: element.data.backgroundColor,

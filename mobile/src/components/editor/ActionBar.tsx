@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { Appbar, IconButton, FAB } from "react-native-paper"
-import { copyElement, layerElement, useSharedContext } from "@meme-bros/shared"
-import { Editor } from "@meme-bros/shared"
+import { Editor, copyElement, layerElement, useSharedContext } from "@meme-bros/shared"
 import { setListeners } from "../../lib/events"
-import { createPartialElement } from "./utils/canvas"
+import { createCanvasElement } from "./utils/canvas"
 
 enum ActionBarMode {
     CANVAS,
@@ -18,7 +17,7 @@ function CanvasActions() {
         if (!type) {
             return
         }
-        const partial = await createPartialElement(type)
+        const partial = await createCanvasElement(type)
         if (!partial) {
             return
         }

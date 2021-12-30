@@ -6,7 +6,7 @@ import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { loadCanvasDummy } from "./utils/dummy"
-import { createPartialElement, scaleToScreen } from "./utils/canvas"
+import { createCanvasElement, scaleToScreen } from "./utils/canvas"
 
 const BLANK_SIZE = 500
 
@@ -36,7 +36,7 @@ function Canvas() {
     }
 
     const handleBaseImport = async () => {
-        const newElement = await createPartialElement("image") as Editor.PickElement<"image">
+        const newElement = await createCanvasElement("image") as Editor.PickElement<"image">
         if (!newElement) {
             return
         }
@@ -47,19 +47,17 @@ function Canvas() {
         })
         const pixelRatio = Math.max(newElement.data.naturalWidth / rect.width, 1)
         newElement.rect = { ...newElement.rect, ...rect }
-        context.events.emit("element.create", newElement)
-        requestAnimationFrame(() => {
-            context.set({
-                renderCanvas: true,
-                interactions: {
-                    focus: null
+        context.set({
+            renderCanvas: true,
+            canvas: {
+                ...rect,
+                pixelRatio,
+                backgroundColor: "#ffffff",
+                elements: {
+                    [newElement.id]: newElement
                 },
-                canvas: {
-                    ...rect,
-                    pixelRatio,
-                    backgroundColor: "#ffffff",
-                }
-            })
+                layers: [newElement.id]
+            }
         })
     }
 

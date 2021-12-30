@@ -6,18 +6,6 @@ import { consumeEvent, setListeners } from "../../lib/events"
 import makeElement, { ElementProps } from "./makeElement"
 import { updateElementData, updateElementRect, useSharedContext } from "@meme-bros/shared"
 
-export function getImageDefaultData(): Editor.PickElement<"image">["data"] {
-    return {
-        uri: "https://via.placeholder.com/200x100",
-        animated: false,
-        loop: true,
-        borderRadius: 0,
-        keepAspectRatio: true,
-        naturalWidth: 0,
-        naturalHeight: 0
-    }
-}
-
 export function getImageStyles(element: Editor.PickElement<"image">): CSS.Properties {
     return {
         borderRadius: element.data.borderRadius + "px",
