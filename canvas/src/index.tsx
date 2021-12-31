@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { BridgeProvider, SharedContextProvider } from "@meme-bros/shared"
 import App from "./App"
 import { DialogProvider } from "./lib/DialogHandler"
+import { AnimationRegistryProvider } from "./lib/animation"
 import config from "./config"
 
 const theme = createTheme({
@@ -25,7 +26,9 @@ ReactDOM.render(
             <BridgeProvider>
                 <SharedContextProvider>
                     <DialogProvider>
-                        <App/>
+                        <AnimationRegistryProvider>
+                            <App/>
+                        </AnimationRegistryProvider>
                     </DialogProvider>
                 </SharedContextProvider>
             </BridgeProvider>

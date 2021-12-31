@@ -18,7 +18,8 @@ import { getImageDimensions } from "../lib/image"
 import { makeId } from "./utils"
 import { DialogContext } from "../lib/DialogHandler"
 import ResizeHandles from "./ResizeHandles"
-import { AnimatedValueXY } from "../lib/animation"
+import { AnimatedValueXY, useAnimationRegistry } from "../lib/animation"
+import { getElementBasePosition } from "./elements/utils"
 
 async function createCanvasElement<
     T extends Editor.CanvasElement["type"]
@@ -56,12 +57,15 @@ function getCanvasStyles(canvas: SharedContext.ContextValue["canvas"]): CSS.Prop
 
 function Canvas() {
     const context = useSharedContext()
+
+    const animations = useAnimationRegistry()
     
     const dialogs = useContext(DialogContext)
 
     const setQueuedListeners = useRef(makeListenerQueue<SharedContext.Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
-    const size = useRef(new AnimatedValueXY()).current
+
+    const size = animations.useAnimation("canvas.size", new AnimatedValueXY())
 
     const handleCreateElement = async (partial: DeepPartial<Editor.CanvasElement>) => {
         if (!partial.type) {
@@ -102,12 +106,20 @@ function Canvas() {
 
     const updateCanvas = () => {
         context.events.emit("history.push", null)
-        context.set({
-            canvas: {
-                width: size.x.value,
-                height: size.y.value
-            }
-        })
+        const baseElement = context.canvas.base
+                ? context.canvas.elements[context.canvas.base.id]
+                : null
+        // context.set({
+        //     canvas: {
+        //         width: size.x.value,
+        //         height: size.y.value,
+        //         elements: !baseElement ? {} : {
+        //             [baseElement.id]: {
+        //                 rect: getElementBasePosition(size, )
+        //             }
+        //         }
+        //     }
+        // })
     }
 
     useEffect(() =>
@@ -162,6 +174,7 @@ function Canvas() {
                 const element = context.canvas.elements[id]
                 return React.createElement(getElementByType(element.type), {
                     element,
+                    canvasAnimations: { size },
                     key: element.id
                 })
             })}

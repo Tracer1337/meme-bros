@@ -1,6 +1,7 @@
-import React from "react"
 import { Editor } from "@meme-bros/shared"
+import React from "react"
 import Image from "./Image"
+import { ElementComponentProps } from "./makeElement"
 import Shape from "./Shape"
 import Textbox from "./Textbox"
 
@@ -14,6 +15,6 @@ const elementsMap: Record<
 }
 export function getElementByType<T extends Editor.CanvasElement["type"]>(
     type: T
-): React.ComponentType<{ element: Editor.PickElement<T> }> {
+): React.ComponentType<ElementComponentProps<T>> {
     return elementsMap[type]
 }

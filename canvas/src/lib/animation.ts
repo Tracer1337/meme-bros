@@ -1,3 +1,4 @@
+import React, { createContext, useContext, useRef } from "react"
 import EventEmitter from "./EventEmitter"
 
 type AnimatedEvents = {
@@ -30,4 +31,52 @@ export class AnimatedValueXY extends EventEmitter<AnimatedXYEvents> {
             this.y.emit("update", y)
         })
     }
+}
+
+type AnimationsMap = Record<
+    number | string,
+    AnimatedValue | AnimatedValueXY
+>
+
+type AnimationRegistryContextValue = {
+    useAnimation<T extends AnimationsMap[any]>(
+        key: keyof AnimationsMap,
+        value: T
+    ): T,
+    getAnimation(key: keyof AnimationsMap): AnimatedValue | undefined,
+    getAnimationXY(key: keyof AnimationsMap): AnimatedValueXY | undefined
+}
+
+export const AnimationRegistryContext = createContext<
+    AnimationRegistryContextValue
+>({} as any)
+
+export function useAnimationRegistry() {
+    return useContext(AnimationRegistryContext)
+}
+
+export function AnimationRegistryProvider(props: React.PropsWithChildren<{}>) {
+    const animations = useRef<AnimationsMap>({}).current
+
+    const context: AnimationRegistryContextValue = {
+        useAnimation: (key, value) => {
+            if (!(key in animations)) {
+                animations[key] = value
+            }
+            return useRef(value).current
+        },
+        getAnimation(key) {
+            const value = animations[key]
+            return value instanceof AnimatedValue ? value : undefined
+        },
+        getAnimationXY(key) {
+            const value = animations[key]
+            return value instanceof AnimatedValueXY ? value : undefined
+        }
+    }
+    
+    return React.createElement(AnimationRegistryContext.Provider, {
+        ...props,
+        value: context
+    })
 }

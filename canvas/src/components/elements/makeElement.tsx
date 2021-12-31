@@ -2,14 +2,23 @@ import React, { useCallback, useEffect, useRef, useState } from "react"
 import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import * as CSS from "csstype"
-import { Editor } from "@meme-bros/shared"
-import { updateElementRect, useSharedContext } from "@meme-bros/shared"
+import { Editor, updateElementRect, useSharedContext } from "@meme-bros/shared"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
-import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
+import { AnimatedValue, AnimatedValueXY, useAnimationRegistry } from "../../lib/animation"
 import { setListeners } from "../../lib/events"
+import { getElementBasePosition } from "./utils"
 
 type DraggableProps = React.ComponentProps<typeof DraggableCore>
+
+export type ElementComponentProps<
+    T extends Editor.CanvasElement["type"]
+> = {
+    element: Editor.PickElement<T>,
+    canvasAnimations: {
+        size: AnimatedValueXY
+    }
+}
 
 export type ElementProps<T extends Editor.CanvasElement["type"]> = {
     element: Editor.PickElement<T>,
@@ -45,20 +54,32 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
     getElementConfig: ({ element }: { element: Editor.PickElement<T> }) =>
         DeepPartial<ElementConfig> = () => ({})
 ) {
-    return ({ element }: { element: Editor.PickElement<T> }) => {
-        const context = useSharedContext()
-
+    return ({ element, canvasAnimations }: ElementComponentProps<T>) => {
         const config = deepmerge(
             defaultConfig,
             getElementConfig({ element })
         ) as ElementConfig
+        
+        const context = useSharedContext()
 
-        const pos = useRef(new AnimatedValueXY(element.rect)).current
-        const size = useRef(new AnimatedValueXY({
-            x: element.rect.width,
-            y: element.rect.height
-        })).current
-        const rotation = useRef(new AnimatedValue(element.rect.rotation)).current
+        const animations = useAnimationRegistry()
+
+        const pos = animations.useAnimation(
+            `element.${element.id}.pos`,
+            new AnimatedValueXY(element.rect)
+        )
+        const size = animations.useAnimation(
+            `element.${element.id}.size`,
+            new AnimatedValueXY({
+                x: element.rect.width,
+                y: element.rect.height
+            })
+        )
+        const rotation = animations.useAnimation(
+            `element.${element.id}.rotation`,
+            new AnimatedValue(element.rect.rotation)
+        )
+
         const container = useRef<HTMLDivElement>(null)
 
         const [draggableProps, setDraggableProps] = useState<DraggableProps>({})
@@ -116,10 +137,22 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
             Object.assign(container.current.style, getTransformStyles())
         }, [container, getTransformStyles])
 
+        const alignBaseElement = () => {
+            pos.emit("update", getElementBasePosition(canvasAnimations.size, size))
+        }
+
         useEffect(() => setListeners(pos, [["update", updateTransform]]))
         useEffect(() => setListeners(size, [["update", updateTransform]]))
         useEffect(() => setListeners(rotation, [["update", updateTransform]]))
         useEffect(() => updateTransform(), [updateTransform])
+
+        useEffect(() => {
+            if (context.canvas.base?.id === element.id) {
+                return setListeners(canvasAnimations.size, [
+                    ["update", alignBaseElement]
+                ])
+            }
+        })
 
         useEffect(() => {
             pos.emit("update", {
