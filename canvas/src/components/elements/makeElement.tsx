@@ -14,10 +14,7 @@ type DraggableProps = React.ComponentProps<typeof DraggableCore>
 export type ElementComponentProps<
     T extends Editor.CanvasElement["type"]
 > = {
-    element: Editor.PickElement<T>,
-    canvasAnimations: {
-        size: AnimatedValueXY
-    }
+    element: Editor.PickElement<T>
 }
 
 export type ElementProps<T extends Editor.CanvasElement["type"]> = {
@@ -54,7 +51,7 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
     getElementConfig: ({ element }: { element: Editor.PickElement<T> }) =>
         DeepPartial<ElementConfig> = () => ({})
 ) {
-    return ({ element, canvasAnimations }: ElementComponentProps<T>) => {
+    return ({ element }: ElementComponentProps<T>) => {
         const config = deepmerge(
             defaultConfig,
             getElementConfig({ element })
@@ -138,7 +135,10 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
         }, [container, getTransformStyles])
 
         const alignBaseElement = () => {
-            pos.emit("update", getElementBasePosition(canvasAnimations.size, size))
+            pos.emit("update", getElementBasePosition(
+                animations.getAnimationXY("canvas.size"),
+                size
+            ))
         }
 
         useEffect(() => setListeners(pos, [["update", updateTransform]]))
@@ -148,9 +148,10 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
 
         useEffect(() => {
             if (context.canvas.base?.id === element.id) {
-                return setListeners(canvasAnimations.size, [
-                    ["update", alignBaseElement]
-                ])
+                return setListeners(
+                    animations.getAnimationXY("canvas.size"),
+                    [["update", alignBaseElement]]
+                )
             }
         })
 

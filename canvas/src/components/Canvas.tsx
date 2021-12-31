@@ -109,17 +109,20 @@ function Canvas() {
         const baseElement = context.canvas.base
                 ? context.canvas.elements[context.canvas.base.id]
                 : null
-        // context.set({
-        //     canvas: {
-        //         width: size.x.value,
-        //         height: size.y.value,
-        //         elements: !baseElement ? {} : {
-        //             [baseElement.id]: {
-        //                 rect: getElementBasePosition(size, )
-        //             }
-        //         }
-        //     }
-        // })
+        context.set({
+            canvas: {
+                width: size.x.value,
+                height: size.y.value,
+                elements: !baseElement ? {} : {
+                    [baseElement.id]: {
+                        rect: getElementBasePosition(
+                            size,
+                            animations.getAnimationXY(`element.${baseElement.id}.size`)
+                        )
+                    }
+                }
+            }
+        })
     }
 
     useEffect(() =>
@@ -174,15 +177,11 @@ function Canvas() {
                 const element = context.canvas.elements[id]
                 return React.createElement(getElementByType(element.type), {
                     element,
-                    canvasAnimations: { size },
                     key: element.id
                 })
             })}
             {context.interactions.focus === null && (
-                <ResizeHandles
-                    animate={size}
-                    onUpdate={updateCanvas}
-                />
+                <ResizeHandles onUpdate={updateCanvas}/>
             )}
         </div>
     )

@@ -1,16 +1,18 @@
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import ArrowIcon from "@mui/icons-material/Height"
 import Handle from "./Handle"
-import { AnimatedValueXY } from "../lib/animation"
+import { useAnimationRegistry } from "../lib/animation"
 
 type MakeDragHandler = (matrix: [number, number]) => DraggableEventHandler
 
-function ResizeHandles({ animate, onUpdate }: {
-    animate: AnimatedValueXY,
+function ResizeHandles({ onUpdate }: {
     onUpdate: () => void
 }) {
+    const animations = useAnimationRegistry()
+
     const makeDragHandler: MakeDragHandler = (matrix) =>
         (_, { deltaX, deltaY }) => {
+            const animate = animations.getAnimationXY("canvas.size")
             const newSize = {
                 x: animate.x.value + deltaX * matrix[0] * 2,
                 y: animate.y.value + deltaY * matrix[1] * 2
