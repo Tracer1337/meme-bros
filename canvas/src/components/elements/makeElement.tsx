@@ -135,7 +135,11 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
         }, [container, getTransformStyles])
 
         const alignBaseElement = () => {
+            if (!context.canvas.base) {
+                return
+            }
             pos.emit("update", getElementBasePosition(
+                context.canvas.base,
                 animations.getAnimationXY("canvas.size"),
                 size
             ))

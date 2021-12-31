@@ -92,6 +92,7 @@ function Canvas() {
         if (!context.canvas.base) {
             return
         }
+        context.events.emit("history.push", null)
         const base = await dialogs.open("CanvasBaseConfigDialog", context.canvas.base)
         context.set(updateCanvasBase(context, base))
     }
@@ -106,21 +107,22 @@ function Canvas() {
 
     const updateCanvas = () => {
         context.events.emit("history.push", null)
-        const baseElement = context.canvas.base
-                ? context.canvas.elements[context.canvas.base.id]
-                : null
+        const elements: DeepPartial<Editor.Canvas["elements"]> = {}
+        if (context.canvas.base) {
+            const baseElement = context.canvas.elements[context.canvas.base.id]
+            elements[baseElement.id] = {
+                rect: getElementBasePosition(
+                    context.canvas.base,
+                    size,
+                    animations.getAnimationXY(`element.${baseElement.id}.size`)
+                )
+            }
+        }
         context.set({
             canvas: {
                 width: size.x.value,
                 height: size.y.value,
-                elements: !baseElement ? {} : {
-                    [baseElement.id]: {
-                        rect: getElementBasePosition(
-                            size,
-                            animations.getAnimationXY(`element.${baseElement.id}.size`)
-                        )
-                    }
-                }
+                elements
             }
         })
     }
