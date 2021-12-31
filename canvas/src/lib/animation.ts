@@ -43,8 +43,8 @@ type AnimationRegistryContextValue = {
         key: keyof AnimationsMap,
         value: T
     ): T,
-    getAnimation(key: keyof AnimationsMap): AnimatedValue | undefined,
-    getAnimationXY(key: keyof AnimationsMap): AnimatedValueXY | undefined
+    getAnimation(key: keyof AnimationsMap): AnimatedValue,
+    getAnimationXY(key: keyof AnimationsMap): AnimatedValueXY
 }
 
 export const AnimationRegistryContext = createContext<
@@ -63,15 +63,13 @@ export function AnimationRegistryProvider(props: React.PropsWithChildren<{}>) {
             if (!(key in animations)) {
                 animations[key] = value
             }
-            return useRef(value).current
+            return useRef(animations[key]).current as any
         },
         getAnimation(key) {
-            const value = animations[key]
-            return value instanceof AnimatedValue ? value : undefined
+            return animations[key] as AnimatedValue
         },
         getAnimationXY(key) {
-            const value = animations[key]
-            return value instanceof AnimatedValueXY ? value : undefined
+            return animations[key] as AnimatedValueXY
         }
     }
     
