@@ -9,13 +9,16 @@ import {
     updateCanvasBase,
     useSharedContext,
     SharedContext,
-    removeElement
+    removeElement,
+    useListeners
 } from "@meme-bros/shared"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
 import { makeId } from "./utils"
 import { DialogContext } from "../lib/DialogHandler"
+import ResizeHandles from "./ResizeHandles"
+import { AnimatedValueXY } from "../lib/animation"
 
 async function createCanvasElement<
     T extends Editor.CanvasElement["type"]
@@ -46,7 +49,8 @@ function getCanvasStyles(canvas: SharedContext.ContextValue["canvas"]): CSS.Prop
     return {
         backgroundColor: canvas.backgroundColor,
         width: canvas.width + "px",
-        height: canvas.height + "px"
+        height: canvas.height + "px",
+        position: "relative"
     }
 }
 
@@ -57,6 +61,7 @@ function Canvas() {
 
     const setQueuedListeners = useRef(makeListenerQueue<SharedContext.Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
+    const size = useRef(new AnimatedValueXY()).current
 
     const handleCreateElement = async (partial: DeepPartial<Editor.CanvasElement>) => {
         if (!partial.type) {
@@ -87,6 +92,24 @@ function Canvas() {
         context.set(updateCanvasBase(context, base))
     }
 
+    const updateTransform = () => {
+        if (!canvasRef.current) {
+            return
+        }
+        canvasRef.current.style.width = `${size.x.value}px`
+        canvasRef.current.style.height = `${size.y.value}px`
+    }
+
+    const updateCanvas = () => {
+        context.events.emit("history.push", null)
+        context.set({
+            canvas: {
+                width: size.x.value,
+                height: size.y.value
+            }
+        })
+    }
+
     useEffect(() =>
         setQueuedListeners(context.events, [
             ["element.create", handleCreateElement],
@@ -112,6 +135,15 @@ function Canvas() {
         ])
     })
 
+    useListeners(size, [["update", updateTransform]])
+
+    useEffect(() => {
+        size.emit("update", {
+            x: context.canvas.width,
+            y: context.canvas.height
+        })
+    }, [context.canvas.width, context.canvas.height, size])
+
     useEffect(() => {
         requestAnimationFrame(() => {
             if (!canvasRef.current) {
@@ -133,6 +165,12 @@ function Canvas() {
                     key: element.id
                 })
             })}
+            {context.interactions.focus === null && (
+                <ResizeHandles
+                    animate={size}
+                    onUpdate={updateCanvas}
+                />
+            )}
         </div>
     )
 }

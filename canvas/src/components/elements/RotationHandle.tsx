@@ -4,7 +4,7 @@ import RotateIcon from "@mui/icons-material/Replay"
 import { Editor } from "@meme-bros/shared"
 import { useSharedContext } from "@meme-bros/shared"
 import { AnimatedValue } from "../../lib/animation"
-import Handle from "./Handle"
+import Handle from "../Handle"
 import { GetHandleProps } from "./makeElement"
 
 function RotationHandle({ childRect, getHandleProps, onUpdate, animate }: {

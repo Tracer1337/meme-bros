@@ -7,7 +7,7 @@ import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
 import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
-import Handle from "./Handle"
+import Handle from "../Handle"
 
 function Interactions({
     element,

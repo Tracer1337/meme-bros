@@ -15,11 +15,32 @@ export const mockContextValue: SharedContext.ContextValue = {
         height: 500,
         pixelRatio: 1,
         debug: false,
-        mode: Editor.CanvasMode.BLANK,
+        mode: Editor.CanvasMode.CLASSIC,
+        base: {
+            id: 0,
+            rounded: false,
+            padding: false
+        },
         backgroundColor: "#444444",
         elements: {
             0: {
                 id: 0,
+                type: "image",
+                interactive: false,
+                rect: {
+                    x: 0,
+                    y: 0,
+                    width: 500,
+                    height: 500,
+                    rotation: 0
+                },
+                data: {
+                    ...getDefaultDataByType("image"),
+                    uri: "https://imgflip.com/s/meme/Drake-Hotline-Bling.jpg"
+                }
+            },
+            1: {
+                id: 1,
                 type: "textbox",
                 interactive: true,
                 rect: {
@@ -30,13 +51,13 @@ export const mockContextValue: SharedContext.ContextValue = {
                     rotation: 0
                 },
                 data: {
-                    ...getDefaultDataByType("textbox") as Editor.PickElement<"textbox">["data"],
+                    ...getDefaultDataByType("textbox"),
                     outlineWidth: 2,
                     outlineColor: "#000000",
                     color: "#ffffff"
                 }
             }
         },
-        layers: [0]
+        layers: [0, 1]
     }
 }
