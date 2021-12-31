@@ -29,38 +29,12 @@ function ResizeHandles({ animate, onUpdate }: {
                 sx={{
                     position: "absolute",
                     left: "50%",
-                    top: -14,
-                    transform: "translateX(-14px)",
-                    cursor: "n-resize"
-                }}
-            >
-                <DraggableCore onDrag={makeDragHandler([0, -1])} onStop={onUpdate}>
-                    <ArrowIcon sx={{ color: "common.black" }} />
-                </DraggableCore>
-            </Handle>
-            <Handle
-                sx={{
-                    position: "absolute",
-                    left: "50%",
                     bottom: -14,
                     transform: "translateX(-14px)",
                     cursor: "n-resize"
                 }}
             >
                 <DraggableCore onDrag={makeDragHandler([0, 1])} onStop={onUpdate}>
-                    <ArrowIcon sx={{ color: "common.black" }} />
-                </DraggableCore>
-            </Handle>
-            <Handle
-                sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: -14,
-                    transform: "translateY(-14px) rotate(90deg)",
-                    cursor: "e-resize"
-                }}
-            >
-                <DraggableCore onDrag={makeDragHandler([-1, 0])} onStop={onUpdate}>
                     <ArrowIcon sx={{ color: "common.black" }} />
                 </DraggableCore>
             </Handle>
