@@ -1,26 +1,36 @@
 import React from "react"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, useWindowDimensions, View } from "react-native"
 import { useSharedContext } from "@meme-bros/shared"
 import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
 import Canvas from "./Canvas"
 import ActionBar from "./ActionBar"
 import BaseSelector from "./BaseSelector"
+import { Portal } from "react-native-paper"
+
+const ACTION_BAR_HEIGHT = 84
 
 function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
     const context = useSharedContext()
     
+    const { height } = useWindowDimensions()
+    
     return (
         <Screen style={styles.container}>
-            <View
-                style={context.renderCanvas
-                    ? { width: "100%", height: "100%" }
-                    : { width: 0, height: 0 }
-                }
-            >
-                <Canvas/>
-            </View>
+            <Portal>
+                <View
+                    style={context.renderCanvas
+                        ? {
+                            width: "100%",
+                            height: height - ACTION_BAR_HEIGHT
+                        }
+                        : { width: 0, height: 0 }
+                    }
+                >
+                    <Canvas/>
+                </View>
+            </Portal>
             {context.renderCanvas ? (
                 <ActionBar/>
             ) : (
