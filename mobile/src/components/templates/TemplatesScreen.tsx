@@ -5,7 +5,7 @@ import { Text, Headline, Surface, IconButton } from "react-native-paper"
 import Image from "react-native-scalable-image"
 import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
-import { useTemplates, getPreviewURI, loadTemplate } from "./utils"
+import { useTemplates, getPreviewURI, loadTemplate, scaleTemplateCanvas } from "./utils"
 import { TemplateMeta } from "./types"
 import { useSharedContext } from "@meme-bros/shared"
 
@@ -42,9 +42,10 @@ function TemplatesScreen({
     const templates = useTemplates()
 
     const injectTemplate = async (template: TemplateMeta) => {
+        const templateCanvas = await loadTemplate(template)
         context.set({
             renderCanvas: true,
-            canvas: await loadTemplate(template)
+            canvas: scaleTemplateCanvas(templateCanvas)
         })
         navigation.navigate("Editor")
     }
