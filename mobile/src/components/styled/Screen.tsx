@@ -11,7 +11,9 @@ function Screen({ children, style, ...props }: React.PropsWithChildren<{
         <View
             style={StyleSheet.flatten([
                 {
-                    backgroundColor: theme.colors.background
+                    backgroundColor: theme.colors.background,
+                    width: "100%",
+                    height: "100%"
                 },
                 style
             ])}

@@ -22,7 +22,7 @@ function EditorScreen({
     const isFocused = useIsFocused()
     
     return (
-        <Screen style={styles.container}>
+        <Screen>
             <Portal>
                 <View
                     style={context.renderCanvas
@@ -48,11 +48,6 @@ function EditorScreen({
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: "100%",
-        height: "100%"
-    },
-
     center: {
         flex: 1,
         justifyContent: "center",
