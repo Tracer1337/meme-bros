@@ -2,19 +2,24 @@ import React from "react"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { StyleSheet, useWindowDimensions, View } from "react-native"
 import { useSharedContext } from "@meme-bros/shared"
+import { Portal } from "react-native-paper"
+import { useIsFocused } from "@react-navigation/native"
 import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
 import Canvas from "./Canvas"
 import ActionBar from "./ActionBar"
 import BaseSelector from "./BaseSelector"
-import { Portal } from "react-native-paper"
 
 const ACTION_BAR_HEIGHT = 84
 
-function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) {
+function EditorScreen({
+    navigation
+}: NativeStackScreenProps<RootStackParamList, "Editor">) {
     const context = useSharedContext()
     
     const { height } = useWindowDimensions()
+    
+    const isFocused = useIsFocused()
     
     return (
         <Screen style={styles.container}>
@@ -30,14 +35,14 @@ function EditorScreen({}: NativeStackScreenProps<RootStackParamList, "Editor">) 
                 >
                     <Canvas/>
                 </View>
+                {!isFocused ? null : context.renderCanvas ? (
+                    <ActionBar/>
+                ) : (
+                    <View style={styles.center}>
+                        <BaseSelector navigation={navigation}/>
+                    </View>
+                )}
             </Portal>
-            {context.renderCanvas ? (
-                <ActionBar/>
-            ) : (
-                <View style={styles.center}>
-                    <BaseSelector/>
-                </View>
-            )}
         </Screen>
     )
 }

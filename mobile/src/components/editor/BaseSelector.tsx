@@ -2,12 +2,12 @@ import React from "react"
 import { useSharedContext } from "@meme-bros/shared"
 import { StyleSheet } from "react-native"
 import { Button, Surface } from "react-native-paper"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { NavigationProp } from "@react-navigation/native"
 import { RootStackParamList } from "../../Navigator"
 
-function BaseSelector() {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>()
-    
+function BaseSelector({ navigation }: {
+    navigation: NavigationProp<RootStackParamList>
+}) {
     const context = useSharedContext()
 
     return (
