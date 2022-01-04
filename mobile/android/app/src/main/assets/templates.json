@@ -1,6 +1,8 @@
 {
     "list": [
-        "000"
+        "000",
+        "001",
+        "002"
     ],
     "meta": {
         "000": {
@@ -8,6 +10,18 @@
             "name": "Drake Hotline Bling",
             "previewFile": "000.png",
             "templateFile": "000.json"
+        },
+        "001": {
+            "id": "001",
+            "name": "Two Buttons",
+            "previewFile": "001.png",
+            "templateFile": "001.json"
+        },
+        "002": {
+            "id": "002",
+            "name": "Distracted Boyfriend",
+            "previewFile": "002.png",
+            "templateFile": "002.json"
         }
     }
 }

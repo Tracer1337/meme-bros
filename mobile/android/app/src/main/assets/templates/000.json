@@ -27,31 +27,6 @@
                 "naturalHeight": 500
             }
         },
-        "1": {
-            "id": 1,
-            "type": "textbox",
-            "interactive": true,
-            "rect": {
-                "x": 100,
-                "y": 200,
-                "width": 200,
-                "height": 100,
-                "rotation": 0
-            },
-            "data": {
-                "text": "Enter Text...",
-                "fontFamily": "Impact",
-                "fontWeight": "normal",
-                "textAlign": "center",
-                "verticalAlign": "center",
-                "color": "#ffffff",
-                "caps": true,
-                "outlineWidth": 2,
-                "outlineColor": "#000000",
-                "backgroundColor": "transparent",
-                "padding": 8
-            }
-        },
         "3608832": {
             "id": 3608832,
             "type": "textbox",

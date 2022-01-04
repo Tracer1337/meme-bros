@@ -8,7 +8,7 @@ function binaryToPNG(base64: string) {
 }
 
 export async function loadCanvasDummy(): Promise<Editor.Canvas> {
-    const image = Image.resolveAssetSource(require("../../../assets/meme.png"))
+    const image = Image.resolveAssetSource(require("../../../assets/meme1.png"))
     const base64 = binaryToPNG(await fetchBase64(image.uri))
     const rect = scaleToScreen(image)
     return {
