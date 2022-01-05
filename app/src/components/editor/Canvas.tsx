@@ -7,10 +7,10 @@ import {
     renderCanvas,
     SharedContext,
     updateCanvasBase,
+    useNativeModule,
     useRNWebViewMessaging,
     useSharedContext
 } from "@meme-bros/shared"
-import CoreModule from "../../lib/CoreModule"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { loadCanvasDummy } from "./utils/dummy"
@@ -25,6 +25,8 @@ const uri = process.env.NODE_ENV === "development"
 function Canvas() {
     const context = useSharedContext()
 
+    const core = useNativeModule("core")
+
     const dialogs = useContext(DialogContext)
     
     const canvas = useRef<WebView>(null)
@@ -36,7 +38,7 @@ function Canvas() {
     const handleCanvasRender = async () => {
         const rendered = renderCanvas(context.canvas)
         console.log("Generate", { raw: context.canvas, rendered })
-        const base64 = await CoreModule.render(rendered)
+        const base64 = await core.render(rendered)
         dialogs.open("GeneratedImageDialog", {
             uri: base64,
             width: context.canvas.width,
