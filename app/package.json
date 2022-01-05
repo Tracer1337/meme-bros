@@ -4,10 +4,10 @@
   "private": true,
   "main": "src",
   "dependencies": {
-    "@types/color-convert": "^2.0.0",
-    "@types/react-native-vector-icons": "^6.4.10",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
+    "@types/color-convert": "^2.0.0",
+    "@types/react-native-vector-icons": "^6.4.10",
     "color-convert": "^2.0.1",
     "deepmerge": "^4.2.2",
     "is-plain-object": "^5.0.0",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@types/deepmerge": "^2.2.0",
+    "@types/react": "^17.0.38",
     "@types/react-native": "^0.66.4",
     "tsdef": "^0.0.14",
     "typescript": "^4.4.4"

@@ -10,13 +10,15 @@
       "canvas",
       "app",
       "mobile",
+      "web",
       "shared"
     ],
     "nohoist": [
-      "**/react",
+      "!(types)/react",
       "**/react-dom",
-      "**/react-native",
-      "**/react-native/**"
+      "!(types)/react-native",
+      "**/react-native/**",
+      "**/react-native-web"
     ]
   }
 }
