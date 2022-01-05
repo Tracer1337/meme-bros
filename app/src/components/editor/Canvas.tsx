@@ -18,7 +18,7 @@ import { createCanvasElement, scaleToScreen } from "./utils/canvas"
 
 const BLANK_SIZE = 500
 
-const uri = process.env.NODE_ENV === "development"
+const uri = __DEV__
     ? "http://10.0.2.2:3000"
     : "file:///android_asset/canvas/build/index.html"
 

@@ -21,7 +21,7 @@ function BaseSelector({ navigation }: {
             <Button onPress={() => context.events.emit("canvas.base.blank", null)}>
                 Blank
             </Button>
-            {process.env.NODE_ENV === "development" && (
+            {__DEV__ && (
                 <Button onPress={() => context.events.emit("canvas.base.dummy", null)}>
                     Load Dummy
                 </Button>
