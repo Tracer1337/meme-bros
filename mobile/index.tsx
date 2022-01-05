@@ -1,22 +1,16 @@
 import React from "react"
 import { AppRegistry } from "react-native"
-import { DarkTheme, Provider as PaperProvider } from "react-native-paper"
-import App from "./src/App"
-import { name as appName } from "./app.json"
-import { DialogProvider } from "./src/lib/DialogHandler"
+import App from "@meme-bros/app"
 import { BridgeProvider, SharedContextProvider } from "@meme-bros/shared"
+import { name as appName } from "./app.json"
 
 function Main() {
     return (
-        <PaperProvider theme={DarkTheme}>
-            <BridgeProvider>
-                <SharedContextProvider>
-                    <DialogProvider>
-                        <App/>
-                    </DialogProvider>
-                </SharedContextProvider>
-            </BridgeProvider>
-        </PaperProvider>
+        <BridgeProvider>
+            <SharedContextProvider>
+                <App/>
+            </SharedContextProvider>
+        </BridgeProvider>
     )
 }
 
