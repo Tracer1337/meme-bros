@@ -1,5 +1,5 @@
-import { Dimensions } from "react-native"
 import { Editor, makeId, getDefaultDataByType } from "@meme-bros/shared"
+import { Dimensions } from "../../../lib/dimensions"
 import { importImage } from "../../../lib/media"
 
 export async function createCanvasElement<

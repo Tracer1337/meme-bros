@@ -1,5 +1,5 @@
 import React, { createContext, RefObject, useContext, useEffect, useRef } from "react"
-import { DeepPartial } from "tsdef"
+import { AnyFunction, DeepPartial } from "tsdef"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import EventEmitter from "./EventEmitter"
 import { setDOMListeners } from "./events"
@@ -59,14 +59,12 @@ export function useWindowMessaging() {
 
     bridge.send = (message) => {
         const json = JSON.stringify(message)
-        if ("ReactNativeWebView" in window) {
-            // @ts-ignore
-            window.ReactNativeWebView.postMessage(json)
-        }
-        window.postMessage(json)
+        // @ts-ignore
+        window.ReactNativeWebView?.postMessage(json)
+        window.top?.postMessage(json)
     }
 
-    useEffect(() => setDOMListeners(document, [
+    const listeners: [string, AnyFunction][] = [
         ["message", (event: MessageEvent<string>) => {
             if (typeof event.data !== "string") {
                 return
@@ -74,7 +72,10 @@ export function useWindowMessaging() {
             const message = JSON.parse(event.data) as Bridge.Message
             bridge.messages.emit(message.event, message.data)
         }]
-    ]))
+    ]
+
+    useEffect(() => setDOMListeners(window, listeners))
+    useEffect(() => setDOMListeners(document, listeners))
 }
 
 export function useRNWebViewMessaging(webview: RefObject<WebView>) {
@@ -88,8 +89,9 @@ export function useRNWebViewMessaging(webview: RefObject<WebView>) {
     }
 
     const onMessage = (event: WebViewMessageEvent) => {
-        console.log(event.nativeEvent)
-        return
+        if (typeof event.nativeEvent.data !== "string") {
+            return
+        }
         const message = JSON.parse(event.nativeEvent.data) as Bridge.Message
         bridge.messages.emit(message.event, message.data)
     }    

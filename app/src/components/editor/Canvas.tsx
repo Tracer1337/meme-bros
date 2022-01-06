@@ -34,10 +34,8 @@ function Canvas() {
     const dialogs = useContext(DialogContext)
     
     const canvas = useRef<WebView>(null)
-    
-    const { onMessage } = useRNWebViewMessaging(canvas)
 
-    console.log(context)
+    const { onMessage } = useRNWebViewMessaging(canvas)
 
     const handleCanvasRender = async () => {
         const rendered = renderCanvas(context.canvas)
@@ -104,7 +102,8 @@ function Canvas() {
                 ...dim,
                 mode: Editor.CanvasMode.BLANK,
                 pixelRatio: BLANK_SIZE / dim.width,
-                backgroundColor: "#ffffff"
+                backgroundColor: "#ffffff",
+                layers: []
             }
         })
     }

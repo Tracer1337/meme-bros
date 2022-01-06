@@ -1,8 +1,9 @@
 import { Editor } from "@meme-bros/shared"
 import { useEffect, useState } from "react"
-import { Dimensions, Platform } from "react-native"
+import { Platform } from "react-native"
 import RNFS from "react-native-fs"
 import { TemplateCanvas, TemplateMeta, TemplatesFile } from "../types"
+import { Dimensions } from "../../../lib/dimensions"
 
 const PREVIEWS_DIR = "previews"
 const TEMPLATES_DIR = "templates"
