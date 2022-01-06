@@ -15,12 +15,16 @@ import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { loadCanvasDummy } from "./utils/dummy"
 import { createCanvasElement, scaleToScreen } from "./utils/canvas"
+import { Platform } from "react-native"
 
 const BLANK_SIZE = 500
 
-const uri = __DEV__
-    ? "http://10.0.2.2:3000"
-    : "file:///android_asset/canvas/build/index.html"
+const uri = Platform.select({
+    web: "http://localhost:8080/iframe",
+    default: __DEV__
+        ? "http://10.0.2.2:3000"
+        : "file:///android_asset/canvas/build/index.html"
+})
 
 function Canvas() {
     const context = useSharedContext()

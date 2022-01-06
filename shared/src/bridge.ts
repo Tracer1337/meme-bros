@@ -88,6 +88,8 @@ export function useRNWebViewMessaging(webview: RefObject<WebView>) {
     }
 
     const onMessage = (event: WebViewMessageEvent) => {
+        console.log(event.nativeEvent)
+        return
         const message = JSON.parse(event.nativeEvent.data) as Bridge.Message
         bridge.messages.emit(message.event, message.data)
     }    
