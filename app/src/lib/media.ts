@@ -1,3 +1,4 @@
+import { Image } from "react-native"
 import { Asset, CameraOptions, launchImageLibrary } from "react-native-image-picker"
 
 export async function importImage(
@@ -23,3 +24,6 @@ export async function importImage(
         base64: `data:${image.type};base64,${image.base64}`
     }
 }
+
+export const resolveAssetSource = (uri: string) =>
+    Promise.resolve(Image.resolveAssetSource({ uri }))
