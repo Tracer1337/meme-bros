@@ -2,12 +2,18 @@ import { Dimensions as RNDimensions, Platform } from "react-native"
 
 const getWebDimensions = (): ReturnType<
     typeof RNDimensions["get"]
-> => ({
-    width: 400,
-    height: 700,
-    scale: 1,
-    fontScale: 1
-})
+> => {
+    const element = document.getElementById("app")
+    const rect = element
+        ? element.getBoundingClientRect()
+        : { width: 0, height: 0 }
+    return {
+        width: rect.width,
+        height: rect.height,
+        scale: 1,
+        fontScale: 1
+    }
+}
 
 export const Dimensions: { get: typeof RNDimensions["get"] } =
     Platform.select({

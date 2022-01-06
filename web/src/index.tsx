@@ -9,7 +9,7 @@ ReactDOM.render(
         <BridgeProvider>
             <SharedContextProvider>
                 <div className="container">
-                    <div className="app">
+                    <div id="app">
                         <App/>
                     </div>
                 </div>

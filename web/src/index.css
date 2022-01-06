@@ -4,12 +4,12 @@
     margin-top: 64px;
 }
 
-.app {
+#app {
     width: 400px;
     height: 700px;
 }
 
-.app > div {
+#app > div {
     width: 100%;
     height: 100%;
 }
