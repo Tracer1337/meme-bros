@@ -4,6 +4,9 @@
   "private": true,
   "author": "Tracer1337 <merlin.moelter@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "node patch-packages.js"
+  },
   "workspaces": {
     "packages": [
       "core/types",
