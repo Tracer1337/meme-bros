@@ -107,6 +107,12 @@ function ActionBar() {
 
     return (
         <Appbar style={styles.appbar}>
+            {mode === ActionBarMode.CANVAS
+                ? <CanvasActions/>
+                : mode === ActionBarMode.ELEMENT
+                ? <ElementActions/>
+                : null
+            }
             <FAB
                 style={styles.fab}
                 icon="check"
@@ -117,12 +123,6 @@ function ActionBar() {
                 }}
                 loading={isGenerating}
             />
-            {mode === ActionBarMode.CANVAS
-                ? <CanvasActions/>
-                : mode === ActionBarMode.ELEMENT
-                ? <ElementActions/>
-                : null
-            }
         </Appbar>
     )
 }
