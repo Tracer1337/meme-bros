@@ -1,10 +1,10 @@
-import "./index.css"
+import "./style.css"
 import React from "react"
 import ReactDOM from "react-dom"
 import { CssBaseline } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { BridgeProvider, SharedContextProvider } from "@meme-bros/shared"
-import App from "@meme-bros/app"
+import App from "./components/App"
 
 const theme = createTheme({
     palette: {
@@ -18,11 +18,7 @@ ReactDOM.render(
             <CssBaseline/>
             <BridgeProvider>
                 <SharedContextProvider>
-                    <div className="container">
-                        <div id="app">
-                            <App/>
-                        </div>
-                    </div>
+                    <App/>
                 </SharedContextProvider>
             </BridgeProvider>
         </ThemeProvider>
