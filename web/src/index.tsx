@@ -1,10 +1,15 @@
 import "./style.css"
 import React from "react"
 import ReactDOM from "react-dom"
-import { CssBaseline } from "@mui/material"
+import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { BridgeProvider, SharedContextProvider } from "@meme-bros/shared"
 import App from "./components/App"
+
+const globalStyles = <GlobalStyles styles={{
+    a: {
+        textDecoration: "none"
+    }
+}}/>
 
 const theme = createTheme({
     palette: {
@@ -16,11 +21,8 @@ ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <BridgeProvider>
-                <SharedContextProvider>
-                    <App/>
-                </SharedContextProvider>
-            </BridgeProvider>
+            {globalStyles}
+            <App/>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")
