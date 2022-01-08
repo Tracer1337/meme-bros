@@ -1,5 +1,6 @@
 import { ValidationPipe } from "@nestjs/common"
 import { NestFactory } from "@nestjs/core"
+import * as bodyParser from "body-parser"
 import { useContainer } from "class-validator"
 import { AppModule } from "./app.module"
 
@@ -12,6 +13,7 @@ async function bootstrap() {
         whitelist: true,
         transform: true
     }))
+    app.use(bodyParser.json({ limit: "5mb" }))
     app.enableCors()
     await app.listen(5000)
 }

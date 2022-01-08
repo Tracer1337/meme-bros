@@ -1,3 +1,4 @@
+import type { Editor } from "@meme-bros/shared"
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import { Document, SchemaTypes } from "mongoose"
 
@@ -8,11 +9,14 @@ export class Template {
     @Prop({ required: true })
     name: string
 
+    @Prop()
+    previewFile: string
+
     @Prop({
         required: true,
         type: SchemaTypes.Mixed
     })
-    canvas: object
+    canvas: Editor.Canvas
 }
 
 export const TemplateSchema = SchemaFactory.createForClass(Template)

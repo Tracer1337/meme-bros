@@ -18,7 +18,9 @@ const canvasBaseSchema = Joi.object({
 })
 
 const imageElementSchema = Joi.object({
+    id: Joi.number().required(),
     type: Joi.string().equal("image"),
+    interactive: Joi.bool().required(),
     rect: rectSchema.required(),
     data: Joi.object({
         uri: Joi.string().required(),
@@ -32,7 +34,9 @@ const imageElementSchema = Joi.object({
 })
 
 const textboxElementSchema = Joi.object({
+    id: Joi.number().required(),
     type: Joi.string().equal("textbox"),
+    interactive: Joi.bool().required(),
     rect: rectSchema.required(),
     data: Joi.object({
         text: Joi.string().required(),
@@ -50,7 +54,9 @@ const textboxElementSchema = Joi.object({
 })
 
 const shapeElementSchema = Joi.object({
+    id: Joi.number().required(),
     type: Joi.string().equal("shape"),
+    interactive: Joi.bool().required(),
     rect: rectSchema.required(),
     data: Joi.object({
         variant: Joi.string(),
@@ -69,7 +75,6 @@ const canvasElementSchema = Joi.alternatives().try(
 const canvasSchema = Joi.object({
     width: Joi.number().required(),
     height: Joi.number().required(),
-    pixelRatio: Joi.number().required(),
     debug: Joi.bool().allow(false),
     backgroundColor: colorSchema.required(),
     mode: Joi.number().allow(0, 1),
