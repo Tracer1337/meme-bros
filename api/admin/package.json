@@ -8,12 +8,14 @@
     "start": "nest start --watch"
   },
   "dependencies": {
+    "@meme-bros/shared": "*",
     "@nestjs/common": "^8.2.4",
     "@nestjs/core": "^8.2.4",
     "@nestjs/mongoose": "^9.0.2",
     "@nestjs/platform-express": "^8.2.4",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "joi": "^17.5.0",
     "mongoose": "^6.1.5",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

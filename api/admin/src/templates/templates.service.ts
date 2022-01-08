@@ -10,12 +10,12 @@ export class TemplatesService {
         @InjectModel(Template.name) private templateModel: Model<TemplateDocument>
     ) {}
 
-    async create(createTemplateDTO: CreateTemplateDTO): Promise<Template> {
+    async create(createTemplateDTO: CreateTemplateDTO): Promise<TemplateDocument> {
         const template = new this.templateModel(createTemplateDTO)
         return template.save()
     }
 
-    async findAll(): Promise<Template[]> {
+    async findAll(): Promise<TemplateDocument[]> {
         return this.templateModel.find().exec()
     }
 }
