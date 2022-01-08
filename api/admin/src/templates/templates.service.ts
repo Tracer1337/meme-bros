@@ -1,5 +1,5 @@
 import { Model } from "mongoose"
-import { Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Template, TemplateDocument } from "./schemas/template.schema"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
@@ -14,6 +14,12 @@ export class TemplatesService {
     ) {}
 
     async create(createTemplateDTO: CreateTemplateDTO): Promise<TemplateDocument> {
+        const exists = await this.templateModel.exists({
+            name: createTemplateDTO.name
+        })
+        if (exists) {
+            throw new BadRequestException(`Template '${createTemplateDTO.name}' already exists`)
+        }
         const template = new this.templateModel(createTemplateDTO)
         template.previewFile = await this.createPreview(template)
         return template.save()
@@ -21,10 +27,10 @@ export class TemplatesService {
 
     async createPreview(template: TemplateDocument): Promise<string> {
         const elementId = template.canvas.layers.find((id) =>
-            template.canvas.elements[id].type === "image"
+            template.canvas.elements[id]?.type === "image"
         )
         if (elementId === undefined) {
-            throw new Error("Image not found")
+            throw new BadRequestException("Image not found")
         }
         const element = template.canvas.elements[elementId] as Editor.PickElement<"image">
         const base64 = element.data.uri.split(",")[1]
