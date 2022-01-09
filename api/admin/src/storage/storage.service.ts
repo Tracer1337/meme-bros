@@ -22,6 +22,10 @@ export class StorageService {
         return createReadStream(this.getFilePath(filename))
     }
 
+    async delete(filename: string) {
+        return await fs.unlink(this.getFilePath(filename))
+    }
+
     async assertFileExists(filename: string) {
         if (!await this.exists(this.getFilePath(filename))) {
             throw new NotFoundException()

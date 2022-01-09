@@ -11,6 +11,7 @@
     "@meme-bros/shared": "*",
     "@nestjs/common": "^8.2.4",
     "@nestjs/core": "^8.2.4",
+    "@nestjs/mapped-types": "^1.0.1",
     "@nestjs/mongoose": "^9.0.2",
     "@nestjs/platform-express": "^8.2.4",
     "@types/body-parser": "^1.19.2",

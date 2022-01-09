@@ -1,12 +1,14 @@
 import { FilterQuery, Model } from "mongoose"
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
-import { Editor } from "@meme-bros/shared"
+import type { Editor } from "@meme-bros/shared"
 import { createHash } from "../lib/crypto"
 import { assertIsValidObjectId } from "../lib/assert"
 import { StorageService } from "../storage/storage.service"
 import { Template, TemplateDocument } from "./schemas/template.schema"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
+import { canvasValidator } from "./validators/canvas.validator"
+import { UpdateTemplateDTO } from "./dto/update-template.dto"
 
 @Injectable()
 export class TemplatesService {
@@ -15,25 +17,23 @@ export class TemplatesService {
         private readonly storageService: StorageService
     ) {}
 
+    validateCanvas(canvas: Editor.Canvas) {
+        const { error } = canvasValidator
+            .label("canvas")
+            .required()
+            .validate(canvas)
+        if (error) {
+            const errors = error.details.map((error) => error.message)
+            throw new BadRequestException(errors)
+        }
+    }
+
     async create(createTemplateDTO: CreateTemplateDTO): Promise<TemplateDocument> {
         await this.assertTemplateNotExists({ name: createTemplateDTO.name })
         const template = new this.templateModel(createTemplateDTO)
         template.previewFile = await this.createPreview(template)
         template.hash = this.getTemplateHash(template)
         return template.save()
-    }
-
-    async createPreview(template: TemplateDocument): Promise<string> {
-        const elementId = template.canvas.layers.find((id) =>
-            template.canvas.elements[id]?.type === "image"
-        )
-        if (elementId === undefined) {
-            throw new BadRequestException("Image not found")
-        }
-        const element = template.canvas.elements[elementId] as Editor.PickElement<"image">
-        const base64 = element.data.uri.split(",")[1]
-        const buffer = Buffer.from(base64, "base64")
-        return await this.storageService.put(buffer, "png")
     }
 
     async findAll(filter?: {
@@ -72,6 +72,25 @@ export class TemplatesService {
         )
     }
 
+    async update(
+        id: string,
+        updateTemplateDTO: UpdateTemplateDTO
+    ): Promise<TemplateDocument> {
+        assertIsValidObjectId(id)
+        await this.assertTemplateExists({ _id: id })
+        const template = await this.templateModel.findByIdAndUpdate(
+            id,
+            updateTemplateDTO,
+            { returnDocument: "after" }
+        )
+        if (updateTemplateDTO.canvas) {
+            await this.deletePreview(template)
+            template.previewFile = await this.createPreview(template)
+        }
+        template.hash = this.getTemplateHash(template)
+        return await template.save()
+    }
+
     async registerUse(id: string) {
         assertIsValidObjectId(id)
         await this.assertTemplateExists({ _id: id })
@@ -80,6 +99,23 @@ export class TemplatesService {
                 uses: 1
             }
         })
+    }
+
+    async createPreview(template: TemplateDocument) {
+        const elementId = template.canvas.layers.find((id) =>
+            template.canvas.elements[id]?.type === "image"
+        )
+        if (elementId === undefined) {
+            throw new BadRequestException("Image not found")
+        }
+        const element = template.canvas.elements[elementId] as Editor.PickElement<"image">
+        const base64 = element.data.uri.split(",")[1]
+        const buffer = Buffer.from(base64, "base64")
+        return await this.storageService.put(buffer, "png")
+    }
+
+    async deletePreview(template: TemplateDocument) {
+        await this.storageService.delete(template.previewFile)
     }
 
     getTemplateHash(template: TemplateDocument) {

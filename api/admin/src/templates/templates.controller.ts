@@ -1,8 +1,8 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Query } from "@nestjs/common"
+import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common"
 import { TemplatesService } from "./templates.service"
 import { TemplateEntity } from "./entities/template.entity"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
-import { canvasValidator } from "./validators/canvas.validator"
+import { UpdateTemplateDTO } from "./dto/update-template.dto"
 
 @Controller("templates")
 export class TemplatesController {
@@ -12,14 +12,7 @@ export class TemplatesController {
 
     @Post()
     async create(@Body() createTemplateDTO: CreateTemplateDTO) {
-        const { error } = canvasValidator
-            .label("canvas")
-            .required()
-            .validate(createTemplateDTO.canvas)
-        if (error) {
-            const errors = error.details.map((error) => error.message)
-            throw new BadRequestException(errors)
-        }
+        this.templatesService.validateCanvas(createTemplateDTO.canvas)
         const template = await this.templatesService.create(createTemplateDTO)
         return new TemplateEntity(template)
     }
@@ -40,6 +33,21 @@ export class TemplatesController {
     @Get("list/hash")
     async getListHash() {
         return await this.templatesService.getHashListHash()
+    }
+
+    @Put(":id")
+    async update(
+        @Param("id") id: string,
+        @Body() updateTemplateDTO: UpdateTemplateDTO
+    ) {
+        if (updateTemplateDTO.canvas) {
+            this.templatesService.validateCanvas(updateTemplateDTO.canvas)
+        }
+        const template = await this.templatesService.update(
+            id,
+            updateTemplateDTO
+        )
+        return new TemplateEntity(template)
     }
 
     @Post(":id/register-use")
