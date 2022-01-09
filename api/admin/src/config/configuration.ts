@@ -7,5 +7,8 @@ export const configuration = () => ({
     },
     storage: {
         path: process.env.STORAGE_PATH || path.join(__dirname, "..", "..", "storage")
+    },
+    jwt: {
+        secret: process.env.JWT_SECRET || "secret"
     }
 })
