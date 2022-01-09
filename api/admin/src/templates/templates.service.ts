@@ -67,9 +67,7 @@ export class TemplatesService {
     }
 
     async getHashListHash() {
-        return createHash(
-            await this.getHashList()
-        )
+        return createHash(await this.getHashList(), "md5")
     }
 
     async update(
@@ -132,7 +130,7 @@ export class TemplatesService {
             canvas: template.canvas,
             previewFile: template.previewFile
         }
-        return createHash(data)
+        return createHash(data, "md5")
     }
 
     async assertTemplateNotExists(query: FilterQuery<TemplateDocument>) {
