@@ -35,6 +35,11 @@ export class TemplatesController {
         return await this.templatesService.getHashList()
     }
 
+    @Get("list/hash")
+    async getListHash() {
+        return await this.templatesService.getHashListHash()
+    }
+
     @Post(":id/register-use")
     async registerUse(@Param("id") id: string) {
         await this.templatesService.registerUse(id)

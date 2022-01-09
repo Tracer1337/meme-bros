@@ -7,6 +7,16 @@ import { StorageService } from "../storage/storage.service"
 import { Template, TemplateDocument } from "./schemas/template.schema"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
 
+function createHash(input: any) {
+    const data = typeof input !== "string"
+        ? JSON.stringify(input)
+        : input
+    return crypto
+        .createHash("md5")
+        .update(data, "utf8")
+        .digest("hex")
+}
+
 @Injectable()
 export class TemplatesService {
     constructor(
@@ -57,6 +67,12 @@ export class TemplatesService {
         return docs.map((doc) => doc.hash)
     }
 
+    async getHashListHash() {
+        return createHash(
+            await this.getHashList()
+        )
+    }
+
     async registerUse(id: string) {
         this.assertValidObjectId(id)
         await this.assertTemplateExists({ _id: id })
@@ -73,10 +89,7 @@ export class TemplatesService {
             canvas: template.canvas,
             previewFile: template.previewFile
         }
-        return crypto
-            .createHash("md5")
-            .update(JSON.stringify(data), "utf8")
-            .digest("hex")
+        return createHash(data)
     }
 
     async assertTemplateNotExists(query: FilterQuery<TemplateDocument>) {
