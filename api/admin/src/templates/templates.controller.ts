@@ -10,12 +10,6 @@ export class TemplatesController {
         private readonly templatesService: TemplatesService
     ) {}
 
-    @Get()
-    async getAll() {
-        const templates = await this.templatesService.findAll()
-        return templates.map((template) => new TemplateEntity(template))
-    }
-
     @Post()
     async create(@Body() createTemplateDTO: CreateTemplateDTO) {
         const { error } = canvasValidator
@@ -28,6 +22,17 @@ export class TemplatesController {
         }
         const template = await this.templatesService.create(createTemplateDTO)
         return new TemplateEntity(template)
+    }
+
+    @Get()
+    async getAll() {
+        const templates = await this.templatesService.findAll()
+        return templates.map((template) => new TemplateEntity(template))
+    }
+
+    @Get("list")
+    async getList() {
+        return await this.templatesService.getHashList()
     }
 
     @Post(":id/register-use")

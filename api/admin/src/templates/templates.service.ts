@@ -39,6 +39,24 @@ export class TemplatesService {
         return this.templateModel.find().exec()
     }
 
+    async getHashList() {
+        const docs = await this.templateModel.aggregate<
+            Pick<Template, "hash">
+        >([
+            {
+                "$sort": {
+                    "uses": -1, 
+                    "name": 1
+                }
+            }, {
+                "$project": {
+                    "hash": true
+                }
+            }
+        ])
+        return docs.map((doc) => doc.hash)
+    }
+
     async registerUse(id: string) {
         this.assertValidObjectId(id)
         await this.assertTemplateExists({ _id: id })
