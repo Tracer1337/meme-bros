@@ -13,6 +13,7 @@ export class StorageController {
         @Param("filename") filename: string,
         @Res() res: Response
     ) {
+        await this.storageService.assertFileExists(filename)
         res.type(filename)
         this.storageService.getReadStream(filename).pipe(res)
     }

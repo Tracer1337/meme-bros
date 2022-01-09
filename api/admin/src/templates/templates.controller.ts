@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common"
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common"
 import { TemplatesService } from "./templates.service"
 import { TemplateEntity } from "./entities/template.entity"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
@@ -53,5 +53,10 @@ export class TemplatesController {
     @Post(":id/register-use")
     async registerUse(@Param("id") id: string) {
         await this.templatesService.registerUse(id)
+    }
+
+    @Delete(":id")
+    async delete(@Param("id") id: string) {
+        await this.templatesService.delete(id)
     }
 }

@@ -101,6 +101,14 @@ export class TemplatesService {
         })
     }
 
+    async delete(id: string) {
+        assertIsValidObjectId(id)
+        await this.assertTemplateExists({ _id: id })
+        const template = await this.templateModel.findById(id)
+        await this.templateModel.deleteOne({ _id: id })
+        await this.deletePreview(template)
+    }
+
     async createPreview(template: TemplateDocument) {
         const elementId = template.canvas.layers.find((id) =>
             template.canvas.elements[id]?.type === "image"

@@ -26,12 +26,6 @@ export class StorageService {
         return await fs.unlink(this.getFilePath(filename))
     }
 
-    async assertFileExists(filename: string) {
-        if (!await this.exists(this.getFilePath(filename))) {
-            throw new NotFoundException()
-        }
-    }
-
     getFilePath(filename: string) {
         return path.join(StorageService.STORAGE_DIR, filename)
     }
@@ -42,6 +36,12 @@ export class StorageService {
             return true
         } catch {
             return false
+        }
+    }
+
+    async assertFileExists(filename: string) {
+        if (!await this.exists(this.getFilePath(filename))) {
+            throw new NotFoundException()
         }
     }
 
