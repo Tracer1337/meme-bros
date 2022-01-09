@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Post } from "@nestjs/common"
+import { BadRequestException, Body, Controller, Get, Param, Post, Query } from "@nestjs/common"
 import { TemplatesService } from "./templates.service"
 import { TemplateEntity } from "./entities/template.entity"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
@@ -25,8 +25,10 @@ export class TemplatesController {
     }
 
     @Get()
-    async getAll() {
-        const templates = await this.templatesService.findAll()
+    async getAll(@Query("hashes") hashes: string[]) {
+        const templates = await this.templatesService.findAll({
+            hashes
+        })
         return templates.map((template) => new TemplateEntity(template))
     }
 

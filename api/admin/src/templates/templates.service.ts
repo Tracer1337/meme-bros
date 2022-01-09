@@ -36,8 +36,16 @@ export class TemplatesService {
         return await this.storageService.put(buffer, "png")
     }
 
-    async findAll(): Promise<TemplateDocument[]> {
-        return this.templateModel.find().exec()
+    async findAll(filter?: {
+        hashes?: string[]
+    }): Promise<TemplateDocument[]> {
+        let query: FilterQuery<TemplateDocument> = {}
+        if (filter?.hashes) {
+            query.hash = {
+                $in: filter.hashes
+            }
+        }
+        return this.templateModel.find(query)
     }
 
     async getHashList() {
