@@ -1,12 +1,11 @@
-import { Model } from "mongoose"
-import { BadRequestException, Injectable } from "@nestjs/common"
+import { FilterQuery, isValidObjectId, Model } from "mongoose"
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import crypto from "crypto"
+import { Editor } from "@meme-bros/shared"
+import { StorageService } from "../storage/storage.service"
 import { Template, TemplateDocument } from "./schemas/template.schema"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
-import { Editor } from "@meme-bros/shared"
-import { StorageService } from "src/storage/storage.service"
-import { TemplateEntity } from "./entities/template.entity"
 
 @Injectable()
 export class TemplatesService {
@@ -16,12 +15,7 @@ export class TemplatesService {
     ) {}
 
     async create(createTemplateDTO: CreateTemplateDTO): Promise<TemplateDocument> {
-        const exists = await this.templateModel.exists({
-            name: createTemplateDTO.name
-        })
-        if (exists) {
-            throw new BadRequestException(`Template '${createTemplateDTO.name}' already exists`)
-        }
+        await this.assertTemplateNotExists({ name: createTemplateDTO.name })
         const template = new this.templateModel(createTemplateDTO)
         template.previewFile = await this.createPreview(template)
         template.hash = this.getTemplateHash(template)
@@ -41,16 +35,49 @@ export class TemplatesService {
         return await this.storageService.put(buffer, "png")
     }
 
+    async findAll(): Promise<TemplateDocument[]> {
+        return this.templateModel.find().exec()
+    }
+
+    async registerUse(id: string) {
+        this.assertValidObjectId(id)
+        await this.assertTemplateExists({ _id: id })
+        await this.templateModel.updateOne({ _id: id }, {
+            $inc: {
+                uses: 1
+            }
+        })
+    }
+
     getTemplateHash(template: TemplateDocument) {
-        const entity = new TemplateEntity(template)
-        delete entity.hash
+        const data = {
+            name: template.name,
+            canvas: template.canvas,
+            previewFile: template.previewFile
+        }
         return crypto
             .createHash("md5")
-            .update(JSON.stringify(entity), "utf8")
+            .update(JSON.stringify(data), "utf8")
             .digest("hex")
     }
 
-    async findAll(): Promise<TemplateDocument[]> {
-        return this.templateModel.find().exec()
+    async assertTemplateNotExists(query: FilterQuery<TemplateDocument>) {
+        const exists = await this.templateModel.exists(query)
+        if (exists) {
+            throw new BadRequestException(`Template already exists`)
+        }
+    }
+
+    async assertTemplateExists(query: FilterQuery<TemplateDocument>) {
+        const exists = await this.templateModel.exists(query)
+        if (!exists) {
+            throw new NotFoundException()
+        }
+    }
+
+    assertValidObjectId(id: string) {
+        if (!isValidObjectId(id)) {
+            throw new NotFoundException()
+        }
     }
 }

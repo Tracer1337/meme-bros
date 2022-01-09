@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post } from "@nestjs/common"
+import { BadRequestException, Body, Controller, Get, Param, Post } from "@nestjs/common"
 import { TemplatesService } from "./templates.service"
 import { TemplateEntity } from "./entities/template.entity"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
@@ -28,5 +28,10 @@ export class TemplatesController {
         }
         const template = await this.templatesService.create(createTemplateDTO)
         return new TemplateEntity(template)
+    }
+
+    @Post(":id/register-use")
+    async registerUse(@Param("id") id: string) {
+        await this.templatesService.registerUse(id)
     }
 }
