@@ -1,21 +1,12 @@
-import { FilterQuery, isValidObjectId, Model } from "mongoose"
+import { FilterQuery, Model } from "mongoose"
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
-import crypto from "crypto"
 import { Editor } from "@meme-bros/shared"
+import { createHash } from "../lib/crypto"
+import { assertIsValidObjectId } from "../lib/assert"
 import { StorageService } from "../storage/storage.service"
 import { Template, TemplateDocument } from "./schemas/template.schema"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
-
-function createHash(input: any) {
-    const data = typeof input !== "string"
-        ? JSON.stringify(input)
-        : input
-    return crypto
-        .createHash("md5")
-        .update(data, "utf8")
-        .digest("hex")
-}
 
 @Injectable()
 export class TemplatesService {
@@ -74,7 +65,7 @@ export class TemplatesService {
     }
 
     async registerUse(id: string) {
-        this.assertValidObjectId(id)
+        assertIsValidObjectId(id)
         await this.assertTemplateExists({ _id: id })
         await this.templateModel.updateOne({ _id: id }, {
             $inc: {
@@ -102,12 +93,6 @@ export class TemplatesService {
     async assertTemplateExists(query: FilterQuery<TemplateDocument>) {
         const exists = await this.templateModel.exists(query)
         if (!exists) {
-            throw new NotFoundException()
-        }
-    }
-
-    assertValidObjectId(id: string) {
-        if (!isValidObjectId(id)) {
             throw new NotFoundException()
         }
     }
