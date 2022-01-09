@@ -3,6 +3,8 @@ import { TemplateDocument } from "../schemas/template.schema"
 export class TemplateEntity {
     id: string
 
+    hash: string
+
     name: string
 
     canvas: object

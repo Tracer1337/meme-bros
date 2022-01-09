@@ -9,6 +9,9 @@ export class Template {
     @Prop({ required: true })
     name: string
 
+    @Prop({ required: true })
+    hash: string
+
     @Prop()
     previewFile: string
 
