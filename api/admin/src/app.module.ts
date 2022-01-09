@@ -1,11 +1,13 @@
 import { ClassSerializerInterceptor, Module } from "@nestjs/common"
 import { APP_INTERCEPTOR } from "@nestjs/core"
 import { MongooseModule } from "@nestjs/mongoose"
+import { StorageModule } from "./storage/storage.module"
 import { TemplatesModule } from "./templates/templates.module"
 
 @Module({
     imports: [
         MongooseModule.forRoot("mongodb://localhost/meme-bros"),
+        StorageModule,
         TemplatesModule
     ],
     providers: [

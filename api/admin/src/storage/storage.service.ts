@@ -1,3 +1,5 @@
+import { NotFoundException } from "@nestjs/common"
+import { createReadStream } from "fs"
 import fs from "fs/promises"
 import path from "path"
 import { v4 as uuid } from "uuid"
@@ -12,18 +14,35 @@ export class StorageService {
         return filename
     }
 
-    get(filename: string) {
-        return fs.readFile(this.getFilePath(filename))
+    async get(filename: string) {
+        return await fs.readFile(this.getFilePath(filename))
+    }
+
+    getReadStream(filename: string) {
+        return createReadStream(this.getFilePath(filename))
+    }
+
+    async assertFileExists(filename: string) {
+        if (!await this.exists(this.getFilePath(filename))) {
+            throw new NotFoundException()
+        }
     }
 
     getFilePath(filename: string) {
         return path.join(StorageService.STORAGE_DIR, filename)
     }
 
-    async assertStorageDirExists() {
+    async exists(path: string) {
         try {
-            await fs.access(StorageService.STORAGE_DIR)
+            await fs.access(path)
+            return true
         } catch {
+            return false
+        }
+    }
+
+    async assertStorageDirExists() {
+        if (!await this.exists(StorageService.STORAGE_DIR)) {
             await fs.mkdir(StorageService.STORAGE_DIR)
         }
     }
