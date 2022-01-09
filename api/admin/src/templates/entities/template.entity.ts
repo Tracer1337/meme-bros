@@ -5,6 +5,8 @@ export class TemplateEntity {
 
     hash: string
 
+    uses: number
+
     name: string
 
     canvas: object
