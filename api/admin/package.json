@@ -10,6 +10,7 @@
   "dependencies": {
     "@meme-bros/shared": "*",
     "@nestjs/common": "^8.2.4",
+    "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.2.4",
     "@nestjs/mapped-types": "^1.0.1",
     "@nestjs/mongoose": "^9.0.2",

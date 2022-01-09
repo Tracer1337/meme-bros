@@ -1,11 +1,15 @@
-import { NotFoundException } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
+import { ConfigService } from "@nestjs/config"
 import { createReadStream } from "fs"
 import fs from "fs/promises"
 import path from "path"
 import { v4 as uuid } from "uuid"
 
+@Injectable()
 export class StorageService {
-    static readonly STORAGE_DIR = path.join(__dirname, "..", "..", "storage")
+    constructor(
+        private readonly configService: ConfigService
+    ) {}
 
     async put(buffer: Buffer, ext: string) {
         const filename = `${uuid()}.${ext}`
@@ -27,7 +31,10 @@ export class StorageService {
     }
 
     getFilePath(filename: string) {
-        return path.join(StorageService.STORAGE_DIR, filename)
+        return path.join(
+            this.configService.get<string>("storage.path"),
+            filename
+        )
     }
 
     async exists(path: string) {
@@ -46,8 +53,9 @@ export class StorageService {
     }
 
     async assertStorageDirExists() {
-        if (!await this.exists(StorageService.STORAGE_DIR)) {
-            await fs.mkdir(StorageService.STORAGE_DIR)
+        const path = this.configService.get<string>("storage.path")
+        if (!await this.exists(path)) {
+            await fs.mkdir(path)
         }
     }
 }
