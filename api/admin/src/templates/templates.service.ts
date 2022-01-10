@@ -39,38 +39,8 @@ export class TemplatesService {
         return template.save()
     }
 
-    async findAll(filter?: {
-        hashes?: string[]
-    }): Promise<TemplateDocument[]> {
-        let query: FilterQuery<TemplateDocument> = {}
-        if (filter?.hashes) {
-            query.hash = {
-                $in: filter.hashes
-            }
-        }
-        return this.templateModel.find(query)
-    }
-
-    async getHashList() {
-        const docs = await this.templateModel.aggregate<
-            Pick<Template, "hash">
-        >([
-            {
-                "$sort": {
-                    "uses": -1, 
-                    "name": 1
-                }
-            }, {
-                "$project": {
-                    "hash": true
-                }
-            }
-        ])
-        return docs.map((doc) => doc.hash)
-    }
-
-    async getHashListHash() {
-        return createHash(await this.getHashList(), "md5")
+    async findAll(): Promise<TemplateDocument[]> {
+        return this.templateModel.find({})
     }
 
     async update(
@@ -90,16 +60,6 @@ export class TemplatesService {
         }
         template.hash = this.getTemplateHash(template)
         return await template.save()
-    }
-
-    async registerUse(id: string) {
-        assertIsValidObjectId(id)
-        await this.assertTemplateExists({ _id: id })
-        await this.templateModel.updateOne({ _id: id }, {
-            $inc: {
-                uses: 1
-            }
-        })
     }
 
     async delete(id: string) {

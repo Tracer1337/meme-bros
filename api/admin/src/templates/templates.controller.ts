@@ -18,21 +18,9 @@ export class TemplatesController {
     }
 
     @Get()
-    async getAll(@Query("hashes") hashes: string[]) {
-        const templates = await this.templatesService.findAll({
-            hashes
-        })
+    async getAll() {
+        const templates = await this.templatesService.findAll()
         return templates.map((template) => new TemplateEntity(template))
-    }
-
-    @Get("list")
-    async getList() {
-        return await this.templatesService.getHashList()
-    }
-
-    @Get("list/hash")
-    async getListHash() {
-        return await this.templatesService.getHashListHash()
     }
 
     @Put(":id")
@@ -48,11 +36,6 @@ export class TemplatesController {
             updateTemplateDTO
         )
         return new TemplateEntity(template)
-    }
-
-    @Post(":id/register-use")
-    async registerUse(@Param("id") id: string) {
-        await this.templatesService.registerUse(id)
     }
 
     @Delete(":id")
