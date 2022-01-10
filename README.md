@@ -13,10 +13,15 @@
 |   |-- admin
 |-- api
 |   |-- admin
+|   |-- shared
 |   |-- public
 ```
 
 ## Packages
+
+``core``
+
+Meme-Generator written in Go
 
 ``app``
 
@@ -29,6 +34,10 @@ Web-based component for ``app``
 ``mobile``
 
 Android + iOS integration for ``app``
+
+``shared``
+
+Shared modules between canvas + mobile
 
 ``web/website``
 
@@ -45,3 +54,7 @@ API accessible by everyone (mainly used by ``app``)
 ``api/admin``
 
 API protected by credentials (mainly used by ``web/admin``)
+
+``api/shared``
+
+Shared modules between ``api/public`` + ``api/admin``
