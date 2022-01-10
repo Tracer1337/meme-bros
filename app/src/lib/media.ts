@@ -25,5 +25,5 @@ export async function importImage(
     }
 }
 
-export const resolveAssetSource = (uri: string) =>
-    Promise.resolve(Image.resolveAssetSource({ uri }))
+export const resolveAssetSource = (id: number) =>
+    Promise.resolve(Image.resolveAssetSource(id))

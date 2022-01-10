@@ -20,9 +20,9 @@
       "api/shared"
     ],
     "nohoist": [
-      "!(types)/react",
+      "**/react",
       "**/react-dom",
-      "!(types)/react-native",
+      "**/react-native",
       "**/react-native/**",
       "**/react-native-web"
     ]
