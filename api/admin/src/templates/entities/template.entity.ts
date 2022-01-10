@@ -1,4 +1,4 @@
-import { TemplateDocument } from "../schemas/template.schema"
+import { TemplateDocument } from "@meme-bros/api-shared"
 
 export class TemplateEntity {
     id: string

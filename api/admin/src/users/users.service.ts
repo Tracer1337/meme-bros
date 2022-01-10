@@ -1,8 +1,7 @@
 import { Injectable, OnModuleInit } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
-import { createHash } from "../lib/crypto"
-import { User, UserDocument } from "./schemas/user.schema"
+import { createHash, User, UserDocument } from "@meme-bros/api-shared"
 
 @Injectable()
 export class UsersService implements OnModuleInit {

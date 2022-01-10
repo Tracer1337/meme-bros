@@ -1,0 +1,1 @@
+export const STORAGE_OPTIONS_KEY = "STORAGE_OPTIONS"

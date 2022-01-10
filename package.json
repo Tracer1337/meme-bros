@@ -15,7 +15,8 @@
       "mobile",
       "web",
       "shared",
-      "api/admin"
+      "api/admin",
+      "api/shared"
     ],
     "nohoist": [
       "!(types)/react",

@@ -1,14 +1,15 @@
-import { Injectable, NotFoundException } from "@nestjs/common"
-import { ConfigService } from "@nestjs/config"
+import { Inject, Injectable, NotFoundException } from "@nestjs/common"
 import { createReadStream } from "fs"
 import fs from "fs/promises"
 import path from "path"
 import { v4 as uuid } from "uuid"
+import { STORAGE_OPTIONS_KEY } from "./constants"
+import { StorageModuleOptions } from "./interfaces/storage-module-options.interface"
 
 @Injectable()
 export class StorageService {
     constructor(
-        private readonly configService: ConfigService
+        @Inject(STORAGE_OPTIONS_KEY) private readonly options: StorageModuleOptions
     ) {}
 
     async put(buffer: Buffer, ext: string) {
@@ -31,10 +32,7 @@ export class StorageService {
     }
 
     getFilePath(filename: string) {
-        return path.join(
-            this.configService.get<string>("storage.path"),
-            filename
-        )
+        return path.join(this.options.path, filename)
     }
 
     async exists(path: string) {
@@ -53,9 +51,8 @@ export class StorageService {
     }
 
     async assertStorageDirExists() {
-        const path = this.configService.get<string>("storage.path")
-        if (!await this.exists(path)) {
-            await fs.mkdir(path)
+        if (!await this.exists(this.options.path)) {
+            await fs.mkdir(this.options.path)
         }
     }
 }
