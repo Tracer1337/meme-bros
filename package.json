@@ -16,6 +16,7 @@
       "web",
       "shared",
       "api/admin",
+      "api/public",
       "api/shared"
     ],
     "nohoist": [
