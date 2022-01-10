@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common"
 import { JwtService } from "@nestjs/jwt"
 import { createHash } from "../lib/crypto"
 import { UsersService } from "../users/users.service"
+import { ChangePasswordDTO } from "./dto/change-password.dto"
 import { LoginDTO } from "./dto/login.dto"
 import { Payload } from "./interfaces/payload.interface"
 
@@ -17,9 +18,6 @@ export class AuthService {
             loginDTO.username,
             loginDTO.password
         )
-        if (!user) {
-            throw new UnauthorizedException()
-        }
         const payload: Payload = {
             username: user.username,
             sub: user.id
@@ -29,11 +27,23 @@ export class AuthService {
         }
     }
 
+    async changePassword(
+        username: string,
+        changePasswordDTO: ChangePasswordDTO
+    ) {
+        const user = await this.validateUser(
+            username,
+            changePasswordDTO.oldPassword
+        )
+        user.password = createHash(changePasswordDTO.newPassword)
+        await user.save()
+    }
+
     async validateUser(username: string, password: string) {
         const user = await this.usersService.findOne(username)
-        if (user && user.password === createHash(password)) {
-            return user
+        if (!user || user.password !== createHash(password)) {
+            throw new UnauthorizedException()
         }
-        return null
+        return user
     }
 }

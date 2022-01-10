@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post, Req } from "@nestjs/common"
+import { Body, Controller, Get, Post, Put, Req } from "@nestjs/common"
 import { AuthService } from "./auth.service"
 import { LoginDTO } from "./dto/login.dto"
+import { ChangePasswordDTO } from "./dto/change-password.dto"
 import { Public } from "./public.decorator"
 import { AuthorizedRequest } from "./interfaces/request.interface"
 
@@ -19,5 +20,16 @@ export class AuthController {
     @Get("profile")
     getProfile(@Req() req: AuthorizedRequest) {
         return req.user
+    }
+
+    @Put("change-password")
+    async changePassword(
+        @Req() req: AuthorizedRequest,
+        @Body() changePasswordDTO: ChangePasswordDTO
+    ) {
+        await this.authService.changePassword(
+            req.user.username,
+            changePasswordDTO
+        )
     }
 }
