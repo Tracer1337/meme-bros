@@ -1,15 +1,24 @@
 import { DynamicModule, Module } from "@nestjs/common"
+import { StorageHostModule } from "./storage-host.module"
 import { StorageController } from "./storage.controller"
 import { StorageService } from "./storage.service"
-import { STORAGE_OPTIONS_KEY } from "./constants"
+import { STORAGE_SERVICE_KEY, STORAGE_OPTIONS_KEY } from "./constants"
 import { StorageModuleAsyncOptions } from "./interfaces/storage-module-async-options.interface"
 
-@Module({})
+@Module({
+    imports: [StorageHostModule],
+    providers: [
+        {
+            provide: StorageService,
+            useExisting: STORAGE_SERVICE_KEY
+        }
+    ],
+    exports: [StorageHostModule, StorageService]
+})
 export class StorageModule {
     static forRootAsync(options: StorageModuleAsyncOptions): DynamicModule {
         return {
-            module: StorageModule, 
-            global: true,
+            module: StorageModule,
             imports: options.imports,
             providers: [
                 StorageService,
