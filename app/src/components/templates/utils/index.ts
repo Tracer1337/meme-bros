@@ -1,37 +1,12 @@
 import { Editor } from "@meme-bros/shared"
 import { useEffect, useState } from "react"
-import { Platform } from "react-native"
-import RNFS from "react-native-fs"
 import { TemplateCanvas, TemplateMeta, TemplatesFile } from "../types"
 import { Dimensions } from "../../../lib/dimensions"
-
-const PREVIEWS_DIR = "previews"
-const TEMPLATES_DIR = "templates"
-
-const TEMPLATES_FILE = "templates.json"
+import { PREVIEWS_DIR } from "./constants"
+import { readTemplatesFileFromAssets } from "./read"
 
 export function getPreviewURI(template: TemplateMeta) {
     return `asset:/${PREVIEWS_DIR}/${template.previewFile}`
-}
-
-export async function loadTemplates() {
-    if (Platform.OS === "android") {
-        const json = await RNFS.readFileAssets(TEMPLATES_FILE)
-        return JSON.parse(json) as TemplatesFile
-    } else {
-        throw new Error("Not implemented")
-    }
-}
-
-export async function loadTemplate(template: TemplateMeta) {
-    if (Platform.OS === "android") {
-        const json = await RNFS.readFileAssets(
-            `${TEMPLATES_DIR}/${template.templateFile}`
-        )
-        return JSON.parse(json) as TemplateCanvas
-    } else {
-        throw new Error("Not implemented")
-    }
 }
 
 function scaleRect<
@@ -77,7 +52,7 @@ export function useTemplates(): TemplateMeta[] {
     >()
 
     useEffect(() => {
-        loadTemplates()
+        readTemplatesFileFromAssets()
             .then(setTemplatesFile)
             .catch((error) => console.error(error))
     }, [])

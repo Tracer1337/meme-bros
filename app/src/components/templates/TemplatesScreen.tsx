@@ -5,7 +5,9 @@ import { Text, Headline, Surface, IconButton } from "react-native-paper"
 import Image from "react-native-scalable-image"
 import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
-import { useTemplates, getPreviewURI, loadTemplate, scaleTemplateCanvas } from "./utils"
+import { useTemplates, getPreviewURI, scaleTemplateCanvas } from "./utils"
+import { readTemplateFromAssets } from "./utils/read"
+
 import { TemplateMeta } from "./types"
 import { useSharedContext } from "@meme-bros/shared"
 
@@ -16,9 +18,7 @@ function Item({ template, onLoad }: {
     return (
         <Surface style={styles.item}>
             <Image
-                source={{
-                    uri: getPreviewURI(template)
-                }}
+                source={{ uri: getPreviewURI(template) }}
                 height={150}
                 width={150}
             />
@@ -42,7 +42,7 @@ function TemplatesScreen({
     const templates = useTemplates()
 
     const injectTemplate = async (template: TemplateMeta) => {
-        const templateCanvas = await loadTemplate(template)
+        const templateCanvas = await readTemplateFromAssets(template)
         context.set({
             renderCanvas: true,
             canvas: scaleTemplateCanvas(templateCanvas)
