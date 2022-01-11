@@ -23,6 +23,24 @@ async function fetchListHash() {
     return await res.text()
 }
 
+async function fetchTemplates() {
+    const res = await fetch(`${API_HOST}/templates`)
+    return await res.json()
+}
+
+async function hasHashChanged(hash) {
+    const json = await readFileIfExists(TEMPLATES_FILE)
+    return !json ? true : JSON.parse(json).hash !== hash
+}
+
+async function readFileIfExists(filepath) {
+    try {
+        return await fs.promises.readFile(filepath, "utf8")
+    } catch {
+        return null
+    }
+}
+
 async function assertDirExists(dir) {
     try {
         await fs.promises.access(dir)
@@ -49,27 +67,40 @@ async function downloadPreview(template) {
 }
 
 async function loadTemplates() {
+    const hash = await fetchListHash()
+
+    if (!(await hasHashChanged(hash))) {
+        console.log("Skip downloading templates")
+        return
+    }
+    
+    console.log("Download templates")
+    
+    await Promise.all([
+        fs.promises.unlink(TEMPLATES_FILE),
+        fs.promises.rm(TEMPLATES_DIR, { recursive: true, force: true }),
+        fs.promises.rm(PREVIEWS_DIR, { recursive: true, force: true }),
+    ])
+
     await Promise.all([
         assertDirExists(TEMPLATES_DIR),
         assertDirExists(PREVIEWS_DIR)
     ])
 
-    const [list, hash] = await Promise.all([
-        fetchList(),
-        fetchListHash()
-    ])
+    const result = {
+        list: await fetchList(),
+        hash,
+        meta: {}
+    }
 
-    const res = await fetch(`${API_HOST}/templates`)
-    const templates = await res.json()
-
-    const meta = {}
+    const templates = await fetchTemplates()
 
     await Promise.all(templates.map(async (template) => {
         const [templateFile, previewFile] = await Promise.all([
             storeCanvas(template),
             downloadPreview(template)
         ])
-        meta[template.hash] = {
+        result.meta[template.hash] = {
             id: template.id,
             name: template.name,
             hash: template.hash,
@@ -78,10 +109,9 @@ async function loadTemplates() {
         }
     }))
 
-    const templateFile = { list, hash, meta }
     await fs.promises.writeFile(
         TEMPLATES_FILE,
-        JSON.stringify(templateFile, null, 4)
+        JSON.stringify(result, null, 4)
     )
 }
 
