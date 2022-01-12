@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { TemplateCanvas, TemplateMeta, TemplatesFile } from "../types"
 import { Dimensions } from "../../../lib/dimensions"
 import { PREVIEWS_DIR } from "./constants"
-import { readTemplatesFileFromAssets } from "./read"
+import { Assets } from "./storage"
 
 export function getPreviewURI(template: TemplateMeta) {
     return `asset:/${PREVIEWS_DIR}/${template.previewFile}`
@@ -52,7 +52,7 @@ export function useTemplates(): TemplateMeta[] {
     >()
 
     useEffect(() => {
-        readTemplatesFileFromAssets()
+        Assets.readTemplatesFile()
             .then(setTemplatesFile)
             .catch((error) => console.error(error))
     }, [])

@@ -1,15 +1,13 @@
-import { Editor } from "@meme-bros/shared"
+import { API } from "../../lib/api"
 
 export type TemplatesFile = {
     list: string[],
+    hash: string,
     meta: Record<string, TemplateMeta>
 }
 
-export type TemplateMeta = {
-    id: string,
-    name: string,
-    previewFile: string,
+export type TemplateMeta = Omit<API.Template, "canvas"> & {
     templateFile: string
 }
 
-export type TemplateCanvas = Editor.Canvas
+export type TemplateCanvas = API.Template["canvas"]

@@ -6,7 +6,7 @@ import Image from "react-native-scalable-image"
 import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
 import { useTemplates, getPreviewURI, scaleTemplateCanvas } from "./utils"
-import { readTemplateFromAssets } from "./utils/read"
+import { Assets } from "./utils/storage"
 
 import { TemplateMeta } from "./types"
 import { useSharedContext } from "@meme-bros/shared"
@@ -42,7 +42,7 @@ function TemplatesScreen({
     const templates = useTemplates()
 
     const injectTemplate = async (template: TemplateMeta) => {
-        const templateCanvas = await readTemplateFromAssets(template)
+        const templateCanvas = await Assets.readTemplate(template)
         context.set({
             renderCanvas: true,
             canvas: scaleTemplateCanvas(templateCanvas)
