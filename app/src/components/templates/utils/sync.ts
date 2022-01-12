@@ -114,5 +114,13 @@ export function useTemplatesSync() {
                     }
                 })
             }))
+            .catch((error) => {
+                console.error(error)
+                appContext.set({
+                    templates: {
+                        error: true
+                    }
+                })
+            })
     }, [])
 }

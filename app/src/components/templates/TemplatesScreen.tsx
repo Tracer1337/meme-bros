@@ -70,12 +70,17 @@ function TemplatesScreen({
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 ListHeaderComponent={
-                    <Headline style={styles.headline}>
-                        Templates
+                    <View style={styles.header}>
+                        <Headline style={styles.headline}>
+                            Templates
+                        </Headline>
                         {appContext.templates.isSyncing && (
                             <ActivityIndicator animating/>
                         )}
-                    </Headline>
+                        {appContext.templates.error && (
+                            <Text>Sync Failed</Text>
+                        )}
+                    </View>
                 }
             />
         </Screen>
@@ -83,8 +88,11 @@ function TemplatesScreen({
 }
 
 const styles = StyleSheet.create({
+    header: {
+        marginVertical: 48
+    },
+
     headline: {
-        marginVertical: 48,
         textAlign: "center"
     },
 

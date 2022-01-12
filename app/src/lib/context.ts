@@ -5,14 +5,16 @@ import { deepmerge } from "@meme-bros/shared"
 export type AppContextValue = {
     set: (partial: DeepPartial<AppContextValue>) => void,
     templates: {
-        isSyncing: boolean
+        isSyncing: boolean,
+        error: boolean
     }
 }
 
 const appContextDefaultValue: AppContextValue = {
     set: () => {},
     templates: {
-        isSyncing: false
+        isSyncing: false,
+        error: false
     }
 }
 
