@@ -3,14 +3,21 @@ import { setupTemplatesStorage } from "./setup"
 import { Documents } from "./storage"
 import { API } from "../../../lib/api"
 import { TemplateMeta, TemplatesFile } from "../types"
+import { useAppContext } from "../../../lib/context"
+import { AnyFunction } from "tsdef"
 
-async function syncTemplates() {
+async function syncTemplates({ onBegin, onDone }: {
+    onBegin: AnyFunction,
+    onDone: AnyFunction
+}) {
     const templatesFile = await Documents.readTemplatesFile()
     const hash = await API.getTemplatesListHash()
 
     if (templatesFile.hash === hash) {
         return
     }
+
+    onBegin()
 
     const newList = await API.getTemplatesList()
     const templatesDiff = diffUnique(templatesFile.list, newList)
@@ -35,6 +42,8 @@ async function syncTemplates() {
     templatesFile.hash = hash
     templatesFile.list = newList
     await Documents.writeTemplatesFile(templatesFile)
+
+    onDone()
 }
 
 async function addTemplate(
@@ -89,8 +98,21 @@ function diffUnique<T>(a: T[], b: T[]) {
 }
 
 export function useTemplatesSync() {
+    const appContext = useAppContext()
+
     useEffect(() => {
         setupTemplatesStorage()
-            .then(syncTemplates)
+            .then(() => syncTemplates({
+                onBegin: () => appContext.set({
+                    templates: {
+                        isSyncing: true
+                    }
+                }),
+                onDone: () => appContext.set({
+                    templates: {
+                        isSyncing: false
+                    }
+                })
+            }))
     }, [])
 }

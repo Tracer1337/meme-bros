@@ -1,15 +1,16 @@
 import React from "react"
 import { FlatList, StyleSheet, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { Text, Headline, Surface, IconButton } from "react-native-paper"
+import { Text, Headline, Surface, IconButton, ActivityIndicator } from "react-native-paper"
 import Image from "react-native-scalable-image"
 import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
 import { useTemplates, getPreviewURI, scaleTemplateCanvas } from "./utils"
-import { Assets, Documents } from "./utils/storage"
+import { Documents } from "./utils/storage"
 
 import { TemplateMeta } from "./types"
 import { useSharedContext } from "@meme-bros/shared"
+import { useAppContext } from "../../lib/context"
 
 function Item({ template, onLoad }: {
     template: TemplateMeta,
@@ -37,6 +38,7 @@ function Item({ template, onLoad }: {
 function TemplatesScreen({
     navigation
 }: NativeStackScreenProps<RootStackParamList, "Templates">) {
+    const appContext = useAppContext()
     const context = useSharedContext()
     
     const templates = useTemplates()
@@ -70,6 +72,9 @@ function TemplatesScreen({
                 ListHeaderComponent={
                     <Headline style={styles.headline}>
                         Templates
+                        {appContext.templates.isSyncing && (
+                            <ActivityIndicator animating/>
+                        )}
                     </Headline>
                 }
             />

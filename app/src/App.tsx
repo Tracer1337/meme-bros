@@ -3,17 +3,24 @@ import { DarkTheme, Provider as PaperProvider, Portal } from "react-native-paper
 import Navigator from "./Navigator"
 import { DialogProvider } from "./lib/DialogHandler"
 import { useTemplatesSync } from "./components/templates/utils/sync"
+import { AppContextProvider } from "./lib/context"
+
+function TemplatesSync() {
+    useTemplatesSync()
+    return null
+}
 
 function App() {
-    useTemplatesSync()
-
     return (
         <PaperProvider theme={DarkTheme}>
-            <DialogProvider>
-                <Portal.Host>
-                    <Navigator/>
-                </Portal.Host>
-            </DialogProvider>
+            <AppContextProvider>
+                <TemplatesSync/>
+                <DialogProvider>
+                    <Portal.Host>
+                        <Navigator/>
+                    </Portal.Host>
+                </DialogProvider>
+            </AppContextProvider>
         </PaperProvider>
     )
 }
