@@ -13,7 +13,7 @@
       "canvas",
       "app",
       "mobile",
-      "web",
+      "web/admin",
       "shared",
       "api/admin",
       "api/public",
