@@ -4,7 +4,7 @@ import { API } from "../../../lib/api"
 import { TemplateCanvas, TemplateMeta, TemplatesFile } from "../types"
 import { PREVIEWS_DIR, TEMPLATES_DIR, TEMPLATES_FILE } from "./constants"
 
-function join(...paths: string[]) {
+export function join(...paths: string[]) {
     return paths.join("/")
 }
 
@@ -48,6 +48,11 @@ export namespace Documents {
     export async function writeTemplatesFile(data: TemplatesFile) {
         const content = JSON.stringify(data)
         await writeFilePatched(path(TEMPLATES_FILE), content)
+    }
+
+    export async function readTemplate(id: string) {
+        const json = await RNFS.readFile(path(join(TEMPLATES_DIR, `${id}.json`)))
+        return JSON.parse(json) as TemplateCanvas
     }
 
     export async function writeTemplate(template: API.Template) {

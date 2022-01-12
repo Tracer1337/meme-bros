@@ -1,12 +1,17 @@
 import { Editor } from "@meme-bros/shared"
 import { useEffect, useState } from "react"
+import RNFS from "react-native-fs"
 import { TemplateCanvas, TemplateMeta, TemplatesFile } from "../types"
 import { Dimensions } from "../../../lib/dimensions"
 import { PREVIEWS_DIR } from "./constants"
-import { Assets } from "./storage"
+import { Documents, join } from "./storage"
 
 export function getPreviewURI(template: TemplateMeta) {
-    return `asset:/${PREVIEWS_DIR}/${template.previewFile}`
+    return "file://" + join(
+        RNFS.DocumentDirectoryPath,
+        PREVIEWS_DIR,
+        template.previewFile
+    )
 }
 
 function scaleRect<
@@ -52,7 +57,7 @@ export function useTemplates(): TemplateMeta[] {
     >()
 
     useEffect(() => {
-        Assets.readTemplatesFile()
+        Documents.readTemplatesFile()
             .then(setTemplatesFile)
             .catch((error) => console.error(error))
     }, [])
