@@ -25,8 +25,10 @@ export namespace API {
         canvas: Editor.Canvas
     }
 
-    export function getTemplates() {
-        return fetchJSON<API.Template[]>(url("templates"))
+    export function getTemplates(hashes?: string[]) {
+        const params = new URLSearchParams()
+        hashes?.forEach((hash) => params.append("hashes", hash))
+        return fetchJSON<API.Template[]>(url("templates?" + params.toString()))
     }
 
     export async function getTemplatesAsMap(
