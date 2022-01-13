@@ -1,3 +1,4 @@
+import type { Editor } from "@meme-bros/shared"
 import { Storage } from "./storage"
 
 const API_HOST = process.env.API_HOST || "http://localhost:5000"
@@ -48,6 +49,10 @@ function putJSON<T>(url: string, body: any) {
     })
 }
 
+export function fetcher(path: string) {
+    return fetchJSON<any>(url(path))
+}
+
 export namespace API {
     export type Error = {
         error: string,
@@ -62,6 +67,15 @@ export namespace API {
 
     export type AccessToken = {
         access_token: string
+    }
+
+    export type Template = {
+        id: string,
+        name: string,
+        hash: string,
+        uses: number,
+        canvas: Editor.Canvas,
+        previewFile: string
     }
 
     export async function login(payload: {
@@ -80,5 +94,9 @@ export namespace API {
         newPassword: string
     }) {
         await putJSON(url("auth/change-password"), payload)
+    }
+
+    export function getPreviewURL(template: API.Template) {
+        return url("storage/" + template.previewFile)
     }
 }

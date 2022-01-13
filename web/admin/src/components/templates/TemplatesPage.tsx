@@ -13,7 +13,7 @@ function InnerTemplatesPage() {
         <Grid container height="calc(100vh - 64px)" px={2}>
             <Grid item xs pt={4}>
                 <Typography variant="h3">Templates</Typography>
-                <TemplateList/>
+                <TemplateList onClick={(template) => console.log(template)}/>
             </Grid>
             <Grid
                 container
