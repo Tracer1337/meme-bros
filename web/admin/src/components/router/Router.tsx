@@ -5,6 +5,7 @@ import Layout from "../layout/Layout"
 import TemplatesPage from "../templates/TemplatesPage"
 import RequireAuth from "../auth/RequireAuth"
 import LoginPage from "../auth/LoginPage"
+import ChangePasswordPage from "../auth/ChangePasswordPage"
 
 function auth(child: JSX.Element) {
     return (
@@ -24,6 +25,7 @@ function Router() {
                     }/>
                     <Route path="templates" element={auth(<TemplatesPage/>)}/>
                     <Route path="login" element={<LoginPage/>}/>
+                    <Route path="change-password" element={auth(<ChangePasswordPage/>)}/>
                 </Route>
             </Routes>
         </BrowserRouter>

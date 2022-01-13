@@ -1,8 +1,10 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { Button, TextField, Container, Typography } from "@mui/material"
+import { TextField, Container, Typography } from "@mui/material"
+import { LoadingButton } from "@mui/lab"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useStore } from "../../lib/store"
+import { Storage } from "../../lib/storage"
 
 type Fields = {
     username: string
@@ -16,19 +18,27 @@ function LoginPage() {
 
     const navigate = useNavigate()
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const { register, handleSubmit } = useForm<Fields>()
 
     const onSubmit: SubmitHandler<Fields> = async (values) => {
         if (!values.username || !values.password) {
             return
         }
-        store.login(values).catch((error) => {
-            console.log(error)
-        })
+        setIsLoading(true)
+        store.login(values)
+            .catch((error) => {
+                console.log(error)
+            })
+            .finally(() => setIsLoading(false))
     }
 
     useEffect(() => {
-        store.authorize()
+        if (Storage.get(Storage.Keys.TOKEN)) {
+            setIsLoading(true)
+            store.authorize().finally(() => setIsLoading(false))
+        }
         // eslint-disable-next-line
     }, [])
 
@@ -60,7 +70,9 @@ function LoginPage() {
                     sx={{ mb: 2 }}
                     {...register("password")}
                 />
-                <Button type="submit">Login</Button>
+                <LoadingButton type="submit" loading={isLoading}>
+                    Login
+                </LoadingButton>
             </Container>
         </form>
     )

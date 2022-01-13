@@ -32,9 +32,6 @@ export const useStore = create<Store>((set) => ({
         })
     },
     authorize: async () => {
-        if (!Storage.get(Storage.Keys.TOKEN)) {
-            return
-        }
         API.getProfile().then(({ username }) =>
             set({ isLoggedIn: true, username })
         )

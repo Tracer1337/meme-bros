@@ -6,7 +6,9 @@ function url(path: string) {
     return `${API_HOST}/${path}`
 }
 
-async function fetchJSON<T>(...[input, init]: Parameters<typeof fetch>) {
+async function fetchJSON<T>(
+    ...[input, init]: Parameters<typeof fetch>
+): Promise<T> {
     const res = await fetch(input, {
         ...(init || {}),
         headers: {
@@ -14,16 +16,30 @@ async function fetchJSON<T>(...[input, init]: Parameters<typeof fetch>) {
             "Authorization": "Bearer " + Storage.get(Storage.Keys.TOKEN)
         }
     })
-    const result = await res.json()
-    if (result.statusCode && result.statusCode >= 400) {
-        throw result
+    try {
+        const result = await res.json()
+        if (result.statusCode && result.statusCode >= 400) {
+            throw result
+        }
+        return result as T
+    } catch {
+        return null as any
     }
-    return result as T
 }
 
 function postJSON<T>(url: string, body: any) {
     return fetchJSON<T>(url, {
         method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+}
+
+function putJSON<T>(url: string, body: any) {
+    return fetchJSON<T>(url, {
+        method: "PUT",
         headers: {
             "Content-Type": "application/json"
         },
@@ -56,5 +72,12 @@ export namespace API {
 
     export async function getProfile() {
         return await fetchJSON<Profile>(url("auth/profile"))
+    }
+
+    export async function changePassword(payload: {
+        oldPassword: string,
+        newPassword: string
+    }) {
+        await putJSON(url("auth/change-password"), payload)
     }
 }

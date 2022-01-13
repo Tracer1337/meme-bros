@@ -1,8 +1,11 @@
 import React, { useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Avatar, Divider, IconButton, Menu, MenuItem } from "@mui/material"
 import { useStore } from "../../lib/store"
 
 function UserMenu() {
+    const navigate = useNavigate()
+
     const username = useStore((state) => state.username)
     const logout = useStore((state) => state.logout)
 
@@ -34,7 +37,9 @@ function UserMenu() {
             >
                 <MenuItem>{username}</MenuItem>
                 <Divider/>
-                <MenuItem>Change Password</MenuItem>
+                <MenuItem onClick={() => navigate("/change-password")}>
+                    Change Password
+                </MenuItem>
                 <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
         </>
