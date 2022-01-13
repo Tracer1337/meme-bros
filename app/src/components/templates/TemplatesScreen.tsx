@@ -45,10 +45,7 @@ function TemplatesScreen({
 
     const injectTemplate = async (template: TemplateMeta) => {
         const templateCanvas = await Documents.readTemplate(template.id)
-        context.set({
-            renderCanvas: true,
-            canvas: scaleTemplateCanvas(templateCanvas)
-        })
+        context.events.emit("template.load", templateCanvas)
         navigation.navigate("Editor")
     }
 

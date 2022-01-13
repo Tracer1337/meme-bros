@@ -3,17 +3,22 @@ import { Grid, Paper, Typography } from "@mui/material"
 import RNApp from "../RNApp"
 import TemplateList from "./TemplatesList"
 import { BridgeProvider, SharedContextProvider, useSharedContext } from "@meme-bros/shared"
+import { API } from "../../lib/api"
 
 function InnerTemplatesPage() {
     const context = useSharedContext()
 
     console.log(context)
 
+    const handleTemplateClick = (template: API.Template) => {
+        context.events.emit("template.load", template.canvas)
+    }
+
     return (
         <Grid container height="calc(100vh - 64px)" px={2}>
             <Grid item xs pt={4}>
                 <Typography variant="h3">Templates</Typography>
-                <TemplateList onClick={(template) => console.log(template)}/>
+                <TemplateList onClick={handleTemplateClick}/>
             </Grid>
             <Grid
                 container

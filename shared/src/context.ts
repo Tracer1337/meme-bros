@@ -23,6 +23,7 @@ export namespace SharedContext {
         "canvas.base.blank": null,
         "canvas.base.dummy": null,
         "canvas.base.config": null,
+        "template.load": Editor.Canvas,
         "history.push": null,
         "history.pop": null
     }

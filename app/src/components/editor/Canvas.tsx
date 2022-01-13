@@ -1,4 +1,5 @@
 import React, { useRef, useContext, useEffect } from "react"
+import { Platform } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import {
@@ -15,7 +16,7 @@ import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { loadCanvasDummy } from "./utils/dummy"
 import { createCanvasElement, scaleToScreen } from "./utils/canvas"
-import { Platform } from "react-native"
+import { scaleTemplateCanvas } from "../templates/utils/scale"
 
 const BLANK_SIZE = 500
 
@@ -114,13 +115,21 @@ function Canvas() {
             canvas: await loadCanvasDummy()
         })
     }
+
+    const handleTemplateLoad = (canvas: Editor.Canvas) => {
+        context.set({
+            renderCanvas: true,
+            canvas: scaleTemplateCanvas(canvas)
+        })
+    }
         
     useEffect(() =>
         setListeners(context.events, [
             ["canvas.render", handleCanvasRender],
             ["canvas.base.import", handleBaseImport],
             ["canvas.base.blank", handleBaseBlank],
-            ["canvas.base.dummy", handleBaseDummy]
+            ["canvas.base.dummy", handleBaseDummy],
+            ["template.load", handleTemplateLoad]
         ])
     )
 
