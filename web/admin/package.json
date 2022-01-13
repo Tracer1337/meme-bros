@@ -15,11 +15,14 @@
     "http-proxy": "^1.18.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.23.0",
     "react-native-web": "^0.17.5",
     "react-native-web-webview": "^1.0.2",
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
-    "typescript": "^4.1.2"
+    "tsdef": "^0.0.14",
+    "typescript": "^4.1.2",
+    "zustand": "^3.6.9"
   },
   "devDependencies": {
     "@craco/craco": "^6.4.3",
@@ -30,6 +33,12 @@
   "scripts": {
     "start": "cross-env PORT=4000 BROWSER=none concurrently \"node proxy.js\" \"craco start\"",
     "build": "craco build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
