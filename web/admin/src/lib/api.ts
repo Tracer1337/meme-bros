@@ -16,15 +16,16 @@ async function fetchJSON<T>(
             "Authorization": "Bearer " + Storage.get(Storage.Keys.TOKEN)
         }
     })
+    let result: any
     try {
-        const result = await res.json()
-        if (result.statusCode && result.statusCode >= 400) {
-            throw result
-        }
-        return result as T
+        result = await res.json()
     } catch {
-        return null as any
+        result = null
     }
+    if (result.statusCode && result.statusCode >= 400) {
+        throw result
+    }
+    return result as T
 }
 
 function postJSON<T>(url: string, body: any) {
