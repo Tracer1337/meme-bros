@@ -1,5 +1,5 @@
 import { ClassSerializerInterceptor, Module } from "@nestjs/common"
-import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core"
+import { APP_INTERCEPTOR } from "@nestjs/core"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { MongooseModule } from "@nestjs/mongoose"
 import { StorageModule } from "@meme-bros/api-shared"
@@ -8,7 +8,6 @@ import { AuthModule } from "./auth/auth.module"
 import { TemplatesModule } from "./templates/templates.module"
 import { configuration } from "./config/configuration"
 import { configurationSchema } from "./config/configuration.schema"
-import { JwtAuthGuard } from "./auth/jwt-auth.guard"
 
 @Module({
     imports: [
@@ -38,10 +37,6 @@ import { JwtAuthGuard } from "./auth/jwt-auth.guard"
         {
             provide: APP_INTERCEPTOR,
             useClass: ClassSerializerInterceptor
-        },
-        {
-            provide: APP_GUARD,
-            useClass: JwtAuthGuard
         }
     ]
 })
