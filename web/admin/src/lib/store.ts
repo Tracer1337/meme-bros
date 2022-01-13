@@ -9,6 +9,7 @@ type Store = {
         username: string,
         password: string
     }) => Promise<void>,
+    logout: () => void,
     authorize: () => Promise<void>
 }
 
@@ -21,6 +22,13 @@ export const useStore = create<Store>((set) => ({
         set({
             isLoggedIn: true,
             username: args.username
+        })
+    },
+    logout: () => {
+        Storage.remove(Storage.Keys.TOKEN)
+        set({
+            isLoggedIn: false,
+            username: ""
         })
     },
     authorize: async () => {

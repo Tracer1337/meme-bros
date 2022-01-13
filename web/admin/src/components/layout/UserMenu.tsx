@@ -4,6 +4,7 @@ import { useStore } from "../../lib/store"
 
 function UserMenu() {
     const username = useStore((state) => state.username)
+    const logout = useStore((state) => state.logout)
 
     const [open, setOpen] = useState(false)
 
@@ -34,7 +35,7 @@ function UserMenu() {
                 <MenuItem>{username}</MenuItem>
                 <Divider/>
                 <MenuItem>Change Password</MenuItem>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
         </>
     )
