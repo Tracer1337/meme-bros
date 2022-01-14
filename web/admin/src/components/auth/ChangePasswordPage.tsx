@@ -23,6 +23,7 @@ function ChangePasswordPage() {
         setIsLoading(true)
         API.changePassword(values)
             .then(() => setIsSnackbarOpen(true))
+            .catch((error) => console.error(error))
             .finally(() => setIsLoading(false))
     }
 

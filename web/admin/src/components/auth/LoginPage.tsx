@@ -28,9 +28,7 @@ function LoginPage() {
         }
         setIsLoading(true)
         store.login(values)
-            .catch((error) => {
-                console.log(error)
-            })
+            .catch((error) => console.log(error))
             .finally(() => setIsLoading(false))
     }
 

@@ -1,24 +1,22 @@
 import React from "react"
-import { Grid, Paper, Typography } from "@mui/material"
-import RNApp from "../RNApp"
-import TemplateList from "./TemplatesList"
+import { Outlet, Link } from "react-router-dom"
+import { Button, Grid, Typography } from "@mui/material"
 import { BridgeProvider, SharedContextProvider, useSharedContext } from "@meme-bros/shared"
-import { API } from "../../lib/api"
+import TemplateList from "./TemplatesList"
 
 function InnerTemplatesPage() {
     const context = useSharedContext()
 
     console.log(context)
 
-    const handleTemplateClick = (template: API.Template) => {
-        context.events.emit("template.load", template.canvas)
-    }
-
     return (
         <Grid container height="calc(100vh - 64px)" px={2}>
             <Grid item xs pt={4}>
                 <Typography variant="h3">Templates</Typography>
-                <TemplateList onClick={handleTemplateClick}/>
+                <Link to="create">
+                    <Button>New</Button>
+                </Link>
+                <TemplateList/>
             </Grid>
             <Grid
                 container
@@ -27,12 +25,7 @@ function InnerTemplatesPage() {
                 justifyContent="center"
                 alignItems="center"
             >
-                <Paper variant="outlined">
-                    <RNApp
-                        width={window.innerWidth * 0.4}
-                        height={window.innerHeight * 0.9}
-                    />
-                </Paper>
+                <Outlet/>
             </Grid>
         </Grid>
     )

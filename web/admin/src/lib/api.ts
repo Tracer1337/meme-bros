@@ -77,6 +77,11 @@ export namespace API {
         canvas: Editor.Canvas,
         previewFile: string
     }
+    
+    export type CreateTemplate = {
+        name: string,
+        canvas: Omit<Editor.Canvas, "pixelRatio">
+    }
 
     export async function login(payload: {
         username: string,
@@ -98,5 +103,9 @@ export namespace API {
 
     export function getPreviewURL(template: API.Template) {
         return url("storage/" + template.previewFile)
+    }
+
+    export async function createTemplate(payload: CreateTemplate) {
+        return await postJSON<Template>(url("templates"), payload)
     }
 }
