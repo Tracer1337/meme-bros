@@ -1,7 +1,8 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { Box, List, ListItem, ListItemButton, ListItemText, styled, Typography } from "@mui/material"
 import useSWR from "swr"
+import { Box, IconButton, List, ListItem, ListItemButton, ListItemText, styled, Typography } from "@mui/material"
+import DeleteIcon from "@mui/icons-material/Delete"
 import { API, fetcher } from "../../lib/api"
 
 const PreviewImage = styled("img")({
@@ -9,12 +10,17 @@ const PreviewImage = styled("img")({
 })
 
 function TemplatesList() {
-    const { data, error } = useSWR<API.Template[]>("templates", fetcher)
+    const { data, error, mutate } = useSWR<API.Template[]>("templates", fetcher)
 
     const navigate = useNavigate()
 
     const handleClick = (template: API.Template) => {
         navigate(template.id)
+    }
+
+    const handleDelete = async (template: API.Template) => {
+        await API.deleteTemplate(template.id)
+        mutate()
     }
 
     if (error) return <div>Failed to load</div>
@@ -23,7 +29,17 @@ function TemplatesList() {
     return (
         <List>
             {data.map((template) => (
-                <ListItem key={template.id}>
+                <ListItem
+                    key={template.id}
+                    secondaryAction={
+                        <IconButton
+                            edge="end"
+                            onClick={() => handleDelete(template)}
+                        >
+                            <DeleteIcon/>
+                        </IconButton>
+                    }
+                >
                     <ListItemButton onClick={() => handleClick(template)}>
                         <Box sx={{ minWidth: 100 }}>
                             <PreviewImage

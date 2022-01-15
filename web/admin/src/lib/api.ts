@@ -23,7 +23,7 @@ async function fetchJSON<T>(
     } catch {
         result = null
     }
-    if (result.statusCode && result.statusCode >= 400) {
+    if (result?.statusCode && result.statusCode >= 400) {
         throw result
     }
     return result as T
@@ -114,5 +114,9 @@ export namespace API {
         payload: Partial<CreateTemplate>
     ) {
         return await putJSON<Template>(url(`templates/${id}`), payload)
+    }
+
+    export async function deleteTemplate(id: string) {
+        await fetchJSON(url(`templates/${id}`), { method: "DELETE" })
     }
 }
