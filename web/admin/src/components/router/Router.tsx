@@ -7,6 +7,7 @@ import LoginPage from "../auth/LoginPage"
 import ChangePasswordPage from "../auth/ChangePasswordPage"
 import TemplatesPage from "../templates/TemplatesPage"
 import CreateTemplate from "../templates/CreateTemplate"
+import UpdateTemplate from "../templates/UpdateTemplate"
 
 function auth(child: JSX.Element) {
     return (
@@ -26,7 +27,7 @@ function Router() {
                     <Route path="change-password" element={auth(<ChangePasswordPage/>)}/>
                     <Route path="templates" element={auth(<TemplatesPage/>)}>
                         <Route path="create" element={<CreateTemplate/>}/>
-                        <Route path=":id" element={<h1>Update</h1>}/>
+                        <Route path=":id" element={<UpdateTemplate/>}/>
                     </Route>
                 </Route>
             </Routes>

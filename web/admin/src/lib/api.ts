@@ -108,4 +108,11 @@ export namespace API {
     export async function createTemplate(payload: CreateTemplate) {
         return await postJSON<Template>(url("templates"), payload)
     }
+
+    export async function updateTemplate(
+        id: string,
+        payload: Partial<CreateTemplate>
+    ) {
+        return await putJSON<Template>(url(`templates/${id}`), payload)
+    }
 }
