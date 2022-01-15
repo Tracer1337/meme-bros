@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { useSWRConfig } from "swr"
 import { Alert, Grid, Paper, Snackbar, TextField } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { useSharedContext } from "@meme-bros/shared/dist"
@@ -13,6 +14,8 @@ type Fields = {
 
 function CreateTemplate() {
     const context = useSharedContext()
+
+    const { mutate } = useSWRConfig()
     
     const { register, handleSubmit } = useForm<Fields>()
 
@@ -29,7 +32,10 @@ function CreateTemplate() {
         }
         setIsLoading(true)
         API.createTemplate(values)
-            .then(() => setIsSnackbarOpen(true))
+            .then(() => {
+                setIsSnackbarOpen(true)
+                mutate("templates")
+            })
             .catch((error) => console.error(error))
             .finally(() => setIsLoading(false))
     }
