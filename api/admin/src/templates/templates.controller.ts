@@ -25,6 +25,12 @@ export class TemplatesController {
         return templates.map((template) => new TemplateEntity(template))
     }
 
+    @Get(":id")
+    async getOne(@Param("id") id: string) {
+        const template = await this.templatesService.findById(id)
+        return new TemplateEntity(template)
+    }
+
     @Put(":id")
     async update(
         @Param("id") id: string,

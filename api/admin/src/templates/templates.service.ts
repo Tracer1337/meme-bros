@@ -43,6 +43,15 @@ export class TemplatesService {
         return this.templateModel.find({})
     }
 
+    async findById(id: string): Promise<TemplateDocument> {
+        assertIsValidObjectId(id)
+        const template = await this.templateModel.findById(id)
+        if (!template) {
+            throw new NotFoundException()
+        }
+        return template
+    }
+
     async update(
         id: string,
         updateTemplateDTO: UpdateTemplateDTO
