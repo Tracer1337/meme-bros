@@ -38,6 +38,10 @@ function Canvas() {
 
     const { onMessage } = useRNWebViewMessaging(canvas)
 
+    const handleWebViewLoad = () => {
+        context.events.emit("canvas.load", null)
+    }
+
     const handleCanvasRender = async () => {
         const rendered = renderCanvas(context.canvas)
         console.log("Generate", { raw: context.canvas, rendered })
@@ -139,6 +143,7 @@ function Canvas() {
             source={{ uri }}
             ref={canvas}
             onMessage={onMessage}
+            onLoad={handleWebViewLoad}
             bounces={false}
             scrollEnabled={false}
             allowFileAccess
