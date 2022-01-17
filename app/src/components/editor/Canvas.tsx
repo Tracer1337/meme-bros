@@ -2,6 +2,7 @@ import React, { useRef, useContext, useEffect } from "react"
 import { Platform } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
+import produce from "immer"
 import {
     deepmerge,
     Editor,
@@ -123,7 +124,7 @@ function Canvas() {
     const handleTemplateLoad = (canvas: Editor.Canvas) => {
         context.set({
             renderCanvas: true,
-            canvas: scaleTemplateCanvas(canvas)
+            canvas: produce(canvas, (draft) => scaleTemplateCanvas(draft))
         })
     }
         
