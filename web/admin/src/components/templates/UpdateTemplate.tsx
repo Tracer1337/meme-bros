@@ -1,13 +1,22 @@
 import React from "react"
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import useSWR, { useSWRConfig } from "swr"
 import { API, fetcher } from "../../lib/api"
 import TemplateForm, { Fields } from "./TemplateForm"
 
+export type LocationState = API.Template
+
 function UpdateTemplate() {
     const { id } = useParams()
+
+    const locationState = useLocation().state as LocationState
     
-    const { data, error } = useSWR<API.Template>(`templates/${id}`, fetcher)
+    const { error, ...swr } = useSWR<API.Template>(
+        !locationState && `templates/${id}`,
+        fetcher
+    )
+
+    const data = locationState || swr.data
 
     const { mutate } = useSWRConfig()
 

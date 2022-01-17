@@ -4,6 +4,7 @@ import useSWR from "swr"
 import { Box, IconButton, List, ListItem, ListItemButton, ListItemText, styled, Typography } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { API, fetcher } from "../../lib/api"
+import { LocationState } from "./UpdateTemplate"
 
 const PreviewImage = styled("img")({
     height: 50
@@ -15,7 +16,7 @@ function TemplatesList() {
     const navigate = useNavigate()
 
     const handleClick = (template: API.Template) => {
-        navigate(template.id)
+        navigate(template.id, { state: template as LocationState })
     }
 
     const handleDelete = async (template: API.Template) => {
