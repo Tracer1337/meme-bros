@@ -28,7 +28,10 @@ function TemplatesList() {
     if (!data) return <div>Loading...</div>
 
     return (
-        <List>
+        <List sx={{
+            height: 700,
+            overflowY: "auto"
+        }}>
             {data.map((template) => (
                 <ListItem
                     key={template.id}
