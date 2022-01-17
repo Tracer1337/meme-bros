@@ -4,6 +4,7 @@ import ReactDOM from "react-dom"
 import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import App from "./components/App"
+import { SnackbarProvider } from "./lib/snackbar"
 
 const globalStyles = <GlobalStyles styles={{
     a: {
@@ -22,7 +23,9 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             {globalStyles}
-            <App/>
+            <SnackbarProvider>
+                <App/>
+            </SnackbarProvider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")

@@ -1,8 +1,9 @@
 import React, { useState } from "react"
-import { Alert, Container, Snackbar, TextField, Typography } from "@mui/material"
+import { Container, TextField, Typography } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { API } from "../../lib/api"
+import { useSnackbar } from "../../lib/snackbar"
 
 type Fields = {
     oldPassword: string,
@@ -11,10 +12,11 @@ type Fields = {
 }
 
 function ChangePasswordPage() {
+    const snackbar = useSnackbar()
+    
     const { register, handleSubmit } = useForm<Fields>()
 
     const [isLoading, setIsLoading] = useState(false)
-    const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
 
     const onSubmit: SubmitHandler<Fields> = (values) => {
         if (values.newPassword !== values.newPasswordConfirmation) {
@@ -22,7 +24,7 @@ function ChangePasswordPage() {
         }
         setIsLoading(true)
         API.changePassword(values)
-            .then(() => setIsSnackbarOpen(true))
+            .then(() => snackbar.success())
             .catch((error) => console.error(error))
             .finally(() => setIsLoading(false))
     }
@@ -60,20 +62,6 @@ function ChangePasswordPage() {
                     Submit
                 </LoadingButton>
             </Container>
-
-            <Snackbar
-                open={isSnackbarOpen}
-                onClose={() => setIsSnackbarOpen(false)}
-                autoHideDuration={6000}
-            >
-                <Alert
-                    severity="success"
-                    onClose={() => setIsSnackbarOpen(false)}
-                    sx={{ width: "100%" }}
-                >
-                    Password Changed
-                </Alert>
-            </Snackbar>
         </form>
     )
 }

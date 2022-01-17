@@ -6,6 +6,7 @@ import { useListeners, useSharedContext } from "@meme-bros/shared"
 import RNApp from "../RNApp"
 import { API } from "../../lib/api"
 import { scaleCanvas } from "./utils/scale"
+import { useSnackbar } from "../../lib/snackbar"
 
 export type Fields = {
     name: string,
@@ -17,6 +18,8 @@ function TemplateForm({ values, ...props }: {
     onSubmit: (values: Fields) => Promise<void>
 }) {
     const context = useSharedContext()
+
+    const snackbar = useSnackbar()
     
     const { register, handleSubmit, reset } = useForm<Fields>({
         defaultValues: values
@@ -34,6 +37,7 @@ function TemplateForm({ values, ...props }: {
         }
         setIsLoading(true)
         props.onSubmit(values)
+            .then(() => snackbar.success())
             .catch((error) => console.error(error))
             .finally(() => setIsLoading(false))
     }
