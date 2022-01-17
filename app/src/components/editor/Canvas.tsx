@@ -16,8 +16,8 @@ import {
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { loadCanvasDummy } from "./utils/dummy"
-import { createCanvasElement, scaleToScreen } from "./utils/canvas"
-import { scaleTemplateCanvas } from "../templates/utils/scale"
+import { createCanvasElement } from "./utils/canvas"
+import { scaleTemplateCanvas, scaleToScreen } from "./utils/scale"
 
 const BLANK_SIZE = 500
 

@@ -1,5 +1,4 @@
 import { Editor, makeId, getDefaultDataByType } from "@meme-bros/shared"
-import { Dimensions } from "../../../lib/dimensions"
 import { importImage } from "../../../lib/media"
 
 export async function createCanvasElement<
@@ -37,12 +36,4 @@ export async function createCanvasElement<
     }
 
     return newElement
-}
-
-export function scaleToScreen(rect: { width: number, height: number }) {
-    const width = Dimensions.get("window").width * 0.9
-    return {
-        width: width,
-        height: width / rect.width * rect.height    
-    }
 }

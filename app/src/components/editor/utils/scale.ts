@@ -1,6 +1,15 @@
 import { Editor } from "@meme-bros/shared"
-import { TemplateCanvas } from "../types"
+import { TemplateCanvas } from "../../templates/types"
 import { Dimensions } from "../../../lib/dimensions"
+import { ACTION_BAR_HEIGHT } from "../constants"
+
+function getWidth(ratio: number) {
+    let { width, height } = Dimensions.get("window")
+    height -= ACTION_BAR_HEIGHT
+    const maxWidth = width * 0.9
+    const maxHeight = height * 0.9
+    return width * ratio <= height ? maxWidth : maxHeight * (1 / ratio)
+}
 
 function scaleRect<
     T extends Record<K, Editor.Rect>,
@@ -16,7 +25,7 @@ function scaleRect<
 }
 
 export function scaleTemplateCanvas(canvas: TemplateCanvas) {
-    const width = Dimensions.get("window").width * 0.9
+    const width = getWidth(canvas.height)
     const imageWidth = 500
 
     canvas.width = width
@@ -37,4 +46,13 @@ export function scaleTemplateCanvas(canvas: TemplateCanvas) {
     })
 
     return canvas
+}
+
+export function scaleToScreen(rect: { width: number, height: number }) {
+    const ratio = rect.height / rect.width
+    const width = getWidth(ratio)
+    return {
+        width: width,
+        height: width * ratio
+    }
 }

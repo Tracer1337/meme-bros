@@ -10,8 +10,7 @@ import Canvas from "./Canvas"
 import ActionBar from "./ActionBar"
 import BaseSelector from "./BaseSelector"
 import { Dimensions } from "../../lib/dimensions"
-
-const ACTION_BAR_HEIGHT = 84
+import { ACTION_BAR_HEIGHT } from "./constants"
 
 const useDimensions = Platform.select({
     web: () => Dimensions.get("window"),

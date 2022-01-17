@@ -5,7 +5,7 @@ import { Text, Headline, Surface, IconButton, ActivityIndicator } from "react-na
 import Image from "react-native-scalable-image"
 import { RootStackParamList } from "../../Navigator"
 import Screen from "../styled/Screen"
-import { useTemplates, getPreviewURI, scaleTemplateCanvas } from "./utils"
+import { useTemplates, getPreviewURI } from "./utils"
 import { Documents } from "./utils/storage"
 
 import { TemplateMeta } from "./types"
