@@ -89,11 +89,27 @@ export class TemplatesService {
         const element = template.canvas.elements[elementId] as Editor.PickElement<"image">
         const base64 = element.data.uri.split(",")[1]
         const buffer = Buffer.from(base64, "base64")
-        return await this.storageService.put(buffer, "png")
+        const ext = this.getFileExtensionForCanvas(template.canvas)
+        return await this.storageService.put(buffer, ext)
     }
 
     async deletePreview(template: TemplateDocument) {
         await this.storageService.delete(template.previewFile)
+    }
+
+    // TODO: Move to lib package (e.g. "canvas-utils")
+    getFileExtensionForCanvas(canvas: Editor.Canvas) {
+        const animated = canvas.layers.some((layer) => {
+            const element = canvas.elements[layer]
+            return this.isImageElement(element) && element.data.animated  
+        })
+        if (animated) return "gif"
+        return "png"
+    }
+
+    // TODO: same as above
+    isImageElement(element: Editor.CanvasElement): element is Editor.PickElement<"image"> {
+        return element.type === "image"
     }
 
     getTemplateHash(template: TemplateDocument) {
