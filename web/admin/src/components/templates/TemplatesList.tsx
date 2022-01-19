@@ -5,6 +5,7 @@ import { Box, IconButton, List, ListItem, ListItemButton, ListItemText, styled, 
 import DeleteIcon from "@mui/icons-material/Delete"
 import { API, fetcher } from "../../lib/api"
 import { LocationState } from "./UpdateTemplate"
+import { useConfirm } from "../../lib/confirm"
 
 const PreviewImage = styled("img")({
     height: 50
@@ -13,6 +14,8 @@ const PreviewImage = styled("img")({
 function TemplatesList() {
     const { data, error, mutate } = useSWR<API.Template[]>("templates", fetcher)
 
+    const confirm = useConfirm()
+
     const navigate = useNavigate()
 
     const handleClick = (template: API.Template) => {
@@ -20,8 +23,11 @@ function TemplatesList() {
     }
 
     const handleDelete = async (template: API.Template) => {
-        await API.deleteTemplate(template.id)
-        mutate()
+        if (await confirm(`The template '${template.name}' will be deleted`)) {
+            await API.deleteTemplate(template.id)
+            navigate("/templates")
+            mutate()
+        }
     }
 
     if (error) return <div>Failed to load</div>

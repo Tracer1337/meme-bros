@@ -5,6 +5,7 @@ import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import App from "./components/App"
 import { SnackbarProvider } from "./lib/snackbar"
+import { DialogProvider } from "./lib/dialogs"
 
 const globalStyles = <GlobalStyles styles={{
     a: {
@@ -24,7 +25,9 @@ ReactDOM.render(
             <CssBaseline/>
             {globalStyles}
             <SnackbarProvider>
-                <App/>
+                <DialogProvider>
+                    <App/>
+                </DialogProvider>
             </SnackbarProvider>
         </ThemeProvider>
     </React.StrictMode>,
