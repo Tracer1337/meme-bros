@@ -25,10 +25,4 @@ public class CoreModule extends ReactContextBaseJavaModule {
         String output = Api.renderFromJSON(json);
         promise.resolve(output);
     }
-
-    @ReactMethod
-    public void textfit(String text, String fontFamily, String fontWeight, float width, float height, Promise promise) {
-        double output = Api.fitText(text, fontFamily, fontWeight, width, height);
-        promise.resolve(output);
-    }
 }
