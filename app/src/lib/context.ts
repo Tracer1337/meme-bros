@@ -30,7 +30,7 @@ export function AppContextProvider({
     const [value, setValue] = useState(appContextDefaultValue)
 
     value.set = (partial) => {
-        setValue(deepmerge(value, partial) as AppContextValue)
+        setValue((value) => deepmerge(value, partial) as AppContextValue)
     }
 
     return React.createElement(

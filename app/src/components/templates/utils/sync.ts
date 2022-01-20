@@ -5,6 +5,7 @@ import { API } from "../../../lib/api"
 import { TemplateMeta, TemplatesFile } from "../types"
 import { useAppContext } from "../../../lib/context"
 import { AnyFunction } from "tsdef"
+import { useNetInfo } from "@react-native-community/netinfo"
 
 async function syncTemplates({ onBegin, onDone }: {
     onBegin: AnyFunction,
@@ -14,6 +15,7 @@ async function syncTemplates({ onBegin, onDone }: {
     const hash = await API.getTemplatesListHash()
 
     if (templatesFile.hash === hash) {
+        onDone()
         return
     }
 
@@ -50,7 +52,7 @@ async function syncTemplates({ onBegin, onDone }: {
     templatesFile.hash = hash
     templatesFile.list = newList
     await Documents.writeTemplatesFile(templatesFile)
-
+    
     onDone()
 }
 
@@ -102,23 +104,31 @@ function diffUnique<T>(a: T[], b: T[]) {
             diff.added.push(value)
         }
     })
+
     return diff
 }
 
 export function useTemplatesSync() {
     const appContext = useAppContext()
 
+    const netInfo = useNetInfo()
+
     useEffect(() => {
+        if (!netInfo.isConnected) {
+            return
+        }
         setupTemplatesStorage()
             .then(() => syncTemplates({
                 onBegin: () => appContext.set({
                     templates: {
-                        isSyncing: true
+                        isSyncing: true,
+                        error: false
                     }
                 }),
                 onDone: () => appContext.set({
                     templates: {
-                        isSyncing: false
+                        isSyncing: false,
+                        error: false
                     }
                 })
             }))
@@ -126,9 +136,10 @@ export function useTemplatesSync() {
                 console.error(error)
                 appContext.set({
                     templates: {
+                        isSyncing: false,
                         error: true
                     }
                 })
             })
-    }, [])
+    }, [netInfo.isConnected])
 }
