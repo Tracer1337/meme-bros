@@ -15,14 +15,14 @@ function BaseSelector({ navigation }: {
             <Button onPress={() => navigation.navigate("Templates")}>
                 Templates
             </Button>
-            <Button onPress={() => context.events.emit("canvas.base.import", null)}>
+            <Button onPress={() => context.events.emit("canvas.base.import")}>
                 Import
             </Button>
-            <Button onPress={() => context.events.emit("canvas.base.blank", null)}>
+            <Button onPress={() => context.events.emit("canvas.base.blank")}>
                 Blank
             </Button>
             {__DEV__ && (
-                <Button onPress={() => context.events.emit("canvas.base.dummy", null)}>
+                <Button onPress={() => context.events.emit("canvas.base.dummy")}>
                     Load Dummy
                 </Button>
             )}

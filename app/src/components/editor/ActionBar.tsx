@@ -29,7 +29,7 @@ function CanvasActions() {
             {context.canvas.mode === Editor.CanvasMode.CLASSIC && (
                 <IconButton
                     icon="cog"
-                    onPress={() => context.events.emit("canvas.base.config", null)}
+                    onPress={() => context.events.emit("canvas.base.config")}
                 />
             )}
             <IconButton
@@ -56,7 +56,7 @@ function CanvasActions() {
             />
             <IconButton
                 icon="undo"
-                onPress={() => context.events.emit("history.pop", null)}
+                onPress={() => context.events.emit("history.pop")}
             />
         </View>
     )

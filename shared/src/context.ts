@@ -18,16 +18,16 @@ export namespace SharedContext {
         "element.config": Editor.CanvasElement["id"],
         "element.copy": Editor.CanvasElement["id"],
         "element.layer": { id: Editor.CanvasElement["id"], layer: -1 | 1 },
-        "canvas.render": null,
-        "canvas.render.done": null,
-        "canvas.base.import": null,
-        "canvas.base.blank": null,
-        "canvas.base.dummy": null,
-        "canvas.base.config": null,
-        "canvas.load": null,
+        "canvas.render": undefined,
+        "canvas.render.done": undefined,
+        "canvas.base.import": undefined,
+        "canvas.base.blank": undefined,
+        "canvas.base.dummy": undefined,
+        "canvas.base.config": undefined,
+        "canvas.load": undefined,
         "template.load": Editor.Canvas,
-        "history.push": null,
-        "history.pop": null
+        "history.push": undefined,
+        "history.pop": undefined
     }
 
     export type ContextValue = {

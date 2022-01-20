@@ -32,7 +32,7 @@ function Image({ element, size }: ElementProps<"image">) {
 
     const handleConfig = async () => {
         const data = await dialogs.open("ImageConfigDialog", element)
-        context.events.emit("history.push", null)
+        context.events.emit("history.push")
         const partial = !element.data.keepAspectRatio && data.keepAspectRatio
             ? resetSize()
             : {}

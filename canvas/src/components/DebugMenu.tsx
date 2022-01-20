@@ -1,6 +1,6 @@
 import { Button, Paper, Typography, TextField, styled } from "@mui/material"
 import { useState } from "react"
-import { copyElement, SharedContext, useSharedContext } from "@meme-bros/shared"
+import { copyElement, useSharedContext } from "@meme-bros/shared"
 
 const Action = styled(Button)(({ theme }) => ({
     marginBottom: theme.spacing(1),
@@ -13,10 +13,7 @@ function DebugMenu() {
 
     const [copyId, setCopyId] = useState(0)
 
-    const event = <T extends keyof SharedContext.Events>(
-        event: T,
-        data: SharedContext.Events[T]
-    ) => () => {
+    const event = (event: any, data?: any) => () => {
         context.events.emit(event, data)
     }
     
@@ -63,11 +60,11 @@ function DebugMenu() {
             <Action onClick={() => context.set(copyElement(context, copyId))}>Copy</Action>
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>History</Typography>
-            <Action onClick={event("history.push", null)}>Push</Action>
-            <Action onClick={event("history.pop", null)}>Pop</Action>
+            <Action onClick={event("history.push")}>Push</Action>
+            <Action onClick={event("history.pop")}>Pop</Action>
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Dialogs</Typography>
-            <Action onClick={event("canvas.base.config", null)}>Base Config</Action>
+            <Action onClick={event("canvas.base.config")}>Base Config</Action>
         </Paper>
     )
 }

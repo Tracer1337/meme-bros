@@ -63,7 +63,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
 
     const handleConfig = async () => {
         const data = await dialogs.open("TextboxConfigDialog", element)
-        context.events.emit("history.push", null)
+        context.events.emit("history.push")
         context.set(updateElementData(context, element, data))
     }
 
@@ -98,7 +98,7 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
 
     useEffect(() => {
         if (isEditing) {
-            context.events.emit("history.push", null)
+            context.events.emit("history.push")
         }
         setDraggableProps({ disabled: isEditing })
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -71,7 +71,7 @@ function Canvas() {
         if (!partial.type) {
             throw new Error("Element type is not defined in 'element.create'")
         }
-        context.events.emit("history.push", null)
+        context.events.emit("history.push")
         context.set(addElement(context, deepmerge(
             await createCanvasElement(partial.type),
             partial
@@ -79,12 +79,12 @@ function Canvas() {
     }
 
     const handleCreateElementDefault = async (type: Editor.CanvasElement["type"]) => {
-        context.events.emit("history.push", null)
+        context.events.emit("history.push")
         context.set(addElement(context, await createCanvasElement(type)))
     }
 
     const handleRemoveElement = (id: Editor.CanvasElement["id"]) => {
-        context.events.emit("history.push", null)
+        context.events.emit("history.push")
         context.set(removeElement(context, id))
     }
 
@@ -92,7 +92,7 @@ function Canvas() {
         if (!context.canvas.base) {
             return
         }
-        context.events.emit("history.push", null)
+        context.events.emit("history.push")
         const base = await dialogs.open("CanvasBaseConfigDialog", context.canvas.base)
         context.set(updateCanvasBase(context, base))
     }
@@ -106,7 +106,7 @@ function Canvas() {
     }
 
     const updateCanvas = () => {
-        context.events.emit("history.push", null)
+        context.events.emit("history.push")
         const elements: DeepPartial<Editor.Canvas["elements"]> = {}
         if (context.canvas.base) {
             const baseElement = context.canvas.elements[context.canvas.base.id]

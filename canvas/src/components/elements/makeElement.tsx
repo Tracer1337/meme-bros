@@ -95,7 +95,7 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
         })
 
         const updateElement = () => {
-            context.events.emit("history.push", null)
+            context.events.emit("history.push")
             context.set(updateElementRect(context, element, {
                 x: pos.x.value,
                 y: pos.y.value,

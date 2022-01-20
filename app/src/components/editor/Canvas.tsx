@@ -40,7 +40,7 @@ function Canvas() {
     const { onMessage } = useRNWebViewMessaging(canvas)
 
     const handleWebViewLoad = () => {
-        context.events.emit("canvas.load", null)
+        context.events.emit("canvas.load")
     }
 
     const handleCanvasRender = async () => {
@@ -52,7 +52,7 @@ function Canvas() {
             width: context.canvas.width,
             height: context.canvas.height
         })
-        context.events.emit("canvas.render.done", null)
+        context.events.emit("canvas.render.done")
     }
 
     const handleBaseImport = async () => {
