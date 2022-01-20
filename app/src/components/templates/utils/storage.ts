@@ -69,7 +69,8 @@ export namespace Documents {
     }
 
     export async function downloadPreview(template: API.Template) {
-        const filename = `${template.id}.png`
+        const ext = template.previewFile.split(".").pop()
+        const filename = `${template.id}.${ext}`
         await RNFS.downloadFile({
             fromUrl: API.getPreviewURL(template),
             toFile: path(join(PREVIEWS_DIR, filename))

@@ -26,15 +26,23 @@ async function syncTemplates({ onBegin, onDone }: {
 
     if (templatesDiff.added.length > 0) {
         const templates = await API.getTemplatesAsMap(templatesDiff.added)
-        promises.push(...templatesDiff.added.map((hash) =>
-            addTemplate(templatesFile, templates[hash])
-        ))
+        promises.push(...templatesDiff.added.map(async (hash) => {
+            try {
+                await addTemplate(templatesFile, templates[hash])
+            } catch (error) {
+                console.error("Could not add template", error)
+            }
+        }))
     }
 
     if (templatesDiff.removed.length > 0) {
-        promises.push(...templatesDiff.removed.map((hash) =>
-            removeTemplate(templatesFile, templatesFile.meta[hash])
-        ))
+        promises.push(...templatesDiff.removed.map(async (hash) => {
+            try {
+                await removeTemplate(templatesFile, templatesFile.meta[hash])
+            } catch (error) {
+                console.error("Could not remove template", error)
+            }
+        }))
     }
 
     await Promise.all(promises)
