@@ -26,12 +26,14 @@ type Canvas struct {
 }
 
 type CanvasElements struct {
-	Background *Background
+	Background *BackgroundElement
 	Images     []*ImageElement
 	Animations []*AnimatedElement
 	Textboxes  []*TextboxElement
 	Shapes     []*ShapeElement
 }
+
+type BackgroundElement struct{}
 
 type ImageElement struct {
 	Index int
