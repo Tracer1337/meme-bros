@@ -61,7 +61,9 @@ export function useWindowMessaging() {
         const json = JSON.stringify(message)
         // @ts-ignore
         window.ReactNativeWebView?.postMessage(json)
-        window.top?.postMessage(json)
+        if (window.top && window.top !== window) {
+            window.top.postMessage(json)
+        }
     }
 
     const listeners: [string, AnyFunction][] = [

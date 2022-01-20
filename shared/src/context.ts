@@ -75,9 +75,11 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
     const [context, setContext] = useState(defaultContextValue)
 
     context.set = (partial, emit = true) => {
-        const newState = deepmerge(context, partial) as SharedContext.ContextValue
-        newState.events = defaultContextValue.events
-        setContext(newState)
+        setContext((context) => {
+            const newState = deepmerge(context, partial) as SharedContext.ContextValue
+            newState.events = defaultContextValue.events
+            return newState
+        })
         if (emit) {
             bridge.send({
                 event: "context.set",
