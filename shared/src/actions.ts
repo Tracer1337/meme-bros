@@ -98,9 +98,6 @@ export function removeElement(
                 : state.interactions.focus
         },
         canvas: {
-            elements: produce(state.canvas.elements, (elements) => {
-                delete elements[id]
-            }),
             layers: produce(state.canvas.layers, (layers) => {
                 const index = layers.findIndex((_id) => id === _id)
                 layers.splice(index, 1)

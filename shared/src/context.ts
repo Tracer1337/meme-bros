@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react"
 import { DeepPartial } from "tsdef"
+import produce from "immer"
 import EventEmitter from "./EventEmitter"
 import { useBridge, Bridge } from "./bridge"
 import { useListeners } from "./events"
@@ -76,7 +77,9 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
 
     context.set = (partial, emit = true) => {
         setContext((context) => {
-            const newState = deepmerge(context, partial) as SharedContext.ContextValue
+            const newState = applyMiddleware(
+                deepmerge(context, partial) as SharedContext.ContextValue
+            )
             newState.events = defaultContextValue.events
             return newState
         })
@@ -112,4 +115,21 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
         { value: context },
         props.children
     )
+}
+
+const middleware = [removeElements]
+
+function applyMiddleware(state: SharedContext.ContextValue) {
+    return produce(state, (draft) => {
+        middleware.forEach((fn) => fn(draft))
+    })
+}
+
+function removeElements(state: SharedContext.ContextValue) {
+    Object.keys(state.canvas.elements).forEach((key) => {
+        const id = parseInt(key)
+        if (!state.canvas.layers.includes(id)) {
+            delete state.canvas.elements[id]
+        }
+    })
 }
