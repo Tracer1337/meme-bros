@@ -5,19 +5,14 @@
   "author": "Tracer1337 <merlin.moelter@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "postinstall": "node patch-packages.js"
+    "postinstall": "node patch-packages.js",
+    "build": "yarn turbo run build",
+    "start": "yarn turbo run start --parallel --no-cache"
   },
   "workspaces": {
     "packages": [
-      "core/types",
-      "canvas",
-      "app",
-      "mobile",
-      "web/admin",
-      "shared",
-      "api/admin",
-      "api/public",
-      "api/shared"
+      "apps/**",
+      "packages/**"
     ],
     "nohoist": [
       "**/react",
@@ -26,5 +21,18 @@
       "**/react-native/**",
       "**/react-native-web"
     ]
+  },
+  "devDependencies": {
+    "turbo": "^1.0.28"
+  },
+  "turbo": {
+    "pipeline": {
+      "build": {
+        "dependsOn": ["^build"]
+      },
+      "start": {
+        "cache": false
+      }
+    }
   }
 }

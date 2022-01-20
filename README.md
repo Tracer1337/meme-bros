@@ -3,19 +3,47 @@
 ## Project Structure
 
 ```
-|-- app
-|-- canvas
-|-- core
-|-- mobile
-|-- shared
-|-- web
-|   |-- website
-|   |-- admin
-|-- api
-|   |-- admin
-|   |-- shared
-|   |-- public
+|-- apps
+|  |-- mobile
+|  |-- canvas
+|  |-- web
+|  |  |-- admin
+|  |  |-- website
+|  |-- api
+|  |  |-- admin
+|  |  |-- public
+|-- packages
+|  |-- core
+|  |-- app
+|  |-- api-lib
+|  |-- client-lib
 ```
+
+## Apps
+
+``canvas``
+
+Web-based component for ``app``
+
+``mobile``
+
+Android + iOS integration for ``app``
+
+``api/public``
+
+API accessible by everyone (mainly used by ``app``)
+
+``api/admin``
+
+API protected by credentials (mainly used by ``web/admin``)
+
+``web/website``
+
+Web integration for ``app`` + Landing Page
+
+``web/admin``
+
+Templates-Management using web integration for ``app``
 
 ## Packages
 
@@ -27,34 +55,10 @@ Meme-Generator written in Go
 
 Shared react-native application
 
-``canvas``
-
-Web-based component for ``app``
-
-``mobile``
-
-Android + iOS integration for ``app``
-
-``shared``
+``client-lib``
 
 Shared modules between canvas + mobile
 
-``web/website``
-
-Web integration for ``app`` + Landing Page
-
-``web/admin``
-
-Templates-Management using web integration for ``app``
-
-``api/public``
-
-API accessible by everyone (mainly used by ``app``)
-
-``api/admin``
-
-API protected by credentials (mainly used by ``web/admin``)
-
-``api/shared``
+``api-lib``
 
 Shared modules between ``api/public`` + ``api/admin``

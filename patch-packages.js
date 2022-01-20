@@ -2,6 +2,7 @@ const fs = require("fs")
 const path = require("path")
 
 const NODE_MODULES = "node_modules"
+const APPS = "apps"
 const WEB = "web"
 const ADMIN = "admin"
 const STYLIS = "stylis"
@@ -30,7 +31,7 @@ function patchStylisPackage() {
 
 function patchReactHookFormPackage() {
     patchPackageJSON(
-        path.join(__dirname, WEB, ADMIN, NODE_MODULES, REACT_HOOK_FORM),
+        path.join(__dirname, APPS, WEB, ADMIN, NODE_MODULES, REACT_HOOK_FORM),
         (packageFile) => {
             packageFile.module = packageFile.main
         }
