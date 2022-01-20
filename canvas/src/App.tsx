@@ -28,11 +28,11 @@ function App() {
 
     const context = useSharedContext()
 
-    const history = useRef<SharedContext.ContextValue[]>([]).current
+    const history = useRef<SharedContext.ContextValue["canvas"][]>([]).current
     const [debug, setDebug] = useState(false)
 
     const handleHistoryPush = () => {
-        history.push(context)
+        history.push(context.canvas)
         if (history.length > HISTORY_LENGTH) {
             history.shift()
         }
@@ -43,7 +43,7 @@ function App() {
         if (!newState) {
             return
         }
-        context.set(newState)
+        context.set({ canvas: newState })
     }
 
     useListeners(context.events, [
