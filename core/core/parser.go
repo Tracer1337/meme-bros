@@ -39,7 +39,7 @@ func (pc *ParsingContext) parseCanvas(v *fastjson.Value) *Canvas {
 		BackgroundColor: parseRGBA(v.Get("backgroundColor")),
 		Debug:           v.GetBool("debug"),
 		Elements: &CanvasElements{
-			Background: &Background{},
+			Background: &BackgroundElement{},
 			Images:     pc.parseImages(elements["image"]),
 			Animations: pc.parseAnimations(elements["image"]),
 			Textboxes:  pc.parseTextboxes(elements["textbox"]),
