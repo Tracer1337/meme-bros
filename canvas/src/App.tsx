@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Box, styled } from "@mui/material"
 import { SharedContext, useListeners, useSharedContext, useWindowMessaging } from "@meme-bros/shared"
 import Canvas from "./components/Canvas"
-import { mockContextValue } from "./mock"
+import { mockCanvas } from "./mock"
 import DebugMenu from "./components/DebugMenu"
 import config from "./config"
 
@@ -54,7 +54,7 @@ function App() {
     useEffect(() => {
         if (config.debug) {
             requestAnimationFrame(() =>
-                context.set(mockContextValue)
+                context.set({ canvas: mockCanvas })
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -162,16 +162,14 @@ function Canvas() {
     }, [context.canvas.width, context.canvas.height, size])
 
     useEffect(() => {
-        requestAnimationFrame(() => {
-            if (!canvasRef.current) {
-                return
-            }
-            context.set({
-                canvasDomRect: canvasRef.current.getBoundingClientRect()
-            })
+        if (!canvasRef.current) {
+            return
+        }
+        context.set({
+            canvasDomRect: canvasRef.current.getBoundingClientRect()
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [canvasRef])
+    }, [canvasRef, context.canvas.width, context.canvas.height])
     
     return (
         <div style={getCanvasStyles(context.canvas)} ref={canvasRef}>
