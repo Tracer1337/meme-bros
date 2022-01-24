@@ -16,14 +16,14 @@ export class TemplatesController {
         return templates.map((template) => new TemplateEntity(template))
     }
 
-    @Get("list")
+    @Get("hash")
     async getList() {
-        return await this.templatesService.getHashList()
+        return await this.templatesService.getHash()
     }
 
     @Get("list/hash")
-    async getListHash() {
-        return await this.templatesService.getHashListHash()
+    async getHashList() {
+        return await this.templatesService.getHashList()
     }
 
     @Get("list/new")

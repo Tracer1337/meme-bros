@@ -26,6 +26,16 @@ export class TemplatesService {
         return this.templateModel.find(query)
     }
 
+    async getHash() {
+        const lists = await Promise.all([
+            this.getHashList(),
+            this.getNewList(),
+            this.getTopList(),
+            this.getHotList()
+        ])
+        return createHash(lists, "md5")
+    }
+
     async getHashList() {
         const docs = await this.templateModel.aggregate<
             Pick<Template, "hash">
@@ -41,10 +51,6 @@ export class TemplatesService {
             }
         ])
         return docs.map((doc) => doc.hash)
-    }
-
-    async getHashListHash() {
-        return createHash(await this.getHashList(), "md5")
     }
 
     async getNewList(): Promise<string[]> {
@@ -81,7 +87,7 @@ export class TemplatesService {
         return docs.map((doc) => doc._id.toString())
     }
 
-    async getHotList() {
+    async getHotList(): Promise<string[]> {
         return []
     }
 
