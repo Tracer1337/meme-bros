@@ -6,7 +6,7 @@ import {
     assertIsValidObjectId,
     Template,
     TemplateDocument
-} from "@meme-bros/api-shared"
+} from "@meme-bros/api-lib"
 
 @Injectable()
 export class TemplatesService {

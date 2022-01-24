@@ -9,7 +9,7 @@ import { useTemplates, getPreviewURI } from "./utils"
 import { Documents } from "./utils/storage"
 
 import { TemplateMeta } from "./types"
-import { useSharedContext } from "@meme-bros/shared"
+import { useSharedContext } from "@meme-bros/client-lib"
 import { useAppContext } from "../../lib/context"
 
 function Item({ template, onLoad }: {

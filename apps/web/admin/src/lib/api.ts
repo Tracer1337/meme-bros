@@ -1,4 +1,4 @@
-import type { Editor } from "@meme-bros/shared"
+import type { Editor } from "@meme-bros/client-lib"
 import { Storage } from "./storage"
 
 const API_HOST = process.env.API_HOST || "http://localhost:5000"

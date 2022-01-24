@@ -12,7 +12,7 @@ import {
     useNativeModule,
     useRNWebViewMessaging,
     useSharedContext
-} from "@meme-bros/shared"
+} from "@meme-bros/client-lib"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { loadCanvasDummy } from "./utils/dummy"

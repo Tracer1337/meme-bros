@@ -1,14 +1,14 @@
 import { FilterQuery, Model } from "mongoose"
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
-import type { Editor } from "@meme-bros/shared"
+import type { Editor } from "@meme-bros/client-lib"
 import {
     createHash,
     assertIsValidObjectId,
     StorageService,
     Template,
     TemplateDocument
-} from "@meme-bros/api-shared"
+} from "@meme-bros/api-lib"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
 import { canvasValidator } from "./validators/canvas.validator"
 import { UpdateTemplateDTO } from "./dto/update-template.dto"

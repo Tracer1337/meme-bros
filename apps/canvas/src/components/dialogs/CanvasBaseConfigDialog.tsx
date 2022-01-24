@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material"
 import { useState } from "react"
-import { Editor } from "@meme-bros/shared"
+import { Editor } from "@meme-bros/client-lib"
 import { DialogProps } from "../../lib/DialogHandler"
 import Switch from "../inputs/Switch"
 

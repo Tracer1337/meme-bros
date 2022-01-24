@@ -1,4 +1,4 @@
-import type { Editor } from "@meme-bros/shared"
+import type { Editor } from "@meme-bros/client-lib"
 import { IsString, IsNotEmpty, Allow } from "class-validator"
 
 export class CreateTemplateDTO {

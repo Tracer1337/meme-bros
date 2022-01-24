@@ -11,7 +11,7 @@ import {
     SharedContext,
     removeElement,
     useListeners
-} from "@meme-bros/shared"
+} from "@meme-bros/client-lib"
 import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"

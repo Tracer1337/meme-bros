@@ -5,7 +5,7 @@ import {
     BridgeProvider,
     SharedContextProvider,
     NativeModulesProvider
-} from "@meme-bros/shared"
+} from "@meme-bros/client-lib"
 import { name as appName } from "./app.json"
 
 function Main() {

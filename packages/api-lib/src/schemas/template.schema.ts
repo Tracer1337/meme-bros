@@ -1,4 +1,4 @@
-import type { Editor } from "@meme-bros/shared"
+import type { Editor } from "@meme-bros/client-lib"
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import { Document, SchemaTypes } from "mongoose"
 

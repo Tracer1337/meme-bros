@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { Appbar, IconButton, FAB } from "react-native-paper"
-import { Editor, copyElement, layerElement, useSharedContext } from "@meme-bros/shared"
+import { Editor, copyElement, layerElement, useSharedContext } from "@meme-bros/client-lib"
 import { setListeners } from "../../lib/events"
 import { createCanvasElement } from "./utils/canvas"
 

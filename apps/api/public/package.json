@@ -9,8 +9,8 @@
     "start": "nest start --watch"
   },
   "dependencies": {
-    "@meme-bros/api-shared": "*",
-    "@meme-bros/shared": "*",
+    "@meme-bros/api-lib": "*",
+    "@meme-bros/client-lib": "*",
     "@nestjs/common": "^8.2.4",
     "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.2.4",

@@ -1,5 +1,5 @@
 import produce from "immer"
-import { Editor } from "@meme-bros/shared"
+import { Editor } from "@meme-bros/client-lib"
 import { API } from "../../../lib/api"
 
 export function scaleCanvas(canvas: Editor.Canvas): API.CreateTemplate["canvas"] {

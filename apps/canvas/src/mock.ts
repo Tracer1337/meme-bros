@@ -1,5 +1,5 @@
-import { Editor } from "@meme-bros/shared"
-import { getDefaultDataByType } from "@meme-bros/shared"
+import { Editor } from "@meme-bros/client-lib"
+import { getDefaultDataByType } from "@meme-bros/client-lib"
 
 export const mockCanvas: Editor.Canvas = {
     width: 500,

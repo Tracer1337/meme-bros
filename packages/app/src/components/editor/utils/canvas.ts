@@ -1,4 +1,4 @@
-import { Editor, makeId, getDefaultDataByType } from "@meme-bros/shared"
+import { Editor, makeId, getDefaultDataByType } from "@meme-bros/client-lib"
 import { importImage } from "../../../lib/media"
 
 export async function createCanvasElement<

@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
-import { Editor } from "@meme-bros/shared"
+import { Editor } from "@meme-bros/client-lib"
 import { DialogProps } from "../../lib/DialogHandler"
 import { getShapeStyles } from "../elements/Shape"
 import { colors, shapeVariants } from "../inputs/items"

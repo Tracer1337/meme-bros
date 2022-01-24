@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common"
 import { JwtService } from "@nestjs/jwt"
-import { createHash } from "@meme-bros/api-shared"
+import { createHash } from "@meme-bros/api-lib"
 import { UsersService } from "../users/users.service"
 import { ChangePasswordDTO } from "./dto/change-password.dto"
 import { LoginDTO } from "./dto/login.dto"

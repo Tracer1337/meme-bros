@@ -1,5 +1,5 @@
 import React from "react"
-import { useSharedContext } from "@meme-bros/shared"
+import { useSharedContext } from "@meme-bros/client-lib"
 import { StyleSheet } from "react-native"
 import { Button, Surface } from "react-native-paper"
 import { NavigationProp } from "@react-navigation/native"

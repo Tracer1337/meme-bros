@@ -1,7 +1,7 @@
 import React from "react"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Platform, StyleSheet, useWindowDimensions, View } from "react-native"
-import { useSharedContext } from "@meme-bros/shared"
+import { useSharedContext } from "@meme-bros/client-lib"
 import { Portal } from "react-native-paper"
 import { useIsFocused } from "@react-navigation/native"
 import { RootStackParamList } from "../../Navigator"

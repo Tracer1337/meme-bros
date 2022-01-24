@@ -1,6 +1,6 @@
 import { Button, Paper, Typography, TextField, styled } from "@mui/material"
 import { useState } from "react"
-import { copyElement, useSharedContext } from "@meme-bros/shared"
+import { copyElement, useSharedContext } from "@meme-bros/client-lib"
 
 const Action = styled(Button)(({ theme }) => ({
     marginBottom: theme.spacing(1),

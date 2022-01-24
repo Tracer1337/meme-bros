@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react"
 import { DeepPartial } from "tsdef"
-import { deepmerge } from "@meme-bros/shared"
+import { deepmerge } from "@meme-bros/client-lib"
 
 export type AppContextValue = {
     set: (partial: DeepPartial<AppContextValue>) => void,

@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react"
 import * as CSS from "csstype"
-import { Editor, deepmerge } from "@meme-bros/shared"
+import { Editor, deepmerge } from "@meme-bros/client-lib"
 import { DialogContext } from "../../lib/DialogHandler"
 import { consumeEvent, setListeners } from "../../lib/events"
 import makeElement, { ElementProps } from "./makeElement"
-import { updateElementData, updateElementRect, useSharedContext } from "@meme-bros/shared"
+import { updateElementData, updateElementRect, useSharedContext } from "@meme-bros/client-lib"
 
 export function getImageStyles(element: Editor.PickElement<"image">): CSS.Properties {
     return {
