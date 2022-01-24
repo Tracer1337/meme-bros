@@ -7,7 +7,7 @@
   "scripts": {
     "postinstall": "node patch-packages.js",
     "build": "yarn turbo run build",
-    "start": "yarn turbo run start --parallel --no-cache"
+    "dev": "yarn turbo run dev --parallel --no-cache"
   },
   "workspaces": {
     "packages": [
@@ -30,7 +30,7 @@
       "build": {
         "dependsOn": ["^build"]
       },
-      "start": {
+      "dev": {
         "cache": false
       }
     }

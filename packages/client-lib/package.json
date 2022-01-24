@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "dev": "tsc --watch"
   },
   "dependencies": {
     "@meme-bros/core": "*",

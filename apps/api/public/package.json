@@ -5,6 +5,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "dev": "yarn start",
     "start": "nest start --watch"
   },
   "dependencies": {

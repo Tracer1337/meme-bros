@@ -34,6 +34,7 @@
     "react-native-monorepo-tools": "^1.1.4"
   },
   "scripts": {
+    "dev": "yarn start",
     "start": "cross-env PORT=4000 BROWSER=none concurrently \"node proxy.js\" \"craco start\"",
     "build": "craco build"
   },

@@ -6,6 +6,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "dev": "yarn start",
     "start": "react-native start",
     "apk:build": "cd android && gradlew assembleRelease",
     "apk:install": "adb install -r android\\app\\build\\outputs\\apk\\release\\app-release.apk"
