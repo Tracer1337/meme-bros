@@ -26,6 +26,21 @@ export class TemplatesController {
         return await this.templatesService.getHashListHash()
     }
 
+    @Get("list/new")
+    async getNewList() {
+        return await this.templatesService.getNewList()
+    }
+
+    @Get("list/top")
+    async getTopList() {
+        return await this.templatesService.getTopList()
+    }
+
+    @Get("list/hot")
+    async getHotList() {
+        return await this.templatesService.getHotList()
+    }
+
     @Post(":id/register-use")
     async registerUse(@Param("id") id: string) {
         await this.templatesService.registerUse(id)

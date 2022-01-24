@@ -32,7 +32,6 @@ export class TemplatesService {
         >([
             {
                 "$sort": {
-                    "uses": -1, 
                     "name": 1
                 }
             }, {
@@ -46,6 +45,44 @@ export class TemplatesService {
 
     async getHashListHash() {
         return createHash(await this.getHashList(), "md5")
+    }
+
+    async getNewList(): Promise<string[]> {
+        const docs = await this.templateModel.aggregate<
+            Pick<TemplateDocument, "_id">
+        >([
+            {
+                "$sort": {
+                    "_id": -1
+                }
+            }, {
+                "$project": {
+                    "_id": 1
+                }
+            }
+        ])
+        return docs.map((doc) => doc._id.toString())
+    }
+
+    async getTopList(): Promise<string[]> {
+        const docs = await this.templateModel.aggregate<
+            Pick<TemplateDocument, "_id">
+        >([
+            {
+                "$sort": {
+                    "uses": -1
+                }
+            }, {
+                "$project": {
+                    "_id": 1
+                }
+            }
+        ])
+        return docs.map((doc) => doc._id.toString())
+    }
+
+    async getHotList() {
+        return []
     }
 
     async registerUse(id: string) {
