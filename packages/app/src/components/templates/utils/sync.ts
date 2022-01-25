@@ -1,18 +1,18 @@
 import { useEffect } from "react"
+import { AnyFunction } from "tsdef"
+import { useNetInfo } from "@react-native-community/netinfo"
 import { setupTemplatesStorage } from "./setup"
 import { Documents } from "./storage"
 import { API } from "../../../lib/api"
 import { TemplateMeta, TemplatesFile } from "../types"
 import { useAppContext } from "../../../lib/context"
-import { AnyFunction } from "tsdef"
-import { useNetInfo } from "@react-native-community/netinfo"
 
 async function syncTemplates({ onBegin, onDone }: {
     onBegin: AnyFunction,
     onDone: AnyFunction
 }) {
     const templatesFile = await Documents.readTemplatesFile()
-    const hash = await API.getTemplatesListHash()
+    const hash = await API.getTemplatesHash()
 
     if (templatesFile.hash === hash) {
         onDone()
@@ -21,8 +21,14 @@ async function syncTemplates({ onBegin, onDone }: {
 
     onBegin()
 
-    const newList = await API.getTemplatesList()
-    const templatesDiff = diffUnique(templatesFile.list, newList)
+    const [hashList, newList, topList, hotList] = await Promise.all([
+        API.getHashList(),
+        API.getNewList(),
+        API.getTopList(),
+        API.getHotList()
+    ])
+
+    const templatesDiff = diffUnique(templatesFile.hashList, hashList)
 
     const promises = []
 
@@ -50,7 +56,10 @@ async function syncTemplates({ onBegin, onDone }: {
     await Promise.all(promises)
 
     templatesFile.hash = hash
-    templatesFile.list = newList
+    templatesFile.hashList = hashList
+    templatesFile.newList = newList
+    templatesFile.topList = topList
+    templatesFile.hotList = hotList
     await Documents.writeTemplatesFile(templatesFile)
     
     onDone()
@@ -64,7 +73,7 @@ async function addTemplate(
         Documents.writeTemplate(template),
         Documents.downloadPreview(template)
     ])
-    templatesFile.meta[template.hash] = {
+    templatesFile.meta[template.id] = {
         name: template.name,
         hash: template.hash,
         id: template.id,
@@ -77,7 +86,7 @@ async function removeTemplate(
     templatesFile: TemplatesFile,
     template: TemplateMeta
 ) {
-    delete templatesFile.meta[template.hash]
+    delete templatesFile.meta[template.id]
     await Promise.all([
         Documents.removeTemplate(template),
         Documents.removePreview(template)

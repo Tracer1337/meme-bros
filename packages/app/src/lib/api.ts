@@ -40,12 +40,24 @@ export namespace API {
         )
     }
 
-    export function getTemplatesList() {
-        return fetchJSON<string[]>(url("templates/list"))
+    export function getTemplatesHash() {
+        return fetchText(url("templates/hash"))
     }
 
-    export function getTemplatesListHash() {
-        return fetchText(url("templates/list/hash"))
+    export function getHashList() {
+        return fetchJSON<string[]>(url("templates/list/hash"))
+    }
+
+    export function getNewList() {
+        return fetchJSON<string[]>(url("templates/list/new"))
+    }
+
+    export function getTopList() {
+        return fetchJSON<string[]>(url("templates/list/top"))
+    }
+
+    export function getHotList() {
+        return fetchJSON<string[]>(url("templates/list/hot"))
     }
 
     export function getPreviewURL(template: API.Template) {

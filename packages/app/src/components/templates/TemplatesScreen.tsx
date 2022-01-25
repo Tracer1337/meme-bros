@@ -63,7 +63,7 @@ function TemplatesScreen({
     return (
         <Screen>
             <FlatList
-                data={templates}
+                data={templates.new}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 ListHeaderComponent={

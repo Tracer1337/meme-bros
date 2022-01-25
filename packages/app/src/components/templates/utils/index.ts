@@ -12,7 +12,11 @@ export function getPreviewURI(template: TemplateMeta) {
     )
 }
 
-export function useTemplates(): TemplateMeta[] {
+export function useTemplates(): {
+    new: TemplateMeta[],
+    top: TemplateMeta[],
+    hot: TemplateMeta[]
+} {
     const [templatesFile, setTemplatesFile] = useState<
         TemplatesFile | undefined
     >()
@@ -23,7 +27,20 @@ export function useTemplates(): TemplateMeta[] {
             .catch((error) => console.error(error))
     }, [])
 
-    return !templatesFile
-        ? []
-        : templatesFile.list.map((id) => templatesFile.meta[id])
+    if (!templatesFile) {
+        return {
+            new: [],
+            top: [],
+            hot: []
+        }
+    }
+
+    const pickTemplates = (ids: string[]) =>
+        ids.map((id) => templatesFile.meta[id])
+
+    return {
+        new: pickTemplates(templatesFile.newList),
+        top: pickTemplates(templatesFile.topList),
+        hot: pickTemplates(templatesFile.hotList)
+    }
 }

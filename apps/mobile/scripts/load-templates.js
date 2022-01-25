@@ -13,18 +13,33 @@ const TEMPLATES_DIR = path.join(ASSETS_DIR, "templates")
 const PREVIEWS_DIR = path.join(ASSETS_DIR, "previews")
 const TEMPLATES_FILE = path.join(ASSETS_DIR, "templates.json")
 
-async function fetchList() {
-    const res = await fetch(`${API_HOST}/templates/list`)
+async function fetchTemplates() {
+    const res = await fetch(`${API_HOST}/templates`)
     return await res.json()
 }
 
-async function fetchListHash() {
-    const res = await fetch(`${API_HOST}/templates/list/hash`)
+async function fetchHash() {
+    const res = await fetch(`${API_HOST}/templates/hash`)
     return await res.text()
 }
 
-async function fetchTemplates() {
-    const res = await fetch(`${API_HOST}/templates`)
+async function fetchHashList() {
+    const res = await fetch(`${API_HOST}/templates/list/hash`)
+    return await res.json()
+}
+
+async function fetchNewList() {
+    const res = await fetch(`${API_HOST}/templates/list/new`)
+    return await res.json()
+}
+
+async function fetchTopList() {
+    const res = await fetch(`${API_HOST}/templates/list/top`)
+    return await res.json()
+}
+
+async function fetchHotList() {
+    const res = await fetch(`${API_HOST}/templates/list/hot`)
     return await res.json()
 }
 
@@ -67,7 +82,7 @@ async function downloadPreview(template) {
 }
 
 async function loadTemplates() {
-    const hash = await fetchListHash()
+    const hash = await fetchHash()
 
     if (!(await hasHashChanged(hash))) {
         console.log("Skip downloading templates")
@@ -87,9 +102,19 @@ async function loadTemplates() {
         assertDirExists(PREVIEWS_DIR)
     ])
 
+    const [hashList, newList, topList, hotList] = await Promise.all([
+        fetchHashList(),
+        fetchNewList(),
+        fetchTopList(),
+        fetchHotList()
+    ])
+
     const result = {
-        list: await fetchList(),
         hash,
+        hashList,
+        newList,
+        topList,
+        hotList,
         meta: {}
     }
 
@@ -100,7 +125,7 @@ async function loadTemplates() {
             storeCanvas(template),
             downloadPreview(template)
         ])
-        result.meta[template.hash] = {
+        result.meta[template.id] = {
             id: template.id,
             name: template.name,
             hash: template.hash,

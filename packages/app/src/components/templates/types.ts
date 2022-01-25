@@ -1,8 +1,11 @@
 import { API } from "../../lib/api"
 
 export type TemplatesFile = {
-    list: string[],
     hash: string,
+    hashList: string[],
+    newList: string[],
+    topList: string[],
+    hotList: string[],
     meta: Record<string, TemplateMeta>
 }
 
