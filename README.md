@@ -1,24 +1,5 @@
 # Meme Bros
 
-## Project Structure
-
-```
-|-- apps
-|  |-- mobile
-|  |-- canvas
-|  |-- web
-|  |  |-- admin
-|  |  |-- website
-|  |-- api
-|  |  |-- admin
-|  |  |-- public
-|-- packages
-|  |-- core
-|  |-- app
-|  |-- api-lib
-|  |-- client-lib
-```
-
 ## Apps
 
 ``canvas``
