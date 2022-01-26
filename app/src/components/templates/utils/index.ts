@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import RNFS from "react-native-fs"
 import { TemplateMeta, TemplatesFile } from "../types"
 import { PREVIEWS_DIR } from "./constants"
@@ -21,26 +21,30 @@ export function useTemplates(): {
         TemplatesFile | undefined
     >()
 
+    const templates = useMemo(() => {
+        if (!templatesFile) {
+            return {
+                new: [],
+                top: [],
+                hot: []
+            }
+        }
+
+        const pickTemplates = (ids: string[]) =>
+            ids.map((id) => templatesFile.meta[id])
+    
+        return {
+            new: pickTemplates(templatesFile.newList),
+            top: pickTemplates(templatesFile.topList),
+            hot: pickTemplates(templatesFile.hotList)
+        }
+    }, [templatesFile])
+
     useEffect(() => {
         Documents.readTemplatesFile()
             .then(setTemplatesFile)
             .catch((error) => console.error(error))
     }, [])
 
-    if (!templatesFile) {
-        return {
-            new: [],
-            top: [],
-            hot: []
-        }
-    }
-
-    const pickTemplates = (ids: string[]) =>
-        ids.map((id) => templatesFile.meta[id])
-
-    return {
-        new: pickTemplates(templatesFile.newList),
-        top: pickTemplates(templatesFile.topList),
-        hot: pickTemplates(templatesFile.hotList)
-    }
+    return templates
 }
