@@ -11,8 +11,15 @@
   },
   "workspaces": {
     "packages": [
-      "apps/**",
-      "packages/**"
+      "api/admin",
+      "api/public",
+      "api-lib",
+      "app",
+      "canvas",
+      "client-lib",
+      "core/types",
+      "mobile",
+      "web/admin"
     ],
     "nohoist": [
       "**/react",
