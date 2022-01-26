@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { Text, Headline, ActivityIndicator } from "react-native-paper"
 import Screen from "../styled/Screen"
@@ -6,7 +6,6 @@ import { useAppContext } from "../../lib/context"
 import TemplateList from "./TemplateList"
 import { useTemplates } from "./utils"
 import TemplateTabs, { Tabs } from "./TemplateTabs"
-import { TemplateMeta } from "./types"
 
 function TemplatesScreen() {
     const appContext = useAppContext()
@@ -14,21 +13,12 @@ function TemplatesScreen() {
     const templates = useTemplates()
 
     const [tab, setTab] = useState(Tabs.HOT)
-    const [list, setList] = useState<TemplateMeta[]>([])
 
-    useEffect(() => {
-        switch (tab) {
-            case Tabs.HOT:
-                setList(templates.hot)
-                break
-            case Tabs.NEW:
-                setList(templates.new)
-                break
-            case Tabs.TOP:
-                setList(templates.top)
-                break
-        }
-    }, [tab, templates])
+    const lists = useMemo<Record<Tabs, JSX.Element>>(() => ({
+        [Tabs.HOT]: <TemplateList templates={templates.hot}/>,
+        [Tabs.NEW]: <TemplateList templates={templates.new}/>,
+        [Tabs.TOP]: <TemplateList templates={templates.top}/>,
+    }), [tab, templates])
 
     return (
         <Screen>
@@ -46,7 +36,7 @@ function TemplatesScreen() {
             <View style={styles.tabs}>
                 <TemplateTabs value={tab} onChange={setTab}/>
             </View>
-            <TemplateList templates={list}/>
+            {lists[tab]}
         </Screen>
     )
 } 
