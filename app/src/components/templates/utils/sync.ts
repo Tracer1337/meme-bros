@@ -34,9 +34,10 @@ async function syncTemplates({ onBegin, onDone }: {
 
     if (templatesDiff.added.length > 0) {
         const templates = await API.getTemplatesAsMap(templatesDiff.added)
+        const ids = createIdsMap(templates)
         promises.push(...templatesDiff.added.map(async (hash) => {
             try {
-                await addTemplate(templatesFile, templates[hash])
+                await addTemplate(templatesFile, templates[ids[hash]])
             } catch (error) {
                 console.error("Could not add template", error)
             }
@@ -44,9 +45,10 @@ async function syncTemplates({ onBegin, onDone }: {
     }
 
     if (templatesDiff.removed.length > 0) {
+        const ids = createIdsMap(templatesFile.meta)
         promises.push(...templatesDiff.removed.map(async (hash) => {
             try {
-                await removeTemplate(templatesFile, templatesFile.meta[hash])
+                await removeTemplate(templatesFile, templatesFile.meta[ids[hash]])
             } catch (error) {
                 console.error("Could not remove template", error)
             }
@@ -115,6 +117,12 @@ function diffUnique<T>(a: T[], b: T[]) {
     })
 
     return diff
+}
+
+function createIdsMap(templates: Record<string, { hash: string }>) {
+    return Object.fromEntries(
+        Object.entries(templates).map(([id, meta]) => [meta.hash, id])
+    )
 }
 
 export function useTemplatesSync() {

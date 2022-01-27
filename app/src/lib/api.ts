@@ -36,7 +36,7 @@ export namespace API {
     ) {
         const list = await getTemplates(...args)
         return Object.fromEntries(
-            list.map((template) => [template.hash, template])
+            list.map((template) => [template.id, template])
         )
     }
 
