@@ -1,6 +1,6 @@
 import path from "path"
 
-const REPOSITORY_ROOT_DIR = path.join(__dirname, "..", "..", "..", "..", "..")
+const REPOSITORY_ROOT_DIR = path.join(__dirname, "..", "..", "..", "..")
 
 export const configuration = () => ({
     port: parseInt(process.env.PORT) || 5000,
