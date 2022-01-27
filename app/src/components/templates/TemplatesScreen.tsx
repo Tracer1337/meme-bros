@@ -18,7 +18,7 @@ function TemplatesScreen() {
         [Tabs.HOT]: <TemplateList templates={templates.hot}/>,
         [Tabs.NEW]: <TemplateList templates={templates.new}/>,
         [Tabs.TOP]: <TemplateList templates={templates.top}/>,
-    }), [tab, templates])
+    }), [templates])
 
     return (
         <Screen>
