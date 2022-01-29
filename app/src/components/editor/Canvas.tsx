@@ -45,6 +45,9 @@ function Canvas() {
     }
 
     const handleCanvasRender = async () => {
+        if (context.template) {
+            await API.registerUse(context.template)
+        }
         const rendered = renderCanvas(context.canvas)
         console.log("Generate", { raw: context.canvas, rendered })
         const base64 = await core.render(rendered)

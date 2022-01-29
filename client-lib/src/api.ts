@@ -60,6 +60,12 @@ export namespace API {
         return fetchJSON<string[]>(url("templates/list/hot"))
     }
 
+    export async function registerUse(template: API.Template) {
+        await fetch(url(`templates/${template.id}/register-use`), {
+            method: "POST"
+        })
+    }
+
     export function getPreviewURL(template: API.Template) {
         return url(`storage/${template.previewFile}`)
     }
