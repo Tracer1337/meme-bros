@@ -40,7 +40,10 @@ function TemplateList({ templates }: {
 
     const injectTemplate = async (template: TemplateMeta) => {
         const templateCanvas = await Documents.readTemplate(template.hash)
-        context.events.emit("template.load", templateCanvas)
+        context.events.emit("template.load", {
+            ...template,
+            canvas: templateCanvas
+        })
         navigation.navigate("Editor")
     }
 

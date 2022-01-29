@@ -4,6 +4,7 @@ import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import produce from "immer"
 import {
+    API,
     deepmerge,
     Editor,
     renderCanvas,
@@ -121,10 +122,14 @@ function Canvas() {
         })
     }
 
-    const handleTemplateLoad = (canvas: Editor.Canvas) => {
+    const handleTemplateLoad = (template: API.Template) => {
         context.set({
+            template,
             renderCanvas: true,
-            canvas: produce(canvas, (draft) => scaleTemplateCanvas(draft))
+            canvas: produce(
+                template.canvas,
+                (draft) => scaleTemplateCanvas(draft)
+            )
         })
     }
         

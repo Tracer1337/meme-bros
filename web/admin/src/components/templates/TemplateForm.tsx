@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Grid, Paper, TextField } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
-import { useListeners, useSharedContext } from "@meme-bros/client-lib"
+import { useListeners, useSharedContext, API as PublicAPI } from "@meme-bros/client-lib"
 import RNApp from "../RNApp"
 import { API } from "../../lib/api"
 import { scaleCanvas } from "./utils/scale"
@@ -11,6 +11,14 @@ import { useSnackbar } from "../../lib/snackbar"
 export type Fields = {
     name: string,
     canvas: API.CreateTemplate["canvas"]
+}
+
+const emptyTemplate: PublicAPI.Template = {
+    id: "",
+    hash: "",
+    name: "",
+    previewFile: "",
+    canvas: {} as any
 }
 
 function TemplateForm({ values, ...props }: {
@@ -44,7 +52,10 @@ function TemplateForm({ values, ...props }: {
 
     const renderTemplate = () => {
         if (values?.canvas) {
-            context.events.emit("template.load", values.canvas as any)
+            context.events.emit("template.load", {
+                ...emptyTemplate,
+                canvas: values.canvas as any
+            })
         }
     }
 

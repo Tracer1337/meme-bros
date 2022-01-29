@@ -9,6 +9,17 @@ setAutoFreeze(false)
 export const BASE_PADDING = 24
 export const BASE_BORDER_RADIUS = 24
 
+export function clearCanvas(): DeepPartial<SharedContext.ContextValue> {
+    return {
+        template: null,
+        renderCanvas: false,
+        canvas: {
+            elements: {},
+            layers: []
+        }
+    }
+}
+
 export function updateCanvasBase(
     state: SharedContext.ContextValue,
     base: Editor.CanvasBase

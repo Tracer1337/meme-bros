@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { Appbar, IconButton, FAB } from "react-native-paper"
-import { Editor, copyElement, layerElement, useSharedContext } from "@meme-bros/client-lib"
+import {
+    Editor,
+    copyElement,
+    layerElement,
+    useSharedContext,
+    clearCanvas
+} from "@meme-bros/client-lib"
 import { setListeners } from "../../lib/events"
 import { createCanvasElement } from "./utils/canvas"
 
@@ -46,13 +52,7 @@ function CanvasActions() {
             />
             <IconButton
                 icon="delete"
-                onPress={() => context.set({
-                    renderCanvas: false,
-                    canvas: {
-                        elements: {},
-                        layers: []
-                    }
-                })}
+                onPress={() => context.set(clearCanvas())}
             />
             <IconButton
                 icon="undo"
@@ -119,7 +119,7 @@ function ActionBar() {
                 onPress={async () => {
                     setIsGenerating(true)
                     await new Promise(requestAnimationFrame)
-                    context.events.emit("canvas.render", null)
+                    context.events.emit("canvas.render")
                 }}
                 loading={isGenerating}
             />

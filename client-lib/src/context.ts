@@ -6,6 +6,7 @@ import { useBridge, Bridge } from "./bridge"
 import { useListeners } from "./events"
 import { Editor } from "./editor"
 import { deepmerge } from "./utils"
+import { API } from "./api"
 
 export namespace SharedContext {
     export type ElementEvents = "create" | "edit" | "remove" | "config"
@@ -25,7 +26,7 @@ export namespace SharedContext {
         "canvas.base.dummy": undefined,
         "canvas.base.config": undefined,
         "canvas.load": undefined,
-        "template.load": Editor.Canvas,
+        "template.load": API.Template,
         "history.push": undefined,
         "history.pop": undefined
     }
@@ -36,6 +37,7 @@ export namespace SharedContext {
         interactions: {
             focus: Editor.CanvasElement["id"] | null
         },
+        template: API.Template | null,
         canvasDomRect: DOMRect | null,
         renderCanvas: boolean,
         canvas: Editor.Canvas
@@ -48,6 +50,7 @@ export const defaultContextValue: SharedContext.ContextValue = {
     interactions: {
         focus: null
     },
+    template: null,
     canvasDomRect: null,
     renderCanvas: false,
     canvas: {
