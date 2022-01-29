@@ -28,6 +28,10 @@ Web integration for ``app`` + Landing Page
 
 Templates-Management using web integration for ``app``
 
+``trend``
+
+Trend engine used for "hot"-templates
+
 ## Packages
 
 ``core``
