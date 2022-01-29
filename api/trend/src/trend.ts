@@ -3,11 +3,18 @@ export class Subject {
 }
 
 export class Trend {
-    private subjects: Set<Subject> = new Set()
+    public subjects: Set<Subject> = new Set()
     
-    private scores: Map<Subject, number> = new Map()
+    public scores: Map<Subject, number> = new Map()
     
     constructor(private damping: number, private reduction: number) {}
+
+    public loadScores(scores: Map<Subject, number>) {
+        scores.forEach((score, subject) => {
+            this.subjects.add(subject)
+            this.scores.set(subject, score)
+        })
+    }
 
     public addSubject(subject: Subject) {
         this.subjects.add(subject)
@@ -27,7 +34,7 @@ export class Trend {
             if (_subject === subject) {
                 this.scores.set(_subject, score + (1 - score) / this.damping)
             } else {
-                this.scores.set(_subject, score + score / this.reduction)
+                this.scores.set(_subject, score - score / this.reduction)
             }
         })
     }
