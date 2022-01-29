@@ -65,7 +65,7 @@ async function assertDirExists(dir) {
 }
 
 async function storeCanvas(template) {
-    const filename = `${template.id}.json`
+    const filename = `${template.hash}.json`
     await fs.promises.writeFile(
         path.join(TEMPLATES_DIR, filename),
         JSON.stringify(template.canvas, null, 4)
@@ -74,11 +74,9 @@ async function storeCanvas(template) {
 }
 
 async function downloadPreview(template) {
-    const filename = `${template.id}.png`
-    const filepath = path.join(PREVIEWS_DIR, filename)
+    const filepath = path.join(PREVIEWS_DIR, template.previewFile)
     const res = await fetch(`${API_HOST}/storage/${template.previewFile}`)
     await streamPipeline(res.body, fs.createWriteStream(filepath))
-    return filename
 }
 
 async function loadTemplates() {
@@ -88,11 +86,11 @@ async function loadTemplates() {
         console.log("Skip downloading templates")
         return
     }
-    
+
     console.log("Download templates")
-    
+
     await Promise.all([
-        fs.promises.unlink(TEMPLATES_FILE),
+        fs.promises.rm(TEMPLATES_FILE, { force: true }),
         fs.promises.rm(TEMPLATES_DIR, { recursive: true, force: true }),
         fs.promises.rm(PREVIEWS_DIR, { recursive: true, force: true }),
     ])
@@ -121,7 +119,7 @@ async function loadTemplates() {
     const templates = await fetchTemplates()
 
     await Promise.all(templates.map(async (template) => {
-        const [templateFile, previewFile] = await Promise.all([
+        const [templateFile] = await Promise.all([
             storeCanvas(template),
             downloadPreview(template)
         ])
@@ -129,8 +127,8 @@ async function loadTemplates() {
             id: template.id,
             name: template.name,
             hash: template.hash,
-            templateFile,
-            previewFile
+            previewFile: template.previewFile,
+            templateFile
         }
     }))
 

@@ -7,7 +7,7 @@
   "scripts": {
     "postinstall": "node patch-packages.js",
     "build": "yarn turbo run build",
-    "dev": "yarn turbo run dev --parallel --no-cache"
+    "dev": "yarn turbo run dev --parallel --no-cache --continue"
   },
   "workspaces": {
     "packages": [

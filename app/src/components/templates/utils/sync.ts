@@ -71,7 +71,7 @@ async function addTemplate(
     templatesFile: TemplatesFile,
     template: API.Template
 ) {
-    const [templateFile, previewFile] = await Promise.all([
+    const [templateFile] = await Promise.all([
         Documents.writeTemplate(template),
         Documents.downloadPreview(template)
     ])
@@ -79,7 +79,7 @@ async function addTemplate(
         name: template.name,
         hash: template.hash,
         id: template.id,
-        previewFile,
+        previewFile: template.previewFile,
         templateFile
     }
 }

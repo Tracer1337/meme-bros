@@ -40,7 +40,7 @@ function TemplateList({ templates }: {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
     const injectTemplate = async (template: TemplateMeta) => {
-        const templateCanvas = await Documents.readTemplate(template.id)
+        const templateCanvas = await Documents.readTemplate(template.hash)
         context.events.emit("template.load", templateCanvas)
         navigation.navigate("Editor")
     }

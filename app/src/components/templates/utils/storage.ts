@@ -50,13 +50,13 @@ export namespace Documents {
         await writeFilePatched(path(TEMPLATES_FILE), content)
     }
 
-    export async function readTemplate(id: string) {
-        const json = await RNFS.readFile(path(join(TEMPLATES_DIR, `${id}.json`)))
+    export async function readTemplate(hash: string) {
+        const json = await RNFS.readFile(path(join(TEMPLATES_DIR, `${hash}.json`)))
         return JSON.parse(json) as TemplateCanvas
     }
 
     export async function writeTemplate(template: API.Template) {
-        const filename = `${template.id}.json`
+        const filename = `${template.hash}.json`
         await RNFS.writeFile(
             path(join(TEMPLATES_DIR, filename)),
             JSON.stringify(template.canvas)
@@ -69,13 +69,10 @@ export namespace Documents {
     }
 
     export async function downloadPreview(template: API.Template) {
-        const ext = template.previewFile.split(".").pop()
-        const filename = `${template.id}.${ext}`
         await RNFS.downloadFile({
             fromUrl: API.getPreviewURL(template),
-            toFile: path(join(PREVIEWS_DIR, filename))
+            toFile: path(join(PREVIEWS_DIR, template.previewFile))
         }).promise
-        return filename
     }
 
     export async function removePreview(template: TemplateMeta) {
