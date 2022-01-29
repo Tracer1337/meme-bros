@@ -1,10 +1,9 @@
 import { useEffect } from "react"
 import { AnyFunction } from "tsdef"
 import { useNetInfo } from "@react-native-community/netinfo"
+import { TemplateMeta, TemplatesFile, API } from "@meme-bros/client-lib"
 import { setupTemplatesStorage } from "./setup"
 import { Documents } from "./storage"
-import { API } from "../../../lib/api"
-import { TemplateMeta, TemplatesFile } from "../types"
 import { useAppContext } from "../../../lib/context"
 
 async function syncTemplates({ onBegin, onDone }: {

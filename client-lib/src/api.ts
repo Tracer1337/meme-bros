@@ -1,4 +1,4 @@
-import type { Editor } from "@meme-bros/client-lib"
+import type { Editor } from "./editor"
 
 const API_HOST = process.env.API_HOST || "http://10.0.2.2:6000"
 

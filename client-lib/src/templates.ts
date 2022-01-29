@@ -1,4 +1,4 @@
-import { API } from "../../lib/api"
+import { API } from "./api"
 
 export type TemplatesFile = {
     hash: string,

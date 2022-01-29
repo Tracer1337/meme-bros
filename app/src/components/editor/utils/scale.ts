@@ -1,5 +1,4 @@
-import { Editor } from "@meme-bros/client-lib"
-import { TemplateCanvas } from "../../templates/types"
+import { Editor, TemplateCanvas } from "@meme-bros/client-lib"
 import { Dimensions } from "../../../lib/dimensions"
 import { ACTION_BAR_HEIGHT } from "../constants"
 

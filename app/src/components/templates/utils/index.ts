@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import RNFS from "react-native-fs"
-import { TemplateMeta, TemplatesFile } from "../types"
+import { TemplateMeta, TemplatesFile } from "@meme-bros/client-lib"
 import { PREVIEWS_DIR } from "./constants"
 import { Documents, join } from "./storage"
 

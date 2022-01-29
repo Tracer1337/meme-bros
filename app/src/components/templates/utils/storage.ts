@@ -1,7 +1,6 @@
 import { Platform } from "react-native"
 import RNFS from "react-native-fs"
-import { API } from "../../../lib/api"
-import { TemplateCanvas, TemplateMeta, TemplatesFile } from "../types"
+import { TemplateCanvas, TemplateMeta, TemplatesFile, API } from "@meme-bros/client-lib"
 import { PREVIEWS_DIR, TEMPLATES_DIR, TEMPLATES_FILE } from "./constants"
 
 export function join(...paths: string[]) {
