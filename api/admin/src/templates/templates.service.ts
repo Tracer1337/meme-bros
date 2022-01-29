@@ -7,7 +7,8 @@ import {
     assertIsValidObjectId,
     StorageService,
     Template,
-    TemplateDocument
+    TemplateDocument,
+    TrendService
 } from "@meme-bros/api-lib"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
 import { canvasValidator } from "./validators/canvas.validator"
@@ -17,7 +18,8 @@ import { UpdateTemplateDTO } from "./dto/update-template.dto"
 export class TemplatesService {
     constructor(
         @InjectModel(Template.name) private readonly templateModel: Model<TemplateDocument>,
-        private readonly storageService: StorageService
+        private readonly storageService: StorageService,
+        private readonly trendService: TrendService
     ) {}
 
     validateCanvas(canvas: Editor.Canvas) {
@@ -36,7 +38,9 @@ export class TemplatesService {
         const template = new this.templateModel(createTemplateDTO)
         template.previewFile = await this.createPreview(template)
         template.hash = this.getTemplateHash(template)
-        return template.save()
+        await template.save()
+        await this.trendService.addSubject(template.id)
+        return template
     }
 
     async findAll(): Promise<TemplateDocument[]> {
@@ -77,6 +81,7 @@ export class TemplatesService {
         const template = await this.templateModel.findById(id)
         await this.templateModel.deleteOne({ _id: id })
         await this.deletePreview(template)
+        await this.trendService.removeSubject(id)
     }
 
     async createPreview(template: TemplateDocument) {
