@@ -5,13 +5,15 @@ import {
     createHash,
     assertIsValidObjectId,
     Template,
-    TemplateDocument
+    TemplateDocument,
+    TrendService
 } from "@meme-bros/api-lib"
 
 @Injectable()
 export class TemplatesService {
     constructor(
-        @InjectModel(Template.name) private readonly templateModel: Model<TemplateDocument>
+        @InjectModel(Template.name) private readonly templateModel: Model<TemplateDocument>,
+        private readonly trendService: TrendService
     ) {}
 
     async findAll(filter?: {
@@ -88,7 +90,7 @@ export class TemplatesService {
     }
 
     async getHotList(): Promise<string[]> {
-        return []
+        return await this.trendService.getTrend()
     }
 
     async registerUse(id: string) {
@@ -99,6 +101,7 @@ export class TemplatesService {
                 uses: 1
             }
         })
+        await this.trendService.hit(id)
     }
 
     async assertTemplateExists(query: FilterQuery<TemplateDocument>) {
