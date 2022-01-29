@@ -37,9 +37,9 @@ export class Trend {
         this.subjects.forEach((_subject) => {
             const score = this.scores[_subject]
             if (_subject === subject) {
-                this.scores[_subject] = score + (1 - score) / this.damping
+                this.scores[_subject] += (1 - score) / this.damping
             } else {
-                this.scores[_subject] = score - score / this.reduction
+                this.scores[_subject] -= score / this.reduction
             }
         })
     }
