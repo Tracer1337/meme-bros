@@ -1,40 +1,45 @@
-export class Subject {
-    constructor(public id: string) {}
-}
-
 export class Trend {
-    public subjects: Set<Subject> = new Set()
+    private subjects: Set<string> = new Set()
     
-    public scores: Map<Subject, number> = new Map()
+    private scores: Record<string, number> = {}
     
     constructor(private damping: number, private reduction: number) {}
 
-    public loadScores(scores: Map<Subject, number>) {
-        scores.forEach((score, subject) => {
+    public loadScores(scores: Record<string, number>) {
+        Object.entries(scores).forEach(([subject, score]) => {
             this.subjects.add(subject)
-            this.scores.set(subject, score)
+            this.scores[subject] = score
         })
     }
 
-    public addSubject(subject: Subject) {
+    public addSubject(subject: string) {
         this.subjects.add(subject)
-        this.scores.set(subject, 0)
+        this.scores[subject] = 0
     }
 
-    public removeSubject(subject: Subject) {
+    public removeSubject(subject: string) {
         this.subjects.delete(subject)
-        this.scores.delete(subject)
+        delete this.scores[subject]
     }
 
-    public hit(subject: Subject) {
-        if (!this.scores.has(subject)) {
+    public hasSubject(subject: string) {
+        return this.subjects.has(subject)
+    }
+
+    public getScores() {
+        return this.scores
+    }
+
+    public hit(subject: string) {
+        if (!(subject in this.scores)) {
             throw new ReferenceError()
         }
-        this.scores.forEach((score, _subject) => {
+        this.subjects.forEach((_subject) => {
+            const score = this.scores[_subject]
             if (_subject === subject) {
-                this.scores.set(_subject, score + (1 - score) / this.damping)
+                this.scores[_subject] = score + (1 - score) / this.damping
             } else {
-                this.scores.set(_subject, score - score / this.reduction)
+                this.scores[_subject] = score - score / this.reduction
             }
         })
     }
@@ -45,11 +50,10 @@ export class Trend {
             .sort((a, b) => this.getScore(b) - this.getScore(a))
     }
 
-    private getScore(subject: Subject) {
-        const score = this.scores.get(subject)
-        if (score === undefined) {
+    private getScore(subject: string) {
+        if (!(subject in this.scores)) {
             throw new ReferenceError()
         }
-        return score
+        return this.scores[subject]
     }
 }
