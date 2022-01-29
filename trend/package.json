@@ -1,0 +1,18 @@
+{
+  "name": "@meme-bros/trend",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev src/index.ts"
+  },
+  "dependencies": {
+    "express": "^4.17.2",
+    "joi": "^17.6.0"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.5",
+    "@types/express": "^4.17.13"
+  }
+}

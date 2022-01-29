@@ -19,7 +19,8 @@
       "client-lib",
       "core/types",
       "mobile",
-      "web/admin"
+      "web/admin",
+      "trend"
     ],
     "nohoist": [
       "**/react",
