@@ -1,9 +1,10 @@
 import { Model } from "mongoose"
 import { ConflictException, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
+import { ConfigService } from "@nestjs/config"
 import { Trend as TrendModel, TrendDocument } from "@meme-bros/api-lib"
 import { Trend } from "./trend"
-import { ConfigService } from "@nestjs/config"
+import { SyncSubjectsDTO } from "./dto/sync-subjects.dto"
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -52,6 +53,11 @@ export class AppService implements OnModuleInit {
             throw new NotFoundException()
         }
         this.trend.removeSubject(id)
+        await this.save()
+    }
+
+    async syncSubjects(syncSubjectsDTO: SyncSubjectsDTO) {
+        this.trend.syncSubjects(syncSubjectsDTO.ids)
         await this.save()
     }
 

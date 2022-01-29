@@ -1,5 +1,5 @@
 import { FilterQuery, Model } from "mongoose"
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
+import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import type { Editor } from "@meme-bros/client-lib"
 import {
@@ -15,12 +15,23 @@ import { canvasValidator } from "./validators/canvas.validator"
 import { UpdateTemplateDTO } from "./dto/update-template.dto"
 
 @Injectable()
-export class TemplatesService {
+export class TemplatesService implements OnModuleInit {
     constructor(
         @InjectModel(Template.name) private readonly templateModel: Model<TemplateDocument>,
         private readonly storageService: StorageService,
         private readonly trendService: TrendService
     ) {}
+
+    async onModuleInit() {
+        await this.syncTrend()
+    }
+
+    async syncTrend() {
+        const templates = await this.findAll()
+        await this.trendService.syncSubjects(
+            templates.map((template) => template.id)
+        )
+    }
 
     validateCanvas(canvas: Editor.Canvas) {
         const { error } = canvasValidator

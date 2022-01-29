@@ -1,5 +1,6 @@
-import { Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
-import { AppService } from "./app.service";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
+import { AppService } from "./app.service"
+import { SyncSubjectsDTO } from "./dto/sync-subjects.dto"
 
 @Controller()
 export class AppController {
@@ -15,6 +16,11 @@ export class AppController {
     @Delete("subjects/:id")
     async removeSubject(@Param("id") id: string) {
         await this.appService.removeSubject(id)
+    }
+
+    @Post("subjects/sync")
+    async syncSubjects(@Body() syncSubjectsDTO: SyncSubjectsDTO) {
+        await this.appService.syncSubjects(syncSubjectsDTO)
     }
 
     @Post("hit/:id")

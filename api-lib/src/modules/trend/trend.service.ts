@@ -28,6 +28,12 @@ export class TrendService {
         )
     }
 
+    async syncSubjects(ids: string[]) {
+        await firstValueFrom(
+            this.httpService.post(this.url("subjects/sync"), { ids })
+        )
+    }
+
     async hit(id: string) {
         await firstValueFrom(
             this.httpService.post(this.url(`hit/${id}`))

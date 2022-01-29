@@ -26,6 +26,17 @@ export class Trend {
         return this.subjects.has(subject)
     }
 
+    public syncSubjects(subjects: string[]) {
+        const added = subjects.filter((subject) =>
+            !this.subjects.has(subject)
+        )
+        const removed = Array.from(this.subjects).filter((subject) =>
+            !subjects.includes(subject)
+        )
+        added.forEach(this.addSubject.bind(this))
+        removed.forEach(this.removeSubject.bind(this))
+    }
+
     public getScores() {
         return this.scores
     }
