@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@meme-bros/client-lib": "*",
+    "@nestjs/axios": "^0.0.5",
     "@nestjs/common": "^8.2.4",
     "@nestjs/core": "^8.2.4",
     "@nestjs/mongoose": "^9.0.2",
@@ -20,6 +21,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/express": "types/express",
     "@types/node": "^17.0.8",
     "@types/uuid": "^8.3.4",
