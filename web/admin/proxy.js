@@ -35,3 +35,9 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
     console.log(`Gateway is listening on port ${PORT}`)
 })
+
+proxy.on("error", (error, req, res) => {
+    console.log(`An error occured while handling request to: ${req.url}`)
+    console.error(error)
+    res.end()
+})
