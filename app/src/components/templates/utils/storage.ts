@@ -1,7 +1,7 @@
 import { Platform } from "react-native"
 import RNFS from "react-native-fs"
-import { TemplateCanvas, TemplateMeta, TemplatesFile, API } from "@meme-bros/client-lib"
-import { PREVIEWS_DIR, TEMPLATES_DIR, TEMPLATES_FILE } from "./constants"
+import { TemplateMeta, TemplatesFile, API, Editor } from "@meme-bros/client-lib"
+import { PREVIEWS_DIR, CANVAS_DIR, TEMPLATES_FILE } from "./constants"
 
 export function join(...paths: string[]) {
     return paths.join("/")
@@ -26,11 +26,11 @@ export namespace Assets {
         return JSON.parse(json) as TemplatesFile
     }
 
-    export async function readTemplate(template: TemplateMeta) {
+    export async function readCanvas(template: TemplateMeta) {
         const json = await readFile(
-            join(TEMPLATES_DIR, template.templateFile)
+            join(CANVAS_DIR, template.canvasFile)
         )
-        return JSON.parse(json) as TemplateCanvas
+        return JSON.parse(json) as Editor.Canvas
     }    
 }
 
@@ -49,22 +49,22 @@ export namespace Documents {
         await writeFilePatched(path(TEMPLATES_FILE), content)
     }
 
-    export async function readTemplate(hash: string) {
-        const json = await RNFS.readFile(path(join(TEMPLATES_DIR, `${hash}.json`)))
-        return JSON.parse(json) as TemplateCanvas
+    export async function readCanvas(template: API.Template) {
+        const json = await RNFS.readFile(path(join(CANVAS_DIR, `${template.hash}.json`)))
+        return JSON.parse(json) as Editor.Canvas
     }
 
-    export async function writeTemplate(template: API.Template) {
+    export async function downloadCanvas(template: API.Template) {
         const filename = `${template.hash}.json`
-        await RNFS.writeFile(
-            path(join(TEMPLATES_DIR, filename)),
-            JSON.stringify(template.canvas)
-        )
+        await RNFS.downloadFile({
+            fromUrl: API.getCanvasURL(template),
+            toFile: path(join(CANVAS_DIR, filename))
+        }).promise
         return filename
     }
 
-    export async function removeTemplate(template: TemplateMeta) {
-        await RNFS.unlink(path(join(TEMPLATES_DIR, template.templateFile)))
+    export async function removeCanvas(template: TemplateMeta) {
+        await RNFS.unlink(path(join(CANVAS_DIR, template.canvasFile)))
     }
 
     export async function downloadPreview(template: API.Template) {

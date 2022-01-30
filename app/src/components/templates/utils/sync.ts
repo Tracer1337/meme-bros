@@ -70,8 +70,8 @@ async function addTemplate(
     templatesFile: TemplatesFile,
     template: API.Template
 ) {
-    const [templateFile] = await Promise.all([
-        Documents.writeTemplate(template),
+    const [canvasFile] = await Promise.all([
+        Documents.downloadCanvas(template),
         Documents.downloadPreview(template)
     ])
     templatesFile.meta[template.id] = {
@@ -79,7 +79,7 @@ async function addTemplate(
         hash: template.hash,
         id: template.id,
         previewFile: template.previewFile,
-        templateFile
+        canvasFile
     }
 }
 
@@ -89,7 +89,7 @@ async function removeTemplate(
 ) {
     delete templatesFile.meta[template.id]
     await Promise.all([
-        Documents.removeTemplate(template),
+        Documents.removeCanvas(template),
         Documents.removePreview(template)
     ])
 }

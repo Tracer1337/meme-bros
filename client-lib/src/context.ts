@@ -26,7 +26,7 @@ export namespace SharedContext {
         "canvas.base.dummy": undefined,
         "canvas.base.config": undefined,
         "canvas.load": undefined,
-        "template.load": API.Template,
+        "template.load": { template: API.Template, canvas: Editor.Canvas },
         "history.push": undefined,
         "history.pop": undefined
     }

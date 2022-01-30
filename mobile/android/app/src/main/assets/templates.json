@@ -1,7 +1,7 @@
 {
-    "hash": "54810be278bfbd3988f9ab406977e988",
+    "hash": "5be80b50566d56b8994c1d92282eacfe",
     "hashList": [
-        "0becfb429b53c1f45ccff1abc58277ae",
+        "9def84e00dcc6cf272c0a5bc8324a242",
         "7d4725630a9d4f8f9f75a8171cfc542e",
         "5730682ba153bf0c2afb52e783172050",
         "341f6cd935ce1d1ee5777508774d7bdc",
@@ -15,51 +15,48 @@
         "61e86f2a8399f117bfb970af"
     ],
     "topList": [
+        "61f5a4768023c4361072d3c8",
         "61e86f2a8399f117bfb970af",
         "61f5b5867d8af6eea8c9cc8d",
         "61e86f4d8399f117bfb970bd",
-        "61f5a4768023c4361072d3c8",
         "61e86f3c8399f117bfb970b6"
     ],
-    "hotList": [
-        "61f5b5867d8af6eea8c9cc8d",
-        "61e86f4d8399f117bfb970bd"
-    ],
+    "hotList": [],
     "meta": {
         "61f5b5867d8af6eea8c9cc8d": {
             "id": "61f5b5867d8af6eea8c9cc8d",
             "name": "Biggie Cheese",
-            "hash": "0becfb429b53c1f45ccff1abc58277ae",
-            "previewFile": "1271ddba-978b-4256-b8ee-a626cd0705d5.png",
-            "templateFile": "0becfb429b53c1f45ccff1abc58277ae.json"
+            "hash": "9def84e00dcc6cf272c0a5bc8324a242",
+            "previewFile": "54aa34c8-9468-47c0-8ac9-e4d4bbfa0a0b.png",
+            "canvasFile": "9def84e00dcc6cf272c0a5bc8324a242.json"
         },
         "61e86f4d8399f117bfb970bd": {
             "id": "61e86f4d8399f117bfb970bd",
             "name": "Drake Hotline Bling",
             "hash": "5730682ba153bf0c2afb52e783172050",
             "previewFile": "6728a4f9-8e77-4033-8562-36f4914a26d5.png",
-            "templateFile": "5730682ba153bf0c2afb52e783172050.json"
-        },
-        "61f5a4768023c4361072d3c8": {
-            "id": "61f5a4768023c4361072d3c8",
-            "name": "Monke",
-            "hash": "341f6cd935ce1d1ee5777508774d7bdc",
-            "previewFile": "3d285040-c392-44bd-af92-9cf0ed7c115e.png",
-            "templateFile": "341f6cd935ce1d1ee5777508774d7bdc.json"
+            "canvasFile": "5730682ba153bf0c2afb52e783172050.json"
         },
         "61e86f2a8399f117bfb970af": {
             "id": "61e86f2a8399f117bfb970af",
             "name": "Two Buttons",
             "hash": "eee39cb871dd73a622c80b5e18329c27",
             "previewFile": "6fdee6df-7bf6-4c89-8156-8e282c4a2b60.png",
-            "templateFile": "eee39cb871dd73a622c80b5e18329c27.json"
+            "canvasFile": "eee39cb871dd73a622c80b5e18329c27.json"
+        },
+        "61f5a4768023c4361072d3c8": {
+            "id": "61f5a4768023c4361072d3c8",
+            "name": "Monke",
+            "hash": "341f6cd935ce1d1ee5777508774d7bdc",
+            "previewFile": "3d285040-c392-44bd-af92-9cf0ed7c115e.png",
+            "canvasFile": "341f6cd935ce1d1ee5777508774d7bdc.json"
         },
         "61e86f3c8399f117bfb970b6": {
             "id": "61e86f3c8399f117bfb970b6",
             "name": "Distracted Boyfriend",
             "hash": "7d4725630a9d4f8f9f75a8171cfc542e",
             "previewFile": "550a1847-61dd-42a3-9d36-d80da2ef6b64.png",
-            "templateFile": "7d4725630a9d4f8f9f75a8171cfc542e.json"
+            "canvasFile": "7d4725630a9d4f8f9f75a8171cfc542e.json"
         }
     }
 }

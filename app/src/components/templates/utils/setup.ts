@@ -1,15 +1,15 @@
 import { Platform } from "react-native"
 import RNFS from "react-native-fs"
-import { TEMPLATES_DIR, PREVIEWS_DIR, TEMPLATES_FILE } from "./constants"
+import { CANVAS_DIR, PREVIEWS_DIR, TEMPLATES_FILE } from "./constants"
 
-async function setupTemplatesFolder() {
-    const path = `${RNFS.DocumentDirectoryPath}/${TEMPLATES_DIR}`
+async function setupCanvasFolder() {
+    const path = `${RNFS.DocumentDirectoryPath}/${CANVAS_DIR}`
     if (await RNFS.exists(path)) {
         return
     }
     await RNFS.mkdir(path)
-    const templates = await RNFS.readDirAssets(TEMPLATES_DIR)
-    await Promise.all(templates.map((from) => {
+    const files = await RNFS.readDirAssets(CANVAS_DIR)
+    await Promise.all(files.map((from) => {
         const to = `${path}/${from.name}`
         return RNFS.copyFileAssets(from.path, to)
     }))
@@ -21,8 +21,8 @@ async function setupPreviewsFolder() {
         return
     }
     await RNFS.mkdir(path)
-    const previews = await RNFS.readDirAssets(PREVIEWS_DIR)
-    await Promise.all(previews.map((from) => {
+    const files = await RNFS.readDirAssets(PREVIEWS_DIR)
+    await Promise.all(files.map((from) => {
         const to = `${path}/${from.name}`
         return RNFS.copyFileAssets(from.path, to)
     }))
@@ -42,7 +42,7 @@ export async function setupTemplatesStorage() {
     }
 
     await Promise.all([
-        setupTemplatesFolder(),
+        setupCanvasFolder(),
         setupPreviewsFolder(),
         setupTemplatesFile()
     ])

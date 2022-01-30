@@ -16,6 +16,11 @@ export class TemplatesController {
         return templates.map((template) => new TemplateEntity(template))
     }
 
+    @Get(":id/canvas")
+    async getCanvas(@Param("id") id: string) {
+        return await this.templatesService.findCanvasById(id)
+    }
+
     @Get("hash")
     async getList() {
         return await this.templatesService.getHash()

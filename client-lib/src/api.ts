@@ -1,5 +1,3 @@
-import type { Editor } from "./editor"
-
 const API_HOST = process.env.API_HOST || "http://10.0.2.2:6000"
 
 function url(path: string) {
@@ -21,14 +19,17 @@ export namespace API {
         id: string,
         name: string,
         hash: string,
-        previewFile: string,
-        canvas: Editor.Canvas
+        previewFile: string
     }
 
     export function getTemplates(hashes?: string[]) {
         const params = new URLSearchParams()
         hashes?.forEach((hash) => params.append("hashes", hash))
         return fetchJSON<API.Template[]>(url("templates?" + params.toString()))
+    }
+    
+    export function getCanvasURL(template: API.Template) {
+        return url(`templates/${template.id}/canvas`)
     }
 
     export async function getTemplatesAsMap(

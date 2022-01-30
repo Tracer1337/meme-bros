@@ -9,7 +9,7 @@ const streamPipeline = promisify(pipeline)
 const API_HOST = process.env.API_HOST || "http://localhost:6000"
 
 const ASSETS_DIR = path.join(__dirname, "..", "android", "app", "src", "main", "assets")
-const TEMPLATES_DIR = path.join(ASSETS_DIR, "templates")
+const CANVAS_DIR = path.join(ASSETS_DIR, "canvases")
 const PREVIEWS_DIR = path.join(ASSETS_DIR, "previews")
 const TEMPLATES_FILE = path.join(ASSETS_DIR, "templates.json")
 
@@ -64,12 +64,11 @@ async function assertDirExists(dir) {
     }
 }
 
-async function storeCanvas(template) {
+async function downloadCanvas(template) {
     const filename = `${template.hash}.json`
-    await fs.promises.writeFile(
-        path.join(TEMPLATES_DIR, filename),
-        JSON.stringify(template.canvas, null, 4)
-    )
+    const filepath = path.join(CANVAS_DIR, filename)
+    const res = await fetch(`${API_HOST}/templates/${template.id}/canvas`)
+    await streamPipeline(res.body, fs.createWriteStream(filepath))
     return filename
 }
 
@@ -91,12 +90,12 @@ async function loadTemplates() {
 
     await Promise.all([
         fs.promises.rm(TEMPLATES_FILE, { force: true }),
-        fs.promises.rm(TEMPLATES_DIR, { recursive: true, force: true }),
+        fs.promises.rm(CANVAS_DIR, { recursive: true, force: true }),
         fs.promises.rm(PREVIEWS_DIR, { recursive: true, force: true }),
     ])
 
     await Promise.all([
-        assertDirExists(TEMPLATES_DIR),
+        assertDirExists(CANVAS_DIR),
         assertDirExists(PREVIEWS_DIR)
     ])
 
@@ -119,8 +118,8 @@ async function loadTemplates() {
     const templates = await fetchTemplates()
 
     await Promise.all(templates.map(async (template) => {
-        const [templateFile] = await Promise.all([
-            storeCanvas(template),
+        const [canvasFile] = await Promise.all([
+            downloadCanvas(template),
             downloadPreview(template)
         ])
         result.meta[template.id] = {
@@ -128,7 +127,7 @@ async function loadTemplates() {
             name: template.name,
             hash: template.hash,
             previewFile: template.previewFile,
-            templateFile
+            canvasFile
         }
     }))
 

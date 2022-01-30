@@ -1,4 +1,4 @@
-import { Editor, TemplateCanvas } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/client-lib"
 import { Dimensions } from "../../../lib/dimensions"
 import { ACTION_BAR_HEIGHT } from "../constants"
 
@@ -23,7 +23,7 @@ function scaleRect<
     }
 }
 
-export function scaleTemplateCanvas(canvas: TemplateCanvas) {
+export function scaleTemplateCanvas(canvas: Editor.Canvas) {
     const width = getWidth(canvas.height)
     const imageWidth = 500
 

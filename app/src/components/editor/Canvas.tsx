@@ -125,14 +125,14 @@ function Canvas() {
         })
     }
 
-    const handleTemplateLoad = (template: API.Template) => {
+    const handleTemplateLoad = ({ template, canvas }: {
+        template: API.Template,
+        canvas: Editor.Canvas
+    }) => {
         context.set({
             template,
             renderCanvas: true,
-            canvas: produce(
-                template.canvas,
-                (draft) => scaleTemplateCanvas(draft)
-            )
+            canvas: produce(canvas, scaleTemplateCanvas)
         })
     }
         

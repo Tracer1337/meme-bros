@@ -1,4 +1,4 @@
 export const PREVIEWS_DIR = "previews"
-export const TEMPLATES_DIR = "templates"
+export const CANVAS_DIR = "canvases"
 
 export const TEMPLATES_FILE = "templates.json"

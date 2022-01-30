@@ -9,8 +9,6 @@ export type TemplatesFile = {
     meta: Record<string, TemplateMeta>
 }
 
-export type TemplateMeta = Omit<API.Template, "canvas"> & {
-    templateFile: string
+export type TemplateMeta = API.Template & {
+    canvasFile: string
 }
-
-export type TemplateCanvas = API.Template["canvas"]

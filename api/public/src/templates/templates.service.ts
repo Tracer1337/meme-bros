@@ -25,7 +25,16 @@ export class TemplatesService {
                 $in: filter.hashes
             }
         }
-        return this.templateModel.find(query)
+        return this.templateModel.find(query).select("-canvas")
+    }
+
+    async findCanvasById(id: string) {
+        assertIsValidObjectId(id)
+        const template = await this.templateModel.findById(id)
+        if (!template) {
+            throw new NotFoundException()
+        }
+        return template.canvas
     }
 
     async getHash() {

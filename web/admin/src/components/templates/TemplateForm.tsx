@@ -17,8 +17,7 @@ const emptyTemplate: PublicAPI.Template = {
     id: "",
     hash: "",
     name: "",
-    previewFile: "",
-    canvas: {} as any
+    previewFile: ""
 }
 
 function TemplateForm({ values, ...props }: {
@@ -53,7 +52,7 @@ function TemplateForm({ values, ...props }: {
     const renderTemplate = () => {
         if (values?.canvas) {
             context.events.emit("template.load", {
-                ...emptyTemplate,
+                template: emptyTemplate,
                 canvas: values.canvas as any
             })
         }
