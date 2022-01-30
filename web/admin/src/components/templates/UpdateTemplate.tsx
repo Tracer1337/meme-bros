@@ -1,6 +1,7 @@
 import React from "react"
 import { useLocation, useParams } from "react-router-dom"
 import useSWR, { useSWRConfig } from "swr"
+import { Editor } from "@meme-bros/client-lib"
 import { API, fetcher } from "../../lib/api"
 import TemplateForm, { Fields } from "./TemplateForm"
 
@@ -11,12 +12,17 @@ function UpdateTemplate() {
 
     const locationState = useLocation().state as LocationState
     
-    const { error, ...swr } = useSWR<API.Template>(
+    const templateReq = useSWR<API.Template>(
         !locationState && `templates/${id}`,
         fetcher
     )
 
-    const data = locationState || swr.data
+    const canvasReq = useSWR<Editor.Canvas>(
+        `templates/${id}/canvas`,
+        fetcher
+    )
+
+    const template = locationState || templateReq.data
 
     const { mutate } = useSWRConfig()
 
@@ -28,11 +34,18 @@ function UpdateTemplate() {
         mutate("templates")
     }
     
-    if (error) return <div>Failed to load</div>
-    if (!data) return <div>Loading...</div>
+    if (templateReq.error || canvasReq.error) {
+        return <div>Failed to load</div>
+    }
+    if (!template || !canvasReq.data) {
+        return <div>Loading...</div>
+    }
 
     return (
-        <TemplateForm values={data} onSubmit={handleSubmit}/>
+        <TemplateForm
+            values={{ ...template, canvas: canvasReq.data }}
+            onSubmit={handleSubmit}
+        />
     )
 }
 

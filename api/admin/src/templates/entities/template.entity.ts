@@ -1,6 +1,7 @@
-import { TemplateDocument } from "@meme-bros/api-lib"
+import { Exclude } from "class-transformer"
+import { Template, TemplateDocument } from "@meme-bros/api-lib"
 
-export class TemplateEntity {
+export class TemplateEntity implements Template {
     id: string
 
     hash: string
@@ -9,7 +10,10 @@ export class TemplateEntity {
 
     name: string
 
-    canvas: object
+    previewFile: string
+
+    @Exclude()
+    canvas: any
 
     constructor(document: TemplateDocument) {
         const object = document.toObject()

@@ -74,10 +74,9 @@ export namespace API {
         name: string,
         hash: string,
         uses: number,
-        canvas: Editor.Canvas,
         previewFile: string
     }
-    
+
     export type CreateTemplate = {
         name: string,
         canvas: Omit<Editor.Canvas, "pixelRatio">

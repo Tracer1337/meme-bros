@@ -55,16 +55,23 @@ export class TemplatesService implements OnModuleInit {
     }
 
     async findAll(): Promise<TemplateDocument[]> {
-        return this.templateModel.find({})
+        return this.templateModel.find().select("-canvas")
     }
 
-    async findById(id: string): Promise<TemplateDocument> {
+    async findById(id: string, projection: any = {
+        canvas: 0
+    }): Promise<TemplateDocument> {
         assertIsValidObjectId(id)
-        const template = await this.templateModel.findById(id)
+        const template = await this.templateModel.findById(id, projection)
         if (!template) {
             throw new NotFoundException()
         }
         return template
+    }
+
+    async findCanvasById(id: string) {
+        const template = await this.findById(id, { canvas: 1 })
+        return template.canvas
     }
 
     async update(
