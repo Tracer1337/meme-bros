@@ -1,3 +1,4 @@
+import useSWR from "swr"
 import type { Editor } from "@meme-bros/client-lib"
 import { Storage } from "./storage"
 
@@ -117,5 +118,17 @@ export namespace API {
 
     export async function deleteTemplate(id: string) {
         await fetchJSON(url(`templates/${id}`), { method: "DELETE" })
+    }
+
+    export function useTemplates() {
+        return useSWR<API.Template[]>("templates", fetcher)
+    }
+    
+    export function useTemplate(id: string) {
+        return useSWR<API.Template>(`templates/${id}`, fetcher)
+    }
+
+    export function useTemplateCanvas(id: string) {
+        return useSWR<Editor.Canvas>(`templates/${id}/canvas`, fetcher)
     }
 }

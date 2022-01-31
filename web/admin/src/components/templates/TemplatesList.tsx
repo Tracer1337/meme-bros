@@ -1,9 +1,17 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import useSWR from "swr"
-import { Box, IconButton, List, ListItem, ListItemButton, ListItemText, styled, Typography } from "@mui/material"
+import {
+    Box,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    styled,
+    Typography
+} from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { API, fetcher } from "../../lib/api"
+import { API } from "../../lib/api"
 import { LocationState } from "./UpdateTemplate"
 import { useConfirm } from "../../lib/confirm"
 
@@ -12,7 +20,7 @@ const PreviewImage = styled("img")({
 })
 
 function TemplatesList() {
-    const { data, error, mutate } = useSWR<API.Template[]>("templates", fetcher)
+    const { data, error, mutate } = API.useTemplates()
 
     const confirm = useConfirm()
 

@@ -1,8 +1,7 @@
 import React from "react"
 import { useLocation, useParams } from "react-router-dom"
-import useSWR, { useSWRConfig } from "swr"
-import { Editor } from "@meme-bros/client-lib"
-import { API, fetcher } from "../../lib/api"
+import { useSWRConfig } from "swr"
+import { API } from "../../lib/api"
 import TemplateForm, { Fields } from "./TemplateForm"
 
 export type LocationState = API.Template
@@ -10,17 +9,15 @@ export type LocationState = API.Template
 function UpdateTemplate() {
     const { id } = useParams()
 
+    if (!id) {
+        throw new Error("Missing param: 'id'")
+    }
+
     const locationState = useLocation().state as LocationState
     
-    const templateReq = useSWR<API.Template>(
-        !locationState && `templates/${id}`,
-        fetcher
-    )
+    const templateReq = API.useTemplate(id)
 
-    const canvasReq = useSWR<Editor.Canvas>(
-        `templates/${id}/canvas`,
-        fetcher
-    )
+    const canvasReq = API.useTemplateCanvas(id)
 
     const template = locationState || templateReq.data
 
