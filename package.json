@@ -19,6 +19,7 @@
       "canvas",
       "client-lib",
       "core/types",
+      "core/http",
       "mobile",
       "web/admin"
     ],

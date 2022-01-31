@@ -1,0 +1,9 @@
+{
+  "name": "@meme-bros/core-http",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "yarn start",
+    "start": "go run main.go"
+  }
+}
