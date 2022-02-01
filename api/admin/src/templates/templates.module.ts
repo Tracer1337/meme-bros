@@ -1,9 +1,10 @@
 import { Module } from "@nestjs/common"
 import { MongooseModule } from "@nestjs/mongoose"
+import { ConfigModule } from "@nestjs/config"
 import { Template, TemplateSchema } from "@meme-bros/api-lib"
+import { PreviewsModule } from "../previews/previews.module"
 import { TemplatesController } from "./templates.controller"
 import { TemplatesService } from "./templates.service"
-import { ConfigModule } from "@nestjs/config"
 
 @Module({
     imports: [
@@ -11,7 +12,8 @@ import { ConfigModule } from "@nestjs/config"
             name: Template.name,
             schema: TemplateSchema
         }]),
-        ConfigModule
+        ConfigModule,
+        PreviewsModule
     ],
     controllers: [TemplatesController],
     providers: [TemplatesService]

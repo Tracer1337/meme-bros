@@ -1,17 +1,15 @@
 import { FilterQuery, Model } from "mongoose"
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
-import { ConfigService } from "@nestjs/config"
 import type { Editor } from "@meme-bros/client-lib"
 import {
     createHash,
     assertIsValidObjectId,
-    StorageService,
     Template,
     TemplateDocument,
-    TrendService,
-    CoreService
+    TrendService
 } from "@meme-bros/api-lib"
+import { PreviewsService } from "src/previews/previews.service"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
 import { canvasValidator } from "./validators/canvas.validator"
 import { UpdateTemplateDTO } from "./dto/update-template.dto"
@@ -20,10 +18,8 @@ import { UpdateTemplateDTO } from "./dto/update-template.dto"
 export class TemplatesService implements OnModuleInit {
     constructor(
         @InjectModel(Template.name) private readonly templateModel: Model<TemplateDocument>,
-        private readonly configService: ConfigService,
-        private readonly storageService: StorageService,
-        private readonly trendService: TrendService,
-        private readonly coreService: CoreService
+        private readonly previewsService: PreviewsService,
+        private readonly trendService: TrendService
     ) {}
 
     async onModuleInit() {
@@ -51,7 +47,7 @@ export class TemplatesService implements OnModuleInit {
     async create(createTemplateDTO: CreateTemplateDTO): Promise<TemplateDocument> {
         await this.assertTemplateNotExists({ name: createTemplateDTO.name })
         const template = new this.templateModel(createTemplateDTO)
-        template.previewFile = await this.createPreview(template)
+        template.previewFile = await this.previewsService.createPreview(template)
         template.hash = this.getTemplateHash(template)
         await template.save()
         await this.trendService.addSubject(template.id)
@@ -90,8 +86,8 @@ export class TemplatesService implements OnModuleInit {
             { returnDocument: "after" }
         )
         if (updateTemplateDTO.canvas) {
-            await this.deletePreview(template)
-            template.previewFile = await this.createPreview(template)
+            await this.previewsService.deletePreview(template)
+            template.previewFile = await this.previewsService.createPreview(template)
         }
         template.hash = this.getTemplateHash(template)
         return await template.save()
@@ -102,62 +98,8 @@ export class TemplatesService implements OnModuleInit {
         await this.assertTemplateExists({ _id: id })
         const template = await this.templateModel.findById(id)
         await this.templateModel.deleteOne({ _id: id })
-        await this.deletePreview(template)
+        await this.previewsService.deletePreview(template)
         await this.trendService.removeSubject(id)
-    }
-
-    async createPreview(template: TemplateDocument) {
-        const buffer = await this.renderPreview(template.canvas)
-        const ext = this.getFileExtensionForCanvas(template.canvas)
-        return await this.storageService.put(buffer, ext)
-    }
-
-    async renderPreview(canvas: Editor.Canvas) {
-        const dataURI = await this.coreService.render({
-            ...canvas,
-            debug: false,
-            pixelRatio: this.getPixelRatio(canvas),
-            elements: this.getPreviewElements(canvas)
-        })
-        const base64 = dataURI.split(",")[1]
-        return Buffer.from(base64, "base64")
-    }
-
-    async deletePreview(template: TemplateDocument) {
-        await this.storageService.delete(template.previewFile)
-    }
-
-    // TODO: Move to lib package (e.g. "canvas-utils")
-    getFileExtensionForCanvas(canvas: Editor.Canvas) {
-        const animated = canvas.layers.some((layer) => {
-            const element = canvas.elements[layer]
-            return this.isImageElement(element) && element.data.animated  
-        })
-        if (animated) return "gif"
-        return "png"
-    }
-
-    // TODO: same as above
-    isImageElement(element: Editor.CanvasElement): element is Editor.PickElement<"image"> {
-        return element.type === "image"
-    }
-
-    getPixelRatio(canvas: Editor.Canvas) {
-        const width = this.configService.get<number>("templates.previewWidth")
-        const height = this.configService.get<number>("templates.previewHeight")
-        return canvas.width >= canvas.height
-            ? width / canvas.width
-            : height / canvas.height
-    }
-
-    getPreviewElements(canvas: Editor.Canvas) {
-        return canvas.layers
-            .map((layer) =>
-                canvas.elements[layer].type !== "textbox"
-                    ? canvas.elements[layer]
-                    : null
-            )
-            .filter((element) => element !== null)
     }
 
     getTemplateHash(template: TemplateDocument) {
