@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "yarn start",
-    "start": "go run main.go"
+    "start": "nodemon --exec \"go run\" main.go"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
