@@ -32,7 +32,9 @@ import { configurationSchema } from "./config/configuration.schema"
         TrendModule.forRootAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => ({
-                uri: configService.get<string>("trend.uri")
+                name: configService.get<string>("templates.trend.name"),
+                damping: configService.get<number>("templates.trend.damping"),
+                reduction: configService.get<number>("templates.trend.reduction")
             }),
             inject: [ConfigService]
         }),

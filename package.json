@@ -13,7 +13,6 @@
     "packages": [
       "api/admin",
       "api/public",
-      "api/trend",
       "api-lib",
       "app",
       "canvas",

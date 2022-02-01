@@ -1,3 +1,5 @@
 export interface TrendModuleOptions {
-    uri: string
+    name: string,
+    damping: number,
+    reduction: number
 }

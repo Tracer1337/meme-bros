@@ -1,49 +1,71 @@
-import { Inject, Injectable } from "@nestjs/common"
-import { HttpService} from "@nestjs/axios"
-import type { AxiosResponse } from "axios"
-import { firstValueFrom } from "rxjs"
+import { Model } from "mongoose"
+import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common"
+import { InjectModel } from "@nestjs/mongoose"
+import { Trend as TrendModel, TrendDocument } from "../../schemas/trend.schema"
+import { Trend } from "./trend"
 import { TREND_OPTIONS_KEY } from "./constants"
 import { TrendModuleOptions } from "./interfaces/trend-module-options.interface"
 
 @Injectable()
 export class TrendService {
     constructor(
-        @Inject(TREND_OPTIONS_KEY) private readonly options: TrendModuleOptions,
-        private readonly httpService: HttpService
+        @InjectModel(TrendModel.name) private readonly trendModel: Model<TrendDocument>,
+        @Inject(TREND_OPTIONS_KEY) private readonly options: TrendModuleOptions
     ) {}
 
-    url(path: string) {
-        return `${this.options.uri}/${path}`
+    async load() {
+        const trendModel = await this.trendModel.findOneAndUpdate(
+            { name: this.options.name },
+            {},
+            { new: true, upsert: true }
+        )
+        const trend = new Trend(this.options.damping, this.options.reduction)
+        trend.loadScores(Object.fromEntries(trendModel.scores))
+        return trend
     }
 
-    async addSubject(id: string) {
-        await firstValueFrom(
-            this.httpService.put(this.url(`subjects/${id}`))
+    async save(trend: Trend) {
+        await this.trendModel.updateOne(
+            { name: this.options.name },
+            { $set: { scores: trend.getScores() } }
         )
+    }
+    
+    async addSubject(id: string) {
+        const trend = await this.load()
+        if (trend.hasSubject(id)) {
+            throw new ConflictException()
+        }
+        trend.addSubject(id)
+        await this.save(trend)
     }
 
     async removeSubject(id: string) {
-        await firstValueFrom(
-            this.httpService.delete(this.url(`subjects/${id}`))
-        )
+        const trend = await this.load()
+        if (!trend.hasSubject(id)) {
+            throw new NotFoundException()
+        }
+        trend.removeSubject(id)
+        await this.save(trend)
     }
 
     async syncSubjects(ids: string[]) {
-        await firstValueFrom(
-            this.httpService.post(this.url("subjects/sync"), { ids })
-        )
+        const trend = await this.load()
+        trend.syncSubjects(ids)
+        await this.save(trend)
     }
 
     async hit(id: string) {
-        await firstValueFrom(
-            this.httpService.post(this.url(`hit/${id}`))
-        )
+        const trend = await this.load()
+        if (!trend.hasSubject(id)) {
+            throw new NotFoundException()
+        }
+        trend.hit(id)
+        await this.save(trend)
     }
 
     async getTrend() {
-        const res = await firstValueFrom<AxiosResponse<string[]>>(
-            this.httpService.get(this.url("trend"))
-        )
-        return res.data
+        const trend = await this.load()
+        return trend.getTrendingSubjects()
     }
 }

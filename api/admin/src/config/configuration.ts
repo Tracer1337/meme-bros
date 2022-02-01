@@ -7,9 +7,6 @@ export const configuration = () => ({
     database: {
         uri: process.env.MONGODB_URI || "mongodb://localhost/meme-bros"
     },
-    trend: {
-        uri: process.env.TREND_URI || "http://localhost:7000"
-    },
     core: {
         uri: process.env.CORE_URI || "http://localhost:8000"
     },
@@ -21,6 +18,11 @@ export const configuration = () => ({
     },
     templates: {
         previewWidth: 500,
-        previewHeight: 500
+        previewHeight: 500,
+        trend: {
+            name: "templates",
+            damping: 10,
+            reduction: 100
+        }
     }
 })
