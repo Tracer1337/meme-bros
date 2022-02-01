@@ -16,7 +16,7 @@ export class UsersService implements OnModuleInit {
     async createInitialUser() {
         if (!await this.userModel.exists({})) {
             await this.userModel.create({
-                username: "Admin",
+                username: "admin",
                 password: createHash("admin")
             })
         }
