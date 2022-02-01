@@ -12,5 +12,9 @@ export const configuration = () => ({
     },
     storage: {
         path: process.env.STORAGE_PATH || path.join(REPOSITORY_ROOT_DIR, "storage")
+    },
+    throttle: {
+        ttl: 60,
+        limit: 10
     }
 })

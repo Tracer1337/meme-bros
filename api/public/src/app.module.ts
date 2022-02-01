@@ -6,6 +6,7 @@ import { StorageModule, TrendModule } from "@meme-bros/api-lib"
 import { TemplatesModule } from "./templates/templates.module"
 import { configuration } from "./config/configuration"
 import { configurationSchema } from "./config/configuration.schema"
+import { ThrottlerModule } from "@nestjs/throttler"
 
 @Module({
     imports: [
@@ -17,6 +18,14 @@ import { configurationSchema } from "./config/configuration.schema"
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => ({
                 uri: configService.get<string>("database.uri")
+            }),
+            inject: [ConfigService]
+        }),
+        ThrottlerModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                ttl: configService.get<number>("throttle.ttl"),
+                limit: configService.get<number>("throttle.limit")
             }),
             inject: [ConfigService]
         }),

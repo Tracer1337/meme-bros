@@ -1,4 +1,5 @@
-import { Controller, Get, Param, Post, Query } from "@nestjs/common"
+import { Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common"
+import { ThrottlerGuard } from "@nestjs/throttler"
 import { TemplatesService } from "./templates.service"
 import { TemplateEntity } from "./entities/template.entity"
 
@@ -47,6 +48,7 @@ export class TemplatesController {
     }
 
     @Post(":id/register-use")
+    @UseGuards(ThrottlerGuard)
     async registerUse(@Param("id") id: string) {
         await this.templatesService.registerUse(id)
     }
