@@ -2,7 +2,7 @@ import { ClassSerializerInterceptor, Module } from "@nestjs/common"
 import { APP_INTERCEPTOR } from "@nestjs/core"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { MongooseModule } from "@nestjs/mongoose"
-import { StorageModule, TrendModule } from "@meme-bros/api-lib"
+import { CoreModule, StorageModule, TrendModule } from "@meme-bros/api-lib"
 import { UsersModule } from "./users/users.module"
 import { AuthModule } from "./auth/auth.module"
 import { TemplatesModule } from "./templates/templates.module"
@@ -33,6 +33,13 @@ import { configurationSchema } from "./config/configuration.schema"
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => ({
                 uri: configService.get<string>("trend.uri")
+            }),
+            inject: [ConfigService]
+        }),
+        CoreModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                uri: configService.get<string>("core.uri")
             }),
             inject: [ConfigService]
         }),

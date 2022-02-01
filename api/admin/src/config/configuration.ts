@@ -10,10 +10,17 @@ export const configuration = () => ({
     trend: {
         uri: process.env.TREND_URI || "http://localhost:7000"
     },
+    core: {
+        uri: process.env.CORE_URI || "http://localhost:8000"
+    },
     storage: {
         path: process.env.STORAGE_PATH || path.join(REPOSITORY_ROOT_DIR, "storage")
     },
     jwt: {
         secret: process.env.JWT_SECRET || "secret"
+    },
+    templates: {
+        previewWidth: 500,
+        previewHeight: 500
     }
 })

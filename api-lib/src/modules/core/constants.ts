@@ -1,0 +1,1 @@
+export const CORE_OPTIONS_KEY = "CORE_OPTIONS"

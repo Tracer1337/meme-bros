@@ -1,6 +1,7 @@
 import { FilterQuery, Model } from "mongoose"
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
+import { ConfigService } from "@nestjs/config"
 import type { Editor } from "@meme-bros/client-lib"
 import {
     createHash,
@@ -8,7 +9,8 @@ import {
     StorageService,
     Template,
     TemplateDocument,
-    TrendService
+    TrendService,
+    CoreService
 } from "@meme-bros/api-lib"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
 import { canvasValidator } from "./validators/canvas.validator"
@@ -18,8 +20,10 @@ import { UpdateTemplateDTO } from "./dto/update-template.dto"
 export class TemplatesService implements OnModuleInit {
     constructor(
         @InjectModel(Template.name) private readonly templateModel: Model<TemplateDocument>,
+        private readonly configService: ConfigService,
         private readonly storageService: StorageService,
-        private readonly trendService: TrendService
+        private readonly trendService: TrendService,
+        private readonly coreService: CoreService
     ) {}
 
     async onModuleInit() {
@@ -103,17 +107,20 @@ export class TemplatesService implements OnModuleInit {
     }
 
     async createPreview(template: TemplateDocument) {
-        const elementId = template.canvas.layers.find((id) =>
-            template.canvas.elements[id]?.type === "image"
-        )
-        if (elementId === undefined) {
-            throw new BadRequestException("Image not found")
-        }
-        const element = template.canvas.elements[elementId] as Editor.PickElement<"image">
-        const base64 = element.data.uri.split(",")[1]
-        const buffer = Buffer.from(base64, "base64")
+        const buffer = await this.renderPreview(template.canvas)
         const ext = this.getFileExtensionForCanvas(template.canvas)
         return await this.storageService.put(buffer, ext)
+    }
+
+    async renderPreview(canvas: Editor.Canvas) {
+        const dataURI = await this.coreService.render({
+            ...canvas,
+            debug: false,
+            pixelRatio: this.getPixelRatio(canvas),
+            elements: this.getPreviewElements(canvas)
+        })
+        const base64 = dataURI.split(",")[1]
+        return Buffer.from(base64, "base64")
     }
 
     async deletePreview(template: TemplateDocument) {
@@ -133,6 +140,24 @@ export class TemplatesService implements OnModuleInit {
     // TODO: same as above
     isImageElement(element: Editor.CanvasElement): element is Editor.PickElement<"image"> {
         return element.type === "image"
+    }
+
+    getPixelRatio(canvas: Editor.Canvas) {
+        const width = this.configService.get<number>("templates.previewWidth")
+        const height = this.configService.get<number>("templates.previewHeight")
+        return canvas.width >= canvas.height
+            ? width / canvas.width
+            : height / canvas.height
+    }
+
+    getPreviewElements(canvas: Editor.Canvas) {
+        return canvas.layers
+            .map((layer) =>
+                canvas.elements[layer].type !== "textbox"
+                    ? canvas.elements[layer]
+                    : null
+            )
+            .filter((element) => element !== null)
     }
 
     getTemplateHash(template: TemplateDocument) {
