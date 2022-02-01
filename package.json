@@ -12,8 +12,8 @@
   "workspaces": {
     "packages": [
       "api/admin",
+      "api/lib",
       "api/public",
-      "api-lib",
       "app",
       "canvas",
       "client-lib",
