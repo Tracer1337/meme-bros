@@ -12,6 +12,7 @@
     "apk:install": "adb install -r android\\app\\build\\outputs\\apk\\release\\app-release.apk"
   },
   "dependencies": {
+    "@meme-bros/api-sdk": "*",
     "@meme-bros/app": "*",
     "@meme-bros/client-lib": "*",
     "@react-native-community/netinfo": "^7.1.7",
