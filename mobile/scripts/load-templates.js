@@ -3,13 +3,13 @@ const path = require("path")
 const fetch = require("node-fetch")
 const { pipeline } = require("stream")
 const { promisify } = require("util")
-const { API } = require("@meme-bros/api-sdk")
+const { api } = require("@meme-bros/api-sdk")
 
 const streamPipeline = promisify(pipeline)
 
-const api = new API(
-    process.env.API_HOST || "http://localhost:6000"
-)
+api.setConfig({
+    host: process.env.API_HOST || "http://localhost:6000"
+})
 
 const ASSETS_DIR = path.join(__dirname, "..", "android", "app", "src", "main", "assets")
 const CANVAS_DIR = path.join(ASSETS_DIR, "canvases")
@@ -40,19 +40,19 @@ async function hasHashChanged(hash) {
 async function downloadCanvas(template) {
     const filename = `${template.hash}.json`
     const filepath = path.join(CANVAS_DIR, filename)
-    const res = await fetch(api.templates.getCanvasURL(template))
+    const res = await fetch(api.templates.canvas.url(template))
     await streamPipeline(res.body, fs.createWriteStream(filepath))
     return filename
 }
 
 async function downloadPreview(template) {
     const filepath = path.join(PREVIEWS_DIR, template.previewFile)
-    const res = await fetch(api.storage.getTemplatePreviewURL(template))
+    const res = await fetch(api.storage.templatePreview.url(template))
     await streamPipeline(res.body, fs.createWriteStream(filepath))
 }
 
 async function loadTemplates() {
-    const hash = await api.templates.getHash()
+    const hash = await api.templates.hash.get()
 
     if (!(await hasHashChanged(hash))) {
         console.log("Skip downloading templates")
@@ -73,10 +73,10 @@ async function loadTemplates() {
     ])
 
     const [hashList, newList, topList, hotList] = await Promise.all([
-        api.templates.getHashList(),
-        api.templates.getNewList(),
-        api.templates.getTopList(),
-        api.templates.getHotList()
+        api.templates.hashList.get(),
+        api.templates.newList.get(),
+        api.templates.topList.get(),
+        api.templates.hotList.get()
     ])
 
     const result = {
@@ -88,7 +88,7 @@ async function loadTemplates() {
         meta: {}
     }
 
-    const templates = await api.templates.getAll()
+    const templates = await api.templates.all.get()
 
     await Promise.all(templates.map(async (template) => {
         const [canvasFile] = await Promise.all([

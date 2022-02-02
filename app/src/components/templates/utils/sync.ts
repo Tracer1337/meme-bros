@@ -6,14 +6,15 @@ import * as API from "@meme-bros/api-sdk"
 import { setupTemplatesStorage } from "./setup"
 import { Documents } from "./storage"
 import { useAppContext } from "../../../lib/context"
-import api from "../../../lib/api"
+
+const { api } = API
 
 async function syncTemplates({ onBegin, onDone }: {
     onBegin: AnyFunction,
     onDone: AnyFunction
 }) {
     const templatesFile = await Documents.readTemplatesFile()
-    const hash = await api.templates.getHash()
+    const hash = await api.templates.hash.get()
 
     if (templatesFile.hash === hash) {
         onDone()
@@ -23,10 +24,10 @@ async function syncTemplates({ onBegin, onDone }: {
     onBegin()
 
     const [hashList, newList, topList, hotList] = await Promise.all([
-        api.templates.getHashList(),
-        api.templates.getNewList(),
-        api.templates.getTopList(),
-        api.templates.getHotList()
+        api.templates.hashList.get(),
+        api.templates.newList.get(),
+        api.templates.topList.get(),
+        api.templates.hotList.get()
     ])
 
     const templatesDiff = diffUnique(templatesFile.hashList, hashList)
@@ -34,7 +35,7 @@ async function syncTemplates({ onBegin, onDone }: {
     const promises = []
 
     if (templatesDiff.added.length > 0) {
-        const templates = await api.templates.getAllAsMap(templatesDiff.added)
+        const templates = await api.templates.map.get(templatesDiff.added)
         const ids = createIdsMap(templates)
         promises.push(...templatesDiff.added.map(async (hash) => {
             try {

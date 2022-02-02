@@ -29,7 +29,7 @@ async function fetcher<T = any>(path: string) {
 }
 
 export const api = {
-    setConfig(newConfig: typeof config) {
+    setConfig: (newConfig: typeof config) => {
         Object.assign(config, newConfig)
         axios.defaults.baseURL = config.host
     },
@@ -95,8 +95,8 @@ export const api = {
     },
 
     storage: {
-        getTemplatePreviewURL: (template: Template) => {
-            return url(`storage/${template.previewFile}`)
+        templatePreview: {
+            url: (template: Template) => url(`storage/${template.previewFile}`)
         }
     }
 }

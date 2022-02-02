@@ -62,7 +62,7 @@ function TemplatesList() {
                     <ListItemButton onClick={() => handleClick(template)}>
                         <Box sx={{ minWidth: 100 }}>
                             <PreviewImage
-                                src={api.storage.getTemplatePreviewURL(template)}
+                                src={api.storage.templatePreview.url(template)}
                                 alt="Preview"
                             />
                         </Box>
