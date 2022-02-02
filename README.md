@@ -42,7 +42,7 @@ Shared react-native application
 
 Shared modules between canvas + mobile
 
-``ap/lib``
+``api/lib``
 
 Shared modules between ``api/public`` + ``api/admin``
 
