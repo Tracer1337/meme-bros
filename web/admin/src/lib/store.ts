@@ -32,7 +32,7 @@ export const useStore = create<Store>((set) => ({
         })
     },
     authorize: async () => {
-        api.auth.getProfile().then(({ username }) =>
+        api.auth.profile.get().then(({ username }) =>
             set({ isLoggedIn: true, username })
         )
     }

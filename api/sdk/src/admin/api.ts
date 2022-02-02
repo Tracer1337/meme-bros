@@ -36,10 +36,7 @@ export const api = {
             return res.data
         },
 
-        getProfile: async () => {
-            const res = await axios.get<Profile>("auth/profile")
-            return res.data
-        },
+        profile: createResource<Profile>(() => "auth/profile"),
 
         changePassword: async (payload: {
             oldPassword: string,
