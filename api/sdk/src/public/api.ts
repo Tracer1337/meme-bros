@@ -1,18 +1,9 @@
 import axios from "axios"
-import useSWR, { mutate } from "swr"
+import { createResource, url } from "../utils"
 import { Template } from "./types"
 
 const config = {
     host: ""
-}
-
-function url(path: string) {
-    return `${config.host}/${path}`
-}
-
-async function fetcher<T = any>(path: string) {
-    const res = await axios.get<T>(path)
-    return res.data
 }
 
 export const api = {
@@ -22,16 +13,17 @@ export const api = {
     },
 
     templates: {
-        all: {
-            get: async (hashes?: string[]) => {
-                const res = await axios.get<Template[]>("templates", {
-                    params: { hashes }
-                })
-                return res.data
-            },
-            use: () => useSWR<Template[]>("templates", fetcher),
-            mutate: () => mutate<Template[]>("templates")
-        },
+        all: createResource<Template[]>(
+            () => "templates",
+            {
+                get: async (hashes?: string[]) => {
+                    const res = await axios.get<Template[]>("templates", {
+                        params: { hashes }
+                    })
+                    return res.data
+                }
+            }
+        ),
 
         map: {
             get: async (hashes?: string[]) => {
@@ -44,35 +36,21 @@ export const api = {
             }
         },
         
-        one: {
-            get: (id: string) => fetcher<Template>(`templates/${id}`),
-            use: (id: string) => useSWR<Template>(`templates/${id}`, fetcher),
-            mutate: (id: string) => mutate<Template>(`templates/${id}`)
-        },
+        one: createResource<Template, [string]>((id) => `template/${id}`),
 
-        canvas: {
-            url: (template: Template) => url(`templates/${template.id}/canvas`)
-        },
+        canvas: createResource<any, [Template]>(
+            (template) => `templates/${template.id}/canvas`
+        ),
 
-        hash: {
-            get: () => fetcher<string>("templates/hash")
-        },
+        hash: createResource<string>(() => "templates/hash"),
 
-        hashList: {
-            get: () => fetcher<string[]>("templates/list/hash")
-        },
+        hashList: createResource<string[]>(() => "templates/list/hash"),
 
-        newList: {
-            get: () => fetcher<string[]>("templates/list/new")
-        },
+        newList: createResource<string[]>(() => "templates/list/new"),
 
-        topList: {
-            get: () => fetcher<string[]>("templates/list/top")
-        },
+        topList: createResource<string[]>(() => "templates/list/top"),
 
-        hotList: {
-            get: () => fetcher<string[]>("templates/list/hot")
-        },
+        hotList: createResource<string[]>(() => "templates/list/hot"),
 
         registerUse: async (template: Template) => {
             await axios.post(`templates/${template.id}/register-use`)

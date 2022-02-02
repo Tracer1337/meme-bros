@@ -1,5 +1,6 @@
 import axios from "axios"
 import useSWR, { mutate } from "swr"
+import { createResource, url } from "../utils"
 import {
     AccessToken,
     Profile,
@@ -18,15 +19,6 @@ axios.interceptors.request.use((req) => {
     }
     return req
 })
-
-function url(path: string) {
-    return `${config.host}/${path}`
-}
-
-async function fetcher<T = any>(path: string) {
-    const res = await axios.get<T>(path)
-    return res.data
-}
 
 export const api = {
     setConfig: (newConfig: typeof config) => {
@@ -58,23 +50,11 @@ export const api = {
     },
 
     templates: {
-        all: {
-            get: () => fetcher<Template[]>("templates"),
-            use: () => useSWR<Template[]>("templates", fetcher),
-            mutate: () => mutate<Template[]>("templates")
-        },
+        all: createResource<Template[]>(() => "templates"),
         
-        one: {
-            get: (id: string) => fetcher<Template>(`templates/${id}`),
-            use: (id: string) => useSWR<Template>(`templates/${id}`, fetcher),
-            mutate: (id: string) => mutate<Template>(`templates/${id}`)
-        },
+        one: createResource<Template, [string]>((id) => `templates/${id}`),
 
-        canvas: {
-            get: (id: string) => fetcher<any>(`templates/${id}/canvas`),
-            use: (id: string) => useSWR<any>(`templates/${id}/canvas`, fetcher),
-            mutate: (id: string) => mutate<any>(`templates/${id}/canvas`)
-        },
+        canvas: createResource<any, [string]>((id) => `templates/${id}/canvas`),
 
         create: async (payload: CreateTemplate) => {
             const res = await axios.post("templates", payload)
