@@ -1,7 +1,7 @@
 import React from "react"
 import { useLocation, useParams } from "react-router-dom"
-import { useSWRConfig } from "swr"
-import { API } from "../../lib/api"
+import * as API from "@meme-bros/api-sdk/dist/admin/types"
+import { api } from "@meme-bros/api-sdk/dist/admin/api"
 import TemplateForm, { Fields } from "./TemplateForm"
 
 export type LocationState = API.Template
@@ -15,20 +15,18 @@ function UpdateTemplate() {
 
     const locationState = useLocation().state as LocationState
     
-    const templateReq = API.useTemplate(id)
+    const templateReq = api.templates.one.use(id)
 
-    const canvasReq = API.useTemplateCanvas(id)
+    const canvasReq = api.templates.canvas.use(id)
 
     const template = locationState || templateReq.data
-
-    const { mutate } = useSWRConfig()
 
     const handleSubmit = async (values: Fields) => {
         if (!id) {
             return
         }
-        await API.updateTemplate(id, values)
-        mutate("templates")
+        await api.templates.update(template, values)
+        api.templates.all.mutate()
     }
     
     if (templateReq.error || canvasReq.error) {

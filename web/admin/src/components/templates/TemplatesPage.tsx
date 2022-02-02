@@ -1,7 +1,11 @@
 import React from "react"
 import { Outlet, Link } from "react-router-dom"
 import { Button, Grid, Typography } from "@mui/material"
-import { BridgeProvider, SharedContextProvider, useSharedContext } from "@meme-bros/client-lib"
+import {
+    BridgeProvider,
+    SharedContextProvider,
+    useSharedContext
+} from "@meme-bros/client-lib"
 import TemplateList from "./TemplatesList"
 
 function InnerTemplatesPage() {

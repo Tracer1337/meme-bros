@@ -1,5 +1,5 @@
 import create from "zustand"
-import { API } from "./api"
+import { api } from "@meme-bros/api-sdk/dist/admin"
 import { Storage } from "./storage"
 
 type Store = {
@@ -17,7 +17,7 @@ export const useStore = create<Store>((set) => ({
     isLoggedIn: false,
     username: "",
     login: async (args) => {
-        const { access_token } = await API.login(args)
+        const { access_token } = await api.auth.login(args)
         Storage.set(Storage.Keys.TOKEN, access_token)
         set({
             isLoggedIn: true,
@@ -32,7 +32,7 @@ export const useStore = create<Store>((set) => ({
         })
     },
     authorize: async () => {
-        API.getProfile().then(({ username }) =>
+        api.auth.getProfile().then(({ username }) =>
             set({ isLoggedIn: true, username })
         )
     }

@@ -11,7 +11,8 @@ import {
     Typography
 } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { API } from "../../lib/api"
+import * as API from "@meme-bros/api-sdk/dist/admin/types"
+import { api } from "@meme-bros/api-sdk/dist/admin/api"
 import { LocationState } from "./UpdateTemplate"
 import { useConfirm } from "../../lib/confirm"
 
@@ -20,7 +21,7 @@ const PreviewImage = styled("img")({
 })
 
 function TemplatesList() {
-    const { data, error, mutate } = API.useTemplates()
+    const { data, error } = api.templates.all.use()
 
     const confirm = useConfirm()
 
@@ -32,9 +33,9 @@ function TemplatesList() {
 
     const handleDelete = async (template: API.Template) => {
         if (await confirm(`The template '${template.name}' will be deleted`)) {
-            await API.deleteTemplate(template.id)
+            await api.templates.delete(template)
+            api.templates.all.mutate()
             navigate("/templates")
-            mutate()
         }
     }
 
@@ -61,7 +62,7 @@ function TemplatesList() {
                     <ListItemButton onClick={() => handleClick(template)}>
                         <Box sx={{ minWidth: 100 }}>
                             <PreviewImage
-                                src={API.getPreviewURL(template)}
+                                src={api.storage.getTemplatePreviewURL(template)}
                                 alt="Preview"
                             />
                         </Box>

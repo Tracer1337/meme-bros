@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Container, TextField, Typography } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { API } from "../../lib/api"
+import { api } from "@meme-bros/api-sdk/dist/admin"
 import { useSnackbar } from "../../lib/snackbar"
 
 type Fields = {
@@ -23,7 +23,7 @@ function ChangePasswordPage() {
             return
         }
         setIsLoading(true)
-        API.changePassword(values)
+        api.auth.changePassword(values)
             .then(() => snackbar.success())
             .catch((error) => console.error(error))
             .finally(() => setIsLoading(false))
