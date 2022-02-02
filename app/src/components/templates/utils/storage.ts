@@ -1,7 +1,9 @@
 import { Platform } from "react-native"
 import RNFS from "react-native-fs"
-import { TemplateMeta, TemplatesFile, API, Editor } from "@meme-bros/client-lib"
+import { TemplateMeta, TemplatesFile, Editor } from "@meme-bros/client-lib"
+import * as API from "@meme-bros/api-sdk"
 import { PREVIEWS_DIR, CANVAS_DIR, TEMPLATES_FILE } from "./constants"
+import api from "../../../lib/api"
 
 export function join(...paths: string[]) {
     return paths.join("/")
@@ -57,7 +59,7 @@ export namespace Documents {
     export async function downloadCanvas(template: API.Template) {
         const filename = `${template.hash}.json`
         await RNFS.downloadFile({
-            fromUrl: API.getCanvasURL(template),
+            fromUrl: api.templates.getCanvasURL(template),
             toFile: path(join(CANVAS_DIR, filename))
         }).promise
         return filename
@@ -69,7 +71,7 @@ export namespace Documents {
 
     export async function downloadPreview(template: API.Template) {
         await RNFS.downloadFile({
-            fromUrl: API.getPreviewURL(template),
+            fromUrl: api.storage.getTemplatePreviewURL(template),
             toFile: path(join(PREVIEWS_DIR, template.previewFile))
         }).promise
     }

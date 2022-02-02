@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState } from "react"
 import { DeepPartial } from "tsdef"
 import produce from "immer"
+import * as API from "@meme-bros/api-sdk"
 import EventEmitter from "./EventEmitter"
 import { useBridge, Bridge } from "./bridge"
 import { useListeners } from "./events"
 import { Editor } from "./editor"
 import { deepmerge } from "./utils"
-import { API } from "./api"
 
 export namespace SharedContext {
     export type ElementEvents = "create" | "edit" | "remove" | "config"

@@ -1,17 +1,19 @@
 import { useEffect } from "react"
 import { AnyFunction } from "tsdef"
 import { useNetInfo } from "@react-native-community/netinfo"
-import { TemplateMeta, TemplatesFile, API } from "@meme-bros/client-lib"
+import { TemplateMeta, TemplatesFile } from "@meme-bros/client-lib"
+import * as API from "@meme-bros/api-sdk"
 import { setupTemplatesStorage } from "./setup"
 import { Documents } from "./storage"
 import { useAppContext } from "../../../lib/context"
+import api from "../../../lib/api"
 
 async function syncTemplates({ onBegin, onDone }: {
     onBegin: AnyFunction,
     onDone: AnyFunction
 }) {
     const templatesFile = await Documents.readTemplatesFile()
-    const hash = await API.getTemplatesHash()
+    const hash = await api.templates.getHash()
 
     if (templatesFile.hash === hash) {
         onDone()
@@ -21,10 +23,10 @@ async function syncTemplates({ onBegin, onDone }: {
     onBegin()
 
     const [hashList, newList, topList, hotList] = await Promise.all([
-        API.getHashList(),
-        API.getNewList(),
-        API.getTopList(),
-        API.getHotList()
+        api.templates.getHashList(),
+        api.templates.getNewList(),
+        api.templates.getTopList(),
+        api.templates.getHotList()
     ])
 
     const templatesDiff = diffUnique(templatesFile.hashList, hashList)
@@ -32,7 +34,7 @@ async function syncTemplates({ onBegin, onDone }: {
     const promises = []
 
     if (templatesDiff.added.length > 0) {
-        const templates = await API.getTemplatesAsMap(templatesDiff.added)
+        const templates = await api.templates.getAllAsMap(templatesDiff.added)
         const ids = createIdsMap(templates)
         promises.push(...templatesDiff.added.map(async (hash) => {
             try {

@@ -14,6 +14,7 @@
       "api/admin",
       "api/lib",
       "api/public",
+      "api/sdk",
       "app",
       "canvas",
       "client-lib",

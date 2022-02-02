@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@meme-bros/api-sdk": "*",
     "@meme-bros/app": "*",
     "@meme-bros/canvas": "*",
     "@meme-bros/client-lib": "*",

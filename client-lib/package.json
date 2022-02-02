@@ -8,6 +8,7 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
+    "@meme-bros/api-sdk": "*",
     "@meme-bros/core": "*",
     "@types/deepmerge": "^2.2.0",
     "@types/react": "^17.0.38",

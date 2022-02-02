@@ -4,7 +4,6 @@ import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import produce from "immer"
 import {
-    API,
     deepmerge,
     Editor,
     renderCanvas,
@@ -14,6 +13,7 @@ import {
     useRNWebViewMessaging,
     useSharedContext
 } from "@meme-bros/client-lib"
+import * as API from "@meme-bros/api-sdk"
 import { DialogContext } from "../../lib/DialogHandler"
 import { setListeners } from "../../lib/events"
 import { loadCanvasDummy } from "./utils/dummy"
@@ -45,9 +45,6 @@ function Canvas() {
     }
 
     const handleCanvasRender = async () => {
-        if (context.template) {
-            await API.registerUse(context.template)
-        }
         const rendered = renderCanvas(context.canvas)
         console.log("Generate", { raw: context.canvas, rendered })
         const base64 = await core.render(rendered)

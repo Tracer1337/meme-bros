@@ -46,6 +46,10 @@ Shared react-native application
 
 Shared modules between canvas + mobile
 
-``api-lib``
+``ap/lib``
 
 Shared modules between ``api/public`` + ``api/admin``
+
+``api/sdk``
+
+Classes + React Hooks for interacting with the APIs
