@@ -1,4 +1,5 @@
-import { BASE_PADDING, Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
+import { BASE_PADDING } from "@meme-bros/client-lib"
 import { AnimatedValueXY } from "../../../lib/animation"
 
 export function getElementBasePosition(

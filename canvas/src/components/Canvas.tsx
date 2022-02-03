@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
+import { Editor } from "@meme-bros/shared"
 import {
-    Editor,
     addElement,
     getDefaultDataByType,
     updateCanvasBase,

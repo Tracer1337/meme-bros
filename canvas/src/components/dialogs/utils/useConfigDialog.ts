@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { TextField } from "@mui/material"
-import { Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
 import Switch from "../../inputs/Switch"
 
 type GetPropsFunction<T extends Editor.CanvasElement["type"], C extends React.ComponentType<any>> =

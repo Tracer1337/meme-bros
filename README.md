@@ -38,6 +38,10 @@ Meme-Generator written in Go
 
 Shared react-native application
 
+``shared``
+
+Shared modules between all apps + packages
+
 ``client-lib``
 
 Shared modules between canvas + mobile

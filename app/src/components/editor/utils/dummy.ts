@@ -1,4 +1,4 @@
-import { Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
 import { fetchBase64 } from "../../../lib/base64"
 import { scaleToScreen } from "./scale"
 import { resolveAssetSource } from "../../../lib/media"

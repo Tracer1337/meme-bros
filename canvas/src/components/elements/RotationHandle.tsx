@@ -1,7 +1,7 @@
 import { useRef } from "react"
 import { DraggableCore, DraggableData, DraggableEventHandler } from "react-draggable"
 import RotateIcon from "@mui/icons-material/Replay"
-import { Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
 import { useSharedContext } from "@meme-bros/client-lib"
 import { AnimatedValue } from "../../lib/animation"
 import Handle from "../Handle"

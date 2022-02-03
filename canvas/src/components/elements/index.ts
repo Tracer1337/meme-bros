@@ -1,4 +1,4 @@
-import { Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
 import React from "react"
 import Image from "./Image"
 import { ElementComponentProps } from "./makeElement"

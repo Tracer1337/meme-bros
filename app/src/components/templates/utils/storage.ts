@@ -1,6 +1,7 @@
 import { Platform } from "react-native"
 import RNFS from "react-native-fs"
-import { TemplateMeta, TemplatesFile, Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
+import { TemplateMeta, TemplatesFile } from "@meme-bros/client-lib"
 import * as API from "@meme-bros/api-sdk"
 import { PREVIEWS_DIR, CANVAS_DIR, TEMPLATES_FILE } from "./constants"
 

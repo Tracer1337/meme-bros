@@ -3,9 +3,9 @@ import { Platform } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import produce from "immer"
+import { Editor } from "@meme-bros/shared"
 import {
     deepmerge,
-    Editor,
     renderCanvas,
     SharedContext,
     updateCanvasBase,

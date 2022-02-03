@@ -5,7 +5,7 @@ import {
     CoreService,
     TemplateDocument
 } from "@meme-bros/api-lib"
-import { Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
 
 @Injectable()
 export class PreviewsService {

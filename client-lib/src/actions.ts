@@ -1,6 +1,6 @@
 import produce, { setAutoFreeze } from "immer"
 import { DeepPartial } from "tsdef"
-import { Editor } from "./editor"
+import { Editor } from "@meme-bros/shared"
 import { SharedContext } from "./context"
 import { clone, makeId } from "./utils"
 

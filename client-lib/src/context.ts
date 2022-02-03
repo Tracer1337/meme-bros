@@ -2,10 +2,10 @@ import React, { createContext, useContext, useState } from "react"
 import { DeepPartial } from "tsdef"
 import produce from "immer"
 import * as API from "@meme-bros/api-sdk"
+import { Editor } from "@meme-bros/shared"
 import EventEmitter from "./EventEmitter"
 import { useBridge, Bridge } from "./bridge"
 import { useListeners } from "./events"
-import { Editor } from "./editor"
 import { deepmerge } from "./utils"
 
 export namespace SharedContext {

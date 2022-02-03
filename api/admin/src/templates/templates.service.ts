@@ -1,7 +1,7 @@
 import { FilterQuery, Model } from "mongoose"
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
-import type { Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
 import {
     createHash,
     assertIsValidObjectId,

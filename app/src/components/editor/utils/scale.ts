@@ -1,4 +1,4 @@
-import { Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
 import { Dimensions } from "../../../lib/dimensions"
 import { ACTION_BAR_HEIGHT } from "../constants"
 

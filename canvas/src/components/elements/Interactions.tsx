@@ -1,7 +1,7 @@
 import EditIcon from "@mui/icons-material/Edit"
 import SettingsIcon from "@mui/icons-material/Settings"
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
-import { Editor } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
 import { SharedContext, useSharedContext } from "@meme-bros/client-lib"
 import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"

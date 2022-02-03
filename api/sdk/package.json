@@ -8,6 +8,7 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
+    "@meme-bros/shared": "*",
     "@types/react": "^17.0.38",
     "axios": "^0.25.0",
     "react": "^17.0.2",

@@ -5,6 +5,7 @@
   "main": "src",
   "dependencies": {
     "@meme-bros/api-sdk": "*",
+    "@meme-bros/shared": "*",
     "@react-native-community/netinfo": "^7.1.7",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",

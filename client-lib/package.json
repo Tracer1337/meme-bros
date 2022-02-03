@@ -10,6 +10,7 @@
   "dependencies": {
     "@meme-bros/api-sdk": "*",
     "@meme-bros/core": "*",
+    "@meme-bros/shared": "*",
     "@types/deepmerge": "^2.2.0",
     "@types/react": "^17.0.38",
     "deepmerge": "^4.2.2",
