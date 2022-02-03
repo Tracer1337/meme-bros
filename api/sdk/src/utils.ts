@@ -10,17 +10,17 @@ export async function fetcher<T = any>(path: string) {
     return res.data
 }
 
-export type Resource<T, A extends any[]> = {
+export type Getter<T, A extends any[]> = {
     url: (...args: A) => string,
     get: (...args: A) => Promise<T>,
     use: (...args: A) => SWRResponse<T, any>,
     mutate: (...args: A) => Promise<T | undefined>
 }
 
-export function createResource<T, A extends any[] = []>(
+export function getter<T, A extends any[] = []>(
     getPath: (...args: A) => string,
-    overrides: Partial<Resource<T, A>> = {}
-): Resource<T, A> {
+    overrides: Partial<Getter<T, A>> = {}
+): Getter<T, A> {
     return {
         url: (...args: A) => url(getPath(...args)),
         get: (...args: A) => fetcher<T>(getPath(...args)),

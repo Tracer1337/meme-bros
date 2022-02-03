@@ -1,6 +1,5 @@
 import axios from "axios"
-import useSWR, { mutate } from "swr"
-import { createResource, url } from "../utils"
+import { getter, url } from "../utils"
 import {
     AccessToken,
     Profile,
@@ -36,7 +35,7 @@ export const api = {
             return res.data
         },
 
-        profile: createResource<Profile>(() => "auth/profile"),
+        profile: getter<Profile>(() => "auth/profile"),
 
         changePassword: async (payload: {
             oldPassword: string,
@@ -47,11 +46,11 @@ export const api = {
     },
 
     templates: {
-        all: createResource<Template[]>(() => "templates"),
+        all: getter<Template[]>(() => "templates"),
         
-        one: createResource<Template, [string]>((id) => `templates/${id}`),
+        one: getter<Template, [string]>((id) => `templates/${id}`),
 
-        canvas: createResource<any, [string]>((id) => `templates/${id}/canvas`),
+        canvas: getter<any, [string]>((id) => `templates/${id}/canvas`),
 
         create: async (payload: CreateTemplate) => {
             const res = await axios.post("templates", payload)

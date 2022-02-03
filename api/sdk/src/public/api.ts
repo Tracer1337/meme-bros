@@ -1,5 +1,5 @@
 import axios from "axios"
-import { createResource, url } from "../utils"
+import { getter, url } from "../utils"
 import { Template } from "./types"
 
 const config = {
@@ -13,7 +13,7 @@ export const api = {
     },
 
     templates: {
-        all: createResource<Template[]>(
+        all: getter<Template[]>(
             () => "templates",
             {
                 get: async (hashes?: string[]) => {
@@ -36,21 +36,21 @@ export const api = {
             }
         },
         
-        one: createResource<Template, [string]>((id) => `template/${id}`),
+        one: getter<Template, [string]>((id) => `template/${id}`),
 
-        canvas: createResource<any, [Template]>(
+        canvas: getter<any, [Template]>(
             (template) => `templates/${template.id}/canvas`
         ),
 
-        hash: createResource<string>(() => "templates/hash"),
+        hash: getter<string>(() => "templates/hash"),
 
-        hashList: createResource<string[]>(() => "templates/list/hash"),
+        hashList: getter<string[]>(() => "templates/list/hash"),
 
-        newList: createResource<string[]>(() => "templates/list/new"),
+        newList: getter<string[]>(() => "templates/list/new"),
 
-        topList: createResource<string[]>(() => "templates/list/top"),
+        topList: getter<string[]>(() => "templates/list/top"),
 
-        hotList: createResource<string[]>(() => "templates/list/hot"),
+        hotList: getter<string[]>(() => "templates/list/hot"),
 
         registerUse: async (template: Template) => {
             await axios.post(`templates/${template.id}/register-use`)
