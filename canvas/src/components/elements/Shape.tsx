@@ -1,11 +1,11 @@
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
 import {
     updateElementData,
     useSharedContext,
     consumeEvent,
-    setListeners
+    useListeners
 } from "@meme-bros/client-lib"
 import { DialogContext } from "../../lib/DialogHandler"
 import makeElement, { ElementProps } from "./makeElement"
@@ -31,11 +31,9 @@ function Shape({ element }: ElementProps<"shape">) {
         context.set(updateElementData(context, element, data))
     }
 
-    useEffect(() =>
-        setListeners(context.events, [
-            ["element.config", consumeEvent(element.id, handleConfig)]
-        ])
-    )
+    useListeners(context.events, [
+        ["element.config", consumeEvent(element.id, handleConfig)]
+    ])
     
     return (
         <div style={{

@@ -6,7 +6,7 @@ import {
     updateTextboxText,
     useSharedContext,
     consumeEvent,
-    setListeners
+    useListeners
 } from "@meme-bros/client-lib"
 import { DialogContext } from "../../lib/DialogHandler"
 import { textfit } from "../../lib/textfit"
@@ -94,12 +94,14 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
         textRef.current.style.fontSize = fontSize + "px"
     }, [element, size])
 
-    useEffect(() =>
-        setListeners(context.events, [
-            ["element.edit", consumeEvent(element.id, handleEdit)],
-            ["element.config", consumeEvent(element.id, handleConfig)]
-        ])
-    )
+    useListeners(context.events, [
+        ["element.edit", consumeEvent(element.id, handleEdit)],
+        ["element.config", consumeEvent(element.id, handleConfig)]
+    ])
+
+    useListeners(size, [
+        ["update", updateFontSize]
+    ])
 
     useEffect(() => {
         if (isEditing) {
@@ -108,10 +110,6 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
         setDraggableProps({ disabled: isEditing })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEditing])
-
-    useEffect(() => setListeners(size, [
-        ["update", updateFontSize]
-    ]))
 
     useEffect(() => {
         if (!textRef.current) {

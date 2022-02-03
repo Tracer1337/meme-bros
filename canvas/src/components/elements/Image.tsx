@@ -1,10 +1,16 @@
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
-import { deepmerge, consumeEvent, setListeners } from "@meme-bros/client-lib"
+import {
+    updateElementData,
+    updateElementRect,
+    useSharedContext,
+    deepmerge,
+    consumeEvent,
+    useListeners
+} from "@meme-bros/client-lib"
 import { DialogContext } from "../../lib/DialogHandler"
 import makeElement, { ElementProps } from "./makeElement"
-import { updateElementData, updateElementRect, useSharedContext } from "@meme-bros/client-lib"
 
 export function getImageStyles(element: Editor.PickElement<"image">): CSS.Properties {
     return {
@@ -42,11 +48,9 @@ function Image({ element, size }: ElementProps<"image">) {
         ))
     }
 
-    useEffect(() =>
-        setListeners(context.events, [
-            ["element.config", consumeEvent(element.id, handleConfig)]
-        ])
-    )
+    useListeners(context.events, [
+        ["element.config", consumeEvent(element.id, handleConfig)]
+    ])
     
     return (
         <img

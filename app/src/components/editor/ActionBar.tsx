@@ -7,7 +7,7 @@ import {
     layerElement,
     useSharedContext,
     clearCanvas,
-    setListeners
+    useListeners
 } from "@meme-bros/client-lib"
 import { createCanvasElement } from "./utils/canvas"
 
@@ -99,11 +99,9 @@ function ActionBar() {
         }
     }, [context.interactions.focus])
 
-    useEffect(() =>
-        setListeners(context.events, [
-            ["canvas.render.done", () => setIsGenerating(false)]
-        ])
-    )
+    useListeners(context.events, [
+        ["canvas.render.done", () => setIsGenerating(false)]
+    ])
 
     return (
         <Appbar style={styles.appbar}>

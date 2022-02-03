@@ -12,7 +12,7 @@ import {
     useNativeModule,
     useRNWebViewMessaging,
     useSharedContext,
-    setListeners
+    useListeners
 } from "@meme-bros/client-lib"
 import * as API from "@meme-bros/api-sdk"
 import { DialogContext } from "../../lib/DialogHandler"
@@ -132,17 +132,15 @@ function Canvas() {
             canvas: produce(canvas, scaleTemplateCanvas)
         })
     }
-        
-    useEffect(() =>
-        setListeners(context.events, [
-            ["canvas.render", handleCanvasRender],
-            ["canvas.base.import", handleBaseImport],
-            ["canvas.base.blank", handleBaseBlank],
-            ["canvas.base.dummy", handleBaseDummy],
-            ["template.load", handleTemplateLoad]
-        ])
-    )
 
+    useListeners(context.events, [
+        ["canvas.render", handleCanvasRender],
+        ["canvas.base.import", handleBaseImport],
+        ["canvas.base.blank", handleBaseBlank],
+        ["canvas.base.dummy", handleBaseDummy],
+        ["template.load", handleTemplateLoad]
+    ])
+    
     return (
         <WebView
             originWhitelist={["*"]}

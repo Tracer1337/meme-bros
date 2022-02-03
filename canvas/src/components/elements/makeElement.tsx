@@ -3,7 +3,12 @@ import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
-import { updateElementRect, useSharedContext, setListeners } from "@meme-bros/client-lib"
+import {
+    updateElementRect,
+    useSharedContext,
+    setListeners,
+    useListeners
+} from "@meme-bros/client-lib"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import { AnimatedValue, AnimatedValueXY, useAnimationRegistry } from "../../lib/animation"
@@ -145,9 +150,9 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
             ))
         }
 
-        useEffect(() => setListeners(pos, [["update", updateTransform]]))
-        useEffect(() => setListeners(size, [["update", updateTransform]]))
-        useEffect(() => setListeners(rotation, [["update", updateTransform]]))
+        useListeners(pos, [["update", updateTransform]])
+        useListeners(size, [["update", updateTransform]])
+        useListeners(rotation, [["update", updateTransform]])
         useEffect(() => updateTransform(), [updateTransform])
 
         useEffect(() => {
