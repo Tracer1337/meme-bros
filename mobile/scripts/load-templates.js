@@ -4,6 +4,7 @@ const fetch = require("node-fetch")
 const { pipeline } = require("stream")
 const { promisify } = require("util")
 const { api } = require("@meme-bros/api-sdk")
+const { syncTemplates } = require("@meme-bros/client-lib/dist/templates")
 
 const streamPipeline = promisify(pipeline)
 
@@ -11,10 +12,7 @@ api.setConfig({
     host: process.env.API_HOST || "http://localhost:6000"
 })
 
-const ASSETS_DIR = path.join(__dirname, "..", "android", "app", "src", "main", "assets")
-const CANVAS_DIR = path.join(ASSETS_DIR, "canvases")
-const PREVIEWS_DIR = path.join(ASSETS_DIR, "previews")
-const TEMPLATES_FILE = path.join(ASSETS_DIR, "templates.json")
+const ASSETS_DIR = path.resolve(__dirname, "..", "android", "app", "src", "main", "assets")
 
 async function readFileIfExists(filepath) {
     try {
@@ -24,90 +22,31 @@ async function readFileIfExists(filepath) {
     }
 }
 
-async function assertDirExists(dir) {
+async function exists(dir) {
     try {
         await fs.promises.access(dir)
+        return true
     } catch {
-        await fs.promises.mkdir(dir)
+        return false
     }
 }
 
-async function hasHashChanged(hash) {
-    const json = await readFileIfExists(TEMPLATES_FILE)
-    return !json ? true : JSON.parse(json).hash !== hash
-}
-
-async function downloadCanvas(template) {
-    const filename = `${template.hash}.json`
-    const filepath = path.join(CANVAS_DIR, filename)
-    const res = await fetch(api.templates.canvas.url(template))
-    await streamPipeline(res.body, fs.createWriteStream(filepath))
-    return filename
-}
-
-async function downloadPreview(template) {
-    const filepath = path.join(PREVIEWS_DIR, template.previewFile)
-    const res = await fetch(api.storage.templatePreview.url(template))
-    await streamPipeline(res.body, fs.createWriteStream(filepath))
-}
-
-async function loadTemplates() {
-    const hash = await api.templates.hash.get()
-
-    if (!(await hasHashChanged(hash))) {
-        console.log("Skip downloading templates")
-        return
+syncTemplates({
+    clean: true,
+    path: ASSETS_DIR,
+    fs: {
+        rm: (path) => fs.promises.rm(path, {
+            force: true,
+            recursive: true
+        }),
+        mkdir: fs.promises.mkdir,
+        readFile: readFileIfExists,
+        writeFile: fs.promises.writeFile,
+        exists
+    },
+    download: async (url, to) => {
+        const res = await fetch(url)
+        await streamPipeline(res.body, fs.createWriteStream(to))
     }
+})
 
-    console.log("Download templates")
-
-    await Promise.all([
-        fs.promises.rm(TEMPLATES_FILE, { force: true }),
-        fs.promises.rm(CANVAS_DIR, { recursive: true, force: true }),
-        fs.promises.rm(PREVIEWS_DIR, { recursive: true, force: true }),
-    ])
-
-    await Promise.all([
-        assertDirExists(CANVAS_DIR),
-        assertDirExists(PREVIEWS_DIR)
-    ])
-
-    const [hashList, newList, topList, hotList] = await Promise.all([
-        api.templates.hashList.get(),
-        api.templates.newList.get(),
-        api.templates.topList.get(),
-        api.templates.hotList.get()
-    ])
-
-    const result = {
-        hash,
-        hashList,
-        newList,
-        topList,
-        hotList,
-        meta: {}
-    }
-
-    const templates = await api.templates.all.get()
-
-    await Promise.all(templates.map(async (template) => {
-        const [canvasFile] = await Promise.all([
-            downloadCanvas(template),
-            downloadPreview(template)
-        ])
-        result.meta[template.id] = {
-            id: template.id,
-            name: template.name,
-            hash: template.hash,
-            previewFile: template.previewFile,
-            canvasFile
-        }
-    }))
-
-    await fs.promises.writeFile(
-        TEMPLATES_FILE,
-        JSON.stringify(result, null, 4)
-    )
-}
-
-loadTemplates()
