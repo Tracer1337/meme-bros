@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import { AnyFunction } from "tsdef"
-import EventEmitter from "./EventEmitter"
+import { EventEmitter } from "@meme-bros/shared"
 
 export type SetListenersArgs<T> = [
     EventEmitter<T>,

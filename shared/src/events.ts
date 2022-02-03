@@ -4,7 +4,7 @@ type Options = {
     suppressWarnings: boolean
 }
 
-class EventEmitter<Events extends Record<string, any>> {
+export class EventEmitter<Events extends Record<string, any>> {
     suppressWarnings: boolean = false
     listeners: Partial<
         Record<
@@ -44,7 +44,16 @@ class EventEmitter<Events extends Record<string, any>> {
         listeners.splice(index, 1)
     }
 
-    emit<T extends keyof Events>(event: T, data: Events[T]) {
+    emit<T extends keyof Events>(
+        ...[event, data, notify = true]:
+            Events[T] extends undefined
+                ? [T] | [T, Events[T]] | [T, Events[T], boolean]
+                : [T, Events[T]] | [T, Events[T], boolean]
+    ) {
+        if (event !== "emit" && notify) {
+            // @ts-ignore
+            this.emit("emit", { event, data })
+        }
         const listeners = this.listeners[event]
         if (!listeners) {
             return
@@ -52,5 +61,3 @@ class EventEmitter<Events extends Record<string, any>> {
         listeners.forEach((handler) => handler(data))
     }
 }
-
-export default EventEmitter

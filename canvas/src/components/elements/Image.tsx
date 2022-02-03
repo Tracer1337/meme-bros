@@ -1,9 +1,8 @@
 import { useContext, useEffect } from "react"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
-import { deepmerge } from "@meme-bros/client-lib"
+import { deepmerge, consumeEvent, setListeners } from "@meme-bros/client-lib"
 import { DialogContext } from "../../lib/DialogHandler"
-import { consumeEvent, setListeners } from "../../lib/events"
 import makeElement, { ElementProps } from "./makeElement"
 import { updateElementData, updateElementRect, useSharedContext } from "@meme-bros/client-lib"
 

@@ -3,11 +3,10 @@ import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
-import { updateElementRect, useSharedContext } from "@meme-bros/client-lib"
+import { updateElementRect, useSharedContext, setListeners } from "@meme-bros/client-lib"
 import Interactions from "./Interactions"
 import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import { AnimatedValue, AnimatedValueXY, useAnimationRegistry } from "../../lib/animation"
-import { setListeners } from "../../lib/events"
 import { getElementBasePosition } from "./utils"
 
 type DraggableProps = React.ComponentProps<typeof DraggableCore>

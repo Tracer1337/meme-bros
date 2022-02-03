@@ -1,7 +1,7 @@
 import React, { createContext, RefObject, useContext, useEffect, useRef } from "react"
 import { AnyFunction, DeepPartial } from "tsdef"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
-import EventEmitter from "./EventEmitter"
+import { EventEmitter } from "@meme-bros/shared"
 import { setDOMListeners } from "./events"
 import type { SharedContext } from "./context"
 

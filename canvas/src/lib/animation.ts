@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useRef } from "react"
-import EventEmitter from "./EventEmitter"
+import { EventEmitter } from "@meme-bros/shared"
 
 type AnimatedEvents = {
     "update": number

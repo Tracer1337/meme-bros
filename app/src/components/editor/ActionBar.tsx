@@ -6,9 +6,9 @@ import {
     copyElement,
     layerElement,
     useSharedContext,
-    clearCanvas
+    clearCanvas,
+    setListeners
 } from "@meme-bros/client-lib"
-import { setListeners } from "../../lib/events"
 import { createCanvasElement } from "./utils/canvas"
 
 enum ActionBarMode {

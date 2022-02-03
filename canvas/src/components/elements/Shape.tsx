@@ -1,9 +1,13 @@
 import { useContext, useEffect } from "react"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
-import { updateElementData, useSharedContext } from "@meme-bros/client-lib"
+import {
+    updateElementData,
+    useSharedContext,
+    consumeEvent,
+    setListeners
+} from "@meme-bros/client-lib"
 import { DialogContext } from "../../lib/DialogHandler"
-import { consumeEvent, setListeners } from "../../lib/events"
 import makeElement, { ElementProps } from "./makeElement"
 
 export function getShapeStyles(element: Editor.PickElement<"shape">): CSS.Properties {

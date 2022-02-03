@@ -1,5 +1,4 @@
 export * from "./bridge"
-export * from "./EventEmitter"
 export * from "./events"
 export * from "./context"
 export * from "./actions"

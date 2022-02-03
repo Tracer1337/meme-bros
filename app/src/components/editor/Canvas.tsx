@@ -11,11 +11,11 @@ import {
     updateCanvasBase,
     useNativeModule,
     useRNWebViewMessaging,
-    useSharedContext
+    useSharedContext,
+    setListeners
 } from "@meme-bros/client-lib"
 import * as API from "@meme-bros/api-sdk"
 import { DialogContext } from "../../lib/DialogHandler"
-import { setListeners } from "../../lib/events"
 import { loadCanvasDummy } from "./utils/dummy"
 import { createCanvasElement } from "./utils/canvas"
 import { scaleTemplateCanvas, scaleToScreen } from "./utils/scale"

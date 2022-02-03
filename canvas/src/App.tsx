@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { Box, styled } from "@mui/material"
-import { SharedContext, useListeners, useSharedContext, useWindowMessaging } from "@meme-bros/client-lib"
+import {
+    SharedContext,
+    useListeners,
+    useSharedContext,
+    useWindowMessaging
+} from "@meme-bros/client-lib"
 import Canvas from "./components/Canvas"
 import { mockCanvas } from "./mock"
 import DebugMenu from "./components/DebugMenu"

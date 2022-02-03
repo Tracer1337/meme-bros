@@ -10,9 +10,10 @@ import {
     useSharedContext,
     SharedContext,
     removeElement,
-    useListeners
+    useListeners,
+    makeListenerQueue,
+    setDOMListeners
 } from "@meme-bros/client-lib"
-import { makeListenerQueue, setDOMListeners } from "../lib/events"
 import { getElementByType } from "./elements"
 import { getImageDimensions } from "../lib/image"
 import { makeId } from "./utils"
