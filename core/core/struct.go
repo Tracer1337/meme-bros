@@ -21,6 +21,7 @@ type Canvas struct {
 	BackgroundColor *color.RGBA
 	Debug           bool
 	Animated        bool
+	MultiPalette    bool
 	Elements        *CanvasElements
 	Drawables       []Drawable
 }

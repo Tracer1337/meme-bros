@@ -2,6 +2,7 @@ package core
 
 import (
 	"image"
+	"image/color"
 	"image/gif"
 	"meme-bros/core/utils"
 	"sync"
@@ -92,10 +93,30 @@ func (rc *AnimatedRenderingContext) renderGIF() *gif.GIF {
 
 	wg.Add(len(rendered.Image))
 
+	var palette color.Palette
+
+	if !rc.Canvas.MultiPalette {
+		dc := NewRenderingContext(rc.Canvas).Render(0)
+		palette = utils.ImageToPaletted(dc.Image()).Palette
+	}
+
 	for i := range rendered.Image {
 		go func(i int) {
 			dc := NewRenderingContext(rc.Canvas).Render(i)
-			rendered.Image[i] = utils.ImageToPaletted(dc.Image())
+
+			if palette != nil {
+				img := image.NewPaletted(dc.Image().Bounds(), palette)
+				s := img.Bounds().Size()
+				for y := 0; y < s.Y; y++ {
+					for x := 0; x < s.X; x++ {
+						img.Set(x, y, dc.Image().At(x, y))
+					}
+				}
+				rendered.Image[i] = img
+			} else {
+				rendered.Image[i] = utils.ImageToPaletted(dc.Image())
+			}
+
 			wg.Done()
 		}(i)
 	}

@@ -38,6 +38,7 @@ func (pc *ParsingContext) parseCanvas(v *fastjson.Value) *Canvas {
 		Height:          math.Max(v.GetFloat64("height"), 1) * pc.PR,
 		BackgroundColor: parseRGBA(v.Get("backgroundColor")),
 		Debug:           v.GetBool("debug"),
+		MultiPalette:    v.GetBool("multiPalette"),
 		Elements: &CanvasElements{
 			Background: &BackgroundElement{},
 			Images:     pc.parseImages(elements["image"]),

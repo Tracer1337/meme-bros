@@ -6,10 +6,11 @@ meme-bros/core generates memes from json files.
 
 ```ts
 Schema = {
+    "debug": Boolean,
     "width": Number,
     "height": Number,
     "pixelRatio": Number,
-    "debug": Boolean,
+    "multiPalette": Boolean,
     "backgroundColor": Color,
     "elements": Elements[]
 }
