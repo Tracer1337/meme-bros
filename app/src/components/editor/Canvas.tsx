@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect } from "react"
+import React, { useRef, useContext } from "react"
 import { Platform } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
@@ -9,7 +9,7 @@ import {
     renderCanvas,
     SharedContext,
     updateCanvasBase,
-    useNativeModule,
+    useModule,
     useRNWebViewMessaging,
     useSharedContext,
     useListeners
@@ -32,7 +32,7 @@ const uri = Platform.select({
 function Canvas() {
     const context = useSharedContext()
 
-    const core = useNativeModule("core")
+    const core = useModule("core")
 
     const dialogs = useContext(DialogContext)
     
@@ -45,6 +45,9 @@ function Canvas() {
     }
 
     const handleCanvasRender = async () => {
+        if (!core?.render) {
+            return
+        }
         const rendered = renderCanvas(context.canvas)
         console.log("Generate", { raw: context.canvas, rendered })
         const base64 = await core.render(rendered)

@@ -1,23 +1,22 @@
 import React from "react"
 import App from "@meme-bros/app"
-import { Box, CircularProgress } from "@mui/material"
-import { NativeModules, NativeModulesProvider } from "@meme-bros/client-lib"
+import { Box } from "@mui/material"
+import { Modules, ModulesProvider } from "@meme-bros/client-lib"
 import { useWasm } from "../lib/wasm"
-
-const modules: NativeModules.ContextValue = {
-    core: {
-        render(canvas) {
-            // @ts-ignore
-            return window.render(JSON.stringify(canvas))
-        }
-    }
-}
 
 function RNApp({ width, height }: {
     width: number,
     height: number
 }) {
     const { isLoading } = useWasm({ url: "/assets/core.wasm" })
+
+    const modules: Modules.ContextValue = {
+        core: {
+            render: isLoading ? undefined : (canvas) => {
+                return window.render?.(JSON.stringify(canvas))
+            }
+        }
+    }
 
     return (
         <Box
@@ -31,11 +30,9 @@ function RNApp({ width, height }: {
                 }
             }}
         >
-            {isLoading ? <CircularProgress/> : (
-                <NativeModulesProvider modules={modules}>
-                    <App/>
-                </NativeModulesProvider>
-            )}
+            <ModulesProvider modules={modules}>
+                <App/>
+            </ModulesProvider>
         </Box>
     )
 }

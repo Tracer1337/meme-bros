@@ -7,7 +7,8 @@ import {
     layerElement,
     useSharedContext,
     clearCanvas,
-    useListeners
+    useListeners,
+    useModule
 } from "@meme-bros/client-lib"
 import { createCanvasElement } from "./utils/canvas"
 
@@ -88,6 +89,8 @@ function ElementActions() {
 function ActionBar() {    
     const context = useSharedContext()
 
+    const core = useModule("core")
+
     const [isGenerating, setIsGenerating] = useState(false)
     const [mode, setMode] = useState<ActionBarMode>(ActionBarMode.CANVAS)
 
@@ -114,12 +117,13 @@ function ActionBar() {
             <FAB
                 style={styles.fab}
                 icon="check"
+                loading={isGenerating}
+                disabled={!core?.render}
                 onPress={async () => {
                     setIsGenerating(true)
                     await new Promise(requestAnimationFrame)
                     context.events.emit("canvas.render")
                 }}
-                loading={isGenerating}
             />
         </Appbar>
     )
