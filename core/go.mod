@@ -11,11 +11,13 @@ require (
 
 require golang.org/x/image v0.0.0-20190802002840-cff245a6509b
 
-require github.com/andybons/gogif v0.0.0-20140526152223-16d573594812
+require (
+	github.com/andybons/gogif v0.0.0-20140526152223-16d573594812
+	github.com/gin-gonic/gin v1.7.7
+)
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.7.7 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
