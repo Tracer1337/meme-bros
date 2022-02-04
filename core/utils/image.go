@@ -71,3 +71,23 @@ func ImageToPaletted(img image.Image) *image.Paletted {
 	quantizer.Quantize(p, img.Bounds(), img, image.Point{})
 	return p
 }
+
+func CloneImage(img image.Image) image.Image {
+	switch s := img.(type) {
+	case *image.RGBA:
+		clone := *s
+		clone.Pix = clonePix(s.Pix)
+		return &clone
+	case *image.Paletted:
+		clone := *s
+		clone.Pix = clonePix(s.Pix)
+		return &clone
+	}
+	return nil
+}
+
+func clonePix(b []uint8) []byte {
+	c := make([]uint8, len(b))
+	copy(c, b)
+	return c
+}

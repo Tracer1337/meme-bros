@@ -5,6 +5,8 @@ github.com/Tracer1337/gg v1.3.0/go.mod h1:R/bRT+9gY/C5z7JzPU0zXsXHKM4/ayA+zqcVNZ
 github.com/Tracer1337/gg v1.3.0/go.mod h1:WwLh92s85Eyrfw5sZ44i/iC56EPuKizFK38tomzugsQ=
 github.com/Tracer1337/gg v1.3.1 h1:Sss+AXIUBrpDCXkamVz7Ny0/Ya5Wyju5fm5ILLY1K60=
 github.com/Tracer1337/gg v1.3.1/go.mod h1:WwLh92s85Eyrfw5sZ44i/iC56EPuKizFK38tomzugsQ=
+github.com/Tracer1337/gg v1.3.2 h1:BpgKjhML+r+Xr2/2FV3wGgys+n0DpKX3Fv9QMfcWfjM=
+github.com/Tracer1337/gg v1.3.2/go.mod h1:WwLh92s85Eyrfw5sZ44i/iC56EPuKizFK38tomzugsQ=
 github.com/andybons/gogif v0.0.0-20140526152223-16d573594812 h1:WBBv0ka2SO7Ut4bpskb87E9cHNnJabqA6VoBTex0Jng=
 github.com/andybons/gogif v0.0.0-20140526152223-16d573594812/go.mod h1:lkVwYUDYv/mJZK69J7BP7HRUhHEAone7OQHFBRnhQdQ=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

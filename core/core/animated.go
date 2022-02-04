@@ -2,6 +2,7 @@ package core
 
 import (
 	"image"
+	"meme-bros/core/utils"
 
 	"github.com/Tracer1337/gg"
 )
@@ -44,8 +45,6 @@ func (e *AnimatedElement) renderDisposedImages() {
 	dc := gg.NewContextForImage(e.Data.GIF.Image[0])
 	for i, frame := range e.Data.GIF.Image {
 		dc.DrawImage(frame, 0, 0)
-		cloned := gg.NewContextForImage(dc.Image())
-		cloned.DrawImage(dc.Image(), 0, 0)
-		e.Data.Disposed[i] = cloned.Image()
+		e.Data.Disposed[i] = utils.CloneImage(dc.Image())
 	}
 }

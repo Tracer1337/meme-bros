@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/Tracer1337/gg"
+	"golang.org/x/image/draw"
 )
 
 type RenderingContext struct {
@@ -16,6 +17,8 @@ func NewRenderingContext(c *Canvas) *RenderingContext {
 
 func (rc *RenderingContext) Render(index int) *gg.Context {
 	l := rc.newLayer()
+
+	l.SetTransformer(draw.ApproxBiLinear)
 
 	for _, e := range rc.Canvas.Drawables {
 		e.Draw(l, rc.Canvas, index)
