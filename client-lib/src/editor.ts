@@ -1,4 +1,4 @@
-import * as Core from "@meme-bros/core"
+import * as Core from "@meme-bros/core-types"
 import { Editor } from "@meme-bros/shared"
 
 export function renderCanvas(editorCanvas: Editor.Canvas): Core.Canvas {

@@ -1,5 +1,5 @@
 {
-  "name": "@meme-bros/core",
+  "name": "@meme-bros/core-types",
   "version": "1.0.0",
   "main": "types.ts",
   "license": "MIT"

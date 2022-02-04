@@ -1,0 +1,9 @@
+{
+    "name": "@meme-bros/core",
+    "version": "1.0.0",
+    "license": "MIT",
+    "scripts": {
+        "build:android": "gomobile bind -target=android -o=..\\mobile\\android\\app\\core.aar meme-bros/core/api",
+        "build:web": "tinygo build -o wasm.wasm -target wasm ./main.go"
+    }
+}

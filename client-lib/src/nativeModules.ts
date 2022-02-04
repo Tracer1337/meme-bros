@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react"
-import * as Core from "@meme-bros/core"
+import * as Core from "@meme-bros/core-types"
 
 export namespace NativeModules {
     export type CoreModule = {

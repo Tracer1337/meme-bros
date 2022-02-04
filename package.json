@@ -18,6 +18,7 @@
       "app",
       "canvas",
       "client-lib",
+      "core",
       "core/types",
       "core/http",
       "mobile",

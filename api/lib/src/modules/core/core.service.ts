@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common"
 import { HttpService} from "@nestjs/axios"
 import type { AxiosResponse } from "axios"
 import { firstValueFrom } from "rxjs"
-import * as Core from "@meme-bros/core"
+import * as Core from "@meme-bros/core-types"
 import { CORE_OPTIONS_KEY } from "./constants"
 import { CoreModuleOptions } from "./interfaces/core-module-options.interface"
 

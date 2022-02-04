@@ -1,4 +1,4 @@
-import * as Core from "@meme-bros/core"
+import * as Core from "@meme-bros/core-types"
 import { OverwriteProps } from "tsdef"
 
 export namespace Editor {
