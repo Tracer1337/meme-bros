@@ -12,15 +12,15 @@ func (e *ImageElement) GetType() string {
 	return "image"
 }
 
-func (e *ImageElement) Draw(dc *gg.Context, c *Canvas, i int) {
+func (e *ImageElement) Draw(rc *RenderingContext, dc *gg.Context, i int) {
 	defer dc.Identity()
 	defer dc.ResetClip()
 
 	e.Rect.ApplyRotation(dc)
-	e.drawBorderRadius(dc, c)
-	e.drawImage(dc, c)
+	e.drawBorderRadius(dc, rc.Canvas)
+	e.drawImage(dc, rc.Canvas)
 
-	if c.Debug {
+	if rc.Canvas.Debug {
 		e.Rect.Draw(dc)
 	}
 }

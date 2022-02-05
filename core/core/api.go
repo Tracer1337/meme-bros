@@ -2,12 +2,13 @@ package core
 
 import (
 	"encoding/base64"
+	"meme-bros/core/modules"
 )
 
-func RenderFromJSON(json string) string {
+func RenderFromJSON(m *modules.Modules, json string) string {
 	canvas := CanvasFromJSON(json)
 
-	output := canvas.Render()
+	output := canvas.Render(m)
 
 	encoded := base64.StdEncoding.EncodeToString(output.Bytes())
 

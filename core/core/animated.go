@@ -15,8 +15,8 @@ func (e *AnimatedElement) GetType() string {
 	return "animated"
 }
 
-func (e *AnimatedElement) Draw(dc *gg.Context, c *Canvas, i int) {
-	e.deriveImageElement(i).Draw(dc, c, i)
+func (e *AnimatedElement) Draw(rc *RenderingContext, dc *gg.Context, i int) {
+	e.deriveImageElement(i).Draw(rc, dc, i)
 }
 
 func (e *AnimatedElement) deriveImageElement(i int) *ImageElement {

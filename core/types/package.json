@@ -1,6 +1,6 @@
 {
   "name": "@meme-bros/core-types",
   "version": "1.0.0",
-  "main": "types.ts",
+  "main": "index.ts",
   "license": "MIT"
 }

@@ -10,7 +10,7 @@ func (bg *BackgroundElement) GetType() string {
 	return "background"
 }
 
-func (bg *BackgroundElement) Draw(dc *gg.Context, c *Canvas, i int) {
-	dc.SetColor(c.BackgroundColor)
+func (bg *BackgroundElement) Draw(rc *RenderingContext, dc *gg.Context, i int) {
+	dc.SetColor(rc.Canvas.BackgroundColor)
 	dc.Clear()
 }

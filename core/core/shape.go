@@ -10,19 +10,19 @@ func (e *ShapeElement) GetType() string {
 	return "shape"
 }
 
-func (e *ShapeElement) Draw(dc *gg.Context, c *Canvas, i int) {
+func (e *ShapeElement) Draw(rc *RenderingContext, dc *gg.Context, i int) {
 	defer dc.Identity()
 
 	e.Rect.ApplyRotation(dc)
 
 	switch e.Data.Variant {
 	case "rect":
-		e.drawRect(dc, c)
+		e.drawRect(dc, rc.Canvas)
 	case "ellipse":
-		e.drawEllipse(dc, c)
+		e.drawEllipse(dc, rc.Canvas)
 	}
 
-	if c.Debug {
+	if rc.Canvas.Debug {
 		e.Rect.Draw(dc)
 	}
 }

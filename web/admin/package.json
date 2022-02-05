@@ -9,6 +9,7 @@
     "@meme-bros/app": "*",
     "@meme-bros/canvas": "*",
     "@meme-bros/client-lib": "*",
+    "@meme-bros/core-types": "*",
     "@meme-bros/shared": "*",
     "@mui/icons-material": "^5.2.1",
     "@mui/lab": "^5.0.0-alpha.64",

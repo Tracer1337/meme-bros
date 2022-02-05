@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image/gif"
 	"image/png"
+	"meme-bros/core/arch/android"
 	"meme-bros/core/utils"
 	"os"
 	"testing"
@@ -14,7 +15,7 @@ func TestGenerate(t *testing.T) {
 	fileIn, _ := os.ReadFile("../mock.json")
 
 	t0 := time.Now()
-	output := RenderFromJSON(string(fileIn))
+	output := RenderFromJSON(android.Modules, string(fileIn))
 	fmt.Printf("Generated in %s\n", time.Since(t0))
 
 	if canvas := CanvasFromJSON(string(fileIn)); canvas.Animated {
@@ -44,7 +45,7 @@ func storePNG(dataURI string) {
 
 func TestTextFit(t *testing.T) {
 	var expect float64 = 34
-	output := FitText("This is my text", "Impact", "normal", 100, 100)
+	output := FitText(android.Modules, "This is my text", "Impact", "normal", 100, 100)
 	if output != expect {
 		t.Errorf("Result of TextFit is incorrect. Expected: %v, but got: %v", expect, output)
 	}

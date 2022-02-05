@@ -4,17 +4,20 @@ import (
 	"image"
 	"image/color"
 	"image/gif"
+	"meme-bros/core/modules"
 	"meme-bros/core/utils"
 	"sync"
 )
 
 type AnimatedRenderingContext struct {
-	Canvas *Canvas
+	Canvas  *Canvas
+	Modules *modules.Modules
 }
 
-func NewAnimatedRenderingContext(c *Canvas) *AnimatedRenderingContext {
+func NewAnimatedRenderingContext(c *Canvas, m *modules.Modules) *AnimatedRenderingContext {
 	return &AnimatedRenderingContext{
-		Canvas: c,
+		Canvas:  c,
+		Modules: m,
 	}
 }
 
@@ -37,7 +40,7 @@ func (rc *AnimatedRenderingContext) prerender() {
 		prerendered[i] = &ImageElement{
 			Index: len(prerendered),
 			Rect:  &Rect{0, 0, rc.Canvas.Width, rc.Canvas.Height, 0},
-			Data:  &ImageData{NewRenderingContext(&c).Render(0).Image(), 0},
+			Data:  &ImageData{NewRenderingContext(&c, rc.Modules).Render(0).Image(), 0},
 		}
 	}
 
@@ -96,13 +99,13 @@ func (rc *AnimatedRenderingContext) renderGIF() *gif.GIF {
 	var palette color.Palette
 
 	if !rc.Canvas.MultiPalette {
-		dc := NewRenderingContext(rc.Canvas).Render(0)
+		dc := NewRenderingContext(rc.Canvas, rc.Modules).Render(0)
 		palette = utils.ImageToPaletted(dc.Image()).Palette
 	}
 
 	for i := range rendered.Image {
 		go func(i int) {
-			dc := NewRenderingContext(rc.Canvas).Render(i)
+			dc := NewRenderingContext(rc.Canvas, rc.Modules).Render(i)
 
 			if palette != nil {
 				img := image.NewPaletted(dc.Image().Bounds(), palette)

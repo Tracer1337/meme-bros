@@ -9,7 +9,7 @@ import (
 )
 
 type Drawable interface {
-	Draw(dc *gg.Context, c *Canvas, i int)
+	Draw(rc *RenderingContext, dc *gg.Context, i int)
 	GetIndex() int
 	GetType() string
 }

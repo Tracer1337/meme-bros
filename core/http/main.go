@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"meme-bros/core/arch/android"
 	"meme-bros/core/core"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +19,7 @@ func main() {
 			c.AbortWithStatus(400)
 			return
 		}
-		canvas := core.RenderFromJSON(string(buf))
+		canvas := core.RenderFromJSON(android.Modules, string(buf))
 		c.Data(200, "", []byte(canvas))
 	})
 

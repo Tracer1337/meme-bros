@@ -2,15 +2,14 @@ package core
 
 import (
 	"fmt"
-	"io/ioutil"
 	"math"
+	"meme-bros/core/modules"
 	"meme-bros/core/utils"
 	"strings"
 
 	"github.com/Tracer1337/gg"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
-	"golang.org/x/mobile/asset"
 )
 
 const LINE_SPACING = 1
@@ -28,14 +27,14 @@ func resolveTextAlign(textAlign string) gg.Align {
 	}
 }
 
-func FitText(text string, fontFamily string, fontWeight string, width float64, height float64) float64 {
+func FitText(m *modules.Modules, text string, fontFamily string, fontWeight string, width float64, height float64) float64 {
 	var low, high float64 = 1, height
 	dc := gg.NewContext(int(width), int(height))
 
 	fontSize := low
 	for low <= high {
 		mid := math.Floor((high + low) / 2)
-		font := loadFont(dc, fontFamily, fontWeight, mid)
+		font := loadFont(m, dc, fontFamily, fontWeight, mid)
 		multilineText := strings.Join(dc.WordWrap(text, width), "\n")
 		mWidth, mHeight := dc.MeasureMultilineString(multilineText, LINE_SPACING)
 		font.Close()
@@ -50,11 +49,9 @@ func FitText(text string, fontFamily string, fontWeight string, width float64, h
 	return fontSize
 }
 
-func loadFont(dc *gg.Context, name string, fontWeight string, fontSize float64) font.Face {
+func loadFont(m *modules.Modules, dc *gg.Context, name string, fontWeight string, fontSize float64) font.Face {
 	fileName := fmt.Sprintf("fonts/%s_%s.ttf", name, fontWeight)
-	file, err := asset.Open(fileName)
-	utils.CatchError(err)
-	raw, err := ioutil.ReadAll(file)
+	raw, err := m.ReadAsset(fileName)
 	utils.CatchError(err)
 	font, err := truetype.Parse(raw)
 	utils.CatchError(err)

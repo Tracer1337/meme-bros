@@ -3,6 +3,7 @@ import App from "@meme-bros/app"
 import { Box } from "@mui/material"
 import { Modules, ModulesProvider } from "@meme-bros/client-lib"
 import { useWasm } from "../lib/wasm"
+import { coreModules } from "../lib/core"
 
 function RNApp({ width, height }: {
     width: number,
@@ -13,7 +14,10 @@ function RNApp({ width, height }: {
     const modules: Modules.ContextValue = {
         core: {
             render: isLoading ? undefined : (canvas) => {
-                return window.render?.(JSON.stringify(canvas))
+                if (!window.render) {
+                    return Promise.resolve("")
+                }
+                return window.render(JSON.stringify(canvas), coreModules)
             }
         }
     }

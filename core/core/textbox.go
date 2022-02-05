@@ -15,17 +15,17 @@ func (e *TextboxElement) GetType() string {
 	return "textbox"
 }
 
-func (e *TextboxElement) Draw(dc *gg.Context, c *Canvas, i int) {
+func (e *TextboxElement) Draw(rc *RenderingContext, dc *gg.Context, i int) {
 	defer dc.Identity()
 
 	e.Rect.ApplyRotation(dc)
 
-	e.loadFont(dc, c)
-	e.drawBackground(dc, c)
-	e.drawTextOutline(dc, c)
-	e.drawText(dc, c)
+	e.loadFont(rc, dc)
+	e.drawBackground(dc, rc.Canvas)
+	e.drawTextOutline(dc, rc.Canvas)
+	e.drawText(dc, rc.Canvas)
 
-	if c.Debug {
+	if rc.Canvas.Debug {
 		e.Rect.Draw(dc)
 	}
 }
@@ -94,9 +94,9 @@ func (e *TextboxElement) resolveVerticalAlign() (x, y, ax, ay float64) {
 	return x, y, ax, ay
 }
 
-func (e *TextboxElement) loadFont(dc *gg.Context, c *Canvas) {
+func (e *TextboxElement) loadFont(rc *RenderingContext, dc *gg.Context) {
 	fText := e.getFormattedText()
 	p := e.Data.Padding
-	fontSize := FitText(fText, e.Data.FontFamily, e.Data.FontWeight, e.Rect.Width-p*2, e.Rect.Height-p*2)
-	loadFont(dc, e.Data.FontFamily, e.Data.FontWeight, fontSize)
+	fontSize := FitText(rc.Modules, fText, e.Data.FontFamily, e.Data.FontWeight, e.Rect.Width-p*2, e.Rect.Height-p*2)
+	loadFont(rc.Modules, dc, e.Data.FontFamily, e.Data.FontWeight, fontSize)
 }
