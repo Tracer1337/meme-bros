@@ -13,7 +13,7 @@ func ModulesFromObject(object js.Value) *modules.Modules {
 			if err.Truthy() {
 				return nil, errors.New(err.String())
 			}
-			data := make([]byte, 0)
+			data := make([]byte, value.Length())
 			js.CopyBytesToGo(data, value)
 			return data, nil
 		},
