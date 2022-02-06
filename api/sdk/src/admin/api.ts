@@ -1,5 +1,6 @@
-import axios from "axios"
-import { getter, url } from "../utils"
+import globalAxios from "axios"
+import { Editor } from "@meme-bros/shared"
+import { Utils } from "../utils"
 import {
     AccessToken,
     Profile,
@@ -12,17 +13,27 @@ const config = {
     host: ""
 }
 
-axios.interceptors.request.use((req) => {
-    if (config.token && req.headers) {
-        req.headers["Authorization"] = `Bearer ${config.token}`
-    }
-    return req
-})
+let axios = globalAxios.create()
+const utils = new Utils(axios)
+
+function init() {
+    axios = globalAxios.create({
+        baseURL: config.host
+    })
+    axios.interceptors.request.use((req) => {
+        if (config.token && req.headers) {
+            req.headers["Authorization"] = `Bearer ${config.token}`
+        }
+        console.log(req)
+        return req
+    })
+    utils.axios = axios
+}
 
 export const api = {
     setConfig: (newConfig: typeof config) => {
         Object.assign(config, newConfig)
-        axios.defaults.baseURL = config.host
+        init()
     },
 
     auth: {
@@ -35,7 +46,7 @@ export const api = {
             return res.data
         },
 
-        profile: getter<Profile>(() => "auth/profile"),
+        profile: utils.getter<Profile>(() => "auth/profile"),
 
         changePassword: async (payload: {
             oldPassword: string,
@@ -46,11 +57,11 @@ export const api = {
     },
 
     templates: {
-        all: getter<Template[]>(() => "templates"),
+        all: utils.getter<Template[]>(() => "templates"),
         
-        one: getter<Template, [string]>((id) => `templates/${id}`),
+        one: utils.getter<Template, [string]>((id) => `templates/${id}`),
 
-        canvas: getter<any, [string]>((id) => `templates/${id}/canvas`),
+        canvas: utils.getter<Editor.Canvas, [string]>((id) => `templates/${id}/canvas`),
 
         create: async (payload: CreateTemplate) => {
             const res = await axios.post("templates", payload)
@@ -72,7 +83,7 @@ export const api = {
 
     storage: {
         templatePreview: {
-            url: (template: Template) => url(`storage/${template.previewFile}`)
+            url: (template: Template) => utils.url(`storage/${template.previewFile}`)
         }
     }
 }

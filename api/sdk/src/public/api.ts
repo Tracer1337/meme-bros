@@ -1,19 +1,30 @@
-import axios from "axios"
-import { getter, url } from "../utils"
+import globalAxios from "axios"
+import { Editor } from "@meme-bros/shared"
+import { Utils } from "../utils"
 import { Template } from "./types"
 
 const config = {
     host: ""
 }
 
+let axios = globalAxios.create()
+let utils = new Utils(axios)
+
+function init() {
+    axios = globalAxios.create({
+        baseURL: config.host
+    })
+    utils.axios = axios
+}
+
 export const api = {
     setConfig: (newConfig: typeof config) => {
         Object.assign(config, newConfig)
-        axios.defaults.baseURL = config.host
+        init()
     },
 
     templates: {
-        all: getter<Template[]>(
+        all: utils.getter<Template[]>(
             () => "templates",
             {
                 get: async (hashes?: string[]) => {
@@ -36,21 +47,21 @@ export const api = {
             }
         },
         
-        one: getter<Template, [string]>((id) => `template/${id}`),
+        one: utils.getter<Template, [string]>((id) => `template/${id}`),
 
-        canvas: getter<any, [Template]>(
+        canvas: utils.getter<Editor.Canvas, [Template]>(
             (template) => `templates/${template.id}/canvas`
         ),
 
-        hash: getter<string>(() => "templates/hash"),
+        hash: utils.getter<string>(() => "templates/hash"),
 
-        hashList: getter<string[]>(() => "templates/list/hash"),
+        hashList: utils.getter<string[]>(() => "templates/list/hash"),
 
-        newList: getter<string[]>(() => "templates/list/new"),
+        newList: utils.getter<string[]>(() => "templates/list/new"),
 
-        topList: getter<string[]>(() => "templates/list/top"),
+        topList: utils.getter<string[]>(() => "templates/list/top"),
 
-        hotList: getter<string[]>(() => "templates/list/hot"),
+        hotList: utils.getter<string[]>(() => "templates/list/hot"),
 
         registerUse: async (template: Template) => {
             await axios.post(`templates/${template.id}/register-use`)
@@ -59,7 +70,7 @@ export const api = {
 
     storage: {
         templatePreview: {
-            url: (template: Template) => url(`storage/${template.previewFile}`)
+            url: (template: Template) => utils.url(`storage/${template.previewFile}`)
         }
     }
 }
