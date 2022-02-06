@@ -3,7 +3,7 @@ import path from "path"
 const REPOSITORY_ROOT_DIR = path.join(__dirname, "..", "..", "..", "..")
 
 export const configuration = () => ({
-    port: parseInt(process.env.PORT) || 6000,
+    port: parseInt(process.env.PORT) || 6006,
     database: {
         uri: process.env.MONGODB_URI || "mongodb://localhost/meme-bros"
     },

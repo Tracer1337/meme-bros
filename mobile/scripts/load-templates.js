@@ -9,7 +9,7 @@ const { syncTemplates } = require("@meme-bros/client-lib/dist/templates")
 const streamPipeline = promisify(pipeline)
 
 api.setConfig({
-    host: process.env.API_HOST || "http://localhost:6000"
+    host: process.env.API_HOST || "http://localhost:6006"
 })
 
 const ASSETS_DIR = path.resolve(__dirname, "..", "android", "app", "src", "main", "assets")
