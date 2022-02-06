@@ -1,16 +1,21 @@
 import { useEffect, useMemo, useState } from "react"
-import RNFS from "react-native-fs"
+import { Platform } from "react-native"
 import { TemplateMeta, TemplatesFile } from "@meme-bros/client-lib"
+import { api } from "@meme-bros/api-sdk"
 import { PREVIEWS_DIR } from "./constants"
 import { Documents, join } from "./storage"
 
-export function getPreviewURI(template: TemplateMeta) {
-    return "file://" + join(
-        RNFS.DocumentDirectoryPath,
-        PREVIEWS_DIR,
-        template.previewFile
-    )
-}
+export const getPreviewURI = Platform.select({
+    android: (template: TemplateMeta) => {
+        const RNFS = require("react-native-fs")
+        return "file://" + join(
+            RNFS.DocumentDirectoryPath,
+            PREVIEWS_DIR,
+            template.previewFile
+        )
+    },
+    default: api.storage.templatePreview.url
+})
 
 export function useTemplates(): {
     new: TemplateMeta[],

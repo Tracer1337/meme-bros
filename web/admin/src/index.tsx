@@ -10,7 +10,7 @@ import { SnackbarProvider } from "./lib/snackbar"
 import { DialogProvider } from "./lib/dialogs"
 
 api.setConfig({
-    host: process.env.API_HOST || "http://localhost:5000",
+    host: process.env.ADMIN_API_HOST || "http://localhost:5000",
     token: Storage.get(Storage.Keys.TOKEN) || ""
 })
 
