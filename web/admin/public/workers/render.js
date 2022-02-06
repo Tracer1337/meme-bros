@@ -41,7 +41,13 @@ async function readAsset(path) {
 const coreModules = { readAsset }
 
 onmessage = async (event) => {
-    await loadCore()
     const dataURI = await render(event.data, coreModules)
-    postMessage(dataURI)
+    postMessage({ type: "data", data: dataURI })
 }
+
+async function init() {
+    await loadCore()
+    postMessage({ type: "ready" })
+}
+
+init()
