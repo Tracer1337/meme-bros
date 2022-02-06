@@ -2,23 +2,15 @@ import React from "react"
 import App from "@meme-bros/app"
 import { Box } from "@mui/material"
 import { Modules, ModulesProvider } from "@meme-bros/client-lib"
-import { useWasm } from "../lib/wasm"
-import { coreModules } from "../lib/core"
+import { Workers } from "../lib/workers"
 
 function RNApp({ width, height }: {
     width: number,
     height: number
 }) {
-    const { isLoading } = useWasm({ url: "/assets/core.wasm" })
-
     const modules: Modules.ContextValue = {
         core: {
-            render: isLoading ? undefined : (canvas) => {
-                if (!window.render) {
-                    return Promise.resolve("")
-                }
-                return window.render(JSON.stringify(canvas), coreModules)
-            }
+            render: Workers.render
         }
     }
 
