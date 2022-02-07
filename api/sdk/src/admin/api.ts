@@ -24,7 +24,6 @@ function init() {
         if (config.token && req.headers) {
             req.headers["Authorization"] = `Bearer ${config.token}`
         }
-        console.log(req)
         return req
     })
     utils.axios = axios
