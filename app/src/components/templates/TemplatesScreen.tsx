@@ -4,21 +4,18 @@ import { Text, Headline, ActivityIndicator } from "react-native-paper"
 import Screen from "../styled/Screen"
 import { useAppContext } from "../../lib/context"
 import TemplateList from "./TemplateList"
-import { useTemplates } from "./utils"
 import TemplateTabs, { Tabs } from "./TemplateTabs"
 
 function TemplatesScreen() {
     const appContext = useAppContext()
 
-    const { templates, isLoading } = useTemplates()
-
     const [tab, setTab] = useState(Tabs.HOT)
 
     const lists = useMemo<Record<Tabs, JSX.Element>>(() => ({
-        [Tabs.HOT]: <TemplateList templates={templates.hot}/>,
-        [Tabs.NEW]: <TemplateList templates={templates.new}/>,
-        [Tabs.TOP]: <TemplateList templates={templates.top}/>,
-    }), [templates])
+        [Tabs.HOT]: <TemplateList templates={appContext.templates.lists.hot}/>,
+        [Tabs.NEW]: <TemplateList templates={appContext.templates.lists.new}/>,
+        [Tabs.TOP]: <TemplateList templates={appContext.templates.lists.top}/>
+    }), [appContext.templates.lists])
 
     return (
         <Screen>
@@ -36,7 +33,9 @@ function TemplatesScreen() {
             <View style={styles.tabs}>
                 <TemplateTabs value={tab} onChange={setTab}/>
             </View>
-            {isLoading ? <ActivityIndicator animating/> : lists[tab]}
+            {appContext.templates.isLoading
+                ? <ActivityIndicator animating/>
+                : lists[tab]}
         </Screen>
     )
 } 

@@ -4,6 +4,7 @@ import { useNetInfo } from "@react-native-community/netinfo"
 import { syncTemplates, TemplatesSyncConfig } from "@meme-bros/client-lib"
 import { useAppContext } from "../../../lib/context"
 import { setupTemplatesStorage } from "./setup"
+import { loadTemplateLists } from "./index"
 import { writeFilePatched } from "./storage"
 
 const config: TemplatesSyncConfig = {
@@ -23,34 +24,42 @@ export function useTemplatesSync() {
 
     const netInfo = useNetInfo()
 
-    useEffect(() => {
-        if (!netInfo.isConnected) {
-            return
-        }
-        setupTemplatesStorage()
-            .then(() => {
-                appContext.set({
-                    templates: {
-                        isSyncing: true,
-                        error: false
-                    }
-                })
-                return syncTemplates(config)
+    const loadLists = async () => {
+        appContext.set({
+            templates: { isLoading: true }
+        })
+        const lists = await loadTemplateLists()
+        appContext.set({
+            templates: { isLoading: false, lists }
+        })
+    }
+
+    const sync = async () => {
+        try {
+            appContext.set({
+                templates: { isSyncing: true, error: false }
             })
-            .then(() => appContext.set({
+            await setupTemplatesStorage()
+            await loadLists()
+            await syncTemplates(config)
+            appContext.set({
                 templates: {
                     isSyncing: false,
-                    error: false
+                    error: false,
+                    lists: await loadTemplateLists()
                 }
-            }))
-            .catch((error) => {
-                console.error(error)
-                appContext.set({
-                    templates: {
-                        isSyncing: false,
-                        error: true
-                    }
-                })
             })
+        } catch (error) {
+            console.error(error)
+            appContext.set({
+                templates: { isSyncing: false, error: true }
+            })
+        }
+    }
+
+    useEffect(() => {
+        if (netInfo.isConnected) {
+            sync()
+        }
     }, [netInfo.isConnected])
 }
