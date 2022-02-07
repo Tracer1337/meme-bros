@@ -4,13 +4,13 @@ import App from "@meme-bros/app"
 import {
     BridgeProvider,
     SharedContextProvider,
-    NativeModulesProvider
+    ModulesProvider
 } from "@meme-bros/client-lib"
 import { name as appName } from "./app.json"
 
 function Main() {
     return (
-        <NativeModulesProvider modules={{
+        <ModulesProvider modules={{
             core: {
                 render(canvas) {
                     return NativeModules.CoreModule.render(
@@ -24,7 +24,7 @@ function Main() {
                     <App/>
                 </SharedContextProvider>
             </BridgeProvider>
-        </NativeModulesProvider>
+        </ModulesProvider>
     )
 }
 
