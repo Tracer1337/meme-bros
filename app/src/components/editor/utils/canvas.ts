@@ -1,6 +1,6 @@
 import { Editor } from "@meme-bros/shared"
 import { makeId, getDefaultDataByType } from "@meme-bros/client-lib"
-import { importImage } from "../../../lib/media"
+import { Gallery } from "../../../lib/storage"
 
 export async function createCanvasElement<
     T extends Editor.CanvasElement["type"]
@@ -20,7 +20,7 @@ export async function createCanvasElement<
     } as any
 
     if (type === "image") {
-        const image = await importImage()
+        const image = await Gallery.importImage()
         if (!image || !image.base64) {
             return
         }

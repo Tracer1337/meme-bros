@@ -1,7 +1,7 @@
 import { Editor } from "@meme-bros/shared"
 import { fetchBase64 } from "../../../lib/base64"
+import { resolveAssetSource } from "../../../lib/storage"
 import { scaleToScreen } from "./scale"
-import { resolveAssetSource } from "../../../lib/media"
 
 function binaryToPNG(base64: string) {
     return base64.replace("application/octet-stream", "image/png")

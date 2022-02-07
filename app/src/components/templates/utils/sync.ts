@@ -3,9 +3,9 @@ import RNFS from "react-native-fs"
 import { useNetInfo } from "@react-native-community/netinfo"
 import { syncTemplates, TemplatesSyncConfig } from "@meme-bros/client-lib"
 import { useAppContext } from "../../../lib/context"
+import { writeFilePatched } from "../../../lib/storage"
 import { setupTemplatesStorage } from "./setup"
 import { loadTemplateLists } from "./index"
-import { writeFilePatched } from "./storage"
 
 const config: TemplatesSyncConfig = {
     path: RNFS.DocumentDirectoryPath,

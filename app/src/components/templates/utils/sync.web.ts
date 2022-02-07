@@ -1,6 +1,6 @@
 import { useEffect } from "react"
-import { loadTemplateLists } from "./index"
 import { useAppContext } from "../../../lib/context"
+import { loadTemplateLists } from "./index"
 
 export function useTemplatesSync() {
     const appContext = useAppContext()
