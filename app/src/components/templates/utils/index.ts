@@ -18,9 +18,12 @@ export const getPreviewURI = Platform.select({
 })
 
 export function useTemplates(): {
-    new: TemplateMeta[],
-    top: TemplateMeta[],
-    hot: TemplateMeta[]
+    templates: {
+        new: TemplateMeta[],
+        top: TemplateMeta[],
+        hot: TemplateMeta[]
+    },
+    isLoading: boolean
 } {
     const [templatesFile, setTemplatesFile] = useState<
         TemplatesFile | undefined
@@ -48,8 +51,11 @@ export function useTemplates(): {
     useEffect(() => {
         Documents.readTemplatesFile()
             .then(setTemplatesFile)
-            .catch((error) => console.error(error))
+            .catch(console.error)
     }, [])
 
-    return templates
+    return {
+        templates,
+        isLoading: !templatesFile
+    }
 }

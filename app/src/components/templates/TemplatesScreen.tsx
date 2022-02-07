@@ -10,7 +10,7 @@ import TemplateTabs, { Tabs } from "./TemplateTabs"
 function TemplatesScreen() {
     const appContext = useAppContext()
 
-    const templates = useTemplates()
+    const { templates, isLoading } = useTemplates()
 
     const [tab, setTab] = useState(Tabs.HOT)
 
@@ -36,7 +36,7 @@ function TemplatesScreen() {
             <View style={styles.tabs}>
                 <TemplateTabs value={tab} onChange={setTab}/>
             </View>
-            {lists[tab]}
+            {isLoading ? <ActivityIndicator animating/> : lists[tab]}
         </Screen>
     )
 } 
