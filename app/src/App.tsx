@@ -1,11 +1,11 @@
 import React from "react"
+import { Platform } from "react-native"
 import { DarkTheme, Provider as PaperProvider, Portal } from "react-native-paper"
 import { api } from "@meme-bros/api-sdk"
 import Navigator from "./Navigator"
+import ResourceLoader from "./ResourceLoader"
 import { DialogProvider } from "./lib/DialogHandler"
-import { useTemplatesSync } from "./components/templates/utils/sync"
 import { AppContextProvider } from "./lib/context"
-import { Platform } from "react-native"
 
 api.setConfig({
     host: process.env.API_HOST || Platform.select({
@@ -14,16 +14,11 @@ api.setConfig({
     })
 })
 
-function TemplatesSync() {
-    useTemplatesSync()
-    return null
-}
-
 function App() {
     return (
         <PaperProvider theme={DarkTheme}>
             <AppContextProvider>
-                <TemplatesSync/>
+                <ResourceLoader/>
                 <DialogProvider>
                     <Portal.Host>
                         <Navigator/>

@@ -4,14 +4,14 @@ import { Text, Surface, IconButton } from "react-native-paper"
 import Image from "react-native-scalable-image"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useSharedContext, TemplateMeta } from "@meme-bros/client-lib"
-import { getPreviewURI } from "./utils"
-import { Documents } from "./utils/storage"
 import { RootStackParamList } from "../../Navigator"
 
 function Item({ template, onLoad }: {
     template: TemplateMeta,
     onLoad: () => void
 }) {
+    const { getPreviewURI } = useModule("templates")
+
     return (
         <Surface style={styles.item}>
             <Image
@@ -36,10 +36,12 @@ function TemplateList({ templates }: {
 }) {
     const context = useSharedContext()
 
+    const { getCanvas } = useModule("templates")
+
     const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
     const loadTemplate = async (template: TemplateMeta) => {
-        const canvas = await Documents.readCanvas(template)
+        const canvas = await getCanvas(template)
         context.events.emit("template.load", { template, canvas })
         navigation.navigate("Editor")
     }

@@ -6,7 +6,6 @@
   "dependencies": {
     "@meme-bros/api-sdk": "*",
     "@meme-bros/shared": "*",
-    "@react-native-community/netinfo": "^7.1.7",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "@types/color-convert": "^2.0.0",
@@ -15,7 +14,6 @@
     "deepmerge": "^4.2.2",
     "immer": "^9.0.12",
     "is-plain-object": "^5.0.0",
-    "react-native-fs": "^2.18.0",
     "react-native-image-picker": "^4.4.0",
     "react-native-paper": "^4.10.1",
     "react-native-safe-area-context": "^3.3.2",
@@ -33,12 +31,10 @@
   },
   "peerDependencies": {
     "@meme-bros/client-lib": "*",
-    "@react-native-community/netinfo": "^7.1.7",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "react": "17.0.2",
     "react-native": "0.66.3",
-    "react-native-fs": "^2.18.0",
     "react-native-image-picker": "^4.4.0",
     "react-native-paper": "^4.10.1",
     "react-native-safe-area-context": "^3.3.2",

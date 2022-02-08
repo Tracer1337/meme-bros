@@ -1,5 +1,4 @@
 import React, { useRef, useContext } from "react"
-import { Platform } from "react-native"
 import WebView from "react-native-webview"
 import { DeepPartial } from "tsdef"
 import produce from "immer"
@@ -16,29 +15,26 @@ import {
 } from "@meme-bros/client-lib"
 import * as API from "@meme-bros/api-sdk"
 import { DialogContext } from "../../lib/DialogHandler"
-import { loadCanvasDummy } from "./utils/dummy"
-import { createCanvasElement } from "./utils/canvas"
 import { scaleTemplateCanvas, scaleToScreen } from "./utils/scale"
+import { useCanvasUtils } from "./utils/canvas"
+import { useCanvasDummyLoader } from "./utils/dummy"
 
 const BLANK_SIZE = 500
-
-const uri = Platform.select({
-    web: "http://localhost:8080/iframe",
-    default: __DEV__
-        ? "http://10.0.2.2:3000"
-        : "file:///android_asset/canvas/build/index.html"
-})
 
 function Canvas() {
     const context = useSharedContext()
 
     const core = useModule("core")
+    const canvasMod = useModule("canvas")
 
     const dialogs = useContext(DialogContext)
     
     const canvas = useRef<WebView>(null)
 
     const { onMessage } = useRNWebViewMessaging(canvas)
+
+    const { createCanvasElement } = useCanvasUtils()
+    const loadCanvasDummy = useCanvasDummyLoader()
 
     const handleWebViewLoad = () => {
         context.events.emit("canvas.load")
@@ -119,10 +115,10 @@ function Canvas() {
     }
 
     const handleBaseDummy = async () => {
-        context.set({
-            renderCanvas: true,
-            canvas: await loadCanvasDummy()
-        })
+        const canvas = await loadCanvasDummy()
+        if (canvas) {
+            context.set({ renderCanvas: true, canvas })
+        }
     }
 
     const handleTemplateLoad = ({ template, canvas }: {
@@ -147,7 +143,7 @@ function Canvas() {
     return (
         <WebView
             originWhitelist={["*"]}
-            source={{ uri }}
+            source={{ uri: canvasMod.uri }}
             ref={canvas}
             onMessage={onMessage}
             onLoad={handleWebViewLoad}

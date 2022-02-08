@@ -10,7 +10,7 @@ import {
     useListeners,
     useModule
 } from "@meme-bros/client-lib"
-import { createCanvasElement } from "./utils/canvas"
+import { useCanvasUtils } from "./utils/canvas"
 
 enum ActionBarMode {
     CANVAS,
@@ -19,6 +19,8 @@ enum ActionBarMode {
 
 function CanvasActions() {
     const context = useSharedContext()
+
+    const { createCanvasElement } = useCanvasUtils()
 
     const handleElementCreate = async (type: Editor.CanvasElement["type"]) => {
         if (!type) {

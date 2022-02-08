@@ -1,6 +1,6 @@
 import React from "react"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { Platform, StyleSheet, useWindowDimensions, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { useSharedContext } from "@meme-bros/client-lib"
 import { Portal } from "react-native-paper"
 import { useIsFocused } from "@react-navigation/native"
@@ -9,20 +9,14 @@ import Screen from "../styled/Screen"
 import Canvas from "./Canvas"
 import ActionBar from "./ActionBar"
 import BaseSelector from "./BaseSelector"
-import { Dimensions } from "../../lib/dimensions"
 import { ACTION_BAR_HEIGHT } from "./constants"
-
-const useDimensions = Platform.select({
-    web: () => Dimensions.get("window"),
-    default: useWindowDimensions
-})
 
 function EditorScreen({
     navigation
 }: NativeStackScreenProps<RootStackParamList, "Editor">) {
     const context = useSharedContext()
     
-    const { height } = useDimensions()
+    const { height } = useModule("view").useDimensions()
     
     const isFocused = useIsFocused()
     

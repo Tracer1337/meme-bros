@@ -1,5 +1,5 @@
 import React from "react"
-import { AppRegistry, NativeModules } from "react-native"
+import { AppRegistry } from "react-native"
 import App from "@meme-bros/app"
 import {
     BridgeProvider,
@@ -7,17 +7,12 @@ import {
     ModulesProvider
 } from "@meme-bros/client-lib"
 import { name as appName } from "./app.json"
+import coreModules from "./modules/core"
 
 function Main() {
     return (
         <ModulesProvider modules={{
-            core: {
-                render(canvas) {
-                    return NativeModules.CoreModule.render(
-                        JSON.stringify(canvas)
-                    )
-                }
-            }
+            core: coreModules
         }}>
             <BridgeProvider>
                 <SharedContextProvider>

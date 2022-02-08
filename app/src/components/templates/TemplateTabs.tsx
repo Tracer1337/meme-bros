@@ -7,12 +7,6 @@ export enum Tabs {
     TOP
 }
 
-const tabs = [
-    { label: "Hot", value: Tabs.HOT },
-    { label: "New", value: Tabs.NEW },
-    { label: "Top", value: Tabs.TOP },
-]
-
 function TemplateTabs({ value, onChange }: {
     value: Tabs,
     onChange: (newValue: Tabs) => void

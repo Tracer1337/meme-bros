@@ -15,7 +15,7 @@
     "@meme-bros/api-sdk": "*",
     "@meme-bros/app": "*",
     "@meme-bros/client-lib": "*",
-    "@react-native-community/netinfo": "^7.1.7",
+    "@react-native-community/netinfo": "^7.1.11",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "node-fetch": "2.6.6",
