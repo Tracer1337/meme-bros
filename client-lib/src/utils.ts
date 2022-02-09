@@ -5,6 +5,18 @@ export function makeId() {
     return Math.floor(Math.random() * 1e8)
 }
 
+export function getDateString() {
+    const today = new Date()
+    const dd = String(today.getDate()).padStart(2, "0")
+    const mm = String(today.getMonth() + 1).padStart(2, "0")
+    const yyyy = today.getFullYear()
+    return dd + mm + yyyy
+}
+
+export function join(...paths: string[]) {
+    return paths.join("/")
+}
+
 export function clone<T>(obj: T): T {
     return JSON.parse(JSON.stringify(obj))
 }

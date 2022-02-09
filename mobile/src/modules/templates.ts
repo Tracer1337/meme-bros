@@ -1,14 +1,12 @@
 import RNFS from "react-native-fs"
 import {
-    CANVAS_DIR,
     Modules,
-    PREVIEWS_DIR,
     syncTemplates,
     TemplatesSyncConfig
 } from "@meme-bros/client-lib"
-import * as API from "@meme-bros/api-sdk"
-import { Editor } from "@meme-bros/shared"
 import { setupTemplatesStorage } from "../lib/setup"
+import { writeFilePatched } from "../lib/fs"
+import { Documents } from "../lib/documents"
 
 const config: TemplatesSyncConfig = {
     path: RNFS.DocumentDirectoryPath,
@@ -40,26 +38,11 @@ const loadTemplates: Modules.TemplatesModule["loadTemplates"] = async () => {
     }
 }
 
-const getPreviewURI = (template: API.Template) => "file://" + join(
-    RNFS.DocumentDirectoryPath,
-    PREVIEWS_DIR,
-    template.previewFile
-)
-
-const getCanvas = async (template: API.Template) => {
-    const json = await RNFS.readFile(join(
-        RNFS.DocumentDirectoryPath,
-        CANVAS_DIR,
-        `${template.hash}.json`
-    ))
-    return JSON.parse(json) as Editor.Canvas
-}
-
 const templatesModules: Modules.TemplatesModule = {
     syncTemplates: syncTemplatesWrapper,
     loadTemplates,
-    getPreviewURI,
-    getCanvas
+    getPreviewURI: Documents.getPreviewURI,
+    getCanvas: Documents.readCanvas
 }
 
 export default templatesModules

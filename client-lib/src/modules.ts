@@ -31,12 +31,12 @@ export namespace Modules {
             base64: string,
             width: number,
             height: number
-        }>,
-        resolveAssetSource: (uri: string) => Promise<{
+        } | undefined>,
+        resolveAssetSource: (uri: number | string) => Promise<{
             uri: string,
             width: number,
             height: number
-        }>
+        } | undefined>
     }
 
     export type CanvasModule = {
