@@ -2,18 +2,24 @@ import React from "react"
 import App from "@meme-bros/app"
 import { Box } from "@mui/material"
 import { Modules, ModulesProvider } from "@meme-bros/client-lib"
-import { useRenderWorker } from "../lib/workers"
+import { useCoreModule } from "./modules/core"
+import templatesModule from "./modules/templates"
+import storageModule from "./modules/storage"
+import canvasModule from "./modules/canvas"
+import viewModule from "./modules/view"
+import permissionsModule from "./modules/permissions"
 
 function RNApp({ width, height }: {
     width: number,
     height: number
 }) {
-    const { isLoading, call: render } = useRenderWorker()
-
     const modules: Modules.ContextValue = {
-        core: {
-            render: isLoading ? undefined : render
-        }
+        core: useCoreModule(),
+        templates: templatesModule,
+        storage: storageModule,
+        canvas: canvasModule,
+        view: viewModule,
+        permissions: permissionsModule
     }
 
     return (

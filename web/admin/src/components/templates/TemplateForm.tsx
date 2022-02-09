@@ -5,7 +5,7 @@ import { LoadingButton } from "@mui/lab"
 import { useListeners, useSharedContext } from "@meme-bros/client-lib"
 import * as API from "@meme-bros/api-sdk/dist/admin"
 import * as PublicAPI from "@meme-bros/api-sdk"
-import RNApp from "../RNApp"
+import RNApp from "../rnapp/RNApp"
 import { scaleCanvas } from "./utils/scale"
 import { useSnackbar } from "../../lib/snackbar"
 
