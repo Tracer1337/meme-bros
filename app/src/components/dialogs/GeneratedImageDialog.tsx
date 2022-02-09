@@ -1,7 +1,8 @@
-import { useModule } from "@meme-bros/client-lib"
+import { Permissions, useModule } from "@meme-bros/client-lib"
 import React from "react"
 import { Image } from "react-native"
 import { Button, Dialog } from "react-native-paper"
+import { usePermissionUtils } from "../../lib/permissions"
 
 function GeneratedImageDialog({ visible, data, close }: {
     visible: boolean,
@@ -14,8 +15,12 @@ function GeneratedImageDialog({ visible, data, close }: {
 }) {
     const storage = useModule("storage")
 
+    const { withPermission } = usePermissionUtils()
+
     const save = async () => {
-        await storage.saveImage(data.uri)
+        withPermission(Permissions.WRITE_EXTERNAL_STORAGE, () =>
+            storage.saveImage(data.uri)
+        )
     }
 
     return (

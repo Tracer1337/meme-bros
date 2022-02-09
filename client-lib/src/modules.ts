@@ -3,6 +3,7 @@ import * as Core from "@meme-bros/core-types"
 import * as API from "@meme-bros/api-sdk"
 import { Editor } from "@meme-bros/shared"
 import { TemplateMeta } from "./templates"
+import { Permissions } from "./permissions"
 
 export namespace Modules {
     export type CoreModule = {
@@ -49,12 +50,17 @@ export namespace Modules {
         }
     }
 
+    export type PermissionsModule = {
+        request: (permission: Permissions) => Promise<boolean>
+    }
+
     export type ContextValue = {
         core: CoreModule,
         templates: TemplatesModule,
         storage: StorageModule,
         canvas: CanvasModule,
-        view: ViewModule
+        view: ViewModule,
+        permissions: PermissionsModule
     }
 }
 
