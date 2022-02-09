@@ -7,12 +7,14 @@ import {
     ModulesProvider
 } from "@meme-bros/client-lib"
 import { name as appName } from "./app.json"
-import coreModules from "./modules/core"
+import coreModules from "./src/modules/core"
+import templatesModules from "./src/modules/templates"
 
 function Main() {
     return (
         <ModulesProvider modules={{
-            core: coreModules
+            core: coreModules,
+            templates: templatesModules
         }}>
             <BridgeProvider>
                 <SharedContextProvider>

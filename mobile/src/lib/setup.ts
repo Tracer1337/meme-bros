@@ -1,6 +1,6 @@
+import { CANVAS_DIR, PREVIEWS_DIR, TEMPLATES_FILE } from "@meme-bros/client-lib"
 import { Platform } from "react-native"
 import RNFS from "react-native-fs"
-import { CANVAS_DIR, PREVIEWS_DIR, TEMPLATES_FILE } from "./constants"
 
 async function setupCanvasFolder() {
     const path = `${RNFS.DocumentDirectoryPath}/${CANVAS_DIR}`

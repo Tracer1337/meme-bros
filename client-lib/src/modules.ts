@@ -22,7 +22,7 @@ export namespace Modules {
         }>,
         syncTemplates?: () => Promise<void>,
         getPreviewURI: (template: API.Template) => string,
-        getCanvas: (template: API.Template) => Editor.Canvas
+        getCanvas: (template: API.Template) => Promise<Editor.Canvas>
     }
 
     export type StorageModule = {
