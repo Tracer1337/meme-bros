@@ -19,15 +19,23 @@ export namespace Modules {
             top: TemplateMeta[],
             hot: TemplateMeta[]
         }>,
-        syncTemplates: () => Promise<void>,
+        syncTemplates?: () => Promise<void>,
         getPreviewURI: (template: API.Template) => string,
         getCanvas: (template: API.Template) => Editor.Canvas
     }
 
     export type StorageModule = {
         saveImage: (base64: string) => Promise<void>,
-        importImage: () => Promise<string>,
-        resolveAssetSource: (uri: string) => {}
+        importImage: () => Promise<{
+            base64: string,
+            width: number,
+            height: number
+        }>,
+        resolveAssetSource: (uri: string) => Promise<{
+            uri: string,
+            width: number,
+            height: number
+        }>
     }
 
     export type CanvasModule = {
@@ -35,7 +43,10 @@ export namespace Modules {
     }
 
     export type ViewModule = {
-        useDimensions: () => {}
+        useDimensions: () => {
+            width: number,
+            height: number
+        }
     }
 
     export type ContextValue = {

@@ -15,9 +15,9 @@ import {
 } from "@meme-bros/client-lib"
 import * as API from "@meme-bros/api-sdk"
 import { DialogContext } from "../../lib/DialogHandler"
-import { scaleTemplateCanvas, scaleToScreen } from "./utils/scale"
 import { useCanvasUtils } from "./utils/canvas"
 import { useCanvasDummyLoader } from "./utils/dummy"
+import { useCanvasScaling } from "./utils/scale"
 
 const BLANK_SIZE = 500
 
@@ -35,6 +35,7 @@ function Canvas() {
 
     const { createCanvasElement } = useCanvasUtils()
     const loadCanvasDummy = useCanvasDummyLoader()
+    const { scaleToScreen, scaleTemplateCanvas } = useCanvasScaling()
 
     const handleWebViewLoad = () => {
         context.events.emit("canvas.load")

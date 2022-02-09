@@ -1,3 +1,4 @@
+import { useModule } from "@meme-bros/client-lib"
 import React from "react"
 import { Image } from "react-native"
 import { Button, Dialog } from "react-native-paper"

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNetInfo } from "@react-native-community/netinfo"
-import { useModule } from "@meme-bros/client-lib"
+import { useListeners, useModule } from "@meme-bros/client-lib"
 import { useAppContext } from "./lib/context"
+import { EventEmitter } from "@meme-bros/shared"
+
+const events = new EventEmitter<{
+    "templates.load": undefined
+}>()
 
 function useTemplatesSync() {
     const appContext = useAppContext()
@@ -13,6 +18,9 @@ function useTemplatesSync() {
     const [hasSynced, setHasSynced] = useState(false)
 
     const run = async () => {
+        if (!syncTemplates) {
+            return
+        }
         try {
             appContext.set({
                 templates: { isSyncing: true }
@@ -28,6 +36,7 @@ function useTemplatesSync() {
             })
         } finally {
             setHasSynced(true)
+            events.emit("templates.load")
         }
     }
 
@@ -59,6 +68,8 @@ function useTemplatesLoader() {
             })
         }
     }
+
+    useListeners(events, [["templates.load", run]])
 
     useEffect(() => {
         run()

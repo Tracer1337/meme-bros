@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from "react-native"
 import { Text, Surface, IconButton } from "react-native-paper"
 import Image from "react-native-scalable-image"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useSharedContext, TemplateMeta } from "@meme-bros/client-lib"
+import { useSharedContext, TemplateMeta, useModule } from "@meme-bros/client-lib"
 import { RootStackParamList } from "../../Navigator"
 
 function Item({ template, onLoad }: {

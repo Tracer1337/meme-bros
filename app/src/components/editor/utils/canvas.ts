@@ -1,5 +1,5 @@
 import { Editor } from "@meme-bros/shared"
-import { makeId, getDefaultDataByType } from "@meme-bros/client-lib"
+import { makeId, getDefaultDataByType, useModule } from "@meme-bros/client-lib"
 
 export function useCanvasUtils() {
     const storage = useModule("storage")
