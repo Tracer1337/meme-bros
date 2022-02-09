@@ -1,7 +1,7 @@
 import { NativeModules } from "react-native"
 import { Modules } from "@meme-bros/client-lib"
 
-const coreModules: Modules.CoreModule = {
+const coreModule: Modules.CoreModule = {
     render(canvas) {
         return NativeModules.CoreModule.render(
             JSON.stringify(canvas)
@@ -9,4 +9,4 @@ const coreModules: Modules.CoreModule = {
     }
 }
 
-export default coreModules
+export default coreModule

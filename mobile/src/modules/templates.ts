@@ -38,11 +38,11 @@ const loadTemplates: Modules.TemplatesModule["loadTemplates"] = async () => {
     }
 }
 
-const templatesModules: Modules.TemplatesModule = {
+const templatesModule: Modules.TemplatesModule = {
     syncTemplates: syncTemplatesWrapper,
     loadTemplates,
     getPreviewURI: Documents.getPreviewURI,
     getCanvas: Documents.readCanvas
 }
 
-export default templatesModules
+export default templatesModule

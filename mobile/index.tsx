@@ -7,14 +7,22 @@ import {
     ModulesProvider
 } from "@meme-bros/client-lib"
 import { name as appName } from "./app.json"
-import coreModules from "./src/modules/core"
-import templatesModules from "./src/modules/templates"
+import coreModule from "./src/modules/core"
+import templatesModule from "./src/modules/templates"
+import storageModule from "./src/modules/storage"
+import canvasModule from "./src/modules/canvas"
+import viewModule from "./src/modules/view"
+import permissionsModule from "./src/modules/permissions"
 
 function Main() {
     return (
         <ModulesProvider modules={{
-            core: coreModules,
-            templates: templatesModules
+            core: coreModule,
+            templates: templatesModule,
+            storage: storageModule,
+            canvas: canvasModule,
+            view: viewModule,
+            permissions: permissionsModule
         }}>
             <BridgeProvider>
                 <SharedContextProvider>

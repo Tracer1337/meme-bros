@@ -36,8 +36,10 @@ const resolveAssetSource: Modules.StorageModule["resolveAssetSource"] = (id) => 
     return Promise.resolve(Image.resolveAssetSource(id))
 }
 
-export const storageModule: Modules.StorageModule = {
+const storageModule: Modules.StorageModule = {
     importImage,
     saveImage,
     resolveAssetSource
 }
+
+export default storageModule
