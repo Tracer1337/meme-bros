@@ -22,18 +22,12 @@ function useTemplatesSync() {
             return
         }
         try {
-            appContext.set({
-                templates: { isSyncing: true }
-            })
+            appContext.set({ templates: { isSyncing: true } })
             await syncTemplates()
-            appContext.set({
-                templates: { isSyncing: false }
-            })
+            appContext.set({ templates: { isSyncing: false } })
         } catch (error) {
             console.error(error)
-            appContext.set({
-                templates: { isSyncing: false, error: true }
-            })
+            appContext.set({ templates: { isSyncing: false, error: true } })
         } finally {
             setHasSynced(true)
             events.emit("templates.load")
@@ -54,18 +48,12 @@ function useTemplatesLoader() {
 
     const run = async () => {
         try {
-            appContext.set({
-                templates: { isLoading: true }
-            })
+            appContext.set({ templates: { isLoading: true } })
             const lists = await loadTemplates()
-            appContext.set({
-                templates: { isLoading: false, lists }
-            })
+            appContext.set({ templates: { isLoading: false, lists } })
         } catch (error) {
             console.error(error)
-            appContext.set({
-                templates: { isLoading: false, error: true }
-            })
+            appContext.set({ templates: { isLoading: false } })
         }
     }
 
