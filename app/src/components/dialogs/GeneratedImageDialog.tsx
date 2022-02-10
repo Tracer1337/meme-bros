@@ -3,6 +3,7 @@ import React from "react"
 import { Image } from "react-native"
 import { Button, Dialog } from "react-native-paper"
 import { usePermissionUtils } from "../../lib/permissions"
+import { useSnackbar } from "../../lib/snackbar"
 
 function GeneratedImageDialog({ visible, data, close }: {
     visible: boolean,
@@ -15,11 +16,18 @@ function GeneratedImageDialog({ visible, data, close }: {
 }) {
     const storage = useModule("storage")
 
+    const snackbar = useSnackbar()
+
     const { withPermission } = usePermissionUtils()
 
     const save = async () => {
         withPermission(Permissions.WRITE_EXTERNAL_STORAGE, () =>
             storage.saveImage(data.uri)
+                .then(() => snackbar.open("Image saved"))
+                .catch((error) => {
+                    console.error(error)
+                    snackbar.open("Could not save image")
+                })
         )
     }
 

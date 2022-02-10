@@ -6,6 +6,7 @@ import Navigator from "./Navigator"
 import ResourceLoader from "./ResourceLoader"
 import { DialogProvider } from "./lib/DialogHandler"
 import { AppContextProvider } from "./lib/context"
+import { SnackbarProvider } from "./lib/snackbar"
 
 api.setConfig({
     host: process.env.API_HOST || Platform.select({
@@ -20,9 +21,11 @@ function App() {
             <AppContextProvider>
                 <ResourceLoader/>
                 <DialogProvider>
-                    <Portal.Host>
-                        <Navigator/>
-                    </Portal.Host>
+                    <SnackbarProvider>
+                        <Portal.Host>
+                            <Navigator/>
+                        </Portal.Host>
+                    </SnackbarProvider>
                 </DialogProvider>
             </AppContextProvider>
         </PaperProvider>
