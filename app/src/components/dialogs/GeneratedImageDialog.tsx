@@ -1,7 +1,8 @@
-import { Permissions, useModule } from "@meme-bros/client-lib"
-import React from "react"
+import { Permissions, useModule, useSharedContext } from "@meme-bros/client-lib"
+import React, { useState } from "react"
 import { Image } from "react-native"
 import { Button, Dialog } from "react-native-paper"
+import { api } from "@meme-bros/api-sdk"
 import { usePermissionUtils } from "../../lib/permissions"
 import { useSnackbar } from "../../lib/snackbar"
 
@@ -14,16 +15,26 @@ function GeneratedImageDialog({ visible, data, close }: {
     },
     close: () => void
 }) {
+    const context = useSharedContext()
+    
     const storage = useModule("storage")
 
     const snackbar = useSnackbar()
 
     const { withPermission } = usePermissionUtils()
 
+    const [isRegistered, setIsRegistered] = useState(false)
+
     const save = async () => {
         withPermission(Permissions.WRITE_EXTERNAL_STORAGE, () =>
             storage.saveImage(data.uri)
-                .then(() => snackbar.open("Image saved"))
+                .then(() => {
+                    snackbar.open("Image saved")
+                    if (context.template && !isRegistered) {
+                        setIsRegistered(true)
+                        api.templates.registerUse(context.template)
+                    }
+                })
                 .catch((error) => {
                     console.error(error)
                     snackbar.open("Could not save image")
