@@ -3,11 +3,9 @@
     "height": 397.06875,
     "pixelRatio": 1.2592277785647952,
     "debug": false,
-    "mode": 0,
     "backgroundColor": "#ffffff",
     "elements": [
         {
-            "id": 0,
             "type": "image",
             "interactive": false,
             "rect": {
@@ -28,7 +26,6 @@
             }
         },
         {
-            "id": 28709637,
             "type": "image",
             "interactive": true,
             "rect": {
@@ -47,22 +44,28 @@
                 "naturalWidth": 400,
                 "naturalHeight": 400
             }
+        },
+        {
+            "type": "textbox",
+            "rect": {
+                "x": 100.4545440673828,
+                "y": 100.2727272510528564,
+                "width": 225.09091186523438,
+                "height": 243.27272033691406,
+                "rotation": 0
+            },
+            "data": {
+                "text": "This is my text",
+                "fontFamily": "Impact",
+                "fontWeight": "bold",
+                "textAlign": "left",
+                "verticalAlign": "center",
+                "color": "#fff",
+                "caps": true,
+                "outlineWidth": 2,
+                "outlineColor": "#000",
+                "backgroundColor": "transparent"
+            }
         }
-    ],
-    "layers": [
-        0,
-        28709637
-    ],
-    "base": {
-        "id": 0,
-        "rounded": false,
-        "padding": false,
-        "rect": {
-            "x": 0,
-            "y": 0,
-            "width": 397.06875,
-            "height": 397.06875,
-            "rotation": 0
-        }
-    }
+    ]
 }

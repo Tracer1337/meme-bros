@@ -1,7 +1,8 @@
 import { RenderingContext } from "./render"
 import { ImageElement } from "./image"
+import { TextboxElement } from "./textbox"
 
-export type CanvasElement = ImageElement
+export type CanvasElement = ImageElement | TextboxElement
 
 export class Canvas {
     public width: number

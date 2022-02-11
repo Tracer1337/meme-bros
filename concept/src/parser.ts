@@ -1,5 +1,6 @@
 import { Canvas, CanvasElement } from "./canvas"
 import { ImageElement } from "./image"
+import { TextboxElement } from "./textbox"
 import { Rect } from "./rect"
 
 function max(input: any, max: number) {
@@ -53,6 +54,9 @@ class ParsingContext {
                 case "image":
                     elements.push(this.parseImage(element))
                     break
+                case "textbox":
+                    elements.push(this.parseTextbox(element))
+                    break
             }
         })
         return elements
@@ -70,6 +74,13 @@ class ParsingContext {
             borderRadius: data.borderRadius * this.pr
         }
         return image
+    }
+
+    private parseTextbox(data: any) {
+        const textbox = new TextboxElement()
+        textbox.rect = this.parseRect(data.rect)
+        textbox.data = data.data
+        return textbox
     }
 
     private parseRect(data: any) {
