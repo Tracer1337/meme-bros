@@ -1,7 +1,6 @@
-import { Canvas } from "./canvas"
+import { Canvas, CanvasElement } from "./canvas"
 import { ImageElement } from "./image"
 import { Rect } from "./rect"
-import { CanvasElements } from "./struct"
 
 function max(input: any, max: number) {
     return Number.isNaN(input) ? max : Math.max(input, max)
@@ -37,8 +36,6 @@ class ParsingContext {
         c.debug = Boolean(this.obj.debug)
         c.multiPalette = Boolean(this.obj.multiPalette)
         c.elements = this.parseElements()
-        c.drawables = this.collectDrawables(c)
-        this.sortDrawables(c)
         c.animated = false
         return c
     }
@@ -47,16 +44,14 @@ class ParsingContext {
         if (!("elements" in this.obj) || !Array.isArray(this.obj.elements)) {
             return
         }
-        const elements: CanvasElements = {
-            images: []
-        }
+        const elements: CanvasElement[] = []
         this.obj.elements.map((element) => {
             if (!(typeof element === "object")) {
                 return
             }
             switch (element.type) {
                 case "image":
-                    elements["images"].push(this.parseImage(element))
+                    elements.push(this.parseImage(element))
                     break
             }
         })
@@ -66,10 +61,9 @@ class ParsingContext {
     private parseImage(data: any) {
         const imageURI = data.data?.uri
         if (!imageURI) {
-            return
+            throw new Error("Image URI is not defined")
         }
         const image = new ImageElement()
-        image.index = 0
         image.rect = this.parseRect(data?.rect)
         image.data = {
             image: imageURI,
@@ -80,7 +74,7 @@ class ParsingContext {
 
     private parseRect(data: any) {
         if (typeof data !== "object") {
-            return
+            throw new Error("Rect is not defined")
         }
         const rect = new Rect()
         rect.x = data.x * this.pr
@@ -89,13 +83,5 @@ class ParsingContext {
         rect.height = data.height * this.pr
         rect.rotation = data.rotation * this.pr
         return rect
-    }
-
-    private collectDrawables(c: Canvas) {
-        return c.elements.images
-    }
-
-    private sortDrawables(c: Canvas) {
-        c.drawables.sort((a, b) => a.getIndex() - b.getIndex())
     }
 }

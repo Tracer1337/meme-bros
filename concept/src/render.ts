@@ -14,7 +14,7 @@ export class RenderingContext {
         const dc = this.newLayer()
         
         await Promise.all(
-            this.canvas.drawables.map(async (e) => {
+            this.canvas.elements.map(async (e) => {
                 dc.cc.save()
                 await e.draw(this, dc, index)
                 dc.cc.restore()

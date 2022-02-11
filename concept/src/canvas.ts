@@ -1,11 +1,9 @@
 import { RenderingContext } from "./render"
-import {
-    Canvas as ICanvas,
-    CanvasElements as ICanvasElements,
-    Drawable
-} from "./struct"
+import { ImageElement } from "./image"
 
-export class Canvas implements ICanvas {
+export type CanvasElement = ImageElement
+
+export class Canvas {
     public width: number
     public height: number
     public pixelRatio: number
@@ -13,8 +11,7 @@ export class Canvas implements ICanvas {
     public debug: boolean
     public animated: boolean
     public multiPalette: boolean
-    public elements: ICanvasElements
-    public drawables: Drawable[]
+    public elements: CanvasElement[]
 
     public async render() {
         const dc = await RenderingContext.NewRenderingContext(this).render(0)

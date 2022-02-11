@@ -1,16 +1,16 @@
 import { loadImage } from "canvas"
-import { DrawingContext } from "./draw"
+import { DrawingContext, Drawable } from "./draw"
 import { RenderingContext } from "./render"
-import { ImageElement as IImageElement, ImageData, Rect } from "./struct"
+import { Rect } from "./rect"
 
-export class ImageElement implements IImageElement {
-    public index: number
+export interface ImageData {
+    image: string
+    borderRadius: number
+}
+
+export class ImageElement implements Drawable {
     public rect: Rect
     public data: ImageData
-    
-    public getIndex() {
-        return this.index
-    }
 
     public getType() {
         return "image"

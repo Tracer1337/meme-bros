@@ -1,7 +1,6 @@
 import { DrawingContext } from "./draw"
-import { Rect as IRect } from "./struct"
 
-export class Rect implements IRect {
+export class Rect {
     public x: number
     public y: number
     public width: number
