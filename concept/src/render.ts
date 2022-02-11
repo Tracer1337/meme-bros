@@ -1,5 +1,5 @@
 import { Canvas } from "./canvas"
-import { DrawingContext } from "./draw"
+import { Drawable, DrawingContext, NewDrawingContext } from "./draw"
 
 export class RenderingContext {
     public static NewRenderingContext(canvas: Canvas) {
@@ -12,19 +12,19 @@ export class RenderingContext {
 
     public async render(index: number): Promise<DrawingContext> {
         const dc = this.newLayer()
+
+        const drawables = this.canvas.elements as Drawable[]
         
-        await Promise.all(
-            this.canvas.elements.map(async (e) => {
-                dc.cc.save()
-                await e.draw(this, dc, index)
-                dc.cc.restore()
-            })
-        )
+        await Promise.all(drawables.map(async (e) => {
+            dc.save()
+            await e.draw(this, dc, index)
+            dc.restore()
+        }))
 
         return dc
     }
 
     private newLayer(): DrawingContext {
-        return DrawingContext.NewContext(this.canvas.width, this.canvas.height)
+        return NewDrawingContext(this.canvas.width, this.canvas.height)
     }
 }

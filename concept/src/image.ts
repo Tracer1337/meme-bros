@@ -16,7 +16,7 @@ export class ImageElement implements Drawable {
         return "image"
     }
 
-    public async draw(rc: RenderingContext, dc: DrawingContext, i: number) {
+    public async draw(rc: RenderingContext, dc: DrawingContext) {
         this.rect.applyRotation(dc)
         this.drawBorderRadius(rc, dc)
         await this.drawImage(rc, dc)
@@ -32,6 +32,6 @@ export class ImageElement implements Drawable {
 
     private async drawImage(rc: RenderingContext, dc: DrawingContext) {
         const image = await loadImage(this.data.image)
-        dc.cc.drawImage(image, this.rect.x, this.rect.x, this.rect.width, this.rect.height)
+        dc.drawImage(image, this.rect.x, this.rect.x, this.rect.width, this.rect.height)
     }
 }

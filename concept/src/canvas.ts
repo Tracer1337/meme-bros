@@ -15,6 +15,6 @@ export class Canvas {
 
     public async render() {
         const dc = await RenderingContext.NewRenderingContext(this).render(0)
-        return dc.c.toDataURL()
+        return dc.canvas.toDataURL()
     }
 }

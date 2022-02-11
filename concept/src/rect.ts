@@ -8,10 +8,10 @@ export class Rect {
     public rotation: number
 
     applyRotation(dc: DrawingContext): void {
-        dc.cc.rotate(this.rotation)
+        dc.rotate(this.rotation)
     }
 
     draw(dc: DrawingContext): void {
-        dc.cc.rect(this.x, this.y, this.width, this.height)
+        dc.rect(this.x, this.y, this.width, this.height)
     }
 }
