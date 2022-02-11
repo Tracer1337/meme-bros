@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"declaration": false,
+		"removeComments": true,
+		"allowSyntheticDefaultImports": true,
+		"target": "ESNext",
+		"outDir": "./dist",
+		"incremental": true,
+		"skipLibCheck": true
+	},
+
+	"include": ["src/*"]
+}
