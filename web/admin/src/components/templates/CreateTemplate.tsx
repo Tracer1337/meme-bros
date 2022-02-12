@@ -5,7 +5,7 @@ import TemplateForm, { Fields } from "./TemplateForm"
 
 function CreateTemplate() {
     const navigate = useNavigate()
-    
+
     const handleSubmit = async (values: Fields) => {
         const template = await api.templates.create(values)
         api.templates.all.mutate()

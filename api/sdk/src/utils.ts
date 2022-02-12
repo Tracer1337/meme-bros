@@ -33,3 +33,7 @@ export class Utils {
         }
     }
 }
+
+export type PaginationQuery = {
+    page?: number
+}

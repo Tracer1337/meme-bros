@@ -1,12 +1,13 @@
 import globalAxios from "axios"
 import { Editor } from "@meme-bros/shared"
-import { Utils } from "../utils"
+import { PaginationQuery, Utils } from "../utils"
 import {
     AccessToken,
     Profile,
     Template,
     CreateTemplate
 } from "./types"
+import { mutate } from "swr"
 
 const config = {
     token: "",
@@ -28,6 +29,8 @@ function init() {
     })
     utils.axios = axios
 }
+
+const cachedPages = new Set<number>()
 
 export const api = {
     setConfig: (newConfig: typeof config) => {
@@ -56,7 +59,21 @@ export const api = {
     },
 
     templates: {
-        all: utils.getter<Template[]>(() => "templates"),
+        all: utils.getter<Template[], [] | [PaginationQuery]>(
+            (query?: PaginationQuery) => {
+                if (query?.page === undefined) return "templates"
+                cachedPages.add(query.page)
+                return `templates?page=${query.page}&per_page=3`
+            },
+            {
+                mutate: async (query?: PaginationQuery) => {
+                    if (query) return mutate(`templates?page=${query.page}&per_page=3`)
+                    cachedPages.forEach((page) => mutate(`templates?page=${page}&per_page=3`))
+                    cachedPages.clear()
+                    return []
+                }
+            }
+        ),
         
         one: utils.getter<Template, [string]>((id) => `templates/${id}`),
 

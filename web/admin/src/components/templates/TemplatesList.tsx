@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import {
     Box,
@@ -7,6 +7,7 @@ import {
     ListItem,
     ListItemButton,
     ListItemText,
+    Pagination,
     styled,
     Typography
 } from "@mui/material"
@@ -20,8 +21,8 @@ const PreviewImage = styled("img")({
     height: 50
 })
 
-function TemplatesList() {
-    const { data, error } = api.templates.all.use()
+function Page({ index }: { index: number }) {
+    const { data, error } = api.templates.all.use({ page: index })
 
     const confirm = useConfirm()
 
@@ -34,7 +35,7 @@ function TemplatesList() {
     const handleDelete = async (template: API.Template) => {
         if (await confirm(`The template '${template.name}' will be deleted`)) {
             await api.templates.delete(template)
-            api.templates.all.mutate()
+            api.templates.all.mutate({ page: index })
             navigate("/templates")
         }
     }
@@ -77,6 +78,24 @@ function TemplatesList() {
                 </ListItem>
             ))}
         </List>
+    )
+}
+
+function TemplatesList() {
+    const [page, setPage] = useState(1)
+
+    return (
+        <div>
+            <Page index={page - 1}/>
+            <div style={{ display: "none" }}>
+                <Page index={page}/>
+            </div>
+            <Pagination
+                count={Infinity}
+                page={page}
+                onChange={(_e, value) => setPage(value)}
+            />
+        </div>
     )
 }
 

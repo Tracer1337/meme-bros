@@ -7,7 +7,8 @@ import {
     assertIsValidObjectId,
     Template,
     TemplateDocument,
-    TrendService
+    TrendService,
+    PaginationDTO
 } from "@meme-bros/api-lib"
 import { PreviewsService } from "src/previews/previews.service"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
@@ -27,7 +28,7 @@ export class TemplatesService implements OnModuleInit {
     }
 
     async syncTrend() {
-        const templates = await this.findAll()
+        const templates = await this.templateModel.find().select("-canvas")
         await this.trendService.syncSubjects(
             templates.map((template) => template.id)
         )
@@ -54,8 +55,11 @@ export class TemplatesService implements OnModuleInit {
         return template
     }
 
-    async findAll(): Promise<TemplateDocument[]> {
-        return this.templateModel.find().select("-canvas")
+    async findAll(paginationDTO: PaginationDTO): Promise<TemplateDocument[]> {
+        return this.templateModel.find()
+            .select("-canvas")
+            .limit(paginationDTO.per_page)
+            .skip(paginationDTO.page * paginationDTO.per_page)
     }
 
     async findById(id: string, projection: any = {
