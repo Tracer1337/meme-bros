@@ -63,12 +63,12 @@ export const api = {
             (query?: PaginationQuery) => {
                 if (query?.page === undefined) return "templates"
                 cachedPages.add(query.page)
-                return `templates?page=${query.page}&per_page=3`
+                return `templates?page=${query.page}`
             },
             {
                 mutate: async (query?: PaginationQuery) => {
-                    if (query) return mutate(`templates?page=${query.page}&per_page=3`)
-                    cachedPages.forEach((page) => mutate(`templates?page=${page}&per_page=3`))
+                    if (query) return mutate(`templates?page=${query.page}`)
+                    cachedPages.forEach((page) => mutate(`templates?page=${page}`))
                     cachedPages.clear()
                     return []
                 }
