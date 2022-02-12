@@ -8,14 +8,18 @@ const loadTemplates: Modules.TemplatesModule["loadTemplates"] = async () => {
         api.templates.topList.get(),
         api.templates.hotList.get()
     ])
+
     const meta = Object.fromEntries(
         templates.map((template) => [template.id, template])
     )
+
+    const pickTemplates = (ids: string[]) =>
+        ids.map((id) => meta[id])
+
     return {
-        meta,
-        newList,
-        topList,
-        hotList
+        new: pickTemplates(newList),
+        top: pickTemplates(topList),
+        hot: pickTemplates(hotList)
     } as any
 }
 
