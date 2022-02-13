@@ -3,7 +3,7 @@ import App from "@meme-bros/app"
 import { Box } from "@mui/material"
 import { Modules, ModulesProvider } from "@meme-bros/client-lib"
 import { useCoreModule } from "./modules/core"
-import templatesModule from "./modules/templates"
+import { useTemplatesModule } from "./modules/templates"
 import storageModule from "./modules/storage"
 import canvasModule from "./modules/canvas"
 import viewModule from "./modules/view"
@@ -15,7 +15,7 @@ function RNApp({ width, height }: {
 }) {
     const modules: Modules.ContextValue = {
         core: useCoreModule(),
-        templates: templatesModule,
+        templates: useTemplatesModule(),
         storage: storageModule,
         canvas: canvasModule,
         view: viewModule,

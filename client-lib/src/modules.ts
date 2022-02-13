@@ -11,11 +11,7 @@ export namespace Modules {
     }
 
     export type TemplatesModule = {
-        loadTemplates: (callbacks?: {
-            onStart?: () => void,
-            onEnd?: () => void,
-            onError?: (error: any) => void
-        }) => Promise<{
+        loadTemplates: () => Promise<{
             new: TemplateMeta[],
             top: TemplateMeta[],
             hot: TemplateMeta[]

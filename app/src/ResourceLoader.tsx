@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { useNetInfo } from "@react-native-community/netinfo"
 import { useListeners, useModule } from "@meme-bros/client-lib"
-import { useAppContext } from "./lib/context"
 import { EventEmitter } from "@meme-bros/shared"
+import { useAppContext } from "./lib/context"
 
 const events = new EventEmitter<{
     "templates.load": undefined

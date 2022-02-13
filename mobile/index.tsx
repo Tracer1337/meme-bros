@@ -8,17 +8,18 @@ import {
 } from "@meme-bros/client-lib"
 import { name as appName } from "./app.json"
 import coreModule from "./src/modules/core"
-import templatesModule from "./src/modules/templates"
+import { useTemplateModule } from "./src/modules/templates"
 import storageModule from "./src/modules/storage"
 import canvasModule from "./src/modules/canvas"
 import viewModule from "./src/modules/view"
 import permissionsModule from "./src/modules/permissions"
+import { PublicAPIProvider } from "@meme-bros/api-sdk"
 
 function Main() {
     return (
         <ModulesProvider modules={{
             core: coreModule,
-            templates: templatesModule,
+            templates: useTemplateModule(),
             storage: storageModule,
             canvas: canvasModule,
             view: viewModule,
@@ -33,4 +34,14 @@ function Main() {
     )
 }
 
-AppRegistry.registerComponent(appName, () => Main)
+function MainWrapper() {
+    return (
+        <PublicAPIProvider config={{
+            host: process.env.PUBLIC_API_HOST || "http://10.0.2.2:6006"
+        }}>
+            <Main/>
+        </PublicAPIProvider>
+    )
+}
+
+AppRegistry.registerComponent(appName, () => MainWrapper)

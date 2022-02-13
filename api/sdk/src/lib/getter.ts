@@ -7,7 +7,7 @@ export class Getter<T, A extends any[] = []> {
         protected path: (...args: A) => string
     ) {}
     
-    protected async fetcher<T = any>(path: string) {
+    protected async fetcher<T>(path: string) {
         const res = await this.axios.get<T>(path)
         return res.data
     }

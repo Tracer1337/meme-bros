@@ -2,7 +2,7 @@ import { Permissions, useModule, useSharedContext } from "@meme-bros/client-lib"
 import React, { useState } from "react"
 import { Image } from "react-native"
 import { Button, Dialog } from "react-native-paper"
-import { api } from "@meme-bros/api-sdk"
+import { usePublicAPI } from "@meme-bros/api-sdk"
 import { usePermissionUtils } from "../../lib/permissions"
 import { useSnackbar } from "../../lib/snackbar"
 
@@ -16,6 +16,8 @@ function GeneratedImageDialog({ visible, data, close }: {
     close: () => void
 }) {
     const context = useSharedContext()
+
+    const api = usePublicAPI()
     
     const storage = useModule("storage")
 

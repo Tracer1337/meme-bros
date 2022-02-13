@@ -1,7 +1,5 @@
 import * as API from "@meme-bros/api-sdk"
 
-const { api } = API
-
 export const PREVIEWS_DIR = "previews"
 export const CANVAS_DIR = "canvases"
 export const TEMPLATES_FILE = "templates.json"
@@ -24,6 +22,7 @@ function join(...paths: string[]) {
 }
 
 export type TemplatesSyncConfig = {
+    api: API.PublicAPI,
     path: string,
     fs: {
         rm: (path: string) => Promise<void>,
@@ -37,7 +36,7 @@ export type TemplatesSyncConfig = {
 }
 
 export async function syncTemplates(config: TemplatesSyncConfig) {
-    const { path, fs } = config
+    const { path, fs, api } = config
 
     const templatesFile: TemplatesFile = JSON.parse(
         await fs.readFile(join(path, TEMPLATES_FILE))
@@ -73,7 +72,9 @@ export async function syncTemplates(config: TemplatesSyncConfig) {
     const promises = []
 
     if (templatesDiff.added.length > 0) {
-        const templates = await api.templates.map.get(templatesDiff.added)
+        const templates = await api.templates.map.get({
+            hashes: templatesDiff.added
+        })
         const ids = createIdsMap(templates)
         promises.push(...templatesDiff.added.map(async (hash) => {
             try {
@@ -118,7 +119,7 @@ export async function syncTemplates(config: TemplatesSyncConfig) {
 }
 
 async function addTemplate(
-    { path, download }: TemplatesSyncConfig,
+    { path, download, api }: TemplatesSyncConfig,
     templatesFile: TemplatesFile,
     template: API.Template
 ) {

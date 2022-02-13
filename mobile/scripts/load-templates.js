@@ -3,12 +3,12 @@ const path = require("path")
 const fetch = require("node-fetch")
 const { pipeline } = require("stream")
 const { promisify } = require("util")
-const { api } = require("@meme-bros/api-sdk")
+const { PublicAPI } = require("@meme-bros/api-sdk")
 const { syncTemplates } = require("@meme-bros/client-lib/dist/templates")
 
 const streamPipeline = promisify(pipeline)
 
-api.setConfig({
+const api = new PublicAPI({
     host: process.env.API_HOST || "http://localhost:6006"
 })
 
@@ -32,6 +32,7 @@ async function exists(dir) {
 }
 
 syncTemplates({
+    api,
     clean: true,
     path: ASSETS_DIR,
     fs: {

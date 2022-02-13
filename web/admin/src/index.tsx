@@ -4,6 +4,7 @@ import ReactDOM from "react-dom"
 import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { AdminAPIProvider } from "@meme-bros/api-sdk/dist/admin"
+import { PublicAPIProvider } from "@meme-bros/api-sdk"
 import App from "./components/App"
 import { Storage } from "./lib/storage"
 import { SnackbarProvider } from "./lib/snackbar"
@@ -27,18 +28,22 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             {globalStyles}
-            <AdminAPIProvider config={{
-                host: process.env.ADMIN_API_HOST || "http://localhost:5000",
-                token: Storage.get(Storage.Keys.TOKEN) || ""
+            <PublicAPIProvider config={{
+                host: process.env.PUBLIC_API_HOST || "http://localhost:6006"
             }}>
-                <StoreProvider>
-                    <SnackbarProvider>
-                        <DialogProvider>
-                            <App/>
-                        </DialogProvider>
-                    </SnackbarProvider>
-                </StoreProvider>
-            </AdminAPIProvider>
+                <AdminAPIProvider config={{
+                    host: process.env.ADMIN_API_HOST || "http://localhost:5000",
+                    token: Storage.get(Storage.Keys.TOKEN) || ""
+                }}>
+                    <StoreProvider>
+                        <SnackbarProvider>
+                            <DialogProvider>
+                                <App/>
+                            </DialogProvider>
+                        </SnackbarProvider>
+                    </StoreProvider>
+                </AdminAPIProvider>
+            </PublicAPIProvider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")

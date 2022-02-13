@@ -1,3 +1,7 @@
+export type Config = {
+    host: string
+}
+
 export type Template = {
     id: string,
     name: string,
