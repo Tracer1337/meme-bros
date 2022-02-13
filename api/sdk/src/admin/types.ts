@@ -1,3 +1,8 @@
+export type Config = {
+    host: string,
+    token: string
+}
+
 export type Profile = {
     id: string,
     username: string

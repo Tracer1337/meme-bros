@@ -3,16 +3,12 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { api } from "@meme-bros/api-sdk/dist/admin"
+import { AdminAPIProvider } from "@meme-bros/api-sdk/dist/admin"
 import App from "./components/App"
 import { Storage } from "./lib/storage"
 import { SnackbarProvider } from "./lib/snackbar"
 import { DialogProvider } from "./lib/dialogs"
-
-api.setConfig({
-    host: process.env.ADMIN_API_HOST || "http://localhost:5000",
-    token: Storage.get(Storage.Keys.TOKEN) || ""
-})
+import { StoreProvider } from "./lib/store"
 
 const globalStyles = <GlobalStyles styles={{
     a: {
@@ -31,11 +27,18 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             {globalStyles}
-            <SnackbarProvider>
-                <DialogProvider>
-                    <App/>
-                </DialogProvider>
-            </SnackbarProvider>
+            <AdminAPIProvider config={{
+                host: process.env.ADMIN_API_HOST || "http://localhost:5000",
+                token: Storage.get(Storage.Keys.TOKEN) || ""
+            }}>
+                <StoreProvider>
+                    <SnackbarProvider>
+                        <DialogProvider>
+                            <App/>
+                        </DialogProvider>
+                    </SnackbarProvider>
+                </StoreProvider>
+            </AdminAPIProvider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")

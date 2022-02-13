@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Container, TextField, Typography } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { api } from "@meme-bros/api-sdk/dist/admin"
+import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
 import { useSnackbar } from "../../lib/snackbar"
 
 type Fields = {
@@ -12,6 +12,8 @@ type Fields = {
 }
 
 function ChangePasswordPage() {
+    const api = useAdminAPI()
+    
     const snackbar = useSnackbar()
     
     const { register, handleSubmit } = useForm<Fields>()

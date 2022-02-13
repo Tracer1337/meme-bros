@@ -1,7 +1,7 @@
 import React from "react"
 import { useLocation, useParams } from "react-router-dom"
 import * as API from "@meme-bros/api-sdk/dist/admin/types"
-import { api } from "@meme-bros/api-sdk/dist/admin/api"
+import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
 import TemplateForm, { Fields } from "./TemplateForm"
 
 export type LocationState = API.Template
@@ -12,6 +12,8 @@ function UpdateTemplate() {
     if (!id) {
         throw new Error("Missing param: 'id'")
     }
+
+    const api = useAdminAPI()
 
     const locationState = useLocation().state as LocationState
     

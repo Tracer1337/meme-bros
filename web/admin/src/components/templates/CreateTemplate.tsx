@@ -1,9 +1,11 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { api } from "@meme-bros/api-sdk/dist/admin"
+import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
 import TemplateForm, { Fields } from "./TemplateForm"
 
 function CreateTemplate() {
+    const api = useAdminAPI()
+    
     const navigate = useNavigate()
 
     const handleSubmit = async (values: Fields) => {

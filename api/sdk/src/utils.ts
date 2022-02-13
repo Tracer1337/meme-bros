@@ -1,4 +1,4 @@
-import { AxiosInstance } from "axios";
+import { AxiosInstance } from "axios"
 import useSWR, { mutate, SWRResponse } from "swr"
 
 type Getter<T, A extends any[]> = {

@@ -12,8 +12,8 @@ import {
     Typography
 } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
+import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
 import * as API from "@meme-bros/api-sdk/dist/admin/types"
-import { api } from "@meme-bros/api-sdk/dist/admin/api"
 import { LocationState } from "./UpdateTemplate"
 import { useConfirm } from "../../lib/confirm"
 
@@ -22,6 +22,8 @@ const PreviewImage = styled("img")({
 })
 
 function Page({ index }: { index: number }) {
+    const api = useAdminAPI()
+    
     const { data, error } = api.templates.all.use({ page: index })
 
     const confirm = useConfirm()
