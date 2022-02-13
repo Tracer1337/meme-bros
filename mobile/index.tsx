@@ -1,6 +1,7 @@
 import React from "react"
 import { AppRegistry } from "react-native"
 import App from "@meme-bros/app"
+import { PublicAPIProvider } from "@meme-bros/api-sdk"
 import {
     BridgeProvider,
     SharedContextProvider,
@@ -13,7 +14,7 @@ import storageModule from "./src/modules/storage"
 import canvasModule from "./src/modules/canvas"
 import viewModule from "./src/modules/view"
 import permissionsModule from "./src/modules/permissions"
-import { PublicAPIProvider } from "@meme-bros/api-sdk"
+import socialModule from "./src/modules/social"
 
 function Main() {
     return (
@@ -23,7 +24,8 @@ function Main() {
             storage: storageModule,
             canvas: canvasModule,
             view: viewModule,
-            permissions: permissionsModule
+            permissions: permissionsModule,
+            social: socialModule
         }}>
             <BridgeProvider>
                 <SharedContextProvider>

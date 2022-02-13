@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "build:android": "gomobile bind -target=android -o=../mobile/android/app/core.aar meme-bros/core/arch/android/api",
-        "build:web": "cross-env GOOS=js cross-env GOARCH=wasm go build -o=../web/admin/public/assets/core.wasm ./arch/web/api/api.go"
+        "build:web": "cross-env GOOS=js GOARCH=wasm go build -o=../web/admin/public/assets/core.wasm ./arch/web/api/api.go"
     },
     "dependencies": {
         "cross-env": "^7.0.3"

@@ -3,9 +3,7 @@ const { getMetroTools, getMetroAndroidAssetsResolutionFix } = require("react-nat
 
 const monorepoMetroTools = getMetroTools();
 
-const androidAssetsResolutionFix = getMetroAndroidAssetsResolutionFix({
-  depth: 1
-});
+const androidAssetsResolutionFix = getMetroAndroidAssetsResolutionFix();
 
 module.exports = {
   transformer: {

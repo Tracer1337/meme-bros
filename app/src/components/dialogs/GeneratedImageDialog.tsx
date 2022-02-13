@@ -20,6 +20,7 @@ function GeneratedImageDialog({ visible, data, close }: {
     const api = usePublicAPI()
     
     const storage = useModule("storage")
+    const social = useModule("social")
 
     const snackbar = useSnackbar()
 
@@ -44,12 +45,19 @@ function GeneratedImageDialog({ visible, data, close }: {
         )
     }
 
+    const share = async () => {
+        await social.share({ uri: data.uri })
+    }
+
     return (
         <Dialog visible={visible} onDismiss={close}>
             <Dialog.Content>
                 <Image source={data} style={{ width: "100%" }} resizeMode="contain"/>
-                <Button onPress={save} style={{ width: "100%" }} disabled={!storage}>
+                <Button onPress={save} style={{ width: "100%" }}>
                     Save
+                </Button>
+                <Button onPress={share} style={{ width: "100%" }}>
+                    Share
                 </Button>
             </Dialog.Content>
             <Dialog.Actions>

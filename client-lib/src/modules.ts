@@ -50,13 +50,18 @@ export namespace Modules {
         request: (permission: Permissions) => Promise<boolean>
     }
 
+    export type SocialModule = {
+        share: (args: { uri: string }) => Promise<void>
+    }
+
     export type ContextValue = {
         core: CoreModule,
         templates: TemplatesModule,
         storage: StorageModule,
         canvas: CanvasModule,
         view: ViewModule,
-        permissions: PermissionsModule
+        permissions: PermissionsModule,
+        social: SocialModule
     }
 }
 

@@ -19,7 +19,8 @@ function RNApp({ width, height }: {
         storage: storageModule,
         canvas: canvasModule,
         view: viewModule,
-        permissions: permissionsModule
+        permissions: permissionsModule,
+        social: { share: () => Promise.resolve() }
     }
 
     return (
