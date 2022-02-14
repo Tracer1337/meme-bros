@@ -6531,6 +6531,15 @@ form-data@^3.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
+form-data@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
+  integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
+    mime-types "^2.1.12"
+
 forwarded@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.2.0.tgz#2269936428aad4c15c7ebe9779a84bf0b2a81811"
@@ -7217,6 +7226,14 @@ image-size@^0.6.0:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
   integrity sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA==
+
+imgur@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/imgur/-/imgur-2.1.4.tgz#fc8e7f62865224aa4902814fb7f5c1e53a56811c"
+  integrity sha512-YYTlw8XjiLbOuVGLb3P7gxir91dThY88DAHdDkRgo6MLkec+99rZFJ939Jj1y2IT7J0fFMQudraGmohgROLa4Q==
+  dependencies:
+    axios "^0.25.0"
+    form-data "^4.0.0"
 
 immer@8.0.1:
   version "8.0.1"

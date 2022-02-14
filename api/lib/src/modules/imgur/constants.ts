@@ -1,0 +1,1 @@
+export const IMGUR_OPTIONS_KEY = "IMGUR_OPTIONS"
