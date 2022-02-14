@@ -29,7 +29,7 @@
   },
   "scripts": {
     "dev": "yarn start",
-    "start": "cross-env BROWSER=none PUBLIC_URL=/iframe react-scripts start",
+    "start": "cross-env BROWSER=none react-scripts start",
     "build": "react-scripts build"
   },
   "eslintConfig": {
