@@ -46,7 +46,7 @@ function GeneratedImageDialog({ visible, data, close }: {
     }
 
     const share = async () => {
-        await social.share({ uri: data.uri })
+        await social.share?.({ uri: data.uri })
     }
 
     return (
@@ -56,9 +56,11 @@ function GeneratedImageDialog({ visible, data, close }: {
                 <Button onPress={save} style={{ width: "100%" }}>
                     Save
                 </Button>
-                <Button onPress={share} style={{ width: "100%" }}>
-                    Share
-                </Button>
+                {social.share && (
+                    <Button onPress={share} style={{ width: "100%" }}>
+                        Share
+                    </Button>
+                )}
             </Dialog.Content>
             <Dialog.Actions>
                 <Button onPress={close} style={{ width: "100%" }}>

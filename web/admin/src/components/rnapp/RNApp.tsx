@@ -20,7 +20,7 @@ function RNApp({ width, height }: {
         canvas: canvasModule,
         view: viewModule,
         permissions: permissionsModule,
-        social: { share: () => Promise.resolve() }
+        social: {}
     }
 
     return (

@@ -51,7 +51,7 @@ export namespace Modules {
     }
 
     export type SocialModule = {
-        share: (args: { uri: string }) => Promise<void>
+        share?: (args: { uri: string }) => Promise<void>
     }
 
     export type ContextValue = {
