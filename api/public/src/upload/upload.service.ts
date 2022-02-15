@@ -9,7 +9,7 @@ export class UploadService {
     ) {}
 
     public async uploadImage(uploadImageDTO: UploadImageDTO) {
-        const res = await this.imgurService.uploadImage(uploadImageDTO.dataURI)
+        const res = await this.imgurService.uploadImage(uploadImageDTO.uri)
         console.log(res)
         if (!res.success) {
             throw new InternalServerErrorException()

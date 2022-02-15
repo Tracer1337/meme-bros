@@ -1,8 +1,8 @@
-import { Permissions, useModule, useSharedContext } from "@meme-bros/client-lib"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { Image } from "react-native"
-import { Button, Dialog } from "react-native-paper"
+import { Button, Dialog, Text } from "react-native-paper"
 import { usePublicAPI } from "@meme-bros/api-sdk"
+import { Permissions, useModule, useSharedContext } from "@meme-bros/client-lib"
 import { usePermissionUtils } from "../../lib/permissions"
 import { useSnackbar } from "../../lib/snackbar"
 
@@ -26,23 +26,44 @@ function GeneratedImageDialog({ visible, data, close }: {
 
     const { withPermission } = usePermissionUtils()
 
-    const [isRegistered, setIsRegistered] = useState(false)
+    const isRegistered = useRef(false)
+
+    const [isUploading, setIsUploading] = useState(false)
+    const [url, setUrl] = useState<string>()
+
+    const registerUse = () => {
+        if (context.template && !isRegistered.current) {
+            isRegistered.current = true
+            api.templates.registerUse(context.template)
+        }
+    }
 
     const save = async () => {
         withPermission(Permissions.WRITE_EXTERNAL_STORAGE, () =>
             storage.saveImage(data.uri)
                 .then(() => {
                     snackbar.open("Image saved")
-                    if (context.template && !isRegistered) {
-                        setIsRegistered(true)
-                        api.templates.registerUse(context.template)
-                    }
+                    registerUse()
                 })
                 .catch((error) => {
                     console.error(error)
                     snackbar.open("Could not save image")
                 })
         )
+    }
+
+    const upload = () => {
+        setIsUploading(true)
+        api.upload.uploadImage(data.uri)
+            .then((res) => {
+                setUrl(res)
+                registerUse()
+            })
+            .catch((error) => {
+                console.error(error)
+                snackbar.open("Could not upload image")
+            })
+            .finally(() => setIsUploading(false))
     }
 
     const share = async () => {
@@ -56,6 +77,17 @@ function GeneratedImageDialog({ visible, data, close }: {
                 <Button onPress={save} style={{ width: "100%" }}>
                     Save
                 </Button>
+                {!url ? (
+                    <Button
+                        onPress={upload}
+                        loading={isUploading}
+                        style={{ width: "100%" }}
+                    >
+                        Upload To Imgur
+                    </Button>
+                ) : (
+                    <Text>{url}</Text>
+                )}
                 {social.share && (
                     <Button onPress={share} style={{ width: "100%" }}>
                         Share
