@@ -4,17 +4,20 @@ import { API } from "../lib/api"
 import { AuthResource } from "./resources/auth"
 import { StorageResource } from "./resources/storage"
 import { TemplatesResource } from "./resources/templates"
+import { UploadsResource } from "./resources/uploads"
 
 export class AdminAPI extends API<Config> {
     public auth: AuthResource
     public templates: TemplatesResource
     public storage: StorageResource
+    public uploads: UploadsResource
     
     constructor(config: Config) {
         super(config)
         this.auth = new AuthResource(this.axios, this.config)
         this.templates = new TemplatesResource(this.axios, this.config)
         this.storage = new StorageResource(this.axios, this.config)
+        this.uploads = new UploadsResource(this.axios, this.config)
     }
 
     protected init() {
@@ -30,5 +33,6 @@ export class AdminAPI extends API<Config> {
         this.auth = new AuthResource(this.axios, this.config)
         this.templates = new TemplatesResource(this.axios, this.config)
         this.storage = new StorageResource(this.axios, this.config)
+        this.uploads = new UploadsResource(this.axios, this.config)
     }
 }

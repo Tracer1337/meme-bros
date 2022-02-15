@@ -24,3 +24,8 @@ export type CreateTemplate = {
     name: string,
     canvas: any
 }
+
+export type Upload = {
+    id: string,
+    link: string
+}

@@ -6,6 +6,7 @@ import { useStore } from "../../lib/store"
 
 const links: { to: string, title: string }[] = [
     { to: "/", title: "Home" },
+    { to: "/uploads", title: "Uploads" },
     { to: "/templates", title: "Templates" }
 ]
 

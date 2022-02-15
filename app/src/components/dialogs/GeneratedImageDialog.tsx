@@ -54,7 +54,7 @@ function GeneratedImageDialog({ visible, data, close }: {
 
     const upload = () => {
         setIsUploading(true)
-        api.upload.uploadImage(data.uri)
+        api.uploads.uploadImage(data.uri)
             .then((res) => {
                 setUrl(res)
                 registerUse()

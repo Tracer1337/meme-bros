@@ -3,11 +3,12 @@ import { APP_INTERCEPTOR } from "@nestjs/core"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { MongooseModule } from "@nestjs/mongoose"
 import { CoreModule, StorageModule, TrendModule } from "@meme-bros/api-lib"
+import { configuration } from "./config/configuration"
+import { configurationSchema } from "./config/configuration.schema"
 import { UsersModule } from "./users/users.module"
 import { AuthModule } from "./auth/auth.module"
 import { TemplatesModule } from "./templates/templates.module"
-import { configuration } from "./config/configuration"
-import { configurationSchema } from "./config/configuration.schema"
+import { UploadsModule } from "./uploads/uploads.module"
 
 @Module({
     imports: [
@@ -47,7 +48,8 @@ import { configurationSchema } from "./config/configuration.schema"
         }),
         UsersModule,
         AuthModule,
-        TemplatesModule
+        TemplatesModule,
+        UploadsModule
     ],
     providers: [
         {

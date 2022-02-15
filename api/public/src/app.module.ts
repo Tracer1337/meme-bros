@@ -7,7 +7,7 @@ import { ImgurModule, StorageModule, TrendModule } from "@meme-bros/api-lib"
 import { configuration } from "./config/configuration"
 import { configurationSchema } from "./config/configuration.schema"
 import { TemplatesModule } from "./templates/templates.module"
-import { UploadModule } from "./upload/upload.module"
+import { UploadsModule } from "./uploads/uploads.module"
 
 @Module({
     imports: [
@@ -54,7 +54,7 @@ import { UploadModule } from "./upload/upload.module"
             inject: [ConfigService]
         }),
         TemplatesModule,
-        UploadModule
+        UploadsModule
     ],
     providers: [
         {

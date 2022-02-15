@@ -8,6 +8,7 @@ import ChangePasswordPage from "../auth/ChangePasswordPage"
 import TemplatesPage from "../templates/TemplatesPage"
 import CreateTemplate from "../templates/CreateTemplate"
 import UpdateTemplate from "../templates/UpdateTemplate"
+import UploadsPage from "../uploads/UploadsPage"
 
 function auth(child: JSX.Element) {
     return (
@@ -29,6 +30,7 @@ function Router() {
                         <Route path="create" element={<CreateTemplate/>}/>
                         <Route path=":id" element={<UpdateTemplate/>}/>
                     </Route>
+                    <Route path="uploads" element={auth(<UploadsPage/>)}/>
                 </Route>
             </Routes>
         </BrowserRouter>
