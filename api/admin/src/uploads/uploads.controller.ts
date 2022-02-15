@@ -1,7 +1,7 @@
-import { PaginationDTO } from "@meme-bros/api-lib"
 import { Controller, Get, Query } from "@nestjs/common"
 import { UploadsService } from "./uploads.service"
 import { UploadEntity } from "./entities/upload.entity"
+import { GetAllUploadsDTO } from "./dto/get-all-uploads.dto"
 
 @Controller("uploads")
 export class UploadsController {
@@ -10,8 +10,8 @@ export class UploadsController {
     ) {}
 
     @Get()
-    async uploadImage(@Query() paginationDTO: PaginationDTO) {
-        const docs = await this.uploadsService.findAll(paginationDTO)
+    async uploadImage(@Query() getAllUploadsDTO: GetAllUploadsDTO) {
+        const docs = await this.uploadsService.findAll(getAllUploadsDTO)
         return docs.map((doc) => new UploadEntity(doc))
     }
 }

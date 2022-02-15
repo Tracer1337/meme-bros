@@ -7,13 +7,13 @@ import {
     assertIsValidObjectId,
     Template,
     TemplateDocument,
-    TrendService,
-    PaginationDTO
+    TrendService
 } from "@meme-bros/api-lib"
 import { PreviewsService } from "src/previews/previews.service"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
-import { canvasValidator } from "./validators/canvas.validator"
 import { UpdateTemplateDTO } from "./dto/update-template.dto"
+import { GetAllTemplatesDTO } from "./dto/get-all-templates.dto"
+import { canvasValidator } from "./validators/canvas.validator"
 
 @Injectable()
 export class TemplatesService implements OnModuleInit {
@@ -55,11 +55,11 @@ export class TemplatesService implements OnModuleInit {
         return template
     }
 
-    async findAll(paginationDTO: PaginationDTO): Promise<TemplateDocument[]> {
+    async findAll(getAllTemplatesDTO: GetAllTemplatesDTO): Promise<TemplateDocument[]> {
         return this.templateModel.find()
             .select("-canvas")
-            .limit(paginationDTO.per_page)
-            .skip(paginationDTO.page * paginationDTO.per_page)
+            .limit(getAllTemplatesDTO.per_page)
+            .skip(getAllTemplatesDTO.page * getAllTemplatesDTO.per_page)
     }
 
     async findById(id: string, projection: any = {

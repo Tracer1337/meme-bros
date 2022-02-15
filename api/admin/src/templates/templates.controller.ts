@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common"
-import { PaginationDTO } from "@meme-bros/api-lib"
 import { TemplatesService } from "./templates.service"
 import { TemplateEntity } from "./entities/template.entity"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
+import { GetAllTemplatesDTO } from "./dto/get-all-templates.dto"
 import { UpdateTemplateDTO } from "./dto/update-template.dto"
 import { JwtAuthGuard } from "../auth/jwt-auth.guard"
 
@@ -21,8 +21,8 @@ export class TemplatesController {
     }
 
     @Get()
-    async getAll(@Query() paginationDTO: PaginationDTO) {
-        const templates = await this.templatesService.findAll(paginationDTO)
+    async getAll(@Query() getAllTemplatesDTO: GetAllTemplatesDTO) {
+        const templates = await this.templatesService.findAll(getAllTemplatesDTO)
         return templates.map((template) => new TemplateEntity(template))
     }
 
