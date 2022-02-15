@@ -1,11 +1,10 @@
 import { useModule } from "@meme-bros/client-lib"
-import { Editor } from "@meme-bros/shared"
-import { fetchBase64 } from "../../../lib/base64"
+import {
+    Editor,
+    replaceMimeTypeInDataURI,
+    fetchAsDataURI
+} from "@meme-bros/shared"
 import { useCanvasScaling } from "./scale"
-
-function binaryToPNG(base64: string) {
-    return base64.replace("application/octet-stream", "image/png")
-}
 
 export function useCanvasDummyLoader() {
     const storage = useModule("storage")
@@ -14,7 +13,11 @@ export function useCanvasDummyLoader() {
     return async (): Promise<Editor.Canvas | null> => {
         const uri = require("../../../assets/meme1.png")
         const image = await storage.resolveAssetSource(uri.default || uri)
-        const base64 = binaryToPNG(await fetchBase64(image.uri))
+        if (!image) {
+            throw new Error("Could not resolve dummy image")
+        }
+        const dataURI = await fetchAsDataURI(image.uri)
+        const base64 = replaceMimeTypeInDataURI(dataURI, "image/png")
         const rect = scaleToScreen(image)
         return {
             ...rect,

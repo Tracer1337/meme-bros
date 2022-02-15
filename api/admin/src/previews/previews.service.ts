@@ -5,7 +5,11 @@ import {
     CoreService,
     TemplateDocument
 } from "@meme-bros/api-lib"
-import { Editor } from "@meme-bros/shared"
+import {
+    Editor,
+    getBase64FromDataURI,
+    getFileExtensionForCanvas
+} from "@meme-bros/shared"
 
 @Injectable()
 export class PreviewsService {
@@ -17,7 +21,7 @@ export class PreviewsService {
 
     async createPreview(template: TemplateDocument) {
         const buffer = await this.renderPreview(template.canvas)
-        const ext = this.getFileExtensionForCanvas(template.canvas)
+        const ext = getFileExtensionForCanvas(template.canvas)
         return await this.storageService.put(buffer, ext)
     }
 
@@ -28,27 +32,12 @@ export class PreviewsService {
             pixelRatio: this.getPixelRatio(canvas),
             elements: this.getPreviewElements(canvas)
         })
-        const base64 = dataURI.split(",")[1]
+        const base64 = getBase64FromDataURI(dataURI)
         return Buffer.from(base64, "base64")
     }
 
     async deletePreview(template: TemplateDocument) {
         await this.storageService.delete(template.previewFile)
-    }
-
-    // TODO: Move to lib package (e.g. "canvas-utils")
-    private getFileExtensionForCanvas(canvas: Editor.Canvas) {
-        const animated = canvas.layers.some((layer) => {
-            const element = canvas.elements[layer]
-            return this.isImageElement(element) && element.data.animated  
-        })
-        if (animated) return "gif"
-        return "png"
-    }
-
-    // TODO: same as above
-    private isImageElement(element: Editor.CanvasElement): element is Editor.PickElement<"image"> {
-        return element.type === "image"
     }
 
     private getPixelRatio(canvas: Editor.Canvas) {

@@ -1,3 +1,4 @@
+import { getMimeTypeFromDataURI } from "@meme-bros/shared"
 import { Modules } from "@meme-bros/client-lib"
 
 function importFile(mimeType: string) {
@@ -46,11 +47,11 @@ const importImage: Modules.StorageModule["importImage"] = () => {
     })
 }
 
-const saveImage: Modules.StorageModule["saveImage"] = async (base64) => {
-    const filename = base64.startsWith("data:image/gif")
+const saveImage: Modules.StorageModule["saveImage"] = async (dataURI) => {
+    const filename = getMimeTypeFromDataURI(dataURI) === "image/gif"
         ? "download.gif"
         : "download.png"
-    downloadFile(base64, filename)
+    downloadFile(dataURI, filename)
 }
 
 const resolveAssetSource: Modules.StorageModule["resolveAssetSource"] = (uri) => {

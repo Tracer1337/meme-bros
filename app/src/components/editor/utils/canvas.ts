@@ -1,4 +1,4 @@
-import { Editor } from "@meme-bros/shared"
+import { Editor, getMimeTypeFromDataURI } from "@meme-bros/shared"
 import { makeId, getDefaultDataByType, useModule } from "@meme-bros/client-lib"
 
 export function useCanvasUtils() {
@@ -26,11 +26,12 @@ export function useCanvasUtils() {
             if (!image || !image.base64) {
                 return
             }
+            const mimeType = getMimeTypeFromDataURI(image.base64)
             const element = newElement as Editor.PickElement<"image">
             element.data = {
                 ...element.data,
                 uri: image.base64,
-                animated: image.base64.startsWith("data:image/gif")
+                animated: mimeType === "image/gif"
             }
             if (image.width && image.height) {
                 element.rect.width = element.data.naturalWidth = image.width

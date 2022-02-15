@@ -1,7 +1,16 @@
-import { getDateString, join, makeId, Modules } from "@meme-bros/client-lib"
 import { Image } from "react-native"
 import { launchImageLibrary } from "react-native-image-picker"
 import * as RNFS from "react-native-fs"
+import {
+    getBase64FromDataURI,
+    getFileExtensionFromDataURI
+} from "@meme-bros/shared"
+import {
+    getDateString,
+    join,
+    makeId,
+    Modules
+} from "@meme-bros/client-lib"
 
 const importImage: Modules.StorageModule["importImage"] = async () => {
     const res = await launchImageLibrary({
@@ -23,10 +32,10 @@ const importImage: Modules.StorageModule["importImage"] = async () => {
 }
 
 const saveImage: Modules.StorageModule["saveImage"] = async (dataURI) => {
-    const ext = dataURI.startsWith("data:image/gif") ? "gif" : "png"
+    const ext = getFileExtensionFromDataURI(dataURI)
+    const base64 = getBase64FromDataURI(dataURI)
     const filename = `MemeBros-${getDateString()}-${makeId()}.${ext}`
     const albumPath = join(RNFS.ExternalStorageDirectoryPath, "Pictures", "Memes")
-    const base64 = dataURI.split(",")[1]
     await RNFS.mkdir(albumPath)
     await RNFS.writeFile(join(albumPath, filename), base64, "base64")
 }

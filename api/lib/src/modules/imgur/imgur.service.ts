@@ -1,5 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common"
 import { ImgurClient } from "imgur"
+import { getBase64FromDataURI } from "@meme-bros/shared"
 import { IMGUR_OPTIONS_KEY } from "./constants"
 import { ImgurModuleOptions } from "./interfaces/imgur-module-options.interface"
 
@@ -14,9 +15,8 @@ export class ImgurService {
     }
 
     public uploadImage(dataURI: string) {
-        const base64 = dataURI.split(",")[1]
         return this.api.upload({
-            image: base64,
+            image: getBase64FromDataURI(dataURI),
             type: "base64",
             description: "Made with MemeBros"
         })

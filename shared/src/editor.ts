@@ -72,3 +72,20 @@ export namespace Editor {
         }
     >
 }
+
+export function isImageElement(
+    element: Editor.CanvasElement
+): element is Editor.PickElement<"image"> {
+    return element.type === "image"
+}
+
+export function isAnimatedCanvas(canvas: Editor.Canvas) {
+    return canvas.layers.some((layer) => {
+        const element = canvas.elements[layer]
+        return isImageElement(element) && element.data.animated
+    })
+}
+
+export function getFileExtensionForCanvas(canvas: Editor.Canvas) {
+    return isAnimatedCanvas(canvas) ? "gif" : "png"
+}
