@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo } from "react"
-import { PublicAPI } from "."
+import { PublicAPI } from "./api"
 import { Config } from "./types"
 
 const PublicAPIContext = createContext<PublicAPI>(null as any)
