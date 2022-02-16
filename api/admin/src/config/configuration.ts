@@ -24,5 +24,8 @@ export const configuration = () => ({
             damping: 10,
             reduction: 100
         }
+    },
+    imgur: {
+        clientId: process.env.IMGUR_CLIENT_ID || "c9fae57278f6764"
     }
 })

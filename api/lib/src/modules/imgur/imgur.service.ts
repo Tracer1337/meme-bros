@@ -21,4 +21,8 @@ export class ImgurService {
             description: "Made with MemeBros"
         })
     }
+
+    public deleteImage(deletehash: string) {
+        return this.api.deleteImage(deletehash)
+    }
 }

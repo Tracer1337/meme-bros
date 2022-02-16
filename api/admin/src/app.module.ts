@@ -2,7 +2,12 @@ import { ClassSerializerInterceptor, Module } from "@nestjs/common"
 import { APP_INTERCEPTOR } from "@nestjs/core"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { MongooseModule } from "@nestjs/mongoose"
-import { CoreModule, StorageModule, TrendModule } from "@meme-bros/api-lib"
+import {
+    CoreModule,
+    ImgurModule,
+    StorageModule,
+    TrendModule
+} from "@meme-bros/api-lib"
 import { configuration } from "./config/configuration"
 import { configurationSchema } from "./config/configuration.schema"
 import { UsersModule } from "./users/users.module"
@@ -43,6 +48,13 @@ import { UploadsModule } from "./uploads/uploads.module"
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => ({
                 uri: configService.get<string>("core.uri")
+            }),
+            inject: [ConfigService]
+        }),
+        ImgurModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                clientId: configService.get<string>("imgur.clientId")
             }),
             inject: [ConfigService]
         }),

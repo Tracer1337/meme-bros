@@ -10,4 +10,8 @@ export class UploadsResource extends Resource<Config> {
         super(axios, config)
         this.all = new PaginatedGetter(axios, () => "uploads")
     }
+    
+    async delete(upload: Upload) {
+        await this.axios.delete(`uploads/${upload.id}`)
+    }
 }

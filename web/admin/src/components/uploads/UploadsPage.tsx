@@ -1,5 +1,5 @@
 import React from "react"
-import { Typography } from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import UploadsList from "./UploadsList"
 
 function UploadsPage() {
@@ -9,7 +9,9 @@ function UploadsPage() {
                 Uploads
             </Typography>
 
-            <UploadsList/>
+            <Container maxWidth="sm">
+                <UploadsList/>
+            </Container>
         </>
     )
 }
