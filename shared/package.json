@@ -9,11 +9,8 @@
   },
   "dependencies": {
     "@meme-bros/core-types": "*",
-    "mime-types": "^2.1.34",
+    "mime": "^3.0.0",
     "tsdef": "^0.0.14",
     "typescript": "^4.1.2"
-  },
-  "devDependencies": {
-    "@types/mime-types": "^2.1.1"
   }
 }

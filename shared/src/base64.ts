@@ -1,5 +1,5 @@
 // Data URI Syntax: data:[<media type>][;base64],<data>
-import mime from "mime-types"
+import mime from "mime/lite"
 
 export function fetchAsDataURI(uri: string) {
     return new Promise<string>(async (resolve, reject) => {
