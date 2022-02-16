@@ -74,7 +74,9 @@ export namespace Editor {
     export type PathElement = OverwriteProps<
         Core.PathElement,
         {
-            data: OverwriteProps<Core.PathElement["data"], {}>
+            data: OverwriteProps<Core.PathElement["data"], {
+                color: Color
+            }>
         }
     >
 }

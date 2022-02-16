@@ -1,31 +1,49 @@
-import { useContext } from "react"
-import {
-    updateElementData,
-    useSharedContext,
-    consumeEvent,
-    useListeners
-} from "@meme-bros/client-lib"
-import { DialogContext } from "../../lib/DialogHandler"
+import { useEffect, useMemo, useRef } from "react"
+import { updateElementData, useSharedContext } from "@meme-bros/client-lib"
 import makeElement, { ElementProps } from "./makeElement"
+import { setupDrawingCanvas } from "./utils/draw"
 
 function Path({ element }: ElementProps<"path">) {
     const context = useSharedContext()
 
-    const dialogs = useContext(DialogContext)
-    
-    const handleConfig = async () => {
-        // const data = await dialogs.open("", element)
-        // context.events.emit("history.push")
-        // context.set(updateElementData(context, element, data))
-    }
+    const canvas = useRef<HTMLCanvasElement>(null)
 
-    useListeners(context.events, [
-        ["element.config", consumeEvent(element.id, handleConfig)]
-    ])
-    
+    const isFocused = useMemo(
+        () => context.interactions.focus === element.id,
+        [context.interactions.focus, element.id]
+    )
+
+    useEffect(() => {
+        if (canvas.current) {
+            return setupDrawingCanvas({
+                canvas: canvas.current,
+                element,
+                onUpdate: (paths) => {
+                    context.events.emit("history.push")
+                    context.set(updateElementData(
+                        context,
+                        element,
+                        { ...element.data, paths }
+                    ))
+                }
+            })
+        }
+        // eslint-disable-next-line
+    }, [context, element])
+
     return (
-        <div></div>
+        <canvas
+            ref={canvas}
+            style={{
+                width: context.canvasDomRect?.width,
+                height: context.canvasDomRect?.height,
+                pointerEvents: isFocused ? "all" : "none",
+                cursor: "crosshair"
+            }}
+        />
     )
 }
 
-export default makeElement(Path)
+export default makeElement(Path, () => ({
+    interactive: false
+}))

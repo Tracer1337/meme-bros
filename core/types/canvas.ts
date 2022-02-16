@@ -64,7 +64,7 @@ export type ShapeElement = {
 export type PathElement = {
     type: "path",
     data: {
-        points: { x: number, y: number }[],
+        paths: [number, number][][],
         color: Color,
         width: number
     }
