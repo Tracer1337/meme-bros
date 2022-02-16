@@ -66,7 +66,6 @@ function Canvas() {
             height: newElement.rect.height || 0
         })
         newElement.id = 0
-        newElement.interactive = false
         newElement.rect = { ...newElement.rect, ...rect }
         const base: Editor.CanvasBase = {
             id: newElement.id,

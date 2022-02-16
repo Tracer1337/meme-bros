@@ -34,7 +34,6 @@ export function useCanvasDummyLoader() {
                 0: {
                     id: 0,
                     type: "image",
-                    interactive: false,
                     rect: {
                         ...rect,
                         x: 0,
@@ -54,7 +53,6 @@ export function useCanvasDummyLoader() {
                 1: {
                     id: 1,
                     type: "textbox",
-                    interactive: true,
                     rect: {
                         x: 50,
                         y: 50,
@@ -79,7 +77,6 @@ export function useCanvasDummyLoader() {
                 2: {
                     id: 2,
                     type: "image",
-                    interactive: true,
                     rect: {
                         x: 200,
                         y: 200,

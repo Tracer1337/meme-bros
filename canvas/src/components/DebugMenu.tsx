@@ -26,6 +26,7 @@ function DebugMenu() {
             <Action onClick={event("element.create.default", "textbox")}>Add Textbox</Action>
             <Action onClick={event("element.create.default", "image")}>Add Image</Action>
             <Action onClick={event("element.create.default", "shape")}>Add Shape</Action>
+            <Action onClick={event("element.create.default", "path")}>Add Path</Action>
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Canvas</Typography>
             <TextField

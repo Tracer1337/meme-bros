@@ -17,7 +17,6 @@ export const mockCanvas: Editor.Canvas = {
         0: {
             id: 0,
             type: "image",
-            interactive: false,
             rect: {
                 x: 0,
                 y: 0,
@@ -33,7 +32,6 @@ export const mockCanvas: Editor.Canvas = {
         1: {
             id: 1,
             type: "textbox",
-            interactive: true,
             rect: {
                 x: 100,
                 y: 200,

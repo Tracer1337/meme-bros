@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
+import { DraggableCore, DraggableEventHandler } from "react-draggable"
 import { DeepPartial } from "tsdef"
 import { deepmerge } from "@mui/utils"
 import * as CSS from "csstype"
@@ -7,11 +8,15 @@ import {
     updateElementRect,
     useSharedContext,
     setListeners,
-    useListeners
+    useListeners,
+    SharedContext
 } from "@meme-bros/client-lib"
 import Interactions from "./Interactions"
-import { DraggableCore, DraggableEventHandler } from "react-draggable"
-import { AnimatedValue, AnimatedValueXY, useAnimationRegistry } from "../../lib/animation"
+import {
+    AnimatedValue,
+    AnimatedValueXY,
+    useAnimationRegistry
+} from "../../lib/animation"
 import { getElementBasePosition } from "./utils"
 
 type DraggableProps = React.ComponentProps<typeof DraggableCore>
@@ -30,11 +35,16 @@ export type ElementProps<T extends Editor.CanvasElement["type"]> = {
 }
 
 export type ElementConfig = {
-    interactions: Record<"rotate" | "resize" | "edit" | "config" | "delete", boolean>,
+    interactive: boolean,
+    interactions: Record<
+        "rotate" | "resize" | "edit" | "config" | "delete",
+        boolean
+    >,
     aspectRatio?: number
 }
 
 const defaultConfig: ElementConfig = {
+    interactive: true,
     interactions: {
         rotate: true,
         resize: true,
@@ -53,16 +63,18 @@ export type GetHandleProps = (key: HandleKey, options?: {
 
 function makeElement<T extends Editor.CanvasElement["type"]>(
     Component: React.ComponentType<ElementProps<T>>,
-    getElementConfig: ({ element }: { element: Editor.PickElement<T> }) =>
-        DeepPartial<ElementConfig> = () => ({})
+    getElementConfig: ({ element, context }: {
+        element: Editor.PickElement<T>,
+        context: SharedContext.ContextValue
+    }) => DeepPartial<ElementConfig> = () => ({})
 ) {
     return ({ element }: ElementComponentProps<T>) => {
+        const context = useSharedContext()
+        
         const config = deepmerge(
             defaultConfig,
-            getElementConfig({ element })
+            getElementConfig({ element, context })
         ) as ElementConfig
-        
-        const context = useSharedContext()
 
         const animations = useAnimationRegistry()
 
@@ -185,13 +197,13 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
                 onDrag={handleMovementDrag}
                 handle={`#element-${element.id}`}
                 {...draggableProps}
-                {...(!element.interactive ? { disabled: true } : {})}
+                {...(!config.interactive ? { disabled: true } : {})}
             >
                 <div ref={container} style={{
                     ...getTransformStyles(),
                     transformOrigin: "center, center",
                     position: "absolute",
-                    pointerEvents: !element.interactive ? "none" : "unset"
+                    pointerEvents: !config.interactive ? "none" : "unset"
                 }}>
                     <div
                         id={`element-${element.id}`}
@@ -208,7 +220,7 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
                             rotation={rotation}
                         />
                     </div>
-                    {element.interactive && context.interactions.focus === element.id && (
+                    {config.interactive && context.interactions.focus === element.id && (
                         <Interactions
                             element={element}
                             config={config}

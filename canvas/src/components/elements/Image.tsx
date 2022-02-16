@@ -66,7 +66,8 @@ function Image({ element, size }: ElementProps<"image">) {
     )
 }
 
-export default makeElement(Image, ({ element }) => ({
+export default makeElement(Image, ({ element, context }) => ({
+    interactive: context.canvas.base?.id !== element.id,
     interactions: {
         edit: false
     },

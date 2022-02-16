@@ -9,7 +9,6 @@
         {
             "id": 0,
             "type": "image",
-            "interactive": false,
             "rect": {
                 "x": 0,
                 "y": 0,
@@ -30,7 +29,6 @@
         {
             "id": 28709637,
             "type": "image",
-            "interactive": true,
             "rect": {
                 "x": 91,
                 "y": 108,

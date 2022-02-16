@@ -34,7 +34,7 @@ function App() {
     const context = useSharedContext()
 
     const history = useRef<SharedContext.ContextValue["canvas"][]>([]).current
-    const [debug, setDebug] = useState(false)
+    const [debug, setDebug] = useState(true)
 
     const handleHistoryPush = () => {
         history.push(context.canvas)
