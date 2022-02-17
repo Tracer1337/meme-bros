@@ -21,7 +21,7 @@ function patchPackageJSON(packagePath, patch) {
 
 function patchStylisPackage() {
     patchPackageJSON(
-        path.join(__dirname, NODE_MODULES, STYLIS),
+        path.join(__dirname, "..", NODE_MODULES, STYLIS),
         (packageFile) => {
             packageFile.module = packageFile.main
         }
@@ -30,7 +30,7 @@ function patchStylisPackage() {
 
 function patchReactHookFormPackage() {
     patchPackageJSON(
-        path.join(__dirname, WEB, ADMIN, NODE_MODULES, REACT_HOOK_FORM),
+        path.join(__dirname, "..", WEB, ADMIN, NODE_MODULES, REACT_HOOK_FORM),
         (packageFile) => {
             packageFile.module = packageFile.main
         }
