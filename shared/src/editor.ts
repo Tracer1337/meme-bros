@@ -34,8 +34,7 @@ export namespace Editor {
     export type CanvasElement = CanvasElementCommon & (
         ImageElement |
         TextboxElement |
-        ShapeElement |
-        PathElement
+        ShapeElement
     )
 
     export type ImageElement = OverwriteProps<
@@ -67,15 +66,6 @@ export namespace Editor {
             data: OverwriteProps<Core.ShapeElement["data"], {
                 backgroundColor: Color,
                 borderColor: Color
-            }>
-        }
-    >
-
-    export type PathElement = OverwriteProps<
-        Core.PathElement,
-        {
-            data: OverwriteProps<Core.PathElement["data"], {
-                color: Color
             }>
         }
     >

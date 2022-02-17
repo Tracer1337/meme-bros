@@ -123,7 +123,7 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
         }
 
         const focusElement = () => {
-            context.set({ interactions: { focus: element.id } })
+            context.set({ focus: element.id })
         }
 
         const handleMovementDrag: DraggableEventHandler = (_, { deltaX, deltaY }) => {
@@ -220,7 +220,7 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
                             rotation={rotation}
                         />
                     </div>
-                    {config.interactive && context.interactions.focus === element.id && (
+                    {config.interactive && context.focus === element.id && (
                         <Interactions
                             element={element}
                             config={config}

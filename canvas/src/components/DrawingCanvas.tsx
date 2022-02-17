@@ -24,7 +24,7 @@ function DrawingCanvas() {
             context.events.emit("history.push")
             context.set({
                 ...addElement(context, element),
-                interactions: { focus: null }
+                focus: null
             })
         })
     }

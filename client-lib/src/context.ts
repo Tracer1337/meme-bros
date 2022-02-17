@@ -33,8 +33,8 @@ export namespace SharedContext {
     export type ContextValue = {
         set: (partial: DeepPartial<ContextValue>, emit?: boolean) => void,
         events: EventEmitter<Events>,
+        focus: Editor.CanvasElement["id"] | null,
         interactions: {
-            focus: Editor.CanvasElement["id"] | null,
             isDrawing: boolean
         },
         template: API.Template | null,
@@ -47,8 +47,8 @@ export namespace SharedContext {
 export const defaultContextValue: SharedContext.ContextValue = {
     set: () => defaultContextValue,
     events: new EventEmitter<SharedContext.Events>({ suppressWarnings: true }),
+    focus: null,
     interactions: {
-        focus: null,
         isDrawing: false
     },
     template: null,

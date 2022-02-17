@@ -86,9 +86,7 @@ export function addElement(
     element: Editor.CanvasElement
 ): DeepPartial<SharedContext.ContextValue> {
     return {
-        interactions: {
-            focus: element.id
-        },
+        focus: element.id,
         canvas: {
             elements: {
                 [element.id]: element
@@ -103,11 +101,7 @@ export function removeElement(
     id: number
 ): DeepPartial<SharedContext.ContextValue> {
     return {
-        interactions: {
-            focus: state.interactions.focus === id
-                ? null
-                : state.interactions.focus
-        },
+        focus: state.focus === id ? null : state.focus,
         canvas: {
             layers: produce(state.canvas.layers, (layers) => {
                 const index = layers.findIndex((_id) => id === _id)
@@ -126,9 +120,7 @@ export function copyElement(
     newElement.rect.x = 0
     newElement.rect.y = 0
     return {
-        interactions: {
-            focus: newElement.id
-        },
+        focus: newElement.id,
         canvas: {
             elements: {
                 [newElement.id]: newElement

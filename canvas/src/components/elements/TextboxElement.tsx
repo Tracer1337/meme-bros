@@ -126,7 +126,7 @@ function TextboxElement({ element, size, setDraggableProps }: ElementProps<"text
                 width: "100%",
                 height: "100%",
                 backgroundColor: element.data.backgroundColor,
-                ...(context.interactions.focus !== element.id ? {} : {
+                ...(context.focus !== element.id ? {} : {
                     border: "1px dashed gray"
                 })
             }}

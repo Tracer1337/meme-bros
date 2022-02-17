@@ -68,7 +68,7 @@ function CanvasActions() {
 function ElementActions() {
     const context = useSharedContext()
 
-    const id = context.interactions.focus || 0
+    const id = context.focus || 0
 
     return (   
         <View style={styles.actions}>
@@ -97,12 +97,12 @@ function ActionBar() {
     const [mode, setMode] = useState<ActionBarMode>(ActionBarMode.CANVAS)
 
     useEffect(() => {
-        if (context.interactions.focus === null) {
+        if (context.focus === null) {
             setMode(ActionBarMode.CANVAS)
         } else {
             setMode(ActionBarMode.ELEMENT)
         }
-    }, [context.interactions.focus])
+    }, [context.focus])
 
     useListeners(context.events, [
         ["canvas.render.done", () => setIsGenerating(false)]

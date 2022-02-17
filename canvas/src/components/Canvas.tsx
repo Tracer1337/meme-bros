@@ -118,7 +118,7 @@ function Canvas() {
             }
             if (event.target === canvasRef.current ||
                 event.target === canvasRef.current.parentElement) {
-                context.set({ interactions: { focus: null } })
+                context.set({ focus: null })
             }
         }
         return setDOMListeners(window, [
@@ -156,7 +156,7 @@ function Canvas() {
                     key: element.id
                 })
             })}
-            {context.interactions.focus === null && (
+            {context.focus === null && (
                 <ResizeHandles onUpdate={updateCanvas}/>
             )}
         </div>
