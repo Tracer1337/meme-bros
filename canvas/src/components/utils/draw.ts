@@ -4,7 +4,7 @@ function stopPropagation(event: Event) {
     event.stopPropagation()
 }
 
-type Path = { x: number, y: number }[]
+type Point = { x: number, y: number }
 
 export function setupDrawingCanvas({
     canvas,
@@ -20,7 +20,7 @@ export function setupDrawingCanvas({
 
     const context = canvas.getContext("2d")
     const offset = canvas.getBoundingClientRect()
-    const path: Path = []
+    const path: Point[] = []
     let isDrawing = false
 
     if (!context) {
@@ -36,7 +36,7 @@ export function setupDrawingCanvas({
         context.clearRect(0, 0, canvas.width, canvas.height)
     }
 
-    const drawPath = (path: Path) => {
+    const drawPath = (path: Point[]) => {
         if (path.length === 0) {
             return
         }
@@ -59,29 +59,43 @@ export function setupDrawingCanvas({
         context.stroke()
     }
 
-    const handleMouseDown = (event: MouseEvent) => {
+    const handleDrawStart = (point: Point) => {
         isDrawing = true
         path.push({
-            x: event.x - offset.x,
-            y: event.y - offset.y
+            x: point.x - offset.x,
+            y: point.y - offset.y
         })
         draw()
     }
 
-    const handleMouseMove = (event: MouseEvent) => {
-        if (!isDrawing) {
-            return
+    const handleDrawPoint = (point: Point) => {
+        if (isDrawing) {
+            path.push({
+                x: point.x - offset.x,
+                y: point.y - offset.y
+            })
+            draw()
         }
-        path.push({
-            x: event.x - offset.x,
-            y: event.y - offset.y
-        })
-        draw()
     }
 
-    const handleMouseUp = () => {
+    const handleDrawEnd = () => {
         isDrawing = false
         onDrawingDone()
+    }
+
+    const handleTouchStart = (event: TouchEvent) => {
+        handleDrawStart({
+            x: event.touches[0].clientX,
+            y: event.touches[0].clientY
+        })
+    }
+    
+    const handleTouchMove = (event: TouchEvent) => {
+        event.preventDefault()
+        handleDrawStart({
+            x: event.touches[0].clientX,
+            y: event.touches[0].clientY
+        })
     }
 
     draw()
@@ -89,8 +103,14 @@ export function setupDrawingCanvas({
     return setDOMListeners(canvas, [
         ["click", stopPropagation],
         ["touchstart", stopPropagation],
-        ["mousedown", handleMouseDown],
-        ["mousemove", handleMouseMove],
-        ["mouseup", handleMouseUp]
+
+        ["mousedown", handleDrawStart],
+        ["mousemove", handleDrawPoint],
+        ["mouseup", handleDrawEnd],
+
+        ["touchstart", handleTouchStart],
+        ["touchmove", handleTouchMove],
+        ["touchend", handleDrawEnd],
+        ["touchcancel", handleDrawEnd]
     ])
 }
