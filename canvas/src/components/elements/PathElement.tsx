@@ -18,12 +18,12 @@ function PathElement({ element }: ElementProps<"path">) {
             return setupDrawingCanvas({
                 canvas: canvas.current,
                 element,
-                onUpdate: (paths) => {
+                onUpdate: (path) => {
                     context.events.emit("history.push")
                     context.set(updateElementData(
                         context,
                         element,
-                        { ...element.data, paths }
+                        { ...element.data, path }
                     ))
                 }
             })

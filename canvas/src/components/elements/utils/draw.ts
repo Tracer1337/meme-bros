@@ -5,7 +5,7 @@ function stopPropagation(event: Event) {
     event.stopPropagation()
 }
 
-export type Path = Editor.PickElement<"path">["data"]["paths"][number]
+type Path = Editor.PickElement<"path">["data"]["path"]
 
 export function setupDrawingCanvas({
     canvas,
@@ -14,14 +14,14 @@ export function setupDrawingCanvas({
 }: {
     canvas: HTMLCanvasElement,
     element: Editor.PickElement<"path">,
-    onUpdate: (path: Path[]) => void
+    onUpdate: (path: Path) => void
 }) {
     canvas.width = canvas.clientWidth
     canvas.height = canvas.clientHeight
 
     const context = canvas.getContext("2d")
     const offset = canvas.getBoundingClientRect()
-    let currentPath: Path = []
+    const path = [...element.data.path]
     let isDrawing = false
 
     if (!context) {
@@ -30,8 +30,7 @@ export function setupDrawingCanvas({
 
     const draw = () => {
         clear()
-        element.data.paths.forEach(drawPath)
-        drawPath(currentPath)
+        drawPath(path)
     }
 
     const clear = () => {
@@ -63,7 +62,7 @@ export function setupDrawingCanvas({
 
     const handleMouseDown = (event: MouseEvent) => {
         isDrawing = true
-        currentPath.push([
+        path.push([
             event.x - offset.x,
             event.y - offset.y
         ])
@@ -74,7 +73,7 @@ export function setupDrawingCanvas({
         if (!isDrawing) {
             return
         }
-        currentPath.push([
+        path.push([
             event.x - offset.x,
             event.y - offset.y
         ])
@@ -83,8 +82,7 @@ export function setupDrawingCanvas({
 
     const handleMouseUp = () => {
         isDrawing = false
-        onUpdate([...element.data.paths, currentPath])
-        currentPath = []
+        onUpdate(path)
     }
 
     draw()

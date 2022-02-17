@@ -47,7 +47,7 @@ function getShapeDefaultData(): Editor.PickElement<"shape">["data"] {
 
 function getPathDefaultData(): Editor.PickElement<"path">["data"] {
     return {
-        paths: [],
+        path: [],
         color: "#ff0000",
         width: 4
     }
