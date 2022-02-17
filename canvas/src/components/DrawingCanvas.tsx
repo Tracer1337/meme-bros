@@ -33,10 +33,7 @@ function DrawingCanvas() {
         if (canvas.current && context.drawing.isDrawing) {
             return setupDrawingCanvas({
                 canvas: canvas.current,
-                config: {
-                    color: "#ff0000",
-                    width: 4
-                },
+                config: context.drawing,
                 onDrawingDone: handleDrawingDone
             })
         }

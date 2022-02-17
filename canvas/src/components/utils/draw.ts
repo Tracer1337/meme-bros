@@ -1,4 +1,4 @@
-import { setDOMListeners } from "@meme-bros/client-lib"
+import { setDOMListeners, SharedContext } from "@meme-bros/client-lib"
 
 function stopPropagation(event: Event) {
     event.stopPropagation()
@@ -12,10 +12,7 @@ export function setupDrawingCanvas({
     onDrawingDone
 }: {
     canvas: HTMLCanvasElement,
-    config: {
-        color: string,
-        width: number
-    },
+    config: SharedContext.ContextValue["drawing"],
     onDrawingDone: () => void
 }) {
     canvas.width = canvas.clientWidth

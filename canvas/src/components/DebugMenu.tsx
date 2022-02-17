@@ -19,13 +19,46 @@ function DebugMenu() {
     
     return (
         <Paper sx={{
-            padding: 2,
-            width: 200
+            padding: 3,
+            width: 250,
+            height: "100%",
+            overflow: "auto"
         }}>
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Elements</Typography>
             <Action onClick={event("element.create.default", "textbox")}>Add Textbox</Action>
             <Action onClick={event("element.create.default", "image")}>Add Image</Action>
             <Action onClick={event("element.create.default", "shape")}>Add Shape</Action>
+
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>Drawing</Typography>
+            <FormControlLabel
+                label="Drawing"
+                control={
+                    <Switch
+                        checked={context.drawing.isDrawing}
+                        onChange={(event) => context.set({
+                            focus: null,
+                            drawing: { isDrawing: event.target.checked }
+                        })}
+                    />
+                }
+            />
+            <TextField
+                label="Color"
+                margin="dense"
+                value={context.drawing.color}
+                onChange={(event) => context.set({
+                    drawing: { color: event.target.value }
+                })}
+            />
+            <TextField
+                label="Width"
+                type="number"
+                margin="dense"
+                value={context.drawing.width}
+                onChange={(event) => context.set({
+                    drawing: { width: parseInt(event.target.value) }
+                })}
+            />
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Canvas</Typography>
             <TextField
@@ -33,22 +66,18 @@ function DebugMenu() {
                 type="number"
                 margin="dense"
                 value={context.canvas.width}
-                onChange={(event) => {
-                    context.set({ canvas: {
-                        width: parseInt(event.target.value)
-                    } })
-                }}
+                onChange={(event) => context.set({
+                    canvas: { width: parseInt(event.target.value) }
+                })}
             />
             <TextField
                 label="Height"
                 type="number"
                 margin="dense"
                 value={context.canvas.height}
-                onChange={(event) => {
-                    context.set({ canvas: {
-                        height: parseInt(event.target.value)
-                    } })
-                }}
+                onChange={(event) => context.set({
+                    canvas: { height: parseInt(event.target.value) }
+                })}
             />
             <TextField
                 label="Copy ID"
@@ -65,17 +94,6 @@ function DebugMenu() {
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Misc</Typography>
             <Action onClick={event("canvas.base.config")}>Base Config</Action>
-            <FormControlLabel
-                label="Drawing"
-                control={
-                    <Switch
-                        checked={context.drawing.isDrawing}
-                        onChange={(event) => context.set({
-                            drawing: { isDrawing: event.target.checked }
-                        })}
-                    />
-                }
-            />
         </Paper>
     )
 }

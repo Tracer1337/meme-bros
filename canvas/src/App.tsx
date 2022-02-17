@@ -14,18 +14,16 @@ import config from "./config"
 const HISTORY_LENGTH = 100
 
 const Container = styled(Box)({
-    width: "100vw",
     height: "100vh",
+    display: "flex"
+})
+
+const CanvasContainer = styled(Box)({
+    width: "100%",
+    height: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
-})
-
-const DebugContainer = styled(Box)({
-    position: "absolute",
-    top: "50%",
-    left: 8,
-    transform: "translateY(-50%)"
 })
 
 function App() {
@@ -36,7 +34,7 @@ function App() {
     console.log(context)
 
     const history = useRef<SharedContext.ContextValue["canvas"][]>([]).current
-    const [debug, setDebug] = useState(true)
+    const [debug, setDebug] = useState(false)
 
     const handleHistoryPush = () => {
         history.push(context.canvas)
@@ -73,17 +71,12 @@ function App() {
     }
 
     return (
-        <>
-            <Container>
+        <Container>
+            {debug && <DebugMenu/>}
+            <CanvasContainer>
                 <Canvas/>
-            </Container>
-
-            {debug && (
-                <DebugContainer>
-                    <DebugMenu/>
-                </DebugContainer>
-            )}
-        </>
+            </CanvasContainer>
+        </Container>
     )
 }
 
