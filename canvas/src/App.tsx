@@ -33,6 +33,8 @@ function App() {
 
     const context = useSharedContext()
 
+    console.log(context)
+
     const history = useRef<SharedContext.ContextValue["canvas"][]>([]).current
     const [debug, setDebug] = useState(true)
 

@@ -34,7 +34,8 @@ export namespace SharedContext {
         set: (partial: DeepPartial<ContextValue>, emit?: boolean) => void,
         events: EventEmitter<Events>,
         interactions: {
-            focus: Editor.CanvasElement["id"] | null
+            focus: Editor.CanvasElement["id"] | null,
+            isDrawing: boolean
         },
         template: API.Template | null,
         canvasDomRect: DOMRect | null,
@@ -47,7 +48,8 @@ export const defaultContextValue: SharedContext.ContextValue = {
     set: () => defaultContextValue,
     events: new EventEmitter<SharedContext.Events>({ suppressWarnings: true }),
     interactions: {
-        focus: null
+        focus: null,
+        isDrawing: false
     },
     template: null,
     canvasDomRect: null,

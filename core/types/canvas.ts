@@ -17,8 +17,7 @@ export type CanvasElementCommon = {
 export type CanvasElement = CanvasElementCommon & (
     ImageElement |
     TextboxElement |
-    ShapeElement |
-    PathElement
+    ShapeElement
 )
 
 export type PickElement<
@@ -58,15 +57,6 @@ export type ShapeElement = {
         backgroundColor: Color,
         borderColor: Color,
         borderWidth: number
-    }
-}
-
-export type PathElement = {
-    type: "path",
-    data: {
-        path: [number, number][],
-        color: Color,
-        width: number
     }
 }
 

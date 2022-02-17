@@ -5,7 +5,6 @@ import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
 import {
     addElement,
-    getDefaultDataByType,
     updateCanvasBase,
     useSharedContext,
     SharedContext,
@@ -15,36 +14,12 @@ import {
     setDOMListeners
 } from "@meme-bros/client-lib"
 import { getElementByType } from "./elements"
-import { getImageDimensions } from "../lib/image"
-import { makeId } from "./utils"
 import { DialogContext } from "../lib/DialogHandler"
 import ResizeHandles from "./ResizeHandles"
 import { AnimatedValueXY, useAnimationRegistry } from "../lib/animation"
 import { getElementBasePosition } from "./elements/utils"
-
-async function createCanvasElement<
-    T extends Editor.CanvasElement["type"]
->(type: T) {
-    const newElement: Editor.PickElement<T> = {
-        id: makeId(),
-        type,
-        rect: {
-            x: 0,
-            y: 0,
-            width: 200,
-            height: 100,
-            rotation: 0
-        },
-        data: getDefaultDataByType(type)
-    } as any
-    if (type === "image") {
-        const data = newElement.data as Editor.PickElement<"image">["data"]
-        const { width, height } = await getImageDimensions(data.uri)
-        data.naturalWidth = width
-        data.naturalHeight = height
-    }
-    return newElement
-}
+import { createCanvasElement } from "./utils/elements"
+import DrawingCanvas from "./DrawingCanvas"
 
 function getCanvasStyles(canvas: SharedContext.ContextValue["canvas"]): CSS.Properties {
     return {
@@ -173,6 +148,7 @@ function Canvas() {
     
     return (
         <div style={getCanvasStyles(context.canvas)} ref={canvasRef}>
+            <DrawingCanvas/>
             {context.canvas.layers.map((id) => {
                 const element = context.canvas.elements[id]
                 return React.createElement(getElementByType(element.type), {

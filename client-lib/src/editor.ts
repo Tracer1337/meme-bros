@@ -45,19 +45,10 @@ function getShapeDefaultData(): Editor.PickElement<"shape">["data"] {
     }
 }
 
-function getPathDefaultData(): Editor.PickElement<"path">["data"] {
-    return {
-        path: [],
-        color: "#ff0000",
-        width: 4
-    }
-}
-
 const defaultDataMap: Record<Editor.CanvasElement["type"], () => any> = {
     "textbox": getTextboxDefaultData,
     "image": getImageDefaultData,
-    "shape": getShapeDefaultData,
-    "path": getPathDefaultData
+    "shape": getShapeDefaultData
 }
 
 export function getDefaultDataByType<T extends Editor.CanvasElement["type"]>(

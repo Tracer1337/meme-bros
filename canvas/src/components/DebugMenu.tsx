@@ -1,4 +1,4 @@
-import { Button, Paper, Typography, TextField, styled } from "@mui/material"
+import { Button, Paper, Typography, TextField, styled, FormControlLabel, Switch } from "@mui/material"
 import { useState } from "react"
 import { copyElement, useSharedContext } from "@meme-bros/client-lib"
 
@@ -26,7 +26,6 @@ function DebugMenu() {
             <Action onClick={event("element.create.default", "textbox")}>Add Textbox</Action>
             <Action onClick={event("element.create.default", "image")}>Add Image</Action>
             <Action onClick={event("element.create.default", "shape")}>Add Shape</Action>
-            <Action onClick={event("element.create.default", "path")}>Add Path</Action>
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Canvas</Typography>
             <TextField
@@ -64,8 +63,21 @@ function DebugMenu() {
             <Action onClick={event("history.push")}>Push</Action>
             <Action onClick={event("history.pop")}>Pop</Action>
 
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>Dialogs</Typography>
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>Misc</Typography>
             <Action onClick={event("canvas.base.config")}>Base Config</Action>
+            <FormControlLabel
+                label="Drawing"
+                control={
+                    <Switch
+                        checked={context.interactions.isDrawing}
+                        onChange={(event) => context.set({
+                            interactions: {
+                                isDrawing: event.target.checked
+                            }
+                        })}
+                    />
+                }
+            />
         </Paper>
     )
 }

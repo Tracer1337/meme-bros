@@ -1,27 +1,29 @@
 import { setDOMListeners } from "@meme-bros/client-lib"
-import { Editor } from "@meme-bros/shared"
 
 function stopPropagation(event: Event) {
     event.stopPropagation()
 }
 
-type Path = Editor.PickElement<"path">["data"]["path"]
+type Path = { x: number, y: number }[]
 
 export function setupDrawingCanvas({
     canvas,
-    element,
-    onUpdate
+    config,
+    onDrawingDone
 }: {
     canvas: HTMLCanvasElement,
-    element: Editor.PickElement<"path">,
-    onUpdate: (path: Path) => void
+    config: {
+        color: string,
+        width: number
+    },
+    onDrawingDone: () => void
 }) {
     canvas.width = canvas.clientWidth
     canvas.height = canvas.clientHeight
 
     const context = canvas.getContext("2d")
     const offset = canvas.getBoundingClientRect()
-    const path = [...element.data.path]
+    const path: Path = []
     let isDrawing = false
 
     if (!context) {
@@ -42,30 +44,30 @@ export function setupDrawingCanvas({
             return
         }
 
-        context.fillStyle = element.data.color
-        context.strokeStyle = element.data.color
-        context.lineWidth = element.data.width
+        context.fillStyle = config.color
+        context.strokeStyle = config.color
+        context.lineWidth = config.width
         context.lineCap = "round"
 
         context.beginPath()
-        context.moveTo(path[0][0], path[0][1])
+        context.moveTo(path[0].x, path[0].y)
         context.arc(0, 0, 2, 0, Math.PI * 2, false)
         context.fill()
         
         context.beginPath()
-        context.moveTo(path[0][0], path[0][1])
+        context.moveTo(path[0].x, path[0].y)
         path.forEach((point) => {
-            context.lineTo(point[0], point[1])
+            context.lineTo(point.x, point.y)
         })
         context.stroke()
     }
 
     const handleMouseDown = (event: MouseEvent) => {
         isDrawing = true
-        path.push([
-            event.x - offset.x,
-            event.y - offset.y
-        ])
+        path.push({
+            x: event.x - offset.x,
+            y: event.y - offset.y
+        })
         draw()
     }
 
@@ -73,16 +75,16 @@ export function setupDrawingCanvas({
         if (!isDrawing) {
             return
         }
-        path.push([
-            event.x - offset.x,
-            event.y - offset.y
-        ])
+        path.push({
+            x: event.x - offset.x,
+            y: event.y - offset.y
+        })
         draw()
     }
 
     const handleMouseUp = () => {
         isDrawing = false
-        onUpdate(path)
+        onDrawingDone()
     }
 
     draw()
