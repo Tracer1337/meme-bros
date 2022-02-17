@@ -1,8 +1,21 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    TextField
+} from "@mui/material"
 import { Editor } from "@meme-bros/shared"
+import {
+    colors,
+    fontFamilies,
+    fontWeights,
+    textAlign,
+    verticalAlign
+} from "@meme-bros/client-lib"
 import { DialogProps } from "../../lib/DialogHandler"
 import { getTextboxStyles } from "../elements/TextboxElement"
-import { colors, fontFamilies, fontWeights, textAlign, verticalAlign } from "../inputs/items"
 import Select from "../inputs/Select"
 import Switch from "../inputs/Switch"
 import { useConfigDialog } from "./utils/useConfigDialog"
