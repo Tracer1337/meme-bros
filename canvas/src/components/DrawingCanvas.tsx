@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react"
 import { addElement, useListeners, useSharedContext } from "@meme-bros/client-lib"
 import { DialogContext } from "../lib/DialogHandler"
-import { setupDrawingCanvas } from "./utils/draw"
+import { DrawingResult, setupDrawingCanvas } from "./utils/draw"
 import { createCanvasElement } from "./utils/elements"
 
 function DrawingCanvas() {
@@ -20,17 +20,14 @@ function DrawingCanvas() {
         })
     }
 
-    const handleDrawingDone = () => {
+    const handleDrawingDone = (result: DrawingResult) => {
         createCanvasElement("image").then((element) => {
             if (!canvas.current) {
                 return
             }
-            element.data.uri = canvas.current.toDataURL()
+            element.data.uri = result.uri
             element.rect = {
-                x: 0,
-                y: 0,
-                width: canvas.current.width,
-                height: canvas.current.height,
+                ...result.rect,
                 rotation: 0
             }
             context.events.emit("history.push")

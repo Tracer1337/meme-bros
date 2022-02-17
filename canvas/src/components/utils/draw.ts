@@ -5,6 +5,56 @@ function stopPropagation(event: Event) {
 }
 
 type Point = { x: number, y: number }
+type Rect = {
+    x: number,
+    y: number,
+    width: number,
+    height: number
+}
+
+function findRect(path: Point[]): Rect {
+    let minX = Infinity, minY = Infinity,
+        maxX = -Infinity, maxY = -Infinity
+    path.forEach((point) => {
+        if (point.x < minX) minX = point.x
+        if (point.y < minY) minY = point.y
+        if (point.x > maxX) maxX = point.x
+        if (point.y > maxY) maxY = point.y
+    })
+    const width = maxX - minX
+    const height = maxY - minY
+    return { x: minX, y: minY, width, height }
+}
+
+function extractRect(
+    origin: CanvasRenderingContext2D,
+    rect: Rect
+) {
+    const canvas = document.createElement("canvas")
+    canvas.width = rect.width
+    canvas.height = rect.height
+
+    const context = canvas.getContext("2d")
+
+    if (!context) {
+        throw new Error("Could not obtain drawing context")
+    }
+    
+    const imageData = origin.getImageData(
+        rect.x,
+        rect.y,
+        rect.width,
+        rect.height
+    )
+    context.putImageData(imageData, 0, 0)
+
+    return context
+}
+
+export type DrawingResult = {
+    uri: string,
+    rect: Rect
+}
 
 export function setupDrawingCanvas({
     canvas,
@@ -13,7 +63,7 @@ export function setupDrawingCanvas({
 }: {
     canvas: HTMLCanvasElement,
     config: SharedContext.ContextValue["drawing"],
-    onDrawingDone: () => void
+    onDrawingDone: (result: DrawingResult) => void
 }) {
     canvas.width = canvas.clientWidth
     canvas.height = canvas.clientHeight
@@ -80,7 +130,19 @@ export function setupDrawingCanvas({
 
     const handleDrawEnd = () => {
         isDrawing = false
-        onDrawingDone()
+
+        const rect = findRect(path)
+        rect.x -= config.width / 2
+        rect.y -= config.width / 2
+        rect.width += config.width
+        rect.height += config.width
+
+        const cropped = extractRect(context, rect)
+
+        onDrawingDone({
+            uri: cropped.canvas.toDataURL(),
+            rect
+        })
     }
 
     const handleTouchStart = (event: TouchEvent) => {
