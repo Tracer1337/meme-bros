@@ -1,14 +1,7 @@
-import {
-    Button,
-    Paper,
-    Typography,
-    TextField,
-    styled,
-    FormControlLabel,
-    Switch
-} from "@mui/material"
 import { useState } from "react"
+import { Button, Paper, Typography, TextField, styled } from "@mui/material"
 import { copyElement, enableDrawing, useSharedContext } from "@meme-bros/client-lib"
+import Switch from "./inputs/Switch"
 
 const Action = styled(Button)(({ theme }) => ({
     marginBottom: theme.spacing(1),
@@ -38,17 +31,13 @@ function DebugMenu() {
             <Action onClick={event("element.create.default", "shape")}>Add Shape</Action>
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Drawing</Typography>
-            <FormControlLabel
+            <Switch
                 label="Drawing"
-                control={
-                    <Switch
-                        checked={context.drawing.isDrawing}
-                        onChange={(event) => context.set({
-                            ...enableDrawing(),
-                            drawing: { isDrawing: event.target.checked }
-                        })}
-                    />
-                }
+                checked={context.drawing.isDrawing}
+                onChange={(event) => context.set({
+                    ...enableDrawing(),
+                    drawing: { isDrawing: event.target.checked }
+                })}
             />
             <TextField
                 label="Color"
