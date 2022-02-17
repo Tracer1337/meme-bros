@@ -30,7 +30,7 @@ function DrawingCanvas() {
     }
 
     useEffect(() => {
-        if (canvas.current && context.interactions.isDrawing) {
+        if (canvas.current && context.drawing.isDrawing) {
             return setupDrawingCanvas({
                 canvas: canvas.current,
                 config: {
@@ -51,7 +51,7 @@ function DrawingCanvas() {
                 height: context.canvasDomRect?.height,
                 position: "absolute",
                 zIndex: 10,
-                pointerEvents: context.interactions.isDrawing
+                pointerEvents: context.drawing.isDrawing
                     ? "all"
                     : "none",
                 cursor: "crosshair"

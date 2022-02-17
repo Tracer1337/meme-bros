@@ -69,11 +69,9 @@ function DebugMenu() {
                 label="Drawing"
                 control={
                     <Switch
-                        checked={context.interactions.isDrawing}
+                        checked={context.drawing.isDrawing}
                         onChange={(event) => context.set({
-                            interactions: {
-                                isDrawing: event.target.checked
-                            }
+                            drawing: { isDrawing: event.target.checked }
                         })}
                     />
                 }
