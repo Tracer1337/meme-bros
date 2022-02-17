@@ -1,6 +1,14 @@
-import { Button, Paper, Typography, TextField, styled, FormControlLabel, Switch } from "@mui/material"
+import {
+    Button,
+    Paper,
+    Typography,
+    TextField,
+    styled,
+    FormControlLabel,
+    Switch
+} from "@mui/material"
 import { useState } from "react"
-import { copyElement, useSharedContext } from "@meme-bros/client-lib"
+import { copyElement, enableDrawing, useSharedContext } from "@meme-bros/client-lib"
 
 const Action = styled(Button)(({ theme }) => ({
     marginBottom: theme.spacing(1),
@@ -36,7 +44,7 @@ function DebugMenu() {
                     <Switch
                         checked={context.drawing.isDrawing}
                         onChange={(event) => context.set({
-                            focus: null,
+                            ...enableDrawing(),
                             drawing: { isDrawing: event.target.checked }
                         })}
                     />

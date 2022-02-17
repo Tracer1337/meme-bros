@@ -20,6 +20,15 @@ export function clearCanvas(): DeepPartial<SharedContext.ContextValue> {
     }
 }
 
+export function enableDrawing(): DeepPartial<SharedContext.ContextValue> {
+    return {
+        focus: null,
+        drawing: {
+            isDrawing: true
+        }
+    }
+}
+
 export function updateCanvasBase(
     state: SharedContext.ContextValue,
     base: Editor.CanvasBase

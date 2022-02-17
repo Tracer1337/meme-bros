@@ -8,13 +8,21 @@ import {
     useSharedContext,
     clearCanvas,
     useListeners,
-    useModule
+    useModule,
+    enableDrawing
 } from "@meme-bros/client-lib"
 import { useCanvasUtils } from "./utils/canvas"
 
 enum ActionBarMode {
     CANVAS,
-    ELEMENT
+    ELEMENT,
+    DRAWING
+}
+
+const actionBars: Record<ActionBarMode, React.FunctionComponent> = {
+    [ActionBarMode.CANVAS]: CanvasActions,
+    [ActionBarMode.ELEMENT]: ElementActions,
+    [ActionBarMode.DRAWING]: DrawingActions
 }
 
 function CanvasActions() {
@@ -54,6 +62,10 @@ function CanvasActions() {
                 onPress={() => handleElementCreate("shape")}
             />
             <IconButton
+                icon="lead-pencil"
+                onPress={() => context.set(enableDrawing())}
+            />
+            <IconButton
                 icon="delete"
                 onPress={() => context.set(clearCanvas())}
             />
@@ -88,6 +100,21 @@ function ElementActions() {
     )
 }
 
+function DrawingActions() {
+    const context = useSharedContext()
+
+    return (
+        <View style={styles.actions}>
+            <IconButton
+                icon="arrow-left"
+                onPress={() => context.set({
+                    drawing: { isDrawing: false }
+                })}
+            />
+        </View>
+    )
+}
+
 function ActionBar() {    
     const context = useSharedContext()
 
@@ -97,12 +124,14 @@ function ActionBar() {
     const [mode, setMode] = useState<ActionBarMode>(ActionBarMode.CANVAS)
 
     useEffect(() => {
-        if (context.focus === null) {
+        if (context.drawing.isDrawing) {
+            setMode(ActionBarMode.DRAWING)
+        } else if (context.focus === null) {
             setMode(ActionBarMode.CANVAS)
         } else {
             setMode(ActionBarMode.ELEMENT)
         }
-    }, [context.focus])
+    }, [context])
 
     useListeners(context.events, [
         ["canvas.render.done", () => setIsGenerating(false)]
@@ -110,12 +139,7 @@ function ActionBar() {
 
     return (
         <Appbar style={styles.appbar}>
-            {mode === ActionBarMode.CANVAS
-                ? <CanvasActions/>
-                : mode === ActionBarMode.ELEMENT
-                ? <ElementActions/>
-                : null
-            }
+            {React.createElement(actionBars[mode])}
             <FAB
                 style={styles.fab}
                 icon="check"
