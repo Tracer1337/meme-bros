@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from "@nestjs/common"
+import { Body, Controller, Post, UseGuards } from "@nestjs/common"
+import { ThrottlerGuard } from "@nestjs/throttler"
 import { UploadsService } from "./uploads.service"
 import { UploadImageDTO } from "./dto/upload-image.dto"
 
@@ -9,6 +10,7 @@ export class UploadsController {
     ) {}
 
     @Post("/")
+    @UseGuards(ThrottlerGuard)
     async uploadImage(@Body() uploadImageDTO: UploadImageDTO) {
         return await this.uploadsService.uploadImage(uploadImageDTO)
     }
