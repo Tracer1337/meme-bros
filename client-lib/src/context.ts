@@ -27,7 +27,8 @@ export namespace SharedContext {
         "canvas.load": undefined,
         "template.load": { template: API.Template, canvas: Editor.Canvas },
         "history.push": undefined,
-        "history.pop": undefined
+        "history.pop": undefined,
+        "drawing.config": undefined
     }
 
     export type ContextValue = {
@@ -52,8 +53,8 @@ export const defaultContextValue: SharedContext.ContextValue = {
     focus: null,
     drawing: {
         isDrawing: false,
-        color: "#ff0000",
-        width: 4
+        color: "#e74c3c",
+        width: 10
     },
     template: null,
     canvasDomRect: null,

@@ -39,23 +39,7 @@ function DebugMenu() {
                     drawing: { isDrawing: event.target.checked }
                 })}
             />
-            <TextField
-                label="Color"
-                margin="dense"
-                value={context.drawing.color}
-                onChange={(event) => context.set({
-                    drawing: { color: event.target.value }
-                })}
-            />
-            <TextField
-                label="Width"
-                type="number"
-                margin="dense"
-                value={context.drawing.width}
-                onChange={(event) => context.set({
-                    drawing: { width: parseInt(event.target.value) }
-                })}
-            />
+            <Action onClick={event("drawing.config")}>Drawing Config</Action>
 
             <Typography variant="h5" sx={{ marginBottom: 2 }}>Canvas</Typography>
             <TextField

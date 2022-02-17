@@ -111,6 +111,10 @@ function DrawingActions() {
                     drawing: { isDrawing: false }
                 })}
             />
+            <IconButton
+                icon="cog"
+                onPress={() => context.events.emit("drawing.config")}
+            />
         </View>
     )
 }
