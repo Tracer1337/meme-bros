@@ -1,19 +1,19 @@
 import { Editor } from "@meme-bros/shared"
 import React from "react"
 import { ElementComponentProps } from "./makeElement"
-import Image from "./Image"
-import Path from "./Path"
-import Shape from "./Shape"
-import Textbox from "./Textbox"
+import ImageElement from "./ImageElement"
+import PathElement from "./PathElement"
+import ShapeElement from "./ShapeElement"
+import TextboxElement from "./TextboxElement"
 
 const elementsMap: Record<
     Editor.CanvasElement["type"],
     React.ComponentType<any>
 > = {
-    "textbox": Textbox,
-    "image": Image,
-    "shape": Shape,
-    "path": Path
+    "textbox": TextboxElement,
+    "image": ImageElement,
+    "shape": ShapeElement,
+    "path": PathElement
 }
 
 export function getElementByType<T extends Editor.CanvasElement["type"]>(

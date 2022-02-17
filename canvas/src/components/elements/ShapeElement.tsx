@@ -20,7 +20,7 @@ export function getShapeStyles(element: Editor.PickElement<"shape">): CSS.Proper
     }
 }
 
-function Shape({ element }: ElementProps<"shape">) {
+function ShapeElement({ element }: ElementProps<"shape">) {
     const context = useSharedContext()
 
     const dialogs = useContext(DialogContext)
@@ -44,7 +44,7 @@ function Shape({ element }: ElementProps<"shape">) {
     )
 }
 
-export default makeElement(Shape, () => ({
+export default makeElement(ShapeElement, () => ({
     interactions: {
         edit: false
     }

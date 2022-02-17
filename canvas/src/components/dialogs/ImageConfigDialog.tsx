@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"
 import { Editor } from "@meme-bros/shared"
 import { DialogProps } from "../../lib/DialogHandler"
-import { getImageStyles } from "../elements/Image"
+import { getImageStyles } from "../elements/ImageElement"
 import Switch from "../inputs/Switch"
 import { useConfigDialog } from "./utils/useConfigDialog"
 

@@ -19,7 +19,7 @@ export function getImageStyles(element: Editor.PickElement<"image">): CSS.Proper
     }
 }
 
-function Image({ element, size }: ElementProps<"image">) {
+function ImageElement({ element, size }: ElementProps<"image">) {
     const context = useSharedContext()
 
     const dialogs = useContext(DialogContext)
@@ -66,7 +66,7 @@ function Image({ element, size }: ElementProps<"image">) {
     )
 }
 
-export default makeElement(Image, ({ element, context }) => ({
+export default makeElement(ImageElement, ({ element, context }) => ({
     interactive: context.canvas.base?.id !== element.id,
     interactions: {
         edit: false

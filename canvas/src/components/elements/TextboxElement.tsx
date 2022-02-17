@@ -38,7 +38,7 @@ export function getTextboxStyles(element: Editor.PickElement<"textbox">): CSS.Pr
     }
 }
 
-function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) {
+function TextboxElement({ element, size, setDraggableProps }: ElementProps<"textbox">) {
     const context = useSharedContext()
 
     const dialogs = useContext(DialogContext)
@@ -145,4 +145,4 @@ function Textbox({ element, size, setDraggableProps }: ElementProps<"textbox">) 
     )
 }
 
-export default makeElement(Textbox)
+export default makeElement(TextboxElement)

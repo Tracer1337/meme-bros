@@ -3,7 +3,7 @@ import { updateElementData, useSharedContext } from "@meme-bros/client-lib"
 import makeElement, { ElementProps } from "./makeElement"
 import { setupDrawingCanvas } from "./utils/draw"
 
-function Path({ element }: ElementProps<"path">) {
+function PathElement({ element }: ElementProps<"path">) {
     const context = useSharedContext()
 
     const canvas = useRef<HTMLCanvasElement>(null)
@@ -44,6 +44,6 @@ function Path({ element }: ElementProps<"path">) {
     )
 }
 
-export default makeElement(Path, () => ({
+export default makeElement(PathElement, () => ({
     interactive: false
 }))

@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
 import { Editor } from "@meme-bros/shared"
 import { DialogProps } from "../../lib/DialogHandler"
-import { getShapeStyles } from "../elements/Shape"
+import { getShapeStyles } from "../elements/ShapeElement"
 import { colors, shapeVariants } from "../inputs/items"
 import Select from "../inputs/Select"
 import { useConfigDialog } from "./utils/useConfigDialog"
