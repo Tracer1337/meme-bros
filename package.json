@@ -22,8 +22,9 @@
       "core/types",
       "core/http",
       "mobile",
-      "web/admin",
-      "shared"
+      "scripts",
+      "shared",
+      "web/admin"
     ],
     "nohoist": [
       "**/react",
