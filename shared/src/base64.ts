@@ -29,7 +29,8 @@ export function getMimeTypeFromDataURI(dataURI: string) {
 }
 
 export function getFileExtensionFromDataURI(dataURI: string) {
-    return mime.extension(getMimeTypeFromDataURI(dataURI))
+    // @ts-ignore
+    return mime.getExtension(getMimeTypeFromDataURI(dataURI))
 }
 
 export function replaceMimeTypeInDataURI(dataURI: string, mimeType: string) {

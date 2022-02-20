@@ -32,7 +32,7 @@
                 "text": "This is my text",
                 "fontFamily": "Impact",
                 "fontWeight": "bold",
-                "textAlign": "left",
+                "textAlign": "center",
                 "verticalAlign": "center",
                 "color": "#fff",
                 "caps": true,

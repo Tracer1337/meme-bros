@@ -62,7 +62,7 @@ export type ShapeElement = {
 
 export type ColorString = string
 export type ColorRGBA = [number, number, number, number]
-export type Color = ColorRGBA | ColorString
+export type Color = ColorString
 
 export type Rect = {
     x: number,
