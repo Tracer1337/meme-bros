@@ -1,4 +1,6 @@
 import * as API from "@meme-bros/api-sdk"
+import type { SyncConfig } from "./sync"
+import { join, assertDirExists, diffUnique, createIdsMap } from "./utils"
 
 export const PREVIEWS_DIR = "previews"
 export const CANVAS_DIR = "canvases"
@@ -17,25 +19,7 @@ export type TemplateMeta = API.Template & {
     canvasFile: string
 }
 
-function join(...paths: string[]) {
-    return paths.join("/")
-}
-
-export type TemplatesSyncConfig = {
-    api: API.PublicAPI,
-    path: string,
-    fs: {
-        rm: (path: string) => Promise<void>,
-        mkdir: (path: string) => Promise<void>,
-        readFile: (path: string) => Promise<string>,
-        writeFile: (path: string, data: string) => Promise<void>,
-        exists: (path: string) => Promise<boolean>
-    },
-    download: (url: string, to: string) => Promise<void>,
-    clean?: boolean
-}
-
-export async function syncTemplates(config: TemplatesSyncConfig) {
+export async function syncTemplates(config: SyncConfig) {
     const { path, fs, api } = config
 
     const templatesFile: TemplatesFile = JSON.parse(
@@ -119,7 +103,7 @@ export async function syncTemplates(config: TemplatesSyncConfig) {
 }
 
 async function addTemplate(
-    { path, download, api }: TemplatesSyncConfig,
+    { path, download, api }: SyncConfig,
     templatesFile: TemplatesFile,
     template: API.Template
 ) {
@@ -144,7 +128,7 @@ async function addTemplate(
 }
 
 async function removeTemplate(
-    { path, fs }: TemplatesSyncConfig,
+    { path, fs }: SyncConfig,
     templatesFile: TemplatesFile,
     template: TemplateMeta
 ) {
@@ -153,43 +137,4 @@ async function removeTemplate(
         fs.rm(join(path, CANVAS_DIR, `${template.hash}.json`)),
         fs.rm(join(path, PREVIEWS_DIR, template.previewFile))
     ])
-}
-
-async function assertDirExists(
-    { path, fs }: TemplatesSyncConfig,
-    dir: string
-) {
-    if (!await fs.exists(join(path, dir))) {
-        await fs.mkdir(join(path, dir))
-    }
-}
-
-function diffUnique<T>(a: T[], b: T[]) {
-    const diff = {
-        added: [] as T[],
-        removed: [] as T[]
-    }
-
-    const setA = new Set(a)
-    const setB = new Set(b)
-
-    setA.forEach((value) => {
-        if (!setB.has(value)) {
-            diff.removed.push(value)
-        }
-    })
-
-    setB.forEach((value) => {
-        if (!setA.has(value)) {
-            diff.added.push(value)
-        }
-    })
-
-    return diff
-}
-
-function createIdsMap(templates: Record<string, { hash: string }>) {
-    return Object.fromEntries(
-        Object.entries(templates).map(([id, meta]) => [meta.hash, id])
-    )
 }

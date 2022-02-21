@@ -1,5 +1,6 @@
 import deepmergeLib from "deepmerge"
 import { isPlainObject } from "is-plain-object"
+import type { SyncConfig } from "./sync"
 
 export function makeId() {
     return Math.floor(Math.random() * 1e8)
@@ -36,4 +37,43 @@ export function deepmerge<T1, T2>(
         arrayMerge: (_dest, source) => source,
         ...options
     })
+}
+
+export function diffUnique<T>(a: T[], b: T[]) {
+    const diff = {
+        added: [] as T[],
+        removed: [] as T[]
+    }
+
+    const setA = new Set(a)
+    const setB = new Set(b)
+
+    setA.forEach((value) => {
+        if (!setB.has(value)) {
+            diff.removed.push(value)
+        }
+    })
+
+    setB.forEach((value) => {
+        if (!setA.has(value)) {
+            diff.added.push(value)
+        }
+    })
+
+    return diff
+}
+
+export function createIdsMap(templates: Record<string, { hash: string }>) {
+    return Object.fromEntries(
+        Object.entries(templates).map(([id, meta]) => [meta.hash, id])
+    )
+}
+
+export async function assertDirExists(
+    { path, fs }: SyncConfig,
+    dir: string
+) {
+    if (!await fs.exists(join(path, dir))) {
+        await fs.mkdir(join(path, dir))
+    }
 }

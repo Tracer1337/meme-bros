@@ -10,13 +10,16 @@ export namespace Modules {
         render?: (canvas: Core.Canvas) => Promise<string>
     }
 
+    export type SyncModule = {
+        syncResources?: () => Promise<void>
+    }
+
     export type TemplatesModule = {
         loadTemplates: () => Promise<{
             new: TemplateMeta[],
             top: TemplateMeta[],
             hot: TemplateMeta[]
         }>,
-        syncTemplates?: () => Promise<void>,
         getPreviewURI: (template: API.Template) => string,
         getCanvas: (template: API.Template) => Promise<Editor.Canvas>
     }
@@ -56,6 +59,7 @@ export namespace Modules {
 
     export type ContextValue = {
         core: CoreModule,
+        sync: SyncModule,
         templates: TemplatesModule,
         storage: StorageModule,
         canvas: CanvasModule,

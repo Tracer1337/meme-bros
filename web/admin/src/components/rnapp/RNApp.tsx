@@ -20,7 +20,8 @@ function RNApp({ width, height }: {
         canvas: canvasModule,
         view: viewModule,
         permissions: permissionsModule,
-        social: {}
+        social: {},
+        sync: {}
     }
 
     return (

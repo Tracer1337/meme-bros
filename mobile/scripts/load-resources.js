@@ -4,7 +4,7 @@ const fetch = require("node-fetch")
 const { pipeline } = require("stream")
 const { promisify } = require("util")
 const { PublicAPI } = require("@meme-bros/api-sdk")
-const { syncTemplates } = require("@meme-bros/client-lib/dist/templates")
+const { syncResources } = require("@meme-bros/client-lib/dist/sync")
 
 const streamPipeline = promisify(pipeline)
 
@@ -31,7 +31,7 @@ async function exists(dir) {
     }
 }
 
-syncTemplates({
+syncResources({
     api,
     clean: true,
     path: ASSETS_DIR,

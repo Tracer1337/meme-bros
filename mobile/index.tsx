@@ -9,18 +9,20 @@ import {
 } from "@meme-bros/client-lib"
 import { name as appName } from "./app.json"
 import coreModule from "./src/modules/core"
-import { useTemplateModule } from "./src/modules/templates"
+import templatesModules from "./src/modules/templates"
 import storageModule from "./src/modules/storage"
 import canvasModule from "./src/modules/canvas"
 import viewModule from "./src/modules/view"
 import permissionsModule from "./src/modules/permissions"
 import socialModule from "./src/modules/social"
+import { useSyncModule } from "./src/modules/sync"
 
 function Main() {
     return (
         <ModulesProvider modules={{
             core: coreModule,
-            templates: useTemplateModule(),
+            sync: useSyncModule(),
+            templates: templatesModules,
             storage: storageModule,
             canvas: canvasModule,
             view: viewModule,

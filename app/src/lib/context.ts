@@ -4,9 +4,12 @@ import { deepmerge, TemplateMeta } from "@meme-bros/client-lib"
 
 export type AppContextValue = {
     set: (partial: DeepPartial<AppContextValue>) => void,
+    sync: {
+        isLoading: boolean,
+        error: boolean
+    },
     templates: {
         isLoading: boolean,
-        isSyncing: boolean,
         error: boolean,
         lists: {
             new: TemplateMeta[],
@@ -18,9 +21,12 @@ export type AppContextValue = {
 
 const appContextDefaultValue: AppContextValue = {
     set: () => {},
+    sync: {
+        isLoading: false,
+        error: false
+    },
     templates: {    
         isLoading: false,
-        isSyncing: false,
         error: false,
         lists: {
             new: [],

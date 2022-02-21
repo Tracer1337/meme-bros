@@ -8,26 +8,26 @@ const events = new EventEmitter<{
     "templates.load": undefined
 }>()
 
-function useTemplatesSync() {
+function useResourceSync() {
     const appContext = useAppContext()
     
-    const { syncTemplates } = useModule("templates")
+    const { syncResources } = useModule("sync")
 
     const netInfo = useNetInfo()
 
     const [hasSynced, setHasSynced] = useState(false)
 
     const run = async () => {
-        if (!syncTemplates) {
+        if (!syncResources) {
             return
         }
         try {
-            appContext.set({ templates: { isSyncing: true } })
-            await syncTemplates()
-            appContext.set({ templates: { isSyncing: false } })
+            appContext.set({ sync: { isLoading: true } })
+            await syncResources()
+            appContext.set({ sync: { isLoading: false } })
         } catch (error) {
             console.error(error)
-            appContext.set({ templates: { isSyncing: false, error: true } })
+            appContext.set({ sync: { isLoading: false, error: true } })
         } finally {
             setHasSynced(true)
             events.emit("templates.load")
@@ -53,7 +53,7 @@ function useTemplatesLoader() {
             appContext.set({ templates: { isLoading: false, lists } })
         } catch (error) {
             console.error(error)
-            appContext.set({ templates: { isLoading: false } })
+            appContext.set({ templates: { isLoading: false, error: true } })
         }
     }
 
@@ -65,7 +65,7 @@ function useTemplatesLoader() {
 }
 
 function ResourceLoader() {
-    useTemplatesSync()
+    useResourceSync()
     useTemplatesLoader()
     return null
 }

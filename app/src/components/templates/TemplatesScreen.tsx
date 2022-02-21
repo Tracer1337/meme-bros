@@ -27,16 +27,19 @@ function TemplatesScreen() {
                 <Headline style={styles.headline}>
                     Templates
                 </Headline>
-                {appContext.templates.isSyncing && (
+                {appContext.sync.isLoading && (
                     <ActivityIndicator animating/>
                 )}
-                {appContext.templates.error && (
+                {appContext.sync.error && (
                     <Text>Sync Failed</Text>
                 )}
             </View>
             <View style={styles.tabs}>
                 <TemplateTabs value={tab} onChange={setTab}/>
             </View>
+            {appContext.templates.error && (
+                <Text>Failed to load templates</Text>
+            )}
             {appContext.templates.isLoading
                 ? <ActivityIndicator animating/>
                 : lists[tab]}
