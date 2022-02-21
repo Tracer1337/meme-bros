@@ -3,21 +3,10 @@
     "version": "1.0.0",
     "license": "MIT",
     "scripts": {
-        "test": "ts-node test.ts",
-        "build": "npx tsc"
-    },
-    "devDependencies": {
-        "@meme-bros/core-types": "*",
-        "@meme-bros/shared": "*",
-        "@types/fontkit": "^1.8.0",
-        "ts-node": "^10.5.0",
-        "typescript": "^4.5.5"
+        "build:android": "gomobile bind -target=android -o=../mobile/android/app/core.aar meme-bros/core/arch/android/api",
+        "build:web": "cross-env GOOS=js GOARCH=wasm go build -o=../web/admin/public/assets/core.wasm ./arch/web/api/api.go"
     },
     "dependencies": {
-        "canvas": "^2.9.0",
-        "fontkit": "^1.8.1",
-        "joi": "^17.6.0",
-        "tsdef": "^0.0.14",
-        "word-wrap": "^1.2.3"
+        "cross-env": "^7.0.3"
     }
 }
