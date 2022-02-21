@@ -5,6 +5,7 @@ import { Resource } from "../../lib/resource"
 
 export class StorageResource extends Resource<Config> {
     public templatePreview: Getter<File, [Template]>
+    public sticker: Getter<File, [string]>
 
     constructor(axios: AxiosInstance, config: Config) {
         super(axios, config)
@@ -12,5 +13,6 @@ export class StorageResource extends Resource<Config> {
             axios,
             (template) => `storage/${template.previewFile}`
         )
+        this.sticker = new Getter(axios, (filename) => `storage/${filename}`)
     }
 }
