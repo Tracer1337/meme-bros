@@ -4,7 +4,10 @@ const fetch = require("node-fetch")
 const { pipeline } = require("stream")
 const { promisify } = require("util")
 const { PublicAPI } = require("@meme-bros/api-sdk")
-const { syncResources } = require("@meme-bros/client-lib/dist/sync")
+const {
+    syncResources,
+    RESOURCES_DIR: RESOURCES_DIR_NAME
+} = require("@meme-bros/client-lib/dist/sync")
 
 const streamPipeline = promisify(pipeline)
 
@@ -12,7 +15,9 @@ const api = new PublicAPI({
     host: process.env.API_HOST || "http://localhost:6006"
 })
 
-const ASSETS_DIR = path.resolve(__dirname, "..", "android", "app", "src", "main", "assets")
+const RESOURCES_DIR = path.resolve(
+    __dirname, "..", "android", "app", "src", "main", "assets", RESOURCES_DIR_NAME
+)
 
 async function readFileIfExists(filepath) {
     try {
@@ -34,13 +39,15 @@ async function exists(dir) {
 syncResources({
     api,
     clean: true,
-    path: ASSETS_DIR,
+    path: RESOURCES_DIR,
     fs: {
         rm: (path) => fs.promises.rm(path, {
             force: true,
             recursive: true
         }),
-        mkdir: fs.promises.mkdir,
+        mkdir: (path) => fs.promises.mkdir(path, {
+            recursive: true
+        }),
         readFile: readFileIfExists,
         writeFile: fs.promises.writeFile,
         exists

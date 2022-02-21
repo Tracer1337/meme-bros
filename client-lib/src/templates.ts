@@ -3,7 +3,7 @@ import type { SyncConfig } from "./sync"
 import { join, assertDirExists, diffUnique, createIdsMap } from "./utils"
 
 export const PREVIEWS_DIR = "previews"
-export const CANVAS_DIR = "canvases"
+export const CANVAS_DIR = "canvas"
 export const TEMPLATES_FILE = "templates.json"
 
 export type TemplatesFile = {
@@ -19,24 +19,25 @@ export type TemplateMeta = API.Template & {
     canvasFile: string
 }
 
+const emptyTemplatesFile: TemplatesFile = {
+    hash: "",
+    hashList: [],
+    newList: [],
+    topList: [],
+    hotList: [],
+    meta: {}
+}
+
 export async function syncTemplates(config: SyncConfig) {
     const { path, fs, api } = config
 
     const templatesFile: TemplatesFile = JSON.parse(
         await fs.readFile(join(path, TEMPLATES_FILE))
-    )
+    ) || emptyTemplatesFile
     const hash = await api.templates.hash.get()
 
     if (templatesFile.hash === hash) {
         return
-    }
-
-    if (config.clean) {
-        await Promise.all([
-            fs.rm(join(path, TEMPLATES_FILE)),
-            fs.rm(join(path, CANVAS_DIR)),
-            fs.rm(join(path, PREVIEWS_DIR)),
-        ])
     }
 
     await Promise.all([

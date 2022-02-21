@@ -3,6 +3,7 @@ import {
     CANVAS_DIR,
     join,
     PREVIEWS_DIR,
+    RESOURCES_DIR,
     TemplatesFile,
     TEMPLATES_FILE
 } from "@meme-bros/client-lib"
@@ -11,7 +12,7 @@ import { Editor } from "@meme-bros/shared"
 
 export namespace Documents {
     function path(relativePath: string) {
-        return join(RNFS.DocumentDirectoryPath, relativePath)
+        return join(RNFS.DocumentDirectoryPath, RESOURCES_DIR, relativePath)
     }
 
     export async function readTemplatesFile(): Promise<TemplatesFile> {

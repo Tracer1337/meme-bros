@@ -1,6 +1,9 @@
 import * as API from "@meme-bros/api-sdk"
 import { syncTemplates } from "./templates"
 import { syncStickers } from "./stickers"
+import { join } from "./utils"
+
+export const RESOURCES_DIR = "resources"
 
 export type SyncConfig = {
     api: API.PublicAPI,
@@ -17,6 +20,9 @@ export type SyncConfig = {
 }
 
 export async function syncResources(config: SyncConfig) {
+    if (config.clean) {
+        await config.fs.rm(join(config.path, RESOURCES_DIR))
+    }
     await Promise.all([
         syncTemplates(config),
         syncStickers(config)
