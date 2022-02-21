@@ -16,6 +16,11 @@ export type AppContextValue = {
             top: TemplateMeta[],
             hot: TemplateMeta[]
         }
+    },
+    stickers: {
+        isLoading: boolean,
+        error: boolean,
+        list: string[]
     }
 }
 
@@ -33,6 +38,11 @@ const appContextDefaultValue: AppContextValue = {
             top: [],
             hot: []
         }
+    },
+    stickers: {
+        isLoading: false,
+        error: false,
+        list: []
     }
 }
 

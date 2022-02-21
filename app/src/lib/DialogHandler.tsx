@@ -3,6 +3,7 @@ import { useRef } from "react"
 import { Portal } from "react-native-paper"
 import { FirstArgument } from "tsdef"
 import dialogs from "../components/dialogs"
+import { useAppContext } from "./context"
 
 type DialogContextValue = {
     open: <T extends keyof typeof dialogs>(
@@ -22,6 +23,8 @@ export const DialogContext = createContext(dialogContextDefaultValue)
 const animationDuration = 300
 
 export function DialogProvider({ children }: React.PropsWithChildren<{}>) {    
+    const appContext = useAppContext()
+    
     const context = useRef(dialogContextDefaultValue).current
 
     const [activeDialog, setActiveDialog] = useState<JSX.Element | null>(null)
@@ -43,7 +46,12 @@ export function DialogProvider({ children }: React.PropsWithChildren<{}>) {
     return (
         <DialogContext.Provider value={context}>
             {activeDialog && (
-                <Portal>{React.cloneElement(activeDialog, { visible })}</Portal>
+                <Portal>
+                    {React.cloneElement(
+                        activeDialog,
+                        { visible, appContext }
+                    )}
+                </Portal>
             )}
             {children}
         </DialogContext.Provider>

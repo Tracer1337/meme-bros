@@ -10,8 +10,8 @@ export class StickersService {
     ) {}
 
     async findAll(): Promise<StickerDocument[]> {
-        return await this.stickerModel.aggregate(
-            [{ "$sort": { "uses": -1 } }]
-        )
+        return await this.stickerModel
+            .find()
+            .sort({ uses: "descending" })
     }
 }

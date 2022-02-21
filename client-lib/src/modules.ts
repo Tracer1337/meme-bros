@@ -24,6 +24,11 @@ export namespace Modules {
         getCanvas: (template: API.Template) => Promise<Editor.Canvas>
     }
 
+    export type StickersModule = {
+        loadStickers: () => Promise<string[]>,
+        getStickerURI: (filename: string) => string
+    }
+
     export type StorageModule = {
         saveImage: (base64: string) => Promise<void>,
         importImage: () => Promise<{
@@ -61,6 +66,7 @@ export namespace Modules {
         core: CoreModule,
         sync: SyncModule,
         templates: TemplatesModule,
+        stickers: StickersModule,
         storage: StorageModule,
         canvas: CanvasModule,
         view: ViewModule,

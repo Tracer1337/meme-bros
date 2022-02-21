@@ -4,6 +4,7 @@ import { Box } from "@mui/material"
 import { Modules, ModulesProvider } from "@meme-bros/client-lib"
 import { useCoreModule } from "./modules/core"
 import { useTemplatesModule } from "./modules/templates"
+import { useStickersModule } from "./modules/stickers"
 import storageModule from "./modules/storage"
 import canvasModule from "./modules/canvas"
 import viewModule from "./modules/view"
@@ -16,6 +17,7 @@ function RNApp({ width, height }: {
     const modules: Modules.ContextValue = {
         core: useCoreModule(),
         templates: useTemplatesModule(),
+        stickers: useStickersModule(),
         storage: storageModule,
         canvas: canvasModule,
         view: viewModule,

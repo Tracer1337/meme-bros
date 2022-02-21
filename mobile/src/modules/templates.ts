@@ -1,8 +1,8 @@
 import { Modules } from "@meme-bros/client-lib"
-import { Documents } from "../lib/documents"
+import { Resources } from "../lib/resources"
 
 const loadTemplates: Modules.TemplatesModule["loadTemplates"] = async () => {
-    const templatesFile = await Documents.readTemplatesFile()
+    const templatesFile = await Resources.readTemplatesFile()
 
     const pickTemplates = (ids: string[]) =>
         ids.map((id) => templatesFile.meta[id])
@@ -16,8 +16,8 @@ const loadTemplates: Modules.TemplatesModule["loadTemplates"] = async () => {
 
 const templatesModule: Modules.TemplatesModule = {
     loadTemplates,
-    getPreviewURI: Documents.getPreviewURI,
-    getCanvas: Documents.readCanvas
+    getPreviewURI: Resources.getPreviewURI,
+    getCanvas: Resources.readCanvas
 }
 
 export default templatesModule

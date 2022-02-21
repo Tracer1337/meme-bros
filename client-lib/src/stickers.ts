@@ -4,7 +4,7 @@ import { diffUnique, join, assertDirExists } from "./utils"
 export const STICKERS_FILE = "stickers.json"
 export const STICKERS_DIR = "stickers"
 
-export type StickersFile = number[]
+export type StickersFile = string[]
 
 export async function syncStickers(config: SyncConfig) {
     const { path, fs, api, download } = config

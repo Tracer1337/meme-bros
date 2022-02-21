@@ -16,6 +16,7 @@ import viewModule from "./src/modules/view"
 import permissionsModule from "./src/modules/permissions"
 import socialModule from "./src/modules/social"
 import { useSyncModule } from "./src/modules/sync"
+import stickersModule from "./src/modules/stickers"
 
 function Main() {
     return (
@@ -23,6 +24,7 @@ function Main() {
             core: coreModule,
             sync: useSyncModule(),
             templates: templatesModules,
+            stickers: stickersModule,
             storage: storageModule,
             canvas: canvasModule,
             view: viewModule,

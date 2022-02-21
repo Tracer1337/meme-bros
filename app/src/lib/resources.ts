@@ -5,7 +5,7 @@ import { EventEmitter } from "@meme-bros/shared"
 import { useAppContext } from "./context"
 
 const events = new EventEmitter<{
-    "templates.load": undefined
+    "resources.load": undefined
 }>()
 
 function useResourceSync() {
@@ -30,7 +30,7 @@ function useResourceSync() {
             appContext.set({ sync: { isLoading: false, error: true } })
         } finally {
             setHasSynced(true)
-            events.emit("templates.load")
+            events.emit("resources.load")
         }
     }
 
@@ -57,7 +57,32 @@ function useTemplatesLoader() {
         }
     }
 
-    useListeners(events, [["templates.load", run]])
+    useListeners(events, [["resources.load", run]])
+
+    useEffect(() => {
+        run()
+    }, [])
+}
+
+function useStickersLoader() {
+    const appContext = useAppContext()
+
+    console.log(appContext.stickers)
+
+    const { loadStickers } = useModule("stickers")
+
+    const run = async () => {
+        try {
+            appContext.set({ stickers: { isLoading: true } })
+            const list = await loadStickers()
+            appContext.set({ stickers: { isLoading: false, list } })
+        } catch (error) {
+            console.error(error)
+            appContext.set({ stickers: { isLoading: false, error: true } })
+        }
+    }
+
+    useListeners(events, [["resources.load", run]])
 
     useEffect(() => {
         run()
@@ -67,5 +92,6 @@ function useTemplatesLoader() {
 export function useResources() {
     useResourceSync()
     useTemplatesLoader()
+    useStickersLoader()
     return null
 }

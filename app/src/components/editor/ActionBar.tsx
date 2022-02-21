@@ -66,6 +66,10 @@ function CanvasActions() {
                 onPress={() => context.set(enableDrawing())}
             />
             <IconButton
+                icon="sticker"
+                onPress={() => context.events.emit("stickers.open")}
+            />
+            <IconButton
                 icon="delete"
                 onPress={() => context.set(clearCanvas())}
             />

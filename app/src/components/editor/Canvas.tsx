@@ -132,12 +132,17 @@ function Canvas() {
         })
     }
 
+    const handleStickersOpen = async () => {
+        dialogs.open("StickersDialog", undefined)
+    }
+
     useListeners(context.events, [
         ["canvas.render", handleCanvasRender],
         ["canvas.base.import", handleBaseImport],
         ["canvas.base.blank", handleBaseBlank],
         ["canvas.base.dummy", handleBaseDummy],
-        ["template.load", handleTemplateLoad]
+        ["template.load", handleTemplateLoad],
+        ["stickers.open", handleStickersOpen]
     ])
     
     return (
