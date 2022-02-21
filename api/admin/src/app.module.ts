@@ -13,6 +13,7 @@ import { configurationSchema } from "./config/configuration.schema"
 import { UsersModule } from "./users/users.module"
 import { AuthModule } from "./auth/auth.module"
 import { TemplatesModule } from "./templates/templates.module"
+import { StickersModule } from "./stickers/stickers.module"
 import { UploadsModule } from "./uploads/uploads.module"
 
 @Module({
@@ -61,6 +62,7 @@ import { UploadsModule } from "./uploads/uploads.module"
         UsersModule,
         AuthModule,
         TemplatesModule,
+        StickersModule,
         UploadsModule
     ],
     providers: [

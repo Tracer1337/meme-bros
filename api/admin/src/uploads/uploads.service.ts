@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
 import { ImgurService, Upload, UploadDocument } from "@meme-bros/api-lib"
@@ -19,6 +19,9 @@ export class UploadsService {
 
     async delete(id: string) {
         const doc = await this.uploadModel.findOneAndDelete({ id })
+        if (!doc) {
+            throw new NotFoundException()
+        }
         await this.imgurService.deleteImage(doc.deletehash)
     }
 }

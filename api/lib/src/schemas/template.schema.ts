@@ -12,7 +12,6 @@ export class Template {
     @Prop({ required: true })
     hash: string
 
-
     @Prop({ required: true, default: 0 })
     uses: number
 

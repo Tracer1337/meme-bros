@@ -6,8 +6,9 @@ import { useStore } from "../../lib/store"
 
 const links: { to: string, title: string }[] = [
     { to: "/", title: "Home" },
-    { to: "/uploads", title: "Uploads" },
-    { to: "/templates", title: "Templates" }
+    { to: "/templates", title: "Templates" },
+    { to: "/stickers", title: "Stickers" },
+    { to: "/uploads", title: "Uploads" }
 ]
 
 function Layout() {

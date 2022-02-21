@@ -25,6 +25,15 @@ export type CreateTemplate = {
     canvas: any
 }
 
+export type Sticker = {
+    filename: string,
+    uses: number
+}
+
+export type CreateSticker = {
+    uri: string
+}
+
 export type Upload = {
     id: string,
     link: string

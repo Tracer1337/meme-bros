@@ -4,11 +4,13 @@ import { API } from "../lib/api"
 import { AuthResource } from "./resources/auth"
 import { StorageResource } from "./resources/storage"
 import { TemplatesResource } from "./resources/templates"
+import { StickersResource } from "./resources/stickers"
 import { UploadsResource } from "./resources/uploads"
 
 export class AdminAPI extends API<Config> {
     public auth: AuthResource
     public templates: TemplatesResource
+    public stickers: StickersResource
     public storage: StorageResource
     public uploads: UploadsResource
     
@@ -16,6 +18,7 @@ export class AdminAPI extends API<Config> {
         super(config)
         this.auth = new AuthResource(this.axios, this.config)
         this.templates = new TemplatesResource(this.axios, this.config)
+        this.stickers = new StickersResource(this.axios, this.config)
         this.storage = new StorageResource(this.axios, this.config)
         this.uploads = new UploadsResource(this.axios, this.config)
     }
@@ -32,6 +35,7 @@ export class AdminAPI extends API<Config> {
         })
         this.auth = new AuthResource(this.axios, this.config)
         this.templates = new TemplatesResource(this.axios, this.config)
+        this.stickers = new StickersResource(this.axios, this.config)
         this.storage = new StorageResource(this.axios, this.config)
         this.uploads = new UploadsResource(this.axios, this.config)
     }

@@ -1,4 +1,5 @@
 export * from "./template.schema"
+export * from "./sticker.schema"
 export * from "./user.schema"
 export * from "./trend.schema"
 export * from "./upload.schema"
