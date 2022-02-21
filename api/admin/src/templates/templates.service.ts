@@ -58,6 +58,7 @@ export class TemplatesService implements OnModuleInit {
     async findAll(getAllTemplatesDTO: GetAllTemplatesDTO): Promise<TemplateDocument[]> {
         return this.templateModel.find()
             .select("-canvas")
+            .sort({ uses: "descending" })
             .limit(getAllTemplatesDTO.per_page)
             .skip(getAllTemplatesDTO.page * getAllTemplatesDTO.per_page)
     }

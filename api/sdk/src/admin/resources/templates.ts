@@ -18,12 +18,12 @@ export class TemplatesResource extends Resource<Config> {
     }
 
     async create(payload: CreateTemplate) {
-        const res = await this.axios.post("templates", payload)
+        const res = await this.axios.post<Template>("templates", payload)
         return res.data
     }
 
     async update(template: Template, payload: Partial<CreateTemplate>) {
-        const res = await this.axios.put(`templates/${template.id}`, payload)
+        const res = await this.axios.put<Template>(`templates/${template.id}`, payload)
         return res.data
     }
 

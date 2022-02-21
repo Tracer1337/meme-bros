@@ -122,6 +122,7 @@ async function run() {
     await Promise.all(templates.map(async (template) => {
         await api.templates.create({
             name: template.label,
+            uses: template.amount_uses,
             canvas: await renderCanvas(template)
         })
 

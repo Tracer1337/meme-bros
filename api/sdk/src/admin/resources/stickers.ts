@@ -12,7 +12,7 @@ export class StickersResource extends Resource<Config> {
     }
 
     async create(payload: CreateSticker) {
-        const res = await this.axios.post("stickers", payload)
+        const res = await this.axios.post<Sticker>("stickers", payload)
         return res.data
     }
 
