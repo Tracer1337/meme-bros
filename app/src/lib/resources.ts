@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNetInfo } from "@react-native-community/netinfo"
 import { useListeners, useModule } from "@meme-bros/client-lib"
 import { EventEmitter } from "@meme-bros/shared"
-import { useAppContext } from "./lib/context"
+import { useAppContext } from "./context"
 
 const events = new EventEmitter<{
     "templates.load": undefined
@@ -64,10 +64,8 @@ function useTemplatesLoader() {
     }, [])
 }
 
-function ResourceLoader() {
+export function useResources() {
     useResourceSync()
     useTemplatesLoader()
     return null
 }
-
-export default ResourceLoader
