@@ -67,8 +67,6 @@ function useTemplatesLoader() {
 function useStickersLoader() {
     const appContext = useAppContext()
 
-    console.log(appContext.stickers)
-
     const { loadStickers } = useModule("stickers")
 
     const run = async () => {

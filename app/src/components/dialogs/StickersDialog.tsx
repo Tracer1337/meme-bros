@@ -8,7 +8,8 @@ import {
     Text,
     TouchableRipple
 } from "react-native-paper"
-import { useModule } from "@meme-bros/client-lib"
+import { useModule, useSharedContext } from "@meme-bros/client-lib"
+import { fetchAsDataURI } from "@meme-bros/shared"
 import { AppContextValue } from "../../lib/context"
 
 function Item({ sticker, onLoad }: {
@@ -33,12 +34,18 @@ function StickersDialog({ visible, close, appContext }: {
     data: undefined,
     appContext: AppContextValue
 }) {
+    const context = useSharedContext()
+    
     const { getStickerURI } = useModule("stickers")
 
     const loadSticker = async (filename: string) => {
-        const uri = getStickerURI(filename)
-        console.log({ uri })
-        fetch(uri).then(console.log).catch(console.error)
+        const uri = await fetchAsDataURI(getStickerURI(filename))
+        context.events.emit("element.create", {
+            type: "image",
+            rect: { width: 100, height: 100 },
+            data: { uri }
+        })
+        close()
     }
 
     const renderItem = ({ item: filename }: {
