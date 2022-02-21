@@ -12,6 +12,8 @@ import { useModule, useSharedContext } from "@meme-bros/client-lib"
 import { fetchAsDataURI } from "@meme-bros/shared"
 import { AppContextValue } from "../../lib/context"
 
+const STICKER_WIDTH = 200
+
 function Item({ sticker, onLoad }: {
     sticker: string,
     onLoad: () => void
@@ -37,12 +39,17 @@ function StickersDialog({ visible, close, appContext }: {
     const context = useSharedContext()
     
     const { getStickerURI } = useModule("stickers")
+    const { getImageSize } = useModule("storage")
 
     const loadSticker = async (filename: string) => {
         const uri = await fetchAsDataURI(getStickerURI(filename))
+        const { width, height } = await getImageSize(uri)
         context.events.emit("element.create", {
             type: "image",
-            rect: { width: 100, height: 100 },
+            rect: {
+                width: STICKER_WIDTH,
+                height: STICKER_WIDTH * (height / width)
+            },
             data: { uri }
         })
         close()

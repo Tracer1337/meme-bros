@@ -20,7 +20,8 @@ const resolveAssetSource: Modules.StorageModule["resolveAssetSource"] = async (u
 const storageModule: Modules.StorageModule = {
     importImage,
     saveImage,
-    resolveAssetSource
+    resolveAssetSource,
+    getImageSize: getImageDimensions
 }
 
 export default storageModule

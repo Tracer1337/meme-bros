@@ -47,10 +47,24 @@ const resolveAssetSource: Modules.StorageModule["resolveAssetSource"] = (id) => 
     return Promise.resolve(Image.resolveAssetSource(id))
 }
 
+function getImageSize(uri: string): Promise<{
+    width: number,
+    height: number
+}> {
+    return new Promise((resolve, reject) => {
+        Image.getSize(
+            uri,
+            (width, height) => resolve({ width, height }),
+            reject
+        )
+    })
+}
+
 const storageModule: Modules.StorageModule = {
     importImage,
     saveImage,
-    resolveAssetSource
+    resolveAssetSource,
+    getImageSize
 }
 
 export default storageModule

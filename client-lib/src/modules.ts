@@ -40,7 +40,11 @@ export namespace Modules {
             uri: string,
             width: number,
             height: number
-        } | undefined>
+        } | undefined>,
+        getImageSize: (uri: string) => Promise<{
+            width: number,
+            height: number
+        }>
     }
 
     export type CanvasModule = {
