@@ -8,7 +8,7 @@ import {
     Text,
     TouchableRipple
 } from "react-native-paper"
-import { useModule, useSharedContext } from "@meme-bros/client-lib"
+import { makeId, useModule, useSharedContext } from "@meme-bros/client-lib"
 import { fetchAsDataURI } from "@meme-bros/shared"
 import { AppContextValue } from "../../lib/context"
 
@@ -44,7 +44,9 @@ function StickersDialog({ visible, close, appContext }: {
     const loadSticker = async (filename: string) => {
         const uri = await fetchAsDataURI(getStickerURI(filename))
         const { width, height } = await getImageSize(uri)
+        const id = makeId()
         context.events.emit("element.create", {
+            id,
             type: "image",
             rect: {
                 width: STICKER_WIDTH,
@@ -52,6 +54,7 @@ function StickersDialog({ visible, close, appContext }: {
             },
             data: { uri }
         })
+        context.set({ stickers: { [id]: filename } })
         close()
     }
 

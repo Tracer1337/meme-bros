@@ -42,6 +42,7 @@ export namespace SharedContext {
             width: number
         },
         template: API.Template | null,
+        stickers: Record<number, string>,
         canvasDomRect: DOMRect | null,
         renderCanvas: boolean,
         canvas: Editor.Canvas
@@ -58,6 +59,7 @@ export const defaultContextValue: SharedContext.ContextValue = {
         width: 10
     },
     template: null,
+    stickers: {},
     canvasDomRect: null,
     renderCanvas: false,
     canvas: {
@@ -88,7 +90,8 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
     context.set = (partial, emit = true) => {
         setContext((context) => {
             const newState = applyMiddleware(
-                deepmerge(context, partial) as SharedContext.ContextValue
+                deepmerge(context, partial) as SharedContext.ContextValue,
+                partial
             )
             newState.events = defaultContextValue.events
             return newState
@@ -127,19 +130,38 @@ export function SharedContextProvider(props: React.PropsWithChildren<{}>) {
     )
 }
 
-const middleware = [removeElements]
+type MiddlewareFunction = (
+    state: SharedContext.ContextValue,
+    action: DeepPartial<SharedContext.ContextValue>
+) => void
 
-function applyMiddleware(state: SharedContext.ContextValue) {
-    return produce(state, (draft) => {
-        middleware.forEach((fn) => fn(draft))
-    })
-}
-
-function removeElements(state: SharedContext.ContextValue) {
+const removeElements: MiddlewareFunction = (state, action) => {
+    if (!action.canvas?.layers) return
     Object.keys(state.canvas.elements).forEach((key) => {
         const id = parseInt(key)
         if (!state.canvas.layers.includes(id)) {
             delete state.canvas.elements[id]
         }
+    })
+}
+
+const removeStickers: MiddlewareFunction = (state, action) => {
+    if (!action.canvas?.layers) return
+    Object.keys(state.stickers).forEach((key) => {
+        const id = parseInt(key)
+        if (!state.canvas.layers.includes(id)) {
+            delete state.stickers[id]
+        }
+    })
+}
+
+const middleware: MiddlewareFunction[] = [
+    removeElements,
+    removeStickers
+]
+
+function applyMiddleware(...[state, action]: Parameters<MiddlewareFunction>) {
+    return produce(state, (draft) => {
+        middleware.forEach((fn) => fn(draft, action))
     })
 }
