@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
+import { useNavigate } from "react-router-native"
 import { Appbar, IconButton, FAB } from "react-native-paper"
 import { Editor } from "@meme-bros/shared"
 import {
@@ -28,6 +29,8 @@ const actionBars: Record<ActionBarMode, React.FunctionComponent> = {
 function CanvasActions() {
     const context = useSharedContext()
 
+    const navigate = useNavigate()
+    
     const { createCanvasElement } = useCanvasUtils()
 
     const handleElementCreate = async (type: Editor.CanvasElement["type"]) => {
@@ -71,7 +74,10 @@ function CanvasActions() {
             />
             <IconButton
                 icon="delete"
-                onPress={() => context.set(clearCanvas())}
+                onPress={() => {
+                    navigate("/")
+                    context.set(clearCanvas())
+                }}
             />
             <IconButton
                 icon="undo"

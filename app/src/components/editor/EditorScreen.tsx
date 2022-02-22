@@ -5,7 +5,6 @@ import { useModule, useSharedContext } from "@meme-bros/client-lib"
 import Screen from "../styled/Screen"
 import Canvas from "./Canvas"
 import ActionBar from "./ActionBar"
-import { ACTION_BAR_HEIGHT } from "./constants"
 
 function EditorScreen() {
     const context = useSharedContext()
@@ -26,16 +25,9 @@ function EditorScreen() {
 
     return (
         <Screen style={!isFocused ? {
-            width: 0,
-            height: 0
+            display: "none"
         } : {}}>
-            <View style={!isFocused ? {
-                width: 0,
-                height: 0
-            } : {
-                width: "100%",
-                height: height - ACTION_BAR_HEIGHT
-            }}>
+            <View style={{ flexGrow: 1 }}>
                 <Canvas/>
             </View>
             <ActionBar/>
