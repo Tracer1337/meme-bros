@@ -4,12 +4,14 @@ import {
     List,
     ListItem,
     Pagination,
-    styled
+    styled,
+    Typography
 } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import * as API from "@meme-bros/api-sdk/dist/admin"
 import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
 import { useConfirm } from "../../lib/confirm"
+import { Box } from "@mui/system"
 
 const PreviewImage = styled("img")({
     height: 100
@@ -46,7 +48,18 @@ function Page({ index }: { index: number }) {
                         </IconButton>
                     }
                 >
-                    <PreviewImage src={api.storage.sticker.url(sticker)} alt="Preview"/>
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexGrow: 1,
+                        pr: 4
+                    }}>
+                        <PreviewImage src={api.storage.sticker.url(sticker)} alt="Preview"/>
+                        <Typography>
+                            {sticker.uses}
+                        </Typography>
+                    </Box>
                 </ListItem>
             ))}
         </List>

@@ -32,9 +32,14 @@ function GeneratedImageDialog({ visible, data, close }: {
     const [url, setUrl] = useState<string>()
 
     const registerUse = () => {
-        if (context.template && !isRegistered.current) {
+        if (!isRegistered.current) {
             isRegistered.current = true
-            api.templates.registerUse(context.template)
+            if (context.template) {
+                api.templates.registerUse(context.template)
+            }
+            Object.values(context.stickers).forEach((filename) =>
+                api.stickers.registerUse(filename)
+            )
         }
     }
 

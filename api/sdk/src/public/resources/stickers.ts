@@ -10,4 +10,8 @@ export class StickersResource extends Resource<Config> {
         super(axios, config)
         this.all = new Getter(axios, () => "stickers")
     }
+
+    async registerUse(filename: string) {
+        await this.axios.post(`stickers/${filename}/register-use`)
+    }
 }

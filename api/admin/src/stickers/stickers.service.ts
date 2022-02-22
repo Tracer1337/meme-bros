@@ -25,6 +25,7 @@ export class StickersService {
 
     async findAll(getAllUploadsDTO: GetAllStickersDTO): Promise<StickerDocument[]> {
         return this.stickerModel.find()
+            .sort({ uses: "descending" })
             .limit(getAllUploadsDTO.per_page)
             .skip(getAllUploadsDTO.page * getAllUploadsDTO.per_page)
     }
