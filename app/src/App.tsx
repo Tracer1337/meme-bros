@@ -1,7 +1,7 @@
 import React from "react"
-import { DarkTheme, Provider as PaperProvider, Portal } from "react-native-paper"
-import Navigator from "./Navigator"
+import { DarkTheme, Provider as PaperProvider } from "react-native-paper"
 import { DialogProvider } from "./lib/DialogHandler"
+import Router from "./components/router/Router"
 import { AppContextProvider } from "./lib/context"
 import { SnackbarProvider } from "./lib/snackbar"
 import { useResources } from "./lib/resources"
@@ -18,9 +18,7 @@ function App() {
                 <ResourceLoader/>
                 <DialogProvider>
                     <SnackbarProvider>
-                        <Portal.Host>
-                            <Navigator/>
-                        </Portal.Host>
+                        <Router/>
                     </SnackbarProvider>
                 </DialogProvider>
             </AppContextProvider>

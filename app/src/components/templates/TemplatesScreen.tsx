@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react"
 import { StyleSheet, View } from "react-native"
+import { useNavigate } from "react-router-native"
 import { Text, Headline, ActivityIndicator, IconButton } from "react-native-paper"
-import { useNavigation } from "@react-navigation/native"
 import Screen from "../styled/Screen"
 import { useAppContext } from "../../lib/context"
 import TemplateList from "./TemplateList"
@@ -10,7 +10,7 @@ import TemplateTabs, { Tabs } from "./TemplateTabs"
 function TemplatesScreen() {
     const appContext = useAppContext()
     
-    const navigation = useNavigation()
+    const navigate = useNavigate()
 
     const [tab, setTab] = useState(Tabs.HOT)
 
@@ -23,7 +23,7 @@ function TemplatesScreen() {
     return (
         <Screen>
             <View style={styles.header}>
-                <IconButton icon="arrow-left" onPress={navigation.goBack}/>
+                <IconButton icon="arrow-left" onPress={() => navigate(-1)}/>
                 <Headline style={styles.headline}>
                     Templates
                 </Headline>

@@ -2,10 +2,9 @@ import React, { useState } from "react"
 import { FlatList, StyleSheet, View } from "react-native"
 import { Text, Surface, IconButton, TextInput } from "react-native-paper"
 import Image from "react-native-scalable-image"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useSharedContext, TemplateMeta, useModule } from "@meme-bros/client-lib"
-import { RootStackParamList } from "../../Navigator"
 import { useFilteredTemplates } from "./utils/filter"
+import { useNavigate } from "react-router-native"
 
 function Item({ template, onLoad }: {
     template: TemplateMeta,
@@ -37,9 +36,9 @@ function TemplateList({ templates }: {
 }) {
     const context = useSharedContext()
 
+    const navigate = useNavigate()
+    
     const { getCanvas } = useModule("templates")
-
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
     const [search, setSearch] = useState("")
 
@@ -48,7 +47,7 @@ function TemplateList({ templates }: {
     const loadTemplate = async (template: TemplateMeta) => {
         const canvas = await getCanvas(template)
         context.events.emit("template.load", { template, canvas })
-        navigation.navigate("Editor")
+        navigate("/editor")
     }
 
     const renderItem = ({ item: template }: {
