@@ -1,11 +1,11 @@
 import RNFS from "react-native-fs"
-import { Modules, syncResources, RESOURCES_DIR } from "@meme-bros/client-lib"
+import { Modules, syncResources, RESOURCES_DIR, join } from "@meme-bros/client-lib"
 import { copyFolderAssets, writeFilePatched } from "../lib/fs"
 import { usePublicAPI } from "@meme-bros/api-sdk"
 import { Platform } from "react-native"
 
 async function setupStorage() {
-    const path = `${RNFS.DocumentDirectoryPath}/${RESOURCES_DIR}`
+    const path = join(RNFS.DocumentDirectoryPath, RESOURCES_DIR)
     if (await RNFS.exists(path)) {
         return
     }
@@ -22,7 +22,7 @@ export function useSyncModule(): Modules.SyncModule {
         await setupStorage()
         await syncResources({
             api,
-            path: RNFS.DocumentDirectoryPath,
+            path: join(RNFS.DocumentDirectoryPath, RESOURCES_DIR),
             fs: {
                 ...RNFS,
                 rm: RNFS.unlink,
