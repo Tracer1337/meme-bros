@@ -1,15 +1,15 @@
 import React, { useState } from "react"
-import { FlatList, StyleSheet, View } from "react-native"
+import { FlatList, Platform, StyleSheet, View } from "react-native"
 import { Text, Surface, IconButton, TextInput } from "react-native-paper"
 import Image from "react-native-scalable-image"
 import { useSharedContext, TemplateMeta, useModule } from "@meme-bros/client-lib"
 import { useFilteredTemplates } from "./utils/filter"
 import { useNavigate } from "react-router-native"
 
-function Item({ template, onLoad }: {
+const Item = React.memo(({ template, onLoad }: {
     template: TemplateMeta,
     onLoad: () => void
-}) {
+}) => {
     const { getPreviewURI } = useModule("templates")
 
     return (
@@ -29,7 +29,7 @@ function Item({ template, onLoad }: {
             </View>
         </Surface>
     )
-}
+})
 
 function TemplateList({ templates }: {
     templates: TemplateMeta[]
@@ -62,18 +62,21 @@ function TemplateList({ templates }: {
     }
 
     return (
-        <View>
-            {/* <TextInput
-                label="Search"
-                value={search}
-                onChangeText={setSearch}
-                style={styles.search}
-                mode="outlined"
-            /> */}
+        // FIXME: Fix hardcoded view height for web
+        <View style={{ height: Platform.OS === "web" ? 600 : undefined }}>
             <FlatList
                 data={filteredTemplates}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
+                ListHeaderComponent={
+                    <TextInput
+                        label="Search"
+                        value={search}
+                        onChangeText={setSearch}
+                        style={styles.search}
+                        mode="outlined"
+                    />
+                }
             />
         </View>
     )
@@ -81,6 +84,7 @@ function TemplateList({ templates }: {
 
 const styles = StyleSheet.create({
     search: {
+        marginTop: 8,
         marginBottom: 16
     },
     

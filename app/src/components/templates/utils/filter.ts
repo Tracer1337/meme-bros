@@ -7,7 +7,9 @@ export function useFilteredTemplates({ templates, search }: {
 }) {
     return useMemo(() => {
         return templates.filter((template) =>
-            template.name.includes(search)
+            template.name
+                .toLowerCase()
+                .includes(search.toLowerCase())
         )
     }, [search, templates])
 }
