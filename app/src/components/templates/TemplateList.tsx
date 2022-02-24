@@ -63,13 +63,13 @@ function TemplateList({ templates }: {
 
     return (
         <View>
-            <TextInput
+            {/* <TextInput
                 label="Search"
                 value={search}
                 onChangeText={setSearch}
                 style={styles.search}
                 mode="outlined"
-            />
+            /> */}
             <FlatList
                 data={filteredTemplates}
                 renderItem={renderItem}

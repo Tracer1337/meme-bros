@@ -13,8 +13,10 @@
     "immer": "^9.0.12",
     "is-plain-object": "^5.0.0",
     "react-native-image-picker": "^4.4.0",
+    "react-native-pager-view": "^5.4.11",
     "react-native-paper": "^4.10.1",
     "react-native-scalable-image": "^1.1.0",
+    "react-native-tab-view": "^3.1.1",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^11.15.0",
     "react-router-native": "^6.2.1"
@@ -31,6 +33,7 @@
     "react": "17.0.2",
     "react-native": "0.66.3",
     "react-native-image-picker": "^4.4.0",
+    "react-native-pager-view": "^5.4.11",
     "react-native-paper": "^4.10.1",
     "react-native-scalable-image": "^1.1.0",
     "react-native-vector-icons": "^9.0.0",

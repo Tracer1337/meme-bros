@@ -20,6 +20,8 @@ target 'mobile' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'react-native-pager-view', :path => '../node_modules/react-native-pager-view'
+
   target 'mobileTests' do
     inherit! :complete
     # Pods for testing
