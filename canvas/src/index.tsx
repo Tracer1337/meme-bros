@@ -1,7 +1,7 @@
 import "./style.css"
 import React from "react"
 import ReactDOM from "react-dom"
-import { CssBaseline } from "@mui/material"
+import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { BridgeProvider, SharedContextProvider } from "@meme-bros/client-lib"
 import App from "./App"
@@ -19,10 +19,17 @@ if (config.debug) {
     console.log(theme)
 }
 
+const globalStyles = <GlobalStyles styles={{
+    body: {
+        overflow: "hidden"
+    }
+}}/>
+
 ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
             <CssBaseline/>
+            {globalStyles}
             <BridgeProvider>
                 <SharedContextProvider>
                     <DialogProvider>
