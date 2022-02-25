@@ -1,33 +1,32 @@
 import React, { useState } from "react"
-import { FlatList, Platform, StyleSheet, View } from "react-native"
-import { Text, Surface, IconButton, TextInput } from "react-native-paper"
+import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native"
+import { TextInput } from "react-native-paper"
 import Image from "react-native-scalable-image"
 import { useSharedContext, TemplateMeta, useModule } from "@meme-bros/client-lib"
 import { useFilteredTemplates } from "./utils/filter"
 import { useNavigate } from "react-router-native"
 
-const Item = React.memo(({ template, onLoad }: {
+const MIN_IMAGE_WIDTH = 70
+
+const Item = React.memo(({ template, onLoad, size }: {
     template: TemplateMeta,
-    onLoad: () => void
+    onLoad: () => void,
+    size: number
 }) => {
     const { getPreviewURI } = useModule("templates")
 
+    const margin = 1
+
     return (
-        <Surface style={styles.item}>
-            <Image
-                source={{ uri: getPreviewURI(template) }}
-                height={150}
-                width={150}
-            />
-            <View style={styles.itemContent}>
-                <Text style={styles.itemTitle}>{ template.name }</Text>
-                <IconButton
-                    icon="chevron-right"
-                    onPress={onLoad}
-                    size={32}
+        <View style={{ flex: 1, flexDirection: "column", margin }}>
+            <TouchableOpacity onPress={onLoad}>
+                <Image
+                    source={{ uri: getPreviewURI(template) }}
+                    width={size - margin * 2}
+                    height={size - margin * 2}
                 />
-            </View>
-        </Surface>
+            </TouchableOpacity>
+        </View>
     )
 })
 
@@ -40,9 +39,13 @@ function TemplateList({ templates }: {
     
     const { getCanvas } = useModule("templates")
 
+    const { width } = useModule("view").useDimensions()
+
     const [search, setSearch] = useState("")
 
     const filteredTemplates = useFilteredTemplates({ templates, search })
+
+    const numColumns = Math.floor(width / MIN_IMAGE_WIDTH)
 
     const loadTemplate = async (template: TemplateMeta) => {
         const canvas = await getCanvas(template)
@@ -57,6 +60,7 @@ function TemplateList({ templates }: {
             <Item
                 template={template}
                 onLoad={() => loadTemplate(template)}
+                size={width / numColumns}
             />
         )
     }
@@ -68,6 +72,7 @@ function TemplateList({ templates }: {
                 data={filteredTemplates}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
+                numColumns={numColumns}
                 ListHeaderComponent={
                     <TextInput
                         label="Search"
