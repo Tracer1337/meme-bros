@@ -37,7 +37,8 @@ module.exports = {
       return webpackConfig;
     },
     alias: {
-      "react-native-webview": "react-native-web-webview"
+      "react-native-webview": "react-native-web-webview",
+      "react-native-fast-image": "react-native-scalable-image"
     },
     plugins: [
       // Inject the React Native "__DEV__" global variable.

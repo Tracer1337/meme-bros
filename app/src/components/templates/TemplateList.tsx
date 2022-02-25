@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { FlatList, Platform, StyleSheet, TouchableOpacity, View } from "react-native"
 import { TextInput } from "react-native-paper"
-import Image from "react-native-scalable-image"
+import FastImage from "react-native-fast-image"
 import { useSharedContext, TemplateMeta, useModule } from "@meme-bros/client-lib"
 import { useFilteredTemplates } from "./utils/filter"
 import { useNavigate } from "react-router-native"
@@ -17,13 +17,17 @@ const Item = React.memo(({ template, onLoad, size }: {
 
     const margin = 1
 
+    const width = size - margin * 2
+    const height = size - margin * 2
+
     return (
         <View style={{ flex: 1, flexDirection: "column", margin }}>
             <TouchableOpacity onPress={onLoad}>
-                <Image
+                <FastImage
                     source={{ uri: getPreviewURI(template) }}
-                    width={size - margin * 2}
-                    height={size - margin * 2}
+                    style={{ width, height }}
+                    width={width}
+                    height={height}
                 />
             </TouchableOpacity>
         </View>
@@ -73,6 +77,7 @@ function TemplateList({ templates }: {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 numColumns={numColumns}
+                key={numColumns}
                 ListHeaderComponent={
                     <TextInput
                         label="Search"
