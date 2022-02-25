@@ -1,10 +1,11 @@
 import React, { useEffect } from "react"
 import { View } from "react-native"
 import { useLocation, useNavigate } from "react-router-native"
-import { useModule, useSharedContext } from "@meme-bros/client-lib"
+import { useSharedContext } from "@meme-bros/client-lib"
 import Screen from "../styled/Screen"
 import Canvas from "./Canvas"
 import ActionBar from "./ActionBar"
+import { ACTION_BAR_HEIGHT } from "./constants"
 
 function EditorScreen() {
     const context = useSharedContext()
@@ -12,8 +13,6 @@ function EditorScreen() {
     const navigate = useNavigate()
 
     const location = useLocation()
-    
-    const { height } = useModule("view").useDimensions()
 
     useEffect(() => {
         if (!context.renderCanvas) {
@@ -27,7 +26,10 @@ function EditorScreen() {
         <Screen style={!isFocused ? {
             display: "none"
         } : {}}>
-            <View style={{ flexGrow: 1 }}>
+            <View style={{
+                flexGrow: 1,
+                paddingBottom: ACTION_BAR_HEIGHT
+            }}>
                 <Canvas/>
             </View>
             <ActionBar/>
