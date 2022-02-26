@@ -9,7 +9,7 @@
     "dev": "yarn start",
     "start": "react-native start",
     "apk:build": "cd android && gradlew assembleRelease",
-    "apk:install": "adb install -r android\\app\\build\\outputs\\apk\\release\\app-release.apk"
+    "apk:install": "adb install -r android/app/build/outputs/apk/release/app-release.apk"
   },
   "dependencies": {
     "@meme-bros/api-sdk": "*",
@@ -21,9 +21,11 @@
     "react-native": "0.66.3",
     "react-native-fast-image": "^8.5.11",
     "react-native-fs": "^2.18.0",
+    "react-native-gesture-handler": "^2.2.0",
     "react-native-image-picker": "^4.4.0",
     "react-native-pager-view": "^5.4.11",
     "react-native-paper": "^4.10.1",
+    "react-native-reanimated": "^2.4.1",
     "react-native-share": "^7.3.5",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^11.15.0"

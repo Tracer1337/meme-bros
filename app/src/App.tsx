@@ -1,5 +1,6 @@
 import React from "react"
 import { DarkTheme, Portal, Provider as PaperProvider } from "react-native-paper"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { DialogProvider } from "./lib/DialogHandler"
 import Router from "./components/router/Router"
 import { AppContextProvider } from "./lib/context"
@@ -16,13 +17,15 @@ function App() {
         <PaperProvider theme={DarkTheme}>
             <AppContextProvider>
                 <ResourceLoader/>
-                <Portal.Host>
-                    <DialogProvider>
-                        <SnackbarProvider>
-                                <Router/>
-                        </SnackbarProvider>
-                    </DialogProvider>
-                </Portal.Host>
+                <GestureHandlerRootView style={{ flex: 1 }}>
+                    <Portal.Host>
+                        <DialogProvider>
+                            <SnackbarProvider>
+                                    <Router/>
+                            </SnackbarProvider>
+                        </DialogProvider>
+                    </Portal.Host>
+                </GestureHandlerRootView>
             </AppContextProvider>
         </PaperProvider>
     )

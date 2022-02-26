@@ -4,6 +4,7 @@
   "private": true,
   "main": "src",
   "dependencies": {
+    "@gorhom/bottom-sheet": "4",
     "@meme-bros/api-sdk": "*",
     "@meme-bros/shared": "*",
     "@types/color-convert": "^2.0.0",
@@ -13,9 +14,11 @@
     "immer": "^9.0.12",
     "is-plain-object": "^5.0.0",
     "react-native-fast-image": "^8.5.11",
+    "react-native-gesture-handler": "^2.2.0",
     "react-native-image-picker": "^4.4.0",
     "react-native-pager-view": "^5.4.11",
     "react-native-paper": "^4.10.1",
+    "react-native-reanimated": "^2.4.1",
     "react-native-tab-view": "^3.1.1",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^11.15.0",
@@ -33,9 +36,11 @@
     "react": "17.0.2",
     "react-native": "0.66.3",
     "react-native-fast-image": "^8.5.11",
+    "react-native-gesture-handler": "^2.2.0",
     "react-native-image-picker": "^4.4.0",
     "react-native-pager-view": "^5.4.11",
     "react-native-paper": "^4.10.1",
+    "react-native-reanimated": "^2.4.1",
     "react-native-vector-icons": "^9.0.0"
   },
   "resolutions": {
