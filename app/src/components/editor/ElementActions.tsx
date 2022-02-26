@@ -1,22 +1,28 @@
-import React from "react"
+import React, { useRef } from "react"
 import { StyleSheet } from "react-native"
-import { IconButton, Surface, useTheme } from "react-native-paper"
+import { Surface, useTheme } from "react-native-paper"
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
 import {
     copyElement,
     layerElement,
     useSharedContext
 } from "@meme-bros/client-lib"
+import { useActions } from "./utils/actions"
 
 function ElementActions() {
     const context = useSharedContext()
 
     const theme = useTheme()
 
+    const bottomSheetRef = useRef<BottomSheet>(null)
+
+    const { action } = useActions({ bottomSheetRef })
+
     const id = context.focus || 0
 
     return (
         <BottomSheet
+            ref={bottomSheetRef}
             snapPoints={[80, 300]}
             index={0}
             backgroundComponent={Surface}
@@ -25,21 +31,9 @@ function ElementActions() {
             }}
         >
             <BottomSheetView style={styles.actions}>
-                <IconButton
-                    color={theme.colors.onSurface}
-                    icon="content-copy"
-                    onPress={() => context.set(copyElement(context, id))}
-                />
-                <IconButton
-                    color={theme.colors.onSurface}
-                    icon="flip-to-back"
-                    onPress={() => context.set(layerElement(context, id, -1))}
-                />
-                <IconButton
-                    color={theme.colors.onSurface}
-                    icon="flip-to-front"
-                    onPress={() => context.set(layerElement(context, id, 1))}
-                />
+                {action("content-copy", () => context.set(copyElement(context, id)))}
+                {action("flip-to-back", () => context.set(layerElement(context, id, -1)))}
+                {action("flip-to-front", () => context.set(layerElement(context, id, 1)))}
             </BottomSheetView>
         </BottomSheet>
     )
