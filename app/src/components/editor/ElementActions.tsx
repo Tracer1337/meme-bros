@@ -23,8 +23,7 @@ function ElementActions() {
     return (
         <BottomSheet
             ref={bottomSheetRef}
-            snapPoints={[80, 300]}
-            index={0}
+            snapPoints={[80]}
             backgroundComponent={Surface}
             handleIndicatorStyle={{
                 backgroundColor: theme.colors.onSurface
