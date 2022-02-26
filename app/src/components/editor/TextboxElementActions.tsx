@@ -2,14 +2,11 @@ import React, { useRef } from "react"
 import { StyleSheet } from "react-native"
 import { Surface, useTheme } from "react-native-paper"
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
-import {
-    copyElement,
-    layerElement,
-    useSharedContext
-} from "@meme-bros/client-lib"
+import { useSharedContext } from "@meme-bros/client-lib"
 import { useActions } from "./utils/actions"
+import CommonElementActions from "./CommonElementActions"
 
-function ElementActions() {
+function TextboxElementActions() {
     const context = useSharedContext()
 
     const theme = useTheme()
@@ -17,8 +14,6 @@ function ElementActions() {
     const bottomSheetRef = useRef<BottomSheet>(null)
 
     const { action } = useActions({ bottomSheetRef })
-
-    const id = context.focus || 0
 
     return (
         <BottomSheet
@@ -30,9 +25,7 @@ function ElementActions() {
             }}
         >
             <BottomSheetView style={styles.actions}>
-                {action("content-copy", () => context.set(copyElement(context, id)))}
-                {action("flip-to-back", () => context.set(layerElement(context, id, -1)))}
-                {action("flip-to-front", () => context.set(layerElement(context, id, 1)))}
+                <CommonElementActions action={action}/>
             </BottomSheetView>
         </BottomSheet>
     )
@@ -41,8 +34,9 @@ function ElementActions() {
 const styles = StyleSheet.create({
     actions: {
         flex: 1,
-        flexDirection: "row"
+        flexDirection: "row",
+        flexWrap: "wrap"
     }
 })
 
-export default ElementActions
+export default TextboxElementActions
