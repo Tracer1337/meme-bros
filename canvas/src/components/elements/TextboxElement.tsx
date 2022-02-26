@@ -1,17 +1,11 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
-import {
-    updateElementData,
-    updateTextboxText,
-    useSharedContext,
-    consumeEvent,
-    useListeners
-} from "@meme-bros/client-lib"
-import { DialogContext } from "../../lib/DialogHandler"
+import { useSharedContext, useListeners } from "@meme-bros/client-lib"
 import { textfit } from "../../lib/textfit"
 import makeElement, { ElementProps } from "./makeElement"
 import { getTextShadow } from "../../lib/styles"
+import { useAnimationRegistry } from "../../lib/animation"
 
 const justifyContentStyles: Record<string, string> = {
     "top": "flex-start",
@@ -38,47 +32,15 @@ export function getTextboxStyles(element: Editor.PickElement<"textbox">): CSS.Pr
     }
 }
 
-function TextboxElement({ element, size, setDraggableProps }: ElementProps<"textbox">) {
+function TextboxElement({ element }: ElementProps<"textbox">) {
     const context = useSharedContext()
 
-    const dialogs = useContext(DialogContext)
+    const size = useAnimationRegistry().getAnimationXY(
+        `element.${element.id}.size`
+    )
 
     const containerRef = useRef<HTMLDivElement>(null)
     const textRef = useRef<HTMLDivElement>(null)
-    
-    const [isEditing, setIsEditing] = useState(false)
-    const [touched, setTouched] = useState(false)
-
-    const handleEdit = () => {
-        const handleFocusOut = () => {
-            setIsEditing(false)
-            textRef.current?.removeEventListener("focusout", handleFocusOut)
-        }
-
-        setIsEditing(true)
-        requestAnimationFrame(() => textRef.current?.focus())
-
-        if (!touched) {
-            context.set(updateTextboxText(context, element, ""))
-            setTouched(true)
-        }
-
-        textRef.current?.addEventListener("focusout", handleFocusOut)
-    }
-
-    const handleConfig = async () => {
-        const data = await dialogs.open("TextboxConfigDialog", element)
-        context.events.emit("history.push")
-        context.set(updateElementData(context, element, data))
-    }
-
-    const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-        if (!textRef.current) {
-            return
-        }
-        const text = e.currentTarget.textContent || ""
-        context.set(updateTextboxText(context, element, text))
-    }
 
     const updateFontSize = useCallback(() => {
         if (!textRef.current) {
@@ -94,22 +56,9 @@ function TextboxElement({ element, size, setDraggableProps }: ElementProps<"text
         textRef.current.style.fontSize = fontSize + "px"
     }, [element, size])
 
-    useListeners(context.events, [
-        ["element.edit", consumeEvent(element.id, handleEdit)],
-        ["element.config", consumeEvent(element.id, handleConfig)]
-    ])
-
     useListeners(size, [
         ["update", updateFontSize]
     ])
-
-    useEffect(() => {
-        if (isEditing) {
-            context.events.emit("history.push")
-        }
-        setDraggableProps({ disabled: isEditing })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isEditing])
 
     useEffect(() => {
         if (!textRef.current) {
@@ -133,13 +82,12 @@ function TextboxElement({ element, size, setDraggableProps }: ElementProps<"text
         >
             <div
                 ref={textRef}
-                contentEditable={isEditing}
-                style={{ ...getTextboxStyles(element), ...{
+                style={{
+                    ...getTextboxStyles(element),
                     userSelect: "none",
                     outline: "none",
                     resize: "none"
-                } }}
-                onInput={handleInput}
+                }}
             />
         </div>
     )

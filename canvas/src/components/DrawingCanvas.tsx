@@ -1,24 +1,12 @@
-import { useContext, useEffect, useRef } from "react"
-import { addElement, useListeners, useSharedContext } from "@meme-bros/client-lib"
-import { DialogContext } from "../lib/DialogHandler"
+import { useEffect, useRef } from "react"
+import { addElement, useSharedContext } from "@meme-bros/client-lib"
 import { DrawingResult, setupDrawingCanvas } from "./utils/draw"
 import { createCanvasElement } from "./utils/elements"
 
 function DrawingCanvas() {
     const context = useSharedContext()
 
-    const dialogs = useContext(DialogContext)
-    
     const canvas = useRef<HTMLCanvasElement>(null)
-
-    const handleConfig = async () => {
-        context.set({
-            drawing: await dialogs.open(
-                "DrawingConfigDialog",
-                context.drawing
-            )
-        })
-    }
 
     const handleDrawingDone = (result: DrawingResult) => {
         createCanvasElement("image").then((element) => {
@@ -48,10 +36,6 @@ function DrawingCanvas() {
         }
         // eslint-disable-next-line
     }, [context])
-
-    useListeners(context.events, [
-        ["drawing.config", handleConfig]
-    ])
 
     return (
         <canvas

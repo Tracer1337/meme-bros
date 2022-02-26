@@ -1,13 +1,5 @@
-import { useContext } from "react"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
-import {
-    updateElementData,
-    useSharedContext,
-    consumeEvent,
-    useListeners
-} from "@meme-bros/client-lib"
-import { DialogContext } from "../../lib/DialogHandler"
 import makeElement, { ElementProps } from "./makeElement"
 
 export function getShapeStyles(element: Editor.PickElement<"shape">): CSS.Properties {
@@ -21,20 +13,6 @@ export function getShapeStyles(element: Editor.PickElement<"shape">): CSS.Proper
 }
 
 function ShapeElement({ element }: ElementProps<"shape">) {
-    const context = useSharedContext()
-
-    const dialogs = useContext(DialogContext)
-    
-    const handleConfig = async () => {
-        const data = await dialogs.open("ShapeConfigDialog", element)
-        context.events.emit("history.push")
-        context.set(updateElementData(context, element, data))
-    }
-
-    useListeners(context.events, [
-        ["element.config", consumeEvent(element.id, handleConfig)]
-    ])
-    
     return (
         <div style={{
             ...getShapeStyles(element),
@@ -44,8 +22,4 @@ function ShapeElement({ element }: ElementProps<"shape">) {
     )
 }
 
-export default makeElement(ShapeElement, () => ({
-    interactions: {
-        edit: false
-    }
-}))
+export default makeElement(ShapeElement)

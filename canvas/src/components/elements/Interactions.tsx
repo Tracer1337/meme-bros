@@ -1,34 +1,21 @@
-import EditIcon from "@mui/icons-material/Edit"
-import SettingsIcon from "@mui/icons-material/Settings"
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline"
 import { Editor } from "@meme-bros/shared"
-import { SharedContext, useSharedContext } from "@meme-bros/client-lib"
 import type { ElementConfig, GetHandleProps } from "./makeElement"
 import ResizeHandles from "./ResizeHandles"
 import RotationHandle from "./RotationHandle"
-import { AnimatedValue, AnimatedValueXY } from "../../lib/animation"
-import Handle from "../Handle"
+import { useAnimationRegistry } from "../../lib/animation"
 
 function Interactions({
     element,
     config,
     onUpdate,
-    getHandleProps,
-    size,
-    rotation
+    getHandleProps
 }: {
     element: Editor.CanvasElement,
     config: ElementConfig,
     onUpdate: () => void,
-    getHandleProps: GetHandleProps,
-    size: AnimatedValueXY,
-    rotation: AnimatedValue
+    getHandleProps: GetHandleProps
 }) {
-    const context = useSharedContext()
-
-    const event = (name: SharedContext.ElementEvents) => () => {
-        context.events.emit(`element.${name}`, element.id)
-    }
+    const animations = useAnimationRegistry()
 
     return (
         <div style={{
@@ -48,31 +35,20 @@ function Interactions({
             }}>
                 {config.interactions.rotate && (
                     <RotationHandle
-                        animate={rotation}
+                        animate={animations.getAnimation(
+                            `element.${element.id}.rotation`
+                        )}
                         childRect={element.rect}
                         onUpdate={onUpdate}
                         getHandleProps={getHandleProps}
                     />
                 )}
-                {config.interactions.edit && (
-                    <Handle onClick={event("edit")} sx={{ mr: 1 }}>
-                        <EditIcon sx={{ color: "common.black" }}/>
-                    </Handle>
-                )}
-                {config.interactions.config && (
-                    <Handle onClick={event("config")} sx={{ mr: 1 }}>
-                        <SettingsIcon sx={{ color: "common.black" }}/>
-                    </Handle>
-                )}
-                {config.interactions.delete && (
-                    <Handle onClick={event("remove")}>
-                        <DeleteOutlineIcon sx={{ color: "common.black" }}/>
-                    </Handle>
-                )}
             </div>
             {config.interactions.resize && (
                 <ResizeHandles
-                    animate={size}
+                    animate={animations.getAnimationXY(
+                        `element.${element.id}.size`
+                    )}
                     getHandleProps={getHandleProps}
                     onUpdate={onUpdate}
                     aspectRatio={config.aspectRatio}

@@ -13,9 +13,7 @@ export namespace SharedContext {
     export type Events = {
         "element.create": DeepPartial<Editor.CanvasElement>,
         "element.create.default": Editor.CanvasElement["type"],
-        "element.edit": Editor.CanvasElement["id"],
         "element.remove": Editor.CanvasElement["id"],
-        "element.config": Editor.CanvasElement["id"],
         "element.copy": Editor.CanvasElement["id"],
         "element.layer": { id: Editor.CanvasElement["id"], layer: -1 | 1 },
         "canvas.render": undefined,
@@ -28,8 +26,7 @@ export namespace SharedContext {
         "template.load": { template: API.Template, canvas: Editor.Canvas },
         "stickers.open": undefined,
         "history.push": undefined,
-        "history.pop": undefined,
-        "drawing.config": undefined
+        "history.pop": undefined
     }
 
     export type ContextValue = {

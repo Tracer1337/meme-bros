@@ -19,8 +19,6 @@ import {
 } from "../../lib/animation"
 import { getElementBasePosition } from "./utils"
 
-type DraggableProps = React.ComponentProps<typeof DraggableCore>
-
 export type ElementComponentProps<
     T extends Editor.CanvasElement["type"]
 > = {
@@ -28,18 +26,12 @@ export type ElementComponentProps<
 }
 
 export type ElementProps<T extends Editor.CanvasElement["type"]> = {
-    element: Editor.PickElement<T>,
-    setDraggableProps: (props: DraggableProps) => void,
-    size: AnimatedValueXY,
-    rotation: AnimatedValue
+    element: Editor.PickElement<T>
 }
 
 export type ElementConfig = {
     interactive: boolean,
-    interactions: Record<
-        "rotate" | "resize" | "edit" | "config" | "delete",
-        boolean
-    >,
+    interactions: Record<"rotate" | "resize", boolean>,
     aspectRatio?: number
 }
 
@@ -47,10 +39,7 @@ const defaultConfig: ElementConfig = {
     interactive: true,
     interactions: {
         rotate: true,
-        resize: true,
-        edit: true,
-        config: true,
-        delete: true
+        resize: true
     }
 }
 
@@ -96,7 +85,6 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
 
         const container = useRef<HTMLDivElement>(null)
 
-        const [draggableProps, setDraggableProps] = useState<DraggableProps>({})
         const [activeHandle, setActiveHandle] = useState<HandleKey | null>(null)
 
         const getHandleProps: GetHandleProps = (key, options) => ({
@@ -196,8 +184,7 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
                 })}
                 onDrag={handleMovementDrag}
                 handle={`#element-${element.id}`}
-                {...draggableProps}
-                {...(!config.interactive ? { disabled: true } : {})}
+                disabled={!config.interactive}
             >
                 <div ref={container} style={{
                     ...getTransformStyles(),
@@ -213,12 +200,7 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
                             cursor: "move"
                         }}
                     >
-                        <Component
-                            element={element}
-                            setDraggableProps={setDraggableProps}
-                            size={size}
-                            rotation={rotation}
-                        />
+                        <Component element={element}/>
                     </div>
                     {config.interactive && context.focus === element.id && (
                         <Interactions
@@ -226,8 +208,6 @@ function makeElement<T extends Editor.CanvasElement["type"]>(
                             config={config}
                             onUpdate={updateElement}
                             getHandleProps={getHandleProps}
-                            size={size}
-                            rotation={rotation}
                         />
                     )}
                 </div>

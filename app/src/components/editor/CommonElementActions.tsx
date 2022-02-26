@@ -14,6 +14,7 @@ function CommonElementActions({ action }: {
 
     const id = context.focus || 0
 
+    // TODO: Replace with events ("element.remove", "element.layer", "element.copy")
     return (
         <>
             {action("delete-outline", () => context.set(removeElement(context, id)))}

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button, Paper, Typography, TextField, styled } from "@mui/material"
+import { Button, Paper, Typography, TextField, styled, Box } from "@mui/material"
 import { copyElement, enableDrawing, useSharedContext } from "@meme-bros/client-lib"
 import Switch from "./inputs/Switch"
 
@@ -25,12 +25,12 @@ function DebugMenu() {
             height: "100%",
             overflow: "auto"
         }}>
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>Elements</Typography>
+            <Typography variant="h5" sx={{ mb: 2 }}>Elements</Typography>
             <Action onClick={event("element.create.default", "textbox")}>Add Textbox</Action>
             <Action onClick={event("element.create.default", "image")}>Add Image</Action>
             <Action onClick={event("element.create.default", "shape")}>Add Shape</Action>
 
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>Drawing</Typography>
+            <Typography variant="h5" sx={{ mb: 2 }}>Drawing</Typography>
             <Switch
                 label="Drawing"
                 checked={context.drawing.isDrawing}
@@ -39,9 +39,9 @@ function DebugMenu() {
                     drawing: { isDrawing: event.target.checked }
                 })}
             />
-            <Action onClick={event("drawing.config")}>Drawing Config</Action>
+            <Box mb={2}/>
 
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>Canvas</Typography>
+            <Typography variant="h5" sx={{ mb: 2 }}>Canvas</Typography>
             <TextField
                 label="Width"
                 type="number"
@@ -69,11 +69,11 @@ function DebugMenu() {
             />
             <Action onClick={() => context.set(copyElement(context, copyId))}>Copy</Action>
 
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>History</Typography>
+            <Typography variant="h5" sx={{ mb: 2 }}>History</Typography>
             <Action onClick={event("history.push")}>Push</Action>
             <Action onClick={event("history.pop")}>Pop</Action>
 
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>Misc</Typography>
+            <Typography variant="h5" sx={{ mb: 2 }}>Misc</Typography>
             <Action onClick={event("canvas.base.config")}>Base Config</Action>
         </Paper>
     )
