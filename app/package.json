@@ -4,7 +4,7 @@
   "private": true,
   "main": "src",
   "dependencies": {
-    "@gorhom/bottom-sheet": "4",
+    "@gorhom/bottom-sheet": "^4.1.5",
     "@meme-bros/api-sdk": "*",
     "@meme-bros/shared": "*",
     "@types/color-convert": "^2.0.0",

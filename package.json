@@ -31,7 +31,9 @@
       "**/react-dom",
       "**/react-native",
       "**/react-native/**",
-      "**/react-native-web"
+      "**/react-native-web",
+      "**/react-native-reanimated",
+      "**/react-native-gesture-handler"
     ]
   },
   "devDependencies": {
