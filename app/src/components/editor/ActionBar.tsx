@@ -45,7 +45,9 @@ function ActionBar() {
         }
     }, [context])
 
-    return React.createElement(actionBars[mode])
+    return React.createElement(actionBars[mode], {
+        key: context.focus
+    })
 }
 
 export default ActionBar
