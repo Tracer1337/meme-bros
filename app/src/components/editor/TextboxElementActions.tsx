@@ -126,7 +126,6 @@ function TextboxElementActions() {
 
 const styles = StyleSheet.create({
     actions: {
-        flex: 1,
         flexDirection: "row",
         flexWrap: "wrap",
         marginBottom: 8
