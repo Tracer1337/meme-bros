@@ -38,7 +38,7 @@ function TextboxElementActions() {
         context.set(updateElementData(context, element, data))
     }
 
-    if (!element) {
+    if (!element || element.type !== "textbox") {
         return <></>
     }
 
@@ -53,6 +53,7 @@ function TextboxElementActions() {
         >
             <TextInput
                 style={styles.input}
+                label="Text"
                 mode="outlined"
                 value={element.data.text}
                 onChangeText={(text: string) => setData({ text })}

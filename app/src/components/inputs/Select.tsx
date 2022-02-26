@@ -24,7 +24,6 @@ function Select({ items, label, value, onChange, style }: {
     const currentItem = items.find((item) => item.value === value)
     
     const handleSelect = (item: Item) => {
-        if (!item) return
         onChange(item.value)
         setIsOpen(false)
     }
