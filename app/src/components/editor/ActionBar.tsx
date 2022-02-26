@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { useNavigate } from "react-router-native"
-import { Appbar, IconButton, FAB } from "react-native-paper"
+import { IconButton, Surface, useTheme } from "react-native-paper"
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
 import { Editor } from "@meme-bros/shared"
 import {
     copyElement,
@@ -29,6 +30,8 @@ const actionBars: Record<ActionBarMode, React.FunctionComponent> = {
 function CanvasActions() {
     const context = useSharedContext()
 
+    const theme = useTheme()
+
     const navigate = useNavigate()
     
     const { createCanvasElement } = useCanvasUtils()
@@ -48,31 +51,38 @@ function CanvasActions() {
         <View style={styles.actions}>
             {context.canvas.mode === Editor.CanvasMode.CLASSIC && (
                 <IconButton
+                    color={theme.colors.onSurface}
                     icon="cog"
                     onPress={() => context.events.emit("canvas.base.config")}
                 />
             )}
             <IconButton
+                color={theme.colors.onSurface}
                 icon="format-color-text"
                 onPress={() => handleElementCreate("textbox")}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="image"
                 onPress={() => handleElementCreate("image")}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="shape"
                 onPress={() => handleElementCreate("shape")}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="lead-pencil"
                 onPress={() => context.set(enableDrawing())}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="sticker"
                 onPress={() => context.events.emit("stickers.open")}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="delete"
                 onPress={() => {
                     navigate("/")
@@ -80,6 +90,7 @@ function CanvasActions() {
                 }}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="undo"
                 onPress={() => context.events.emit("history.pop")}
             />
@@ -90,19 +101,24 @@ function CanvasActions() {
 function ElementActions() {
     const context = useSharedContext()
 
+    const theme = useTheme()
+
     const id = context.focus || 0
 
     return (   
         <View style={styles.actions}>
             <IconButton
+                color={theme.colors.onSurface}
                 icon="content-copy"
                 onPress={() => context.set(copyElement(context, id))}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="flip-to-back"
                 onPress={() => context.set(layerElement(context, id, -1))}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="flip-to-front"
                 onPress={() => context.set(layerElement(context, id, 1))}
             />
@@ -113,15 +129,19 @@ function ElementActions() {
 function DrawingActions() {
     const context = useSharedContext()
 
+    const theme = useTheme()
+
     return (
         <View style={styles.actions}>
             <IconButton
+                color={theme.colors.onSurface}
                 icon="arrow-left"
                 onPress={() => context.set({
                     drawing: { isDrawing: false }
                 })}
             />
             <IconButton
+                color={theme.colors.onSurface}
                 icon="cog"
                 onPress={() => context.events.emit("drawing.config")}
             />
@@ -131,6 +151,8 @@ function DrawingActions() {
 
 function ActionBar() {    
     const context = useSharedContext()
+
+    const theme = useTheme()
 
     const core = useModule("core")
 
@@ -152,36 +174,35 @@ function ActionBar() {
     ])
 
     return (
-        <Appbar style={styles.appbar}>
-            {React.createElement(actionBars[mode])}
-            <FAB
-                style={styles.fab}
-                icon="check"
-                loading={isGenerating}
-                disabled={!core?.render}
-                onPress={async () => {
-                    setIsGenerating(true)
-                    await new Promise(requestAnimationFrame)
-                    context.events.emit("canvas.render")
-                }}
-            />
-        </Appbar>
+        <BottomSheet
+            snapPoints={[80, 300]}
+            index={0}
+            backgroundComponent={Surface}
+            handleIndicatorStyle={{
+                backgroundColor: theme.colors.onSurface
+            }}
+        >
+            <BottomSheetView style={styles.container}>
+                {React.createElement(actionBars[mode])}
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="check"
+                    loading={isGenerating}
+                    disabled={!core?.render}
+                    onPress={async () => {
+                        setIsGenerating(true)
+                        await new Promise(requestAnimationFrame)
+                        context.events.emit("canvas.render")
+                    }}
+                />
+            </BottomSheetView>
+        </BottomSheet>
     )
 }
 
 const styles = StyleSheet.create({
-    appbar: {
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        flex: 1
-    },
-    
-    fab: {
-        position: "absolute",
-        right: 24,
-        top: -24
+    container: {
+        flexDirection: "row"
     },
 
     actions: {
