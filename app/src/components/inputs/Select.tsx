@@ -24,6 +24,7 @@ function Select({ items, label, value, onChange, style }: {
     const currentItem = items.find((item) => item.value === value)
     
     const handleSelect = (item: Item) => {
+        if (!item) return
         onChange(item.value)
         setIsOpen(false)
     }
@@ -34,7 +35,7 @@ function Select({ items, label, value, onChange, style }: {
 
     const input = (
         <TouchableRipple
-            style={StyleSheet.flatten([style, styles.touchable, {
+            style={StyleSheet.flatten([styles.touchable, {
                 backgroundColor: theme.colors.surface,
                 borderRadius: theme.roundness
             }])}
@@ -56,7 +57,7 @@ function Select({ items, label, value, onChange, style }: {
     )
 
     return (
-        <View>
+        <View style={style}>
             <Menu
                 visible={isOpen}
                 onDismiss={() => setIsOpen(false)}

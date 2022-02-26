@@ -61,7 +61,7 @@ export function updateCanvasBase(
 export function updateElementData<T extends Editor.CanvasElement["type"]>(
     _state: SharedContext.ContextValue,
     element: Editor.PickElement<T>,
-    data: Editor.PickElement<T>["data"]
+    data: Partial<Editor.PickElement<T>["data"]>
 ): DeepPartial<SharedContext.ContextValue> {
     return {
         canvas: {
@@ -162,6 +162,7 @@ export function layerElement(
     }
 }
 
+// TODO: Replace with updateTextboxData where used
 export function updateTextboxText(
     _state: SharedContext.ContextValue,
     element: Editor.PickElement<"textbox">,
