@@ -11,7 +11,7 @@ import { mockCanvas } from "./mock"
 import DebugMenu from "./components/DebugMenu"
 import config from "./config"
 
-const HISTORY_LENGTH = 100
+const MAX_HISTORY_LENGTH = 100
 
 const Container = styled(Box)({
     height: "100vh",
@@ -38,7 +38,7 @@ function App() {
 
     const handleHistoryPush = () => {
         history.push(context.canvas)
-        if (history.length > HISTORY_LENGTH) {
+        if (history.length > MAX_HISTORY_LENGTH) {
             history.shift()
         }
     }

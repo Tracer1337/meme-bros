@@ -1,9 +1,11 @@
 import React, { useRef } from "react"
-import { StyleSheet } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { Surface, useTheme } from "react-native-paper"
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
-import { useSharedContext } from "@meme-bros/client-lib"
+import BottomSheet from "@gorhom/bottom-sheet"
+import { SharedContext, useSharedContext, colors } from "@meme-bros/client-lib"
 import { useActions } from "./utils/actions"
+import Select from "../inputs/Select"
+import NumberInput from "../inputs/NumberInput"
 
 function DrawingActions() {
     const context = useSharedContext()
@@ -14,30 +16,55 @@ function DrawingActions() {
 
     const { action } = useActions({ bottomSheetRef })
 
+    const setData = (
+        drawing: Partial<SharedContext.ContextValue["drawing"]>
+    ) => {
+        context.set({ drawing })
+    }
+
     return (
         <BottomSheet
             ref={bottomSheetRef}
-            snapPoints={[80]}
+            snapPoints={[150, 240]}
             backgroundComponent={Surface}
             handleIndicatorStyle={{
                 backgroundColor: theme.colors.onSurface
             }}
         >
-            <BottomSheetView style={styles.actions}>
+            <Select
+                style={styles.input}
+                items={colors}
+                label="Color"
+                value={context.drawing.color}
+                onChange={(color) => setData({ color })}
+            />
+            <View style={styles.actions}>
                 {action(
                     "arrow-left",
                     () => context.set({ drawing: { isDrawing: false } })
                 )}
-                {action("cog", () => context.events.emit("drawing.config"))}
-            </BottomSheetView>
+            </View>
+            <NumberInput
+                style={styles.input}
+                mode="outlined"
+                label="Width"
+                value={context.drawing.width}
+                onChange={(width) => setData({ width })}
+            />
         </BottomSheet>
     )
 }
 
 const styles = StyleSheet.create({
     actions: {
-        flex: 1,
-        flexDirection: "row"
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginBottom: 8
+    },
+
+    input: {
+        margin: 8,
+        marginTop: 0
     }
 })
 
