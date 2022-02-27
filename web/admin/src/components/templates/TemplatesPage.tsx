@@ -15,7 +15,7 @@ function InnerTemplatesPage() {
 
     return (
         <Grid container height="calc(100vh - 64px)" px={2}>
-            <Grid item xs pt={4}>
+            <Grid item xs={4} pt={4}>
                 <Typography variant="h3">Templates</Typography>
                 <Link to="create">
                     <Button>New</Button>
@@ -25,7 +25,7 @@ function InnerTemplatesPage() {
             <Grid
                 container
                 item
-                xs
+                xs={8}
                 justifyContent="center"
                 alignItems="center"
             >

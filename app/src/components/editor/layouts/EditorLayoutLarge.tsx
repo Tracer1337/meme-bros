@@ -1,16 +1,17 @@
 import React from "react"
 import { StyleSheet, View } from "react-native"
-import { IconButton, Surface } from "react-native-paper"
 import Canvas from "../Canvas"
+import ConfigBar from "../config-bar/ConfigBar"
+import ItemBar from "../item-bar/ItemBar"
 
 function EditorLayoutLarge() {
     return (
         <View style={styles.container}>
-            <Surface style={styles.sidebarRight}>
-            </Surface>
+            <ItemBar/>
             <View style={{ flex: 1 }}>
                 <Canvas/>
             </View>
+            <ConfigBar/>
         </View>
     )
 }
@@ -19,14 +20,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "row"
-    },
-
-    sidebarRight: {
-        width: 60
-    },
-
-    icon: {
-        marginLeft: 12
     }
 })
 

@@ -88,7 +88,7 @@ function TemplateForm({ values, ...props }: {
             </Grid>
             <Paper variant="outlined">
                 <RNApp
-                    width={window.innerWidth * 0.4}
+                    width={window.innerWidth * 0.6}
                     height={window.innerHeight * 0.8}
                 />
             </Paper>
