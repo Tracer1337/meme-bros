@@ -1,5 +1,5 @@
-import React from "react"
-import { FlatList, Image, StyleSheet } from "react-native"
+import React, { useState } from "react"
+import { FlatList, LayoutChangeEvent, StyleSheet, View} from "react-native"
 import {
     ActivityIndicator,
     Button,
@@ -8,25 +8,38 @@ import {
     Text,
     TouchableRipple
 } from "react-native-paper"
+import FastImage from "react-native-fast-image"
 import { makeId, useModule, useSharedContext } from "@meme-bros/client-lib"
 import { fetchAsDataURI } from "@meme-bros/shared"
 import { AppContextValue } from "../../lib/context"
 
+const MIN_IMAGE_WIDTH = 70
+const DIALOG_PADDING = 24
 const STICKER_WIDTH = 200
 
-function Item({ sticker, onLoad }: {
+function Item({ sticker, onLoad, size }: {
     sticker: string,
-    onLoad: () => void
+    onLoad: () => void,
+    size: number
 }) {
     const { getStickerURI } = useModule("stickers")
 
+    const margin = 1
+
+    const width = size - margin * 2
+    const height = size - margin * 2
+
     return (
-        <TouchableRipple onPress={onLoad}>
-            <Image
-                source={{ uri: getStickerURI(sticker) }}
-                style={{ width: 150, height: 150 }}
-            />
-        </TouchableRipple>
+        <View style={{ flex: 1, flexDirection: "column", margin }}>
+            <TouchableRipple onPress={onLoad}>
+                <FastImage
+                    source={{ uri: getStickerURI(sticker) }}
+                    style={{ width, height }}
+                    width={width}
+                    height={height}
+                />
+            </TouchableRipple>
+        </View>
     )
 }
 
@@ -37,9 +50,20 @@ function StickersDialog({ visible, close, appContext }: {
     appContext: AppContextValue
 }) {
     const context = useSharedContext()
+
+    const dimensions = useModule("view").useDimensions()
     
     const { getStickerURI } = useModule("stickers")
+
     const { getImageSize } = useModule("storage")
+
+    const [width, setWidth] = useState(0)
+
+    const numColumns = Math.floor(width / MIN_IMAGE_WIDTH)
+
+    const handleLayout = (event: LayoutChangeEvent) => {
+        setWidth(event.nativeEvent.layout.width - DIALOG_PADDING * 2)
+    }
 
     const loadSticker = async (filename: string) => {
         const uri = await fetchAsDataURI(getStickerURI(filename))
@@ -65,6 +89,7 @@ function StickersDialog({ visible, close, appContext }: {
             <Item
                 sticker={filename}
                 onLoad={() => loadSticker(filename)}
+                size={width / numColumns}
             />
         )
     }
@@ -73,27 +98,26 @@ function StickersDialog({ visible, close, appContext }: {
         <Dialog visible={visible} onDismis={close}>
             <Dialog.Title>
                 <Headline>Stickers</Headline>
-                {appContext.sync.isLoading && (
-                    <ActivityIndicator animating/>
-                )}
-                {appContext.sync.error && (
-                    <Text>Sync Failed</Text>
-                )}
             </Dialog.Title>
-            <Dialog.Content>
+            <Dialog.Content
+                onLayout={handleLayout}
+                style={{ minHeight: dimensions.height * 0.6 }}
+            >
                 {appContext.stickers.isLoading && (
                     <ActivityIndicator animating/>
                 )}
                 {appContext.stickers.error && (
                     <Text>Failed to load stickers</Text>
                 )}
-                <FlatList
-                    data={appContext.stickers.list}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item}
-                    numColumns={2}
-                    style={styles.list}
-                />
+                {width > 0 && (
+                    <FlatList
+                        data={appContext.stickers.list}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item}
+                        numColumns={numColumns}
+                        style={styles.list}
+                    />
+                )}
             </Dialog.Content>
             <Dialog.Actions>
                 <Button onPress={close} style={{ width: "100%" }}>
