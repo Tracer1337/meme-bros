@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { deepmerge } from "@mui/utils"
 import { DeepPartial } from "tsdef"
 import * as CSS from "csstype"
 import { Editor } from "@meme-bros/shared"
 import {
     addElement,
-    updateCanvasBase,
     useSharedContext,
     SharedContext,
     removeElement,
@@ -14,7 +13,6 @@ import {
     setDOMListeners
 } from "@meme-bros/client-lib"
 import { getElementByType } from "./elements"
-import { DialogContext } from "../lib/DialogHandler"
 import ResizeHandles from "./ResizeHandles"
 import { AnimatedValueXY, useAnimationRegistry } from "../lib/animation"
 import { getElementBasePosition } from "./elements/utils"
@@ -34,8 +32,6 @@ function Canvas() {
     const context = useSharedContext()
 
     const animations = useAnimationRegistry()
-    
-    const dialogs = useContext(DialogContext)
 
     const setQueuedListeners = useRef(makeListenerQueue<SharedContext.Events>()).current
     const canvasRef = useRef<HTMLDivElement>(null)
@@ -61,15 +57,6 @@ function Canvas() {
     const handleRemoveElement = (id: Editor.CanvasElement["id"]) => {
         context.events.emit("history.push")
         context.set(removeElement(context, id))
-    }
-
-    const handleCanvasBaseConfig = async () => {
-        if (!context.canvas.base) {
-            return
-        }
-        context.events.emit("history.push")
-        const base = await dialogs.open("CanvasBaseConfigDialog", context.canvas.base)
-        context.set(updateCanvasBase(context, base))
     }
 
     const updateTransform = () => {
@@ -106,8 +93,7 @@ function Canvas() {
         setQueuedListeners(context.events, [
             ["element.create", handleCreateElement],
             ["element.create.default", handleCreateElementDefault],
-            ["element.remove", handleRemoveElement],
-            ["canvas.base.config", handleCanvasBaseConfig]
+            ["element.remove", handleRemoveElement]
         ])
     )
 

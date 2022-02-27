@@ -5,7 +5,6 @@ import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { BridgeProvider, SharedContextProvider } from "@meme-bros/client-lib"
 import App from "./App"
-import { DialogProvider } from "./lib/DialogHandler"
 import { AnimationRegistryProvider } from "./lib/animation"
 import config from "./config"
 
@@ -32,11 +31,9 @@ ReactDOM.render(
             {globalStyles}
             <BridgeProvider>
                 <SharedContextProvider>
-                    <DialogProvider>
-                        <AnimationRegistryProvider>
-                            <App/>
-                        </AnimationRegistryProvider>
-                    </DialogProvider>
+                    <AnimationRegistryProvider>
+                        <App/>
+                    </AnimationRegistryProvider>
                 </SharedContextProvider>
             </BridgeProvider>
         </ThemeProvider>

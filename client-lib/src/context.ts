@@ -21,7 +21,6 @@ export namespace SharedContext {
         "canvas.base.import": undefined,
         "canvas.base.blank": undefined,
         "canvas.base.dummy": undefined,
-        "canvas.base.config": undefined,
         "canvas.load": undefined,
         "template.load": { template: API.Template, canvas: Editor.Canvas },
         "stickers.open": undefined,
