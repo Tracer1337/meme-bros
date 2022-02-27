@@ -1,6 +1,6 @@
 import React from "react"
 import { View } from "react-native"
-import ActionBar from "../actions/ActionBar"
+import ActionBar from "../action-bar/ActionBar"
 import Canvas from "../Canvas"
 import { ACTION_BAR_HEIGHT } from "../constants"
 
