@@ -11,8 +11,8 @@ import {
 } from "@meme-bros/client-lib"
 import { useActions } from "./utils/actions"
 import CommonElementActions from "./CommonElementActions"
-import Select from "../inputs/Select"
-import NumberInput from "../inputs/NumberInput"
+import Select from "../../inputs/Select"
+import NumberInput from "../../inputs/NumberInput"
 
 function ShapeElementActions() {
     const context = useSharedContext()

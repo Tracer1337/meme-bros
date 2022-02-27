@@ -6,8 +6,8 @@ import { Editor } from "@meme-bros/shared"
 import { updateElementData, useSharedContext } from "@meme-bros/client-lib"
 import { useActions } from "./utils/actions"
 import CommonElementActions from "./CommonElementActions"
-import NumberInput from "../inputs/NumberInput"
-import Switch from "../inputs/Switch"
+import NumberInput from "../../inputs/NumberInput"
+import Switch from "../../inputs/Switch"
 
 function ImageElementActions() {
     const context = useSharedContext()

@@ -1,7 +1,7 @@
+import React from "react"
+import { IconButton, useTheme } from "react-native-paper"
 import { AnyFunction } from "tsdef"
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types"
-import { IconButton, useTheme } from "react-native-paper"
-import React from "react"
 
 export function useActions({ bottomSheetRef }: {
     bottomSheetRef: React.RefObject<BottomSheetMethods>

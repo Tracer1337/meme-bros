@@ -15,9 +15,9 @@ import {
 } from "@meme-bros/client-lib"
 import { useActions } from "./utils/actions"
 import CommonElementActions from "./CommonElementActions"
-import Select from "../inputs/Select"
-import NumberInput from "../inputs/NumberInput"
-import Switch from "../inputs/Switch"
+import Select from "../../inputs/Select"
+import NumberInput from "../../inputs/NumberInput"
+import Switch from "../../inputs/Switch"
 
 function TextboxElementActions() {
     const context = useSharedContext()

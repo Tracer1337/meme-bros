@@ -4,8 +4,8 @@ import { Surface, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { SharedContext, useSharedContext, colors } from "@meme-bros/client-lib"
 import { useActions } from "./utils/actions"
-import Select from "../inputs/Select"
-import NumberInput from "../inputs/NumberInput"
+import Select from "../../inputs/Select"
+import NumberInput from "../../inputs/NumberInput"
 
 function DrawingActions() {
     const context = useSharedContext()

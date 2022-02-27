@@ -12,9 +12,9 @@ import {
     useModule,
     useSharedContext
 } from "@meme-bros/client-lib"
-import { useCanvasUtils } from "./utils/canvas"
+import { useCanvasUtils } from "../utils/canvas"
 import { useActions } from "./utils/actions"
-import Switch from "../inputs/Switch"
+import Switch from "../../inputs/Switch"
 
 function CanvasActions() {
     const context = useSharedContext()
