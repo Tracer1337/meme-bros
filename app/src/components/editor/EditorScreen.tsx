@@ -1,11 +1,12 @@
-import React, { useEffect } from "react"
-import { View } from "react-native"
+import React, { Suspense, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-native"
+import { ActivityIndicator } from "react-native-paper"
 import { useSharedContext } from "@meme-bros/client-lib"
 import Screen from "../styled/Screen"
-import Canvas from "./Canvas"
-import ActionBar from "./ActionBar"
-import { ACTION_BAR_HEIGHT } from "./constants"
+import { useLayout } from "../../lib/layout"
+
+const EditorLayoutSmall = React.lazy(() => import("./layouts/EditorLayoutSmall"))
+const EditorLayoutLarge = React.lazy(() => import("./layouts/EditorLayoutLarge"))
 
 function EditorScreen() {
     const context = useSharedContext()
@@ -13,6 +14,11 @@ function EditorScreen() {
     const navigate = useNavigate()
 
     const location = useLocation()
+
+    const Layout = useLayout({
+        sm: EditorLayoutSmall,
+        lg: EditorLayoutLarge
+    })
 
     useEffect(() => {
         if (!context.renderCanvas) {
@@ -26,13 +32,9 @@ function EditorScreen() {
         <Screen style={!isFocused ? {
             display: "none"
         } : {}}>
-            <View style={{
-                flexGrow: 1,
-                paddingBottom: ACTION_BAR_HEIGHT
-            }}>
-                <Canvas/>
-            </View>
-            <ActionBar/>
+            <Suspense fallback={<ActivityIndicator/>}>
+                <Layout/>
+            </Suspense>
         </Screen>
     )
 }
