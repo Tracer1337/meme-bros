@@ -1,10 +1,5 @@
 import React from "react"
-import {
-    copyElement,
-    layerElement,
-    removeElement,
-    useSharedContext
-} from "@meme-bros/client-lib"
+import { useSharedContext } from "@meme-bros/client-lib"
 import { useActions } from "./utils/actions"
 
 function CommonElementActions({ action }: {
@@ -14,13 +9,12 @@ function CommonElementActions({ action }: {
 
     const id = context.focus || 0
 
-    // TODO: Replace with events ("element.remove", "element.layer", "element.copy")
     return (
         <>
-            {action("delete-outline", () => context.set(removeElement(context, id)))}
-            {action("flip-to-back", () => context.set(layerElement(context, id, -1)))}
-            {action("flip-to-front", () => context.set(layerElement(context, id, 1)))}
-            {action("content-copy", () => context.set(copyElement(context, id)))}
+            {action("delete-outline", () => context.events.emit("element.remove", id))}
+            {action("flip-to-back", () => context.events.emit("element.layer", { id, layer: -1 }))}
+            {action("flip-to-front", () => context.events.emit("element.layer", { id, layer: 1 }))}
+            {action("content-copy", () => context.events.emit("element.copy", id))}
         </>
     )
 }

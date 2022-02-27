@@ -46,6 +46,7 @@ function CanvasActions() {
 
     const setBase = (base: Partial<Editor.CanvasBase>) => {
         if (!context.canvas.base) return
+        context.events.emit("history.push")
         context.set(updateCanvasBase(context, {
             ...context.canvas.base,
             ...base

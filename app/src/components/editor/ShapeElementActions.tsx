@@ -30,6 +30,7 @@ function ShapeElementActions() {
     const setData = (
         data: Partial<Editor.PickElement<"shape">["data"]>
     ) => {
+        context.events.emit("history.push")
         context.set(updateElementData(context, element, data))
     }
 

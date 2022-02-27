@@ -8,6 +8,8 @@ import {
     useSharedContext,
     SharedContext,
     removeElement,
+    copyElement,
+    layerElement,
     useListeners,
     makeListenerQueue,
     setDOMListeners
@@ -59,6 +61,19 @@ function Canvas() {
         context.set(removeElement(context, id))
     }
 
+    const handleCopyElement = (id: Editor.CanvasElement["id"]) => {
+        context.events.emit("history.push")
+        context.set(copyElement(context, id))
+    }
+
+    const handleLayerElement = ({ id, layer }: {
+        id: Editor.CanvasElement["id"],
+        layer: 1 | -1
+    }) => {
+        context.events.emit("history.push")
+        context.set(layerElement(context, id, layer))
+    }
+
     const updateTransform = () => {
         if (!canvasRef.current) {
             return
@@ -93,7 +108,9 @@ function Canvas() {
         setQueuedListeners(context.events, [
             ["element.create", handleCreateElement],
             ["element.create.default", handleCreateElementDefault],
-            ["element.remove", handleRemoveElement]
+            ["element.remove", handleRemoveElement],
+            ["element.copy", handleCopyElement],
+            ["element.layer", handleLayerElement]
         ])
     )
 

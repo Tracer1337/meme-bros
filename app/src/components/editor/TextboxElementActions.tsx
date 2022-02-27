@@ -35,6 +35,7 @@ function TextboxElementActions() {
     const setData = (
         data: Partial<Editor.PickElement<"textbox">["data"]>
     ) => {
+        context.events.emit("history.push")
         context.set(updateElementData(context, element, data))
     }
 

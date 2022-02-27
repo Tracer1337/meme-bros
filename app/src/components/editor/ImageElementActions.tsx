@@ -25,6 +25,7 @@ function ImageElementActions() {
     const setData = (
         data: Partial<Editor.PickElement<"image">["data"]>
     ) => {
+        context.events.emit("history.push")
         context.set(updateElementData(context, element, data))
     }
 
