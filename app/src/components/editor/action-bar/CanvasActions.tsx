@@ -44,6 +44,13 @@ function CanvasActions() {
         context.events.emit("element.create", partial)
     }
 
+    const handleGenerate = async () => {
+        bottomSheetRef.current?.collapse()
+        setIsGenerating(true)
+        await new Promise(requestAnimationFrame)
+        context.events.emit("canvas.render")
+    }
+
     const setBase = (base: Partial<Editor.CanvasBase>) => {
         if (!context.canvas.base) return
         context.events.emit("history.push")
@@ -68,20 +75,11 @@ function CanvasActions() {
             }}
         >
             <View style={styles.actions}>
-                {action(
-                    "check",
-                    async () => {
-                        bottomSheetRef.current?.collapse()
-                        setIsGenerating(true)
-                        await new Promise(requestAnimationFrame)
-                        context.events.emit("canvas.render")
-                    },
-                    {
-                        loading: isGenerating,
-                        disabled: !core?.render,
-                        color: theme.colors.accent
-                    }
-                )}
+                {action("check", handleGenerate, {
+                    loading: isGenerating,
+                    disabled: !core?.render,
+                    color: theme.colors.accent
+                })}
                 {action("undo", () => context.events.emit("history.pop"))}
                 {action("format-color-text", () => handleElementCreate("textbox"))}
                 {action("image", () => handleElementCreate("image"))}
