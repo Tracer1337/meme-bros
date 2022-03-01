@@ -1,6 +1,6 @@
 import React from "react"
 import { View } from "react-native"
-import ActionBar from "../action-bar/ActionBar"
+import BottomBar from "../bottom-bar/BottomBar"
 import Canvas from "../Canvas"
 import { ACTION_BAR_HEIGHT } from "../constants"
 
@@ -13,7 +13,7 @@ function EditorLayoutSmall() {
             }}>
                 <Canvas/>
             </View>
-            <ActionBar/>
+            <BottomBar/>
         </>
     )
 }

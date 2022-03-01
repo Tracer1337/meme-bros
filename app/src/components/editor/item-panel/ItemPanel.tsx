@@ -12,7 +12,7 @@ import {
 } from "@meme-bros/client-lib"
 import { useCanvasUtils } from "../utils/canvas"
 
-function ItemBar() {
+function ItemPanel() {
     const context = useSharedContext()
 
     const theme = useTheme()
@@ -120,4 +120,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ItemBar
+export default ItemPanel

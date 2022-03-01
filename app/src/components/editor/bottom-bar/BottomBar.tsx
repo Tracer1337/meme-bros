@@ -29,7 +29,7 @@ const actionBars: Record<ActionBarMode, React.FunctionComponent> = {
     [ActionBarMode.DRAWING]: DrawingActions
 }
 
-function ActionBar() {    
+function BottomBar() {    
     const context = useSharedContext()
 
     const [mode, setMode] = useState<ActionBarMode>(ActionBarMode.CANVAS)
@@ -50,4 +50,4 @@ function ActionBar() {
     })
 }
 
-export default ActionBar
+export default BottomBar

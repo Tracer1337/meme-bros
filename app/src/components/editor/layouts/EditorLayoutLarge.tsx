@@ -1,17 +1,17 @@
 import React from "react"
 import { StyleSheet, View } from "react-native"
 import Canvas from "../Canvas"
-import ConfigBar from "../config-bar/ConfigBar"
-import ItemBar from "../item-bar/ItemBar"
+import ConfigPanel from "../config-panel/ConfigPanel"
+import ItemPanel from "../item-panel/ItemPanel"
 
 function EditorLayoutLarge() {
     return (
         <View style={styles.container}>
-            <ItemBar/>
+            <ItemPanel/>
             <View style={{ flex: 1 }}>
                 <Canvas/>
             </View>
-            <ConfigBar/>
+            <ConfigPanel/>
         </View>
     )
 }

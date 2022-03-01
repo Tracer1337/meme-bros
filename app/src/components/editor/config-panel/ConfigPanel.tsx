@@ -31,7 +31,7 @@ const actionBars: Record<ConfigBarMode, React.FunctionComponent> = {
     [ConfigBarMode.DRAWING]: DrawingConfig
 }
 
-function ConfigBar() {    
+function ConfigPanel() {    
     const context = useSharedContext()
 
     const [mode, setMode] = useState<ConfigBarMode>(ConfigBarMode.CANVAS)
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ConfigBar
+export default ConfigPanel
