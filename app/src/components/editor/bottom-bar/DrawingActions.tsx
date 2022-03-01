@@ -1,11 +1,12 @@
 import React, { useRef } from "react"
 import { StyleSheet, View } from "react-native"
-import { Surface, useTheme } from "react-native-paper"
+import { IconButton, Surface, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { SharedContext, useSharedContext, colors } from "@meme-bros/client-lib"
-import { useActions } from "./utils/actions"
+import { useSharedContext, colors } from "@meme-bros/client-lib"
 import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
+import { useCallbacks } from "./utils/callbacks"
+import { useDrawingActions } from "../utils/actions"
 
 function DrawingActions() {
     const context = useSharedContext()
@@ -14,13 +15,9 @@ function DrawingActions() {
 
     const bottomSheetRef = useRef<BottomSheet>(null)
 
-    const { action } = useActions({ bottomSheetRef })
+    const callback = useCallbacks(bottomSheetRef)
 
-    const setData = (
-        drawing: Partial<SharedContext.ContextValue["drawing"]>
-    ) => {
-        context.set({ drawing })
-    }
+    const { setData } = useDrawingActions()
 
     return (
         <BottomSheet
@@ -39,10 +36,13 @@ function DrawingActions() {
                 onChange={(color) => setData({ color })}
             />
             <View style={styles.actions}>
-                {action(
-                    "arrow-left",
-                    () => context.set({ drawing: { isDrawing: false } })
-                )}
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="arrow-left"
+                    onPress={callback(() => context.set({
+                        drawing: { isDrawing: false }
+                    }))}
+                />
             </View>
             <NumberInput
                 style={styles.input}

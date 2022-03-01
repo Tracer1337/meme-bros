@@ -1,10 +1,7 @@
 import React from "react"
 import { StyleSheet, View } from "react-native"
 import { TextInput } from "react-native-paper"
-import { Editor } from "@meme-bros/shared"
 import {
-    updateElementData,
-    useSharedContext,
     colors,
     textAlign,
     verticalAlign,
@@ -15,20 +12,13 @@ import CommonElementActions from "./CommonElementActions"
 import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
 import Switch from "../../inputs/Switch"
+import { useTextboxElementActions } from "../utils/actions"
+import { useFocusedElement } from "../utils/canvas"
 
 function TextboxElementActions() {
-    const context = useSharedContext()
+    const { setData } = useTextboxElementActions()
 
-    const element = context.canvas.elements[
-        context.focus || -1
-    ] as Editor.PickElement<"textbox">
-
-    const setData = (
-        data: Partial<Editor.PickElement<"textbox">["data"]>
-    ) => {
-        context.events.emit("history.push")
-        context.set(updateElementData(context, element, data))
-    }
+    const element = useFocusedElement<"textbox">()
 
     if (!element || element.type !== "textbox") {
         return <></>

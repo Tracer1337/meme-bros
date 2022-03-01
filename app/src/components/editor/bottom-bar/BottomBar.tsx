@@ -1,53 +1,26 @@
-import React, { useEffect, useState } from "react"
-import { Editor } from "@meme-bros/shared"
+import React from "react"
 import { useSharedContext } from "@meme-bros/client-lib"
 import CanvasActions from "./CanvasActions"
 import TextboxElementActions from "./TextboxElementActions"
 import ImageElementActions from "./ImageElementActions"
 import ShapeElementActions from "./ShapeElementActions"
 import DrawingActions from "./DrawingActions"
+import { ActionPanelModes, useActionPanel } from "../utils/panels"
 
-enum ActionBarMode {
-    CANVAS,
-    TEXTBOX_ELEMENT,
-    IMAGE_ELEMENT,
-    SHAPE_ELEMENT,
-    DRAWING
-}
-
-const elementModes: Record<Editor.CanvasElement["type"], ActionBarMode> = {
-    "textbox": ActionBarMode.TEXTBOX_ELEMENT,
-    "image": ActionBarMode.IMAGE_ELEMENT,
-    "shape": ActionBarMode.SHAPE_ELEMENT
-}
-
-const actionBars: Record<ActionBarMode, React.FunctionComponent> = {
-    [ActionBarMode.CANVAS]: CanvasActions,
-    [ActionBarMode.TEXTBOX_ELEMENT]: TextboxElementActions,
-    [ActionBarMode.IMAGE_ELEMENT]: ImageElementActions,
-    [ActionBarMode.SHAPE_ELEMENT]: ShapeElementActions,
-    [ActionBarMode.DRAWING]: DrawingActions
+const panels: Record<ActionPanelModes, React.FunctionComponent> = {
+    [ActionPanelModes.CANVAS]: CanvasActions,
+    [ActionPanelModes.DRAWING]: DrawingActions,
+    [ActionPanelModes.TEXTBOX_ELEMENT]: TextboxElementActions,
+    [ActionPanelModes.IMAGE_ELEMENT]: ImageElementActions,
+    [ActionPanelModes.SHAPE_ELEMENT]: ShapeElementActions
 }
 
 function BottomBar() {    
     const context = useSharedContext()
+    
+    const panel = useActionPanel(panels)
 
-    const [mode, setMode] = useState<ActionBarMode>(ActionBarMode.CANVAS)
-
-    useEffect(() => {
-        const element = context.canvas.elements[context.focus || -1]
-        if (context.drawing.isDrawing) {
-            setMode(ActionBarMode.DRAWING)
-        } else if (context.focus === null) {
-            setMode(ActionBarMode.CANVAS)
-        } else {
-            setMode(elementModes[element.type])
-        }
-    }, [context])
-
-    return React.createElement(actionBars[mode], {
-        key: context.focus
-    })
+    return React.createElement(panel, { key: context.focus })
 }
 
 export default BottomBar

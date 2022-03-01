@@ -3,41 +3,28 @@ import { StyleSheet, View } from "react-native"
 import { Surface, TextInput, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { ScrollView } from "react-native-gesture-handler"
-import { Editor } from "@meme-bros/shared"
 import {
-    updateElementData,
-    useSharedContext,
     colors,
     textAlign,
     verticalAlign,
     fontFamilies,
     fontWeights
 } from "@meme-bros/client-lib"
-import { useActions } from "./utils/actions"
 import CommonElementActions from "./CommonElementActions"
 import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
 import Switch from "../../inputs/Switch"
+import { useTextboxElementActions } from "../utils/actions"
+import { useFocusedElement } from "../utils/canvas"
 
 function TextboxElementActions() {
-    const context = useSharedContext()
-
-    const element = context.canvas.elements[
-        context.focus || -1
-    ] as Editor.PickElement<"textbox">
-
     const theme = useTheme()
 
     const bottomSheetRef = useRef<BottomSheet>(null)
 
-    const { action } = useActions({ bottomSheetRef })
+    const { setData } = useTextboxElementActions()
 
-    const setData = (
-        data: Partial<Editor.PickElement<"textbox">["data"]>
-    ) => {
-        context.events.emit("history.push")
-        context.set(updateElementData(context, element, data))
-    }
+    const element = useFocusedElement<"textbox">()
 
     if (!element || element.type !== "textbox") {
         return <></>
@@ -60,7 +47,7 @@ function TextboxElementActions() {
                 onChangeText={(text: string) => setData({ text })}
             />
             <View style={styles.actions}>
-                <CommonElementActions action={action}/>
+                <CommonElementActions bottomSheet={bottomSheetRef}/>
             </View>
             <ScrollView style={styles.scrollActions}>
                 <Select

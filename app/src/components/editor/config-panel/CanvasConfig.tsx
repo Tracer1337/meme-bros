@@ -1,20 +1,13 @@
 import React from "react"
 import { StyleSheet } from "react-native"
-import { Editor } from "@meme-bros/shared"
-import { updateCanvasBase, useSharedContext } from "@meme-bros/client-lib"
+import { useSharedContext } from "@meme-bros/client-lib"
 import Switch from "../../inputs/Switch"
+import { useCanvasActions } from "../utils/actions"
 
 function CanvasConfig() {
     const context = useSharedContext()
-
-    const setBase = (base: Partial<Editor.CanvasBase>) => {
-        if (!context.canvas.base) return
-        context.events.emit("history.push")
-        context.set(updateCanvasBase(context, {
-            ...context.canvas.base,
-            ...base
-        }))
-    }
+    
+    const { setBase } = useCanvasActions()
 
     return (
         <>

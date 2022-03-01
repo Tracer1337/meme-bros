@@ -1,24 +1,15 @@
 import React from "react"
 import { StyleSheet, View } from "react-native"
-import { Editor } from "@meme-bros/shared"
-import { updateElementData, useSharedContext } from "@meme-bros/client-lib"
 import CommonElementActions from "./CommonElementActions"
 import NumberInput from "../../inputs/NumberInput"
 import Switch from "../../inputs/Switch"
+import { useImageElementActions } from "../utils/actions"
+import { useFocusedElement } from "../utils/canvas"
 
 function ImageElementActions() {
-    const context = useSharedContext()
+    const { setData } = useImageElementActions()
 
-    const element = context.canvas.elements[
-        context.focus || -1
-    ] as Editor.PickElement<"image">
-
-    const setData = (
-        data: Partial<Editor.PickElement<"image">["data"]>
-    ) => {
-        context.events.emit("history.push")
-        context.set(updateElementData(context, element, data))
-    }
+    const element = useFocusedElement<"image">()
 
     if (!element || element.type !== "image") {
         return <></>

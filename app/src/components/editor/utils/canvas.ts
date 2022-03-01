@@ -1,5 +1,5 @@
 import { Editor, getMimeTypeFromDataURI } from "@meme-bros/shared"
-import { makeId, getDefaultDataByType, useModule } from "@meme-bros/client-lib"
+import { makeId, getDefaultDataByType, useModule, useSharedContext } from "@meme-bros/client-lib"
 
 export function useCanvasUtils() {
     const storage = useModule("storage")
@@ -42,4 +42,12 @@ export function useCanvasUtils() {
     }
 
     return { createCanvasElement }
+}
+
+export function useFocusedElement<T extends Editor.CanvasElement["type"]>() {
+    const context = useSharedContext()
+
+    return context.canvas.elements[
+        context.focus ?? -1
+    ] as Editor.PickElement<T> | undefined
 }

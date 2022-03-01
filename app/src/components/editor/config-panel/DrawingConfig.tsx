@@ -1,18 +1,15 @@
 import React from "react"
-import { SharedContext, useSharedContext, colors } from "@meme-bros/client-lib"
+import { StyleSheet } from "react-native"
+import { IconButton } from "react-native-paper"
+import { useSharedContext, colors } from "@meme-bros/client-lib"
 import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
-import { IconButton } from "react-native-paper"
-import { StyleSheet } from "react-native"
+import { useDrawingActions } from "../utils/actions"
 
 function DrawingConfig() {
     const context = useSharedContext()
 
-    const setData = (
-        drawing: Partial<SharedContext.ContextValue["drawing"]>
-    ) => {
-        context.set({ drawing })
-    }
+    const { setData } = useDrawingActions()
 
     return (
         <>

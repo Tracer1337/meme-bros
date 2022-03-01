@@ -2,37 +2,21 @@ import React, { useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { Surface, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { Editor } from "@meme-bros/shared"
-import {
-    updateElementData,
-    useSharedContext,
-    colors,
-    shapeVariants
-} from "@meme-bros/client-lib"
-import { useActions } from "./utils/actions"
+import { colors, shapeVariants } from "@meme-bros/client-lib"
 import CommonElementActions from "./CommonElementActions"
 import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
+import { useShapeElementActions } from "../utils/actions"
+import { useFocusedElement } from "../utils/canvas"
 
 function ShapeElementActions() {
-    const context = useSharedContext()
-
-    const element = context.canvas.elements[
-        context.focus || -1
-    ] as Editor.PickElement<"shape">
-
     const theme = useTheme()
 
     const bottomSheetRef = useRef<BottomSheet>(null)
 
-    const { action } = useActions({ bottomSheetRef })
+    const { setData } = useShapeElementActions()
 
-    const setData = (
-        data: Partial<Editor.PickElement<"shape">["data"]>
-    ) => {
-        context.events.emit("history.push")
-        context.set(updateElementData(context, element, data))
-    }
+    const element = useFocusedElement<"shape">()
 
     if (!element || element.type !== "shape") {
         return <></>
@@ -55,7 +39,7 @@ function ShapeElementActions() {
                 onChange={(borderColor) => setData({ borderColor })}
             />
             <View style={styles.actions}>
-                <CommonElementActions action={action}/>
+                <CommonElementActions bottomSheet={bottomSheetRef}/>
             </View>
             <Select
                 style={styles.input}

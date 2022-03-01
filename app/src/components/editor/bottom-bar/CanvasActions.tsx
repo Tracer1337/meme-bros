@@ -1,20 +1,17 @@
-import React, { useRef, useState } from "react"
+import React, { useRef } from "react"
 import { View, StyleSheet } from "react-native"
 import { useNavigate } from "react-router-native"
-import { Surface, useTheme } from "react-native-paper"
+import { IconButton, Surface, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { Editor } from "@meme-bros/shared"
 import {
     clearCanvas,
     enableDrawing,
-    updateCanvasBase,
-    useListeners,
     useModule,
     useSharedContext
 } from "@meme-bros/client-lib"
-import { useCanvasUtils } from "../utils/canvas"
-import { useActions } from "./utils/actions"
 import Switch from "../../inputs/Switch"
+import { useCallbacks } from "./utils/callbacks"
+import { useCanvasActions } from "../utils/actions"
 
 function CanvasActions() {
     const context = useSharedContext()
@@ -24,45 +21,17 @@ function CanvasActions() {
     const core = useModule("core")
 
     const navigate = useNavigate()
-    
-    const { createCanvasElement } = useCanvasUtils()
-
+        
     const bottomSheetRef = useRef<BottomSheet>(null)
 
-    const { action } = useActions({ bottomSheetRef })
-    
-    const [isGenerating, setIsGenerating] = useState(false)
+    const callback = useCallbacks(bottomSheetRef)
 
-    const handleElementCreate = async (type: Editor.CanvasElement["type"]) => {
-        if (!type) {
-            return
-        }
-        const partial = await createCanvasElement(type)
-        if (!partial) {
-            return
-        }
-        context.events.emit("element.create", partial)
-    }
-
-    const handleGenerate = async () => {
-        bottomSheetRef.current?.collapse()
-        setIsGenerating(true)
-        await new Promise(requestAnimationFrame)
-        context.events.emit("canvas.render")
-    }
-
-    const setBase = (base: Partial<Editor.CanvasBase>) => {
-        if (!context.canvas.base) return
-        context.events.emit("history.push")
-        context.set(updateCanvasBase(context, {
-            ...context.canvas.base,
-            ...base
-        }))
-    }
-
-    useListeners(context.events, [
-        ["canvas.render.done", () => setIsGenerating(false)]
-    ])
+    const {
+        createElement,
+        setBase,
+        render,
+        isRendering
+    } = useCanvasActions()
 
     return (
         <BottomSheet
@@ -75,21 +44,50 @@ function CanvasActions() {
             }}
         >
             <View style={styles.actions}>
-                {action("check", handleGenerate, {
-                    loading: isGenerating,
-                    disabled: !core?.render,
-                    color: theme.colors.accent
-                })}
-                {action("undo", () => context.events.emit("history.pop"))}
-                {action("format-color-text", () => handleElementCreate("textbox"))}
-                {action("image", () => handleElementCreate("image"))}
-                {action("shape", () => handleElementCreate("shape"))}
-                {action("lead-pencil", () => context.set(enableDrawing()))}
-                {action("sticker", () => context.events.emit("stickers.open"))}
-                {action("delete", () => {
-                    navigate("/")
-                    context.set(clearCanvas())
-                })}
+                <IconButton
+                    color={theme.colors.accent}
+                    icon="check"
+                    onPress={callback(render)}
+                    disabled={!core?.render}
+                />
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="undo"
+                    onPress={callback(() => context.events.emit("history.pop"))}
+                />
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="format-color-text"
+                    onPress={callback(() => createElement("textbox"))}
+                />
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="image"
+                    onPress={callback(() => createElement("image"))}
+                />
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="shape"
+                    onPress={callback(() => createElement("shape"))}
+                />
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="lead-pencil"
+                    onPress={callback(() => context.set(enableDrawing()))}
+                />
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="sticker"
+                    onPress={callback(() => context.events.emit("stickers.open"))}
+                />
+                <IconButton
+                    color={theme.colors.onSurface}
+                    icon="delete"
+                    onPress={callback(() => {
+                        navigate("/")
+                        context.set(clearCanvas())
+                    })}
+                />
             </View>
             {context.canvas.base && (
                 <>

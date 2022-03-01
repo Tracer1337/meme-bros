@@ -1,29 +1,16 @@
 import React from "react"
 import { StyleSheet, View } from "react-native"
-import { Editor } from "@meme-bros/shared"
-import {
-    updateElementData,
-    useSharedContext,
-    colors,
-    shapeVariants
-} from "@meme-bros/client-lib"
+import { colors, shapeVariants } from "@meme-bros/client-lib"
 import CommonElementActions from "./CommonElementActions"
 import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
+import { useShapeElementActions } from "../utils/actions"
+import { useFocusedElement } from "../utils/canvas"
 
 function ShapeElementActions() {
-    const context = useSharedContext()
+    const { setData } = useShapeElementActions()
 
-    const element = context.canvas.elements[
-        context.focus || -1
-    ] as Editor.PickElement<"shape">
-
-    const setData = (
-        data: Partial<Editor.PickElement<"shape">["data"]>
-    ) => {
-        context.events.emit("history.push")
-        context.set(updateElementData(context, element, data))
-    }
+    const element = useFocusedElement<"shape">()
 
     if (!element || element.type !== "shape") {
         return <></>

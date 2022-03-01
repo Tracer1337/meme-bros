@@ -1,16 +1,14 @@
-import React, { useState } from "react"
+import React from "react"
 import { StyleSheet } from "react-native"
 import { useNavigate } from "react-router-native"
 import { Divider, IconButton, Surface, useTheme } from "react-native-paper"
-import { Editor } from "@meme-bros/shared"
 import {
     clearCanvas,
     enableDrawing,
-    useListeners,
     useModule,
     useSharedContext
 } from "@meme-bros/client-lib"
-import { useCanvasUtils } from "../utils/canvas"
+import { useCanvasActions } from "../utils/actions"
 
 function ItemPanel() {
     const context = useSharedContext()
@@ -20,51 +18,32 @@ function ItemPanel() {
     const core = useModule("core")
 
     const navigate = useNavigate()
+    
+    const {
+        createElement,
+        render,
+        isRendering
+    } = useCanvasActions()
 
-    const { createCanvasElement } = useCanvasUtils()
-
-    const [isGenerating, setIsGenerating] = useState(false)
-
-    const handleElementCreate = async (type: Editor.CanvasElement["type"]) => {
-        if (!type) {
-            return
-        }
-        const partial = await createCanvasElement(type)
-        if (!partial) {
-            return
-        }
-        context.events.emit("element.create", partial)
-    }
-
-    const handleGenerate = async () => {
-        setIsGenerating(true)
-        await new Promise(requestAnimationFrame)
-        context.events.emit("canvas.render")
-    }
-
-    useListeners(context.events, [
-        ["canvas.render.done", () => setIsGenerating(false)]
-    ])
-  
     return (
         <Surface style={styles.container}>
             <IconButton
                 style={styles.icon}
                 color={theme.colors.onSurface}
                 icon="format-color-text"
-                onPress={() => handleElementCreate("textbox")}
+                onPress={() => createElement("textbox")}
             />
             <IconButton
                 style={styles.icon}
                 color={theme.colors.onSurface}
                 icon="image"
-                onPress={() => handleElementCreate("image")}
+                onPress={() => createElement("image")}
             />
             <IconButton
                 style={styles.icon}
                 color={theme.colors.onSurface}
                 icon="shape"
-                onPress={() => handleElementCreate("shape")}
+                onPress={() => createElement("shape")}
             />
             <IconButton
                 style={styles.icon}
@@ -83,8 +62,8 @@ function ItemPanel() {
                 style={styles.icon}
                 color={theme.colors.accent}
                 icon="check"
-                onPress={handleGenerate}
-                isLoading={isGenerating}
+                onPress={render}
+                isLoading={isRendering}
                 disabled={!core?.render}
             />
             <IconButton

@@ -2,32 +2,20 @@ import React, { useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { Surface, useTheme } from "react-native-paper"
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
-import { Editor } from "@meme-bros/shared"
-import { updateElementData, useSharedContext } from "@meme-bros/client-lib"
-import { useActions } from "./utils/actions"
 import CommonElementActions from "./CommonElementActions"
 import NumberInput from "../../inputs/NumberInput"
 import Switch from "../../inputs/Switch"
+import { useImageElementActions } from "../utils/actions"
+import { useFocusedElement } from "../utils/canvas"
 
 function ImageElementActions() {
-    const context = useSharedContext()
-
-    const element = context.canvas.elements[
-        context.focus || -1
-    ] as Editor.PickElement<"image">
-
     const theme = useTheme()
-
+    
     const bottomSheetRef = useRef<BottomSheet>(null)
-
-    const { action } = useActions({ bottomSheetRef })
-
-    const setData = (
-        data: Partial<Editor.PickElement<"image">["data"]>
-    ) => {
-        context.events.emit("history.push")
-        context.set(updateElementData(context, element, data))
-    }
+    
+    const { setData } = useImageElementActions()
+    
+    const element = useFocusedElement<"image">()
 
     if (!element || element.type !== "image") {
         return <></>
@@ -50,7 +38,7 @@ function ImageElementActions() {
                 onChange={(borderRadius) => setData({ borderRadius })}
             />
             <View style={styles.actions}>
-                <CommonElementActions action={action}/>
+                <CommonElementActions bottomSheet={bottomSheetRef}/>
             </View>
             <BottomSheetView style={{ flex: 1 }}>
                 <Switch
