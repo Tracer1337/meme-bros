@@ -1,0 +1,62 @@
+import React from "react"
+import { StyleSheet, View } from "react-native"
+import { Editor } from "@meme-bros/shared"
+import { updateElementData, useSharedContext } from "@meme-bros/client-lib"
+import CommonElementActions from "./CommonElementActions"
+import NumberInput from "../../inputs/NumberInput"
+import Switch from "../../inputs/Switch"
+
+function ImageElementActions() {
+    const context = useSharedContext()
+
+    const element = context.canvas.elements[
+        context.focus || -1
+    ] as Editor.PickElement<"image">
+
+    const setData = (
+        data: Partial<Editor.PickElement<"image">["data"]>
+    ) => {
+        context.events.emit("history.push")
+        context.set(updateElementData(context, element, data))
+    }
+
+    if (!element || element.type !== "image") {
+        return <></>
+    }
+
+    return (
+        <>
+            <View style={styles.actions}>
+                <CommonElementActions/>
+            </View>
+            <NumberInput
+                style={styles.input}
+                label="Border Radius"
+                mode="outlined"
+                value={element.data.borderRadius}
+                onChange={(borderRadius) => setData({ borderRadius })}
+            />
+            <Switch
+                style={styles.input}
+                label="Keep Aspect Ratio"
+                value={element.data.keepAspectRatio}
+                onChange={(keepAspectRatio) => setData({ keepAspectRatio })}
+            />
+        </>
+    )
+}
+
+const styles = StyleSheet.create({
+    actions: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginBottom: 8
+    },
+
+    input: {
+        margin: 8,
+        marginTop: 0
+    }
+})
+
+export default ImageElementActions

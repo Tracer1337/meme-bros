@@ -110,6 +110,7 @@ function CanvasActions() {
         </BottomSheet>
     )
 }
+
 const styles = StyleSheet.create({
     actions: {
         flexDirection: "row",

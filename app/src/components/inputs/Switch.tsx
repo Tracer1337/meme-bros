@@ -9,12 +9,7 @@ function Switch({ value, onChange, label, ...rest }: OverwriteProps<
 >) {
     return (
         <View style={styles.container}>
-            <SwitchLib
-                keyboardType="numeric"
-                value={value}
-                onChange={(event: any) => onChange(event.nativeEvent.value)}
-                {...rest}
-            />
+            <SwitchLib value={value} onValueChange={onChange} {...rest}/>
             {label && <Text style={styles.label}>{label}</Text>}
         </View>
     )
