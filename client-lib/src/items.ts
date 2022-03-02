@@ -13,10 +13,6 @@ export const colors: Item[] = [
     { label: "Purple", value: "#9b59b6" }
 ]
 
-export const extraColors = {
-    transparent: { label: "Transparent", value: "transparent" } as Item
-}
-
 export const fontFamilies: Item[] = [
     { label: "Impact", value: "Impact" },
     { label: "Arial", value: "Arial" },

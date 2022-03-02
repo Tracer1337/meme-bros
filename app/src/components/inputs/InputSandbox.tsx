@@ -67,6 +67,7 @@ function InputSandbox() {
                     onChange={setColor}
                     label="Color"
                     style={{ marginBottom: 8 }}
+                    optional
                 />
                 <FontFamilySelect
                     value={fontFamily}

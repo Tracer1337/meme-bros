@@ -45,12 +45,14 @@ function ShapeElementActions() {
                 label="Border Color"
                 value={element.data.borderColor}
                 onChange={(borderColor) => setData({ borderColor })}
+                optional
             />
             <ColorSelect
                 style={styles.input}
                 label="Background Color"
                 value={element.data.backgroundColor}
                 onChange={(backgroundColor) => setData({ backgroundColor })}
+                optional
             />
             <NumberInput
                 style={styles.input}

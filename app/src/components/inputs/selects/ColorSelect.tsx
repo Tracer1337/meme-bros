@@ -1,31 +1,26 @@
-import React, { useMemo } from "react"
+import React from "react"
 import { TouchableOpacity, View, ViewStyle } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { Text, useTheme } from "react-native-paper"
-import { colors, extraColors } from "@meme-bros/client-lib"
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import { colors } from "@meme-bros/client-lib"
 
 function ColorSelect({
     value,
     onChange,
     label,
-    style,
-    includeTransparent
+    optional,
+    style
 }: {
     value: string,
     onChange: (newValue: string) => void,
     label: string,
+    optional?: boolean
     style?: ViewStyle,
-    includeTransparent?: boolean
 }) {
+    const theme = useTheme()
+    
     const styles = useStyles()
-
-    const items = useMemo(() => {
-        const items = [...colors]
-        if (includeTransparent) {
-            items.unshift(extraColors.transparent)
-        }
-        return items
-    }, [includeTransparent])
 
     return (
         <View style={[style, styles.container]}>
@@ -34,11 +29,24 @@ function ColorSelect({
                 horizontal
                 showsHorizontalScrollIndicator={false}
             >
-                {items.map((item) => (
+                {optional && (
+                    <TouchableOpacity
+                        onPress={() => onChange("transparent")}
+                        style={styles.item}
+                    >
+                        <Icon
+                            name="cancel"
+                            size={24}
+                            color={theme.colors.onSurface}
+                        />
+                    </TouchableOpacity>
+                )}
+                {colors.map((item) => (
                     <TouchableOpacity
                         key={item.value}
                         onPress={() => onChange(item.value)}
                         style={[
+                            styles.item,
                             styles.dot,
                             item.value === value && styles.selected,
                             { backgroundColor: item.value }
@@ -67,13 +75,16 @@ function useStyles() {
             fontSize: 12
         },
 
-        dot: {
+        item: {
             width: 24,
             height: 24,
+            marginRight: 8
+        },
+
+        dot: {
             borderRadius: 12,
             borderWidth: 1,
-            borderColor: theme.colors.onSurface,
-            marginRight: 8
+            borderColor: theme.colors.onSurface
         },
 
         selected: {
