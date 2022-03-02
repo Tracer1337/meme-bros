@@ -2,7 +2,6 @@ import React from "react"
 import { StyleSheet, View } from "react-native"
 import { TextInput } from "react-native-paper"
 import {
-    colors,
     textAlign,
     verticalAlign,
     fontFamilies,
@@ -14,6 +13,7 @@ import NumberInput from "../../inputs/NumberInput"
 import Switch from "../../inputs/Switch"
 import { useTextboxElementActions } from "../utils/actions"
 import { useFocusedElement } from "../utils/canvas"
+import ColorSelect from "../../inputs/ColorSelect"
 
 function TextboxElementActions() {
     const { setData } = useTextboxElementActions()
@@ -36,9 +36,8 @@ function TextboxElementActions() {
                 value={element.data.text}
                 onChangeText={(text: string) => setData({ text })}
             />
-            <Select
+            <ColorSelect
                 style={styles.input}
-                items={colors}
                 label="Color"
                 value={element.data.color}
                 onChange={(color) => setData({ color })}
@@ -52,9 +51,8 @@ function TextboxElementActions() {
                     outlineWidth: Math.min(value, 5)
                 })}
             />
-            <Select
+            <ColorSelect
                 style={styles.input}
-                items={colors}
                 label="Outline Color"
                 value={element.data.outlineColor}
                 onChange={(outlineColor) => setData({ outlineColor })}

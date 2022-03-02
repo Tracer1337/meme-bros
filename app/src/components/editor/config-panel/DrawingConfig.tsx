@@ -1,10 +1,10 @@
 import React from "react"
 import { StyleSheet } from "react-native"
 import { IconButton } from "react-native-paper"
-import { useSharedContext, colors } from "@meme-bros/client-lib"
-import Select from "../../inputs/Select"
+import { useSharedContext } from "@meme-bros/client-lib"
 import NumberInput from "../../inputs/NumberInput"
 import { useDrawingActions } from "../utils/actions"
+import ColorSelect from "../../inputs/ColorSelect"
 
 function DrawingConfig() {
     const context = useSharedContext()
@@ -20,9 +20,8 @@ function DrawingConfig() {
                     drawing: { isDrawing: false }
                 })}
             />
-            <Select
+            <ColorSelect
                 style={styles.input}
-                items={colors}
                 label="Color"
                 value={context.drawing.color}
                 onChange={(color) => setData({ color })}

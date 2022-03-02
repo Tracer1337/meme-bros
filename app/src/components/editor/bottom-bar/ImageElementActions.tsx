@@ -24,28 +24,28 @@ function ImageElementActions() {
     return (
         <BottomSheet
             ref={bottomSheetRef}
-            snapPoints={[150, 210]}
+            snapPoints={[130, 210]}
             backgroundComponent={Surface}
             handleIndicatorStyle={{
                 backgroundColor: theme.colors.onSurface
             }}
         >
-            <NumberInput
-                style={styles.input}
-                label="Border Radius"
-                mode="outlined"
-                value={element.data.borderRadius}
-                onChange={(borderRadius) => setData({ borderRadius })}
-            />
-            <View style={styles.actions}>
-                <CommonElementActions bottomSheet={bottomSheetRef}/>
-            </View>
-            <BottomSheetView style={{ flex: 1 }}>
-                <Switch
+            <Switch
                     style={styles.input}
                     label="Keep Aspect Ratio"
                     value={element.data.keepAspectRatio}
                     onChange={(keepAspectRatio) => setData({ keepAspectRatio })}
+                />
+            <View style={styles.actions}>
+                <CommonElementActions bottomSheet={bottomSheetRef}/>
+            </View>
+            <BottomSheetView style={{ flex: 1 }}>
+                <NumberInput
+                    style={styles.input}
+                    label="Border Radius"
+                    mode="outlined"
+                    value={element.data.borderRadius}
+                    onChange={(borderRadius) => setData({ borderRadius })}
                 />
             </BottomSheetView>
         </BottomSheet>

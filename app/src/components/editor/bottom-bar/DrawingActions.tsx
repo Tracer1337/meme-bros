@@ -2,11 +2,11 @@ import React, { useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { IconButton, Surface, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { useSharedContext, colors } from "@meme-bros/client-lib"
-import Select from "../../inputs/Select"
+import { useSharedContext } from "@meme-bros/client-lib"
 import NumberInput from "../../inputs/NumberInput"
 import { useCallbacks } from "./utils/callbacks"
 import { useDrawingActions } from "../utils/actions"
+import ColorSelect from "../../inputs/ColorSelect"
 
 function DrawingActions() {
     const context = useSharedContext()
@@ -22,15 +22,14 @@ function DrawingActions() {
     return (
         <BottomSheet
             ref={bottomSheetRef}
-            snapPoints={[150, 240]}
+            snapPoints={[169, 240]}
             backgroundComponent={Surface}
             handleIndicatorStyle={{
                 backgroundColor: theme.colors.onSurface
             }}
         >
-            <Select
+            <ColorSelect
                 style={styles.input}
-                items={colors}
                 label="Color"
                 value={context.drawing.color}
                 onChange={(color) => setData({ color })}

@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from "react-native"
+import { StyleProp, View, ViewProps, ViewStyle } from "react-native"
 import { useTheme } from "react-native-paper"
 
 function Screen({ children, style, ...props }: React.PropsWithChildren<{
@@ -9,13 +9,13 @@ function Screen({ children, style, ...props }: React.PropsWithChildren<{
 
     return (
         <View
-            style={StyleSheet.flatten([
+            style={[
                 {
                     backgroundColor: theme.colors.background,
                     flexGrow: 1
                 },
                 style
-            ])}
+            ]}
             {...props}
         >
             { children }

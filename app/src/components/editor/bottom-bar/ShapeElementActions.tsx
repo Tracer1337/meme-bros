@@ -2,12 +2,13 @@ import React, { useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { Surface, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { colors, shapeVariants } from "@meme-bros/client-lib"
+import { shapeVariants } from "@meme-bros/client-lib"
 import CommonElementActions from "./CommonElementActions"
 import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
 import { useShapeElementActions } from "../utils/actions"
 import { useFocusedElement } from "../utils/canvas"
+import ColorSelect from "../../inputs/ColorSelect"
 
 function ShapeElementActions() {
     const theme = useTheme()
@@ -31,9 +32,8 @@ function ShapeElementActions() {
                 backgroundColor: theme.colors.onSurface
             }}
         >
-            <Select
+            <ColorSelect
                 style={styles.input}
-                items={colors}
                 label="Border Color"
                 value={element.data.borderColor}
                 onChange={(borderColor) => setData({ borderColor })}
@@ -48,9 +48,8 @@ function ShapeElementActions() {
                 value={element.data.variant}
                 onChange={(variant) => setData({ variant })}
             />
-            <Select
+            <ColorSelect
                 style={styles.input}
-                items={colors}
                 label="Background Color"
                 value={element.data.backgroundColor}
                 onChange={(backgroundColor) => setData({ backgroundColor })}

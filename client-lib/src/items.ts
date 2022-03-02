@@ -4,7 +4,6 @@ export type Item = {
 }
 
 export const colors: Item[] = [
-    { label: "Transparent", value: "transparent" },
     { label: "White", value: "#ffffff" },
     { label: "Black", value: "#000000" },
     { label: "Green", value: "#2ecc71" },
@@ -13,6 +12,10 @@ export const colors: Item[] = [
     { label: "Yellow", value: "#f1c40f" },
     { label: "Purple", value: "#9b59b6" }
 ]
+
+export const extraColors = {
+    transparent: { label: "Transparent", value: "transparent" } as Item
+}
 
 export const fontFamilies: Item[] = [
     { label: "Impact", value: "Impact" },

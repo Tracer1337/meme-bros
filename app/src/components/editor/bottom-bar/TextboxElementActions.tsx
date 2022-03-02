@@ -4,7 +4,6 @@ import { Surface, TextInput, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { ScrollView } from "react-native-gesture-handler"
 import {
-    colors,
     textAlign,
     verticalAlign,
     fontFamilies,
@@ -16,6 +15,7 @@ import NumberInput from "../../inputs/NumberInput"
 import Switch from "../../inputs/Switch"
 import { useTextboxElementActions } from "../utils/actions"
 import { useFocusedElement } from "../utils/canvas"
+import ColorSelect from "../../inputs/ColorSelect"
 
 function TextboxElementActions() {
     const theme = useTheme()
@@ -50,9 +50,8 @@ function TextboxElementActions() {
                 <CommonElementActions bottomSheet={bottomSheetRef}/>
             </View>
             <ScrollView style={styles.scrollActions}>
-                <Select
+                <ColorSelect
                     style={styles.input}
-                    items={colors}
                     label="Color"
                     value={element.data.color}
                     onChange={(color) => setData({ color })}
@@ -66,9 +65,8 @@ function TextboxElementActions() {
                         outlineWidth: Math.min(value, 5)
                     })}
                 />
-                <Select
+                <ColorSelect
                     style={styles.input}
-                    items={colors}
                     label="Outline Color"
                     value={element.data.outlineColor}
                     onChange={(outlineColor) => setData({ outlineColor })}
