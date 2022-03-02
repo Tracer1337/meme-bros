@@ -1,101 +1,68 @@
-import React, { useRef, useState } from "react"
-import { StyleSheet, View, ViewStyle } from "react-native"
-import { Menu, Text, TouchableRipple, useTheme } from "react-native-paper"
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import React from "react"
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { Chip, Text, useTheme } from "react-native-paper"
+import { ScrollView } from "react-native-gesture-handler"
+import { Item } from '@meme-bros/client-lib'
 
-export type Item = {
-    label: string,
-    value: string
-}
-
-function Select({ items, label, value, onChange, style }: {
+function Select({
+    items,
+    label,
+    value,
+    onChange,
+    style,
+    getItemStyles,
+    getItemTextStyles
+}: {
     items: Item[],
     value: string,
     label: string,
     onChange: (value: string) => void,
+    getItemStyles?: (item: Item) => ViewStyle,
+    getItemTextStyles?: (item: Item) => TextStyle,
     style?: ViewStyle
 }) {
-    const theme = useTheme()
+    const styles = useStyles()
 
-    const inputRef = useRef<View | null>()
-
-    const [isOpen, setIsOpen] = useState(false)
-    
     const currentItem = items.find((item) => item.value === value)
-    
-    const handleSelect = (item: Item) => {
-        onChange(item.value)
-        setIsOpen(false)
-    }
     
     if (!currentItem) {
         throw new Error(`Unknown value: '${value}'`)
     }
 
-    const input = (
-        <TouchableRipple
-            style={StyleSheet.flatten([styles.touchable, {
-                backgroundColor: theme.colors.surface,
-                borderRadius: theme.roundness
-            }])}
-            onPress={() => setIsOpen(true)}
-        >
-            <View style={styles.container} ref={(ref) => inputRef.current = ref}>
-                <View>
-                    <Text style={styles.label}>{label}</Text>
-                    <Text>{currentItem.label}</Text>
-                </View>
-                <Icon
-                    name={isOpen ? "menu-up" : "menu-down"}
-                    color="#ffffff"
-                    size={24}
-                    style={styles.icon}
-                />
-            </View>
-        </TouchableRipple>
-    )
-
     return (
-        <View style={style}>
-            <Menu
-                visible={isOpen}
-                onDismiss={() => setIsOpen(false)}
-                anchor={input}
-            >
+        <View style={{
+            ...style,
+            ...styles.container
+        }}>
+            <Text style={styles.label}>{label}</Text>
+            <ScrollView>
                 {items.map((item) => (
-                    <Menu.Item
-                        key={item.value}
-                        onPress={() => handleSelect(item)}
-                        title={item.label}
-                    />
+                    <Chip
+                        style={getItemStyles?.(item)}
+                        textStyle={getItemTextStyles?.(item)}
+                        onPress={() => onChange(item.value)}
+                        selected={item.value === value}
+                    >
+                        {item.label}
+                    </Chip>
                 ))}
-            </Menu>
+            </ScrollView>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
-    touchable: {
-        height: 64
-    },
+function useStyles() {
+    const theme = useTheme()
 
-    container: {
-        padding: 12,
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        height: 64
-    },
-
-    label: {
-        fontSize: 12,
-        marginBottom: 2
-    },
-
-    icon: {
-        marginLeft: 16
-    }
-})
+    return StyleSheet.create({
+        container: {
+            backgroundColor: theme.colors.background
+        },
+        
+        label: {
+            marginBottom: 8
+        }
+    })
+}
 
 export default Select
