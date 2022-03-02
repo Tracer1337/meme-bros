@@ -1,6 +1,6 @@
 import React from "react"
 import { fontFamilies } from "@meme-bros/client-lib"
-import Select from "./Select"
+import Select from "../Select"
 
 function FontFamilySelect(props: Omit<
     React.ComponentProps<typeof Select>,

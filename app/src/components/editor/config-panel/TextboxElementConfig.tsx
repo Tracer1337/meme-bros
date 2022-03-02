@@ -1,19 +1,16 @@
 import React from "react"
 import { StyleSheet, View } from "react-native"
 import { TextInput } from "react-native-paper"
-import {
-    textAlign,
-    verticalAlign,
-    fontFamilies,
-    fontWeights
-} from "@meme-bros/client-lib"
 import CommonElementActions from "./CommonElementActions"
-import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
 import Switch from "../../inputs/Switch"
 import { useTextboxElementActions } from "../utils/actions"
 import { useFocusedElement } from "../utils/canvas"
-import ColorSelect from "../../inputs/ColorSelect"
+import ColorSelect from "../../inputs/selects/ColorSelect"
+import TextAlignSelect from "../../inputs/selects/TextAlignSelect"
+import VerticalAlignSelect from "../../inputs/selects/VerticalAlignSelect"
+import FontFamilySelect from "../../inputs/selects/FontFamilySelect"
+import FontWeightSelect from "../../inputs/selects/FontWeightSelect"
 
 function TextboxElementActions() {
     const { setData } = useTextboxElementActions()
@@ -57,30 +54,26 @@ function TextboxElementActions() {
                 value={element.data.outlineColor}
                 onChange={(outlineColor) => setData({ outlineColor })}
             />
-            <Select
+            <TextAlignSelect
                 style={styles.input}
-                items={textAlign}
                 label="Text Align"
                 value={element.data.textAlign}
                 onChange={(textAlign) => setData({ textAlign })}
             />
-            <Select
+            <VerticalAlignSelect
                 style={styles.input}
-                items={verticalAlign}
                 label="Vertical Align"
                 value={element.data.verticalAlign}
                 onChange={(verticalAlign) => setData({ verticalAlign })}
             />
-            <Select
+            <FontFamilySelect
                 style={styles.input}
-                items={fontFamilies}
                 label="Font Family"
                 value={element.data.fontFamily}
                 onChange={(fontFamily) => setData({ fontFamily })}
             />
-            <Select
+            <FontWeightSelect
                 style={styles.input}
-                items={fontWeights}
                 label="Font Weight"
                 value={element.data.fontWeight}
                 onChange={(fontWeight) => setData({ fontWeight })}

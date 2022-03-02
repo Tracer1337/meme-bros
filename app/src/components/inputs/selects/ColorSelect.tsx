@@ -33,16 +33,16 @@ function ColorSelect({
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style={{ flex: 1 }}
             >
                 {items.map((item) => (
                     <TouchableOpacity
+                        key={item.value}
                         onPress={() => onChange(item.value)}
-                        style={{
-                            ...styles.dot,
-                            ...(item.value === value && styles.selected),
-                            backgroundColor: item.value
-                        }}
+                        style={[
+                            styles.dot,
+                            item.value === value && styles.selected,
+                            { backgroundColor: item.value }
+                        ]}
                     >
                         <View/>
                     </TouchableOpacity>
@@ -57,7 +57,6 @@ function useStyles() {
     
     return {
         container: {
-            flex: 1,
             backgroundColor: theme.colors.background,
             padding: 12,
             borderRadius: theme.roundness

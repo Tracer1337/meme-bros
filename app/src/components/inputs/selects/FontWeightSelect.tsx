@@ -1,6 +1,6 @@
 import React from "react"
 import { fontWeights } from "@meme-bros/client-lib"
-import Select from "./Select"
+import Select from "../Select"
 
 function FontWeightSelect(props: Omit<
     React.ComponentProps<typeof Select>,

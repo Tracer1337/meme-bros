@@ -31,11 +31,11 @@ function ImageElementActions() {
             }}
         >
             <Switch
-                    style={styles.input}
-                    label="Keep Aspect Ratio"
-                    value={element.data.keepAspectRatio}
-                    onChange={(keepAspectRatio) => setData({ keepAspectRatio })}
-                />
+                style={styles.input}
+                label="Keep Aspect Ratio"
+                value={element.data.keepAspectRatio}
+                onChange={(keepAspectRatio) => setData({ keepAspectRatio })}
+            />
             <View style={styles.actions}>
                 <CommonElementActions bottomSheet={bottomSheetRef}/>
             </View>

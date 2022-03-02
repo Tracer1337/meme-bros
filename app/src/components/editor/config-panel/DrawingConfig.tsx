@@ -4,7 +4,7 @@ import { IconButton } from "react-native-paper"
 import { useSharedContext } from "@meme-bros/client-lib"
 import NumberInput from "../../inputs/NumberInput"
 import { useDrawingActions } from "../utils/actions"
-import ColorSelect from "../../inputs/ColorSelect"
+import ColorSelect from "../../inputs/selects/ColorSelect"
 
 function DrawingConfig() {
     const context = useSharedContext()

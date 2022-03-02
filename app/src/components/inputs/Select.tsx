@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { TextStyle, View, ViewStyle } from "react-native"
 import { Chip, Text, useTheme } from "react-native-paper"
 import { ScrollView } from "react-native-gesture-handler"
 import { Item } from '@meme-bros/client-lib'
@@ -30,18 +30,23 @@ function Select({
     }
 
     return (
-        <View style={{
-            ...style,
-            ...styles.container
-        }}>
+        <View style={[style, styles.container]}>
             <Text style={styles.label}>{label}</Text>
-            <ScrollView>
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+            >
                 {items.map((item) => (
                     <Chip
-                        style={getItemStyles?.(item)}
+                        key={item.value}
+                        style={[
+                            styles.item,
+                            item.value === value && styles.selected,
+                            getItemStyles?.(item)
+                        ]}
                         textStyle={getItemTextStyles?.(item)}
                         onPress={() => onChange(item.value)}
-                        selected={item.value === value}
+                        mode="outlined"
                     >
                         {item.label}
                     </Chip>
@@ -54,15 +59,26 @@ function Select({
 function useStyles() {
     const theme = useTheme()
 
-    return StyleSheet.create({
+    return {
         container: {
-            backgroundColor: theme.colors.background
+            backgroundColor: theme.colors.background,
+            padding: 12,
+            borderRadius: theme.roundness
         },
         
         label: {
-            marginBottom: 8
+            marginBottom: 8,
+            fontSize: 12
+        },
+
+        item: {
+            marginRight: 8
+        },
+
+        selected: {
+            backgroundColor: "rgba(255, 255, 255, 0.25)"
         }
-    })
+    }
 }
 
 export default Select

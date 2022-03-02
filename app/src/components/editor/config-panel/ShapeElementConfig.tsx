@@ -6,7 +6,7 @@ import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
 import { useShapeElementActions } from "../utils/actions"
 import { useFocusedElement } from "../utils/canvas"
-import ColorSelect from "../../inputs/ColorSelect"
+import ColorSelect from "../../inputs/selects/ColorSelect"
 
 function ShapeElementActions() {
     const { setData } = useShapeElementActions()

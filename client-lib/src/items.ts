@@ -35,12 +35,12 @@ export const shapeVariants: Item[] = [
 
 export const textAlign: Item[] = [
     { label: "Left", value: "left" },
-    { label: "Right", value: "right" },
-    { label: "Center", value: "center" }
+    { label: "Center", value: "center" },
+    { label: "Right", value: "right" }
 ]
 
 export const verticalAlign: Item[] = [
     { label: "Top", value: "top" },
-    { label: "Bottom", value: "bottom" },
-    { label: "Center", value: "center" }
+    { label: "Center", value: "center" },
+    { label: "Bottom", value: "bottom" }
 ]

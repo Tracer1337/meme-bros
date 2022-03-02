@@ -6,7 +6,7 @@ import { useSharedContext } from "@meme-bros/client-lib"
 import NumberInput from "../../inputs/NumberInput"
 import { useCallbacks } from "./utils/callbacks"
 import { useDrawingActions } from "../utils/actions"
-import ColorSelect from "../../inputs/ColorSelect"
+import ColorSelect from "../../inputs/selects/ColorSelect"
 
 function DrawingActions() {
     const context = useSharedContext()
