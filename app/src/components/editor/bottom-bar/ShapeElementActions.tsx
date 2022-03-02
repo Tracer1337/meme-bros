@@ -2,13 +2,12 @@ import React, { useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { Surface, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { shapeVariants } from "@meme-bros/client-lib"
 import CommonElementActions from "./CommonElementActions"
-import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
 import { useShapeElementActions } from "../utils/actions"
 import { useFocusedElement } from "../utils/canvas"
 import ColorSelect from "../../inputs/selects/ColorSelect"
+import ShapeSelect from "../../inputs/selects/ShapeSelect"
 
 function ShapeElementActions() {
     const theme = useTheme()
@@ -26,27 +25,26 @@ function ShapeElementActions() {
     return (
         <BottomSheet
             ref={bottomSheetRef}
-            snapPoints={[150, 380]}
+            snapPoints={[170, 410]}
             backgroundComponent={Surface}
             handleIndicatorStyle={{
                 backgroundColor: theme.colors.onSurface
             }}
         >
+            <ShapeSelect
+                style={styles.input}
+                label="Shape"
+                value={element.data.variant}
+                onChange={(variant) => setData({ variant })}
+            />
+            <View style={styles.actions}>
+                <CommonElementActions bottomSheet={bottomSheetRef}/>
+            </View>
             <ColorSelect
                 style={styles.input}
                 label="Border Color"
                 value={element.data.borderColor}
                 onChange={(borderColor) => setData({ borderColor })}
-            />
-            <View style={styles.actions}>
-                <CommonElementActions bottomSheet={bottomSheetRef}/>
-            </View>
-            <Select
-                style={styles.input}
-                items={shapeVariants}
-                label="Shape"
-                value={element.data.variant}
-                onChange={(variant) => setData({ variant })}
             />
             <ColorSelect
                 style={styles.input}

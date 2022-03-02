@@ -1,12 +1,11 @@
 import React from "react"
 import { StyleSheet, View } from "react-native"
-import { shapeVariants } from "@meme-bros/client-lib"
 import CommonElementActions from "./CommonElementActions"
-import Select from "../../inputs/Select"
 import NumberInput from "../../inputs/NumberInput"
 import { useShapeElementActions } from "../utils/actions"
 import { useFocusedElement } from "../utils/canvas"
 import ColorSelect from "../../inputs/selects/ColorSelect"
+import ShapeSelect from "../../inputs/selects/ShapeSelect"
 
 function ShapeElementActions() {
     const { setData } = useShapeElementActions()
@@ -28,9 +27,8 @@ function ShapeElementActions() {
                 value={element.data.borderColor}
                 onChange={(borderColor) => setData({ borderColor })}
             />
-            <Select
+            <ShapeSelect
                 style={styles.input}
-                items={shapeVariants}
                 label="Shape"
                 value={element.data.variant}
                 onChange={(variant) => setData({ variant })}
