@@ -68,6 +68,7 @@ function TemplateTabs() {
             renderTabBar={renderTabBar}
             onIndexChange={setIndex}
             initialLayout={{ width: dimensions.width }}
+            lazy
         />
     )
 } 
