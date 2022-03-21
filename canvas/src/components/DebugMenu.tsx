@@ -1,7 +1,20 @@
-import { useState } from "react"
 import { Button, Paper, Typography, TextField, styled, Box } from "@mui/material"
-import { copyElement, enableDrawing, useSharedContext } from "@meme-bros/client-lib"
+import { Editor } from "@meme-bros/shared"
+import {
+    copyElement,
+    removeElement,
+    enableDrawing,
+    useSharedContext
+} from "@meme-bros/client-lib"
 import Switch from "./inputs/Switch"
+
+function useFocusedElement<T extends Editor.CanvasElement["type"]>() {
+    const context = useSharedContext()
+
+    return context.canvas.elements[
+        context.focus ?? -1
+    ] as Editor.PickElement<T> | undefined
+}
 
 const Action = styled(Button)(({ theme }) => ({
     marginBottom: theme.spacing(1),
@@ -12,12 +25,12 @@ const Action = styled(Button)(({ theme }) => ({
 function DebugMenu() {
     const context = useSharedContext()
 
-    const [copyId, setCopyId] = useState(0)
+    const element = useFocusedElement()
 
     const event = (event: any, data?: any) => () => {
         context.events.emit(event, data)
     }
-    
+
     return (
         <Paper sx={{
             padding: 3,
@@ -29,6 +42,14 @@ function DebugMenu() {
             <Action onClick={event("element.create.default", "textbox")}>Add Textbox</Action>
             <Action onClick={event("element.create.default", "image")}>Add Image</Action>
             <Action onClick={event("element.create.default", "shape")}>Add Shape</Action>
+
+            {element && (
+                <>
+                    <Typography variant="h5" sx={{ mb: 2 }}>{element.type}</Typography>
+                    <Action onClick={() => context.set(copyElement(context, element.id))}>Copy</Action>
+                    <Action onClick={() => context.set(removeElement(context, element.id))}>Remove</Action>
+                </>
+            )}
 
             <Typography variant="h5" sx={{ mb: 2 }}>Drawing</Typography>
             <Switch
@@ -60,14 +81,6 @@ function DebugMenu() {
                     canvas: { height: parseInt(event.target.value) }
                 })}
             />
-            <TextField
-                label="Copy ID"
-                type="number"
-                margin="dense"
-                value={copyId}
-                onChange={(event) => setCopyId(parseInt(event.target.value))}
-            />
-            <Action onClick={() => context.set(copyElement(context, copyId))}>Copy</Action>
 
             <Typography variant="h5" sx={{ mb: 2 }}>History</Typography>
             <Action onClick={event("history.push")}>Push</Action>
