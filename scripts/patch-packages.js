@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const NODE_MODULES = "node_modules"
-const WEB = "web"
 const ADMIN = "admin"
 const STYLIS = "stylis"
 const REACT_HOOK_FORM = "react-hook-form"
@@ -33,7 +32,7 @@ function patchStylisPackage() {
 
 function patchReactHookFormPackage() {
     patchPackageJSON(
-        path.join(__dirname, "..", WEB, ADMIN, NODE_MODULES, REACT_HOOK_FORM),
+        path.join(__dirname, "..", ADMIN, NODE_MODULES, REACT_HOOK_FORM),
         (packageFile) => {
             packageFile.module = packageFile.main
         }

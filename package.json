@@ -11,6 +11,7 @@
   },
   "workspaces": {
     "packages": [
+      "admin",
       "api/admin",
       "api/lib",
       "api/public",
@@ -23,8 +24,7 @@
       "core/http",
       "mobile",
       "scripts",
-      "shared",
-      "web/admin"
+      "shared"
     ],
     "nohoist": [
       "**/react",
