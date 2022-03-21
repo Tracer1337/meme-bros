@@ -18,13 +18,13 @@ API accessible by everyone (mainly used by ``app``)
 
 ``api/admin``
 
-API protected by credentials (mainly used by ``web/admin``)
+API protected by credentials (mainly used by ``admin``)
 
-``web/website``
+``web``
 
 Web integration for ``app`` + Landing Page
 
-``web/admin``
+``admin``
 
 Templates-Management using web integration for ``app``
 
