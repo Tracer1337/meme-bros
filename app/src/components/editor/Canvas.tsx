@@ -146,6 +146,7 @@ function Canvas() {
     ])
     
     return (
+        // @ts-ignore
         <WebView
             originWhitelist={["*"]}
             source={{ uri: canvasMod.uri }}

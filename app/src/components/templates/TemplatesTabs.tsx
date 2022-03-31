@@ -27,6 +27,7 @@ const renderTabBar = (props: any) => {
     
     return (
         <Surface>
+            {/* @ts-ignore */}
             <TabBar
                 {...props}
                 indicatorStyle={{
