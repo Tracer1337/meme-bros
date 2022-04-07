@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "MaterialCommunityIcons";
+    src: url(./assets/fonts/MaterialCommunityIcons.ttf) format("truetype");
+}
+
+#app > div {
+    width: 100%;
+    height: 100%;
+}

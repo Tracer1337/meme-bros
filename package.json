@@ -24,7 +24,8 @@
       "core/http",
       "mobile",
       "scripts",
-      "shared"
+      "shared",
+      "web"
     ],
     "nohoist": [
       "**/react",

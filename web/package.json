@@ -1,0 +1,60 @@
+{
+  "name": "@meme-bros/web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@meme-bros/api-sdk": "*",
+    "@meme-bros/app": "*",
+    "@meme-bros/canvas": "*",
+    "@meme-bros/client-lib": "*",
+    "@meme-bros/core-types": "*",
+    "@meme-bros/shared": "*",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "http-proxy": "^1.18.1",
+    "immer": "^9.0.12",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-native-scalable-image": "^1.1.0",
+    "react-native-web": "^0.17.5",
+    "react-native-web-webview": "^1.0.2",
+    "react-scripts": "4.0.3",
+    "tsdef": "^0.0.14",
+    "typescript": "^4.1.2"
+  },
+  "devDependencies": {
+    "@craco/craco": "^6.4.3",
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "open": "^8.4.0",
+    "react-native-monorepo-tools": "^1.1.4"
+  },
+  "scripts": {
+    "dev": "yarn start",
+    "start": "cross-env PORT=4000 BROWSER=none concurrently \"npm:start:proxy\" \"npm:start:canvas\" \"npm:start:app\"",
+    "start:app": "craco start",
+    "start:canvas": "cross-env PORT=3001 PUBLIC_URL=/iframe yarn workspace @meme-bros/canvas dev",
+    "start:proxy": "node proxy.js",
+    "build": "craco build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -22,7 +22,7 @@ API protected by credentials (mainly used by ``admin``)
 
 ``web``
 
-Web integration for ``app`` + Landing Page
+Web integration for ``app``
 
 ``admin``
 
