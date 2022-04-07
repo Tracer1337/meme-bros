@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Grid, Paper, TextField } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
+import WebApp from "@meme-bros/web"
 import { useListeners, useSharedContext } from "@meme-bros/client-lib"
 import * as API from "@meme-bros/api-sdk/dist/admin"
 import * as PublicAPI from "@meme-bros/api-sdk"
-import RNApp from "../rnapp/RNApp"
 import { scaleCanvas } from "./utils/scale"
 import { useSnackbar } from "../../lib/snackbar"
 
@@ -87,7 +87,7 @@ function TemplateForm({ values, ...props }: {
                 </Grid>
             </Grid>
             <Paper variant="outlined">
-                <RNApp
+                <WebApp
                     width={window.innerWidth * 0.6}
                     height={window.innerHeight * 0.8}
                 />
