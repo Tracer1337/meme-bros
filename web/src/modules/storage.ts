@@ -1,6 +1,6 @@
 import { getMimeTypeFromDataURI } from "@meme-bros/shared"
 import { Modules } from "@meme-bros/client-lib"
-import { downloadFile, importImage, getImageDimensions } from "../../lib/file"
+import { downloadFile, importImage, getImageDimensions } from "../lib/file"
 
 const saveImage: Modules.StorageModule["saveImage"] = async (dataURI) => {
     const filename = getMimeTypeFromDataURI(dataURI) === "image/gif"

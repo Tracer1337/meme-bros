@@ -1,11 +1,10 @@
-import "./style.css"
 import React from "react"
 import ReactDOM from "react-dom"
 import { AdminAPIProvider } from "@meme-bros/api-sdk/dist/admin"
 import { PublicAPIProvider } from "@meme-bros/api-sdk"
-import { Storage } from "./lib/storage"
-import RNApp from "./components/RNApp"
 import { BridgeProvider, SharedContextProvider } from "@meme-bros/client-lib"
+import { Storage } from "./lib/storage"
+import App from "./App"
 
 ReactDOM.render(
     <React.StrictMode>
@@ -18,7 +17,7 @@ ReactDOM.render(
             }}>
                 <BridgeProvider>
                     <SharedContextProvider>
-                        <RNApp
+                        <App
                             width={window.innerWidth}
                             height={window.innerHeight}
                         />

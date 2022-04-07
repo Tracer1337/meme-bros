@@ -1,5 +1,6 @@
+import "./style.css"
 import React from "react"
-import App from "@meme-bros/app"
+import RNApp from "@meme-bros/app"
 import { Modules, ModulesProvider } from "@meme-bros/client-lib"
 import { useCoreModule } from "./modules/core"
 import { useTemplatesModule } from "./modules/templates"
@@ -9,7 +10,7 @@ import canvasModule from "./modules/canvas"
 import viewModule from "./modules/view"
 import permissionsModule from "./modules/permissions"
 
-function RNApp({ width, height }: {
+function App({ width, height }: {
     width: number,
     height: number
 }) {
@@ -34,10 +35,10 @@ function RNApp({ width, height }: {
             }}
         >
             <ModulesProvider modules={modules}>
-                <App/>
+                <RNApp/>
             </ModulesProvider>
         </div>
     )
 }
 
-export default RNApp
+export default App
