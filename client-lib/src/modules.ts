@@ -48,7 +48,7 @@ export namespace Modules {
     }
 
     export type CanvasModule = {
-        uri: string
+        Component: React.FunctionComponent
     }
 
     export type ViewModule = {

@@ -17,14 +17,12 @@
     "@mui/material": "^5.2.3",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "http-proxy": "^1.18.1",
     "immer": "^9.0.12",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.23.0",
     "react-native-scalable-image": "^1.1.0",
     "react-native-web": "^0.17.5",
-    "react-native-web-webview": "^1.0.2",
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
     "tsdef": "^0.0.14",
@@ -33,17 +31,11 @@
   },
   "devDependencies": {
     "@craco/craco": "^6.4.3",
-    "concurrently": "^7.0.0",
-    "cross-env": "^7.0.3",
-    "open": "^8.4.0",
     "react-native-monorepo-tools": "^1.1.4"
   },
   "scripts": {
     "dev": "yarn start",
-    "start": "cross-env PORT=4000 BROWSER=none concurrently \"npm:start:proxy\" \"npm:start:canvas\" \"npm:start:app\"",
-    "start:app": "craco start",
-    "start:canvas": "cross-env PORT=3001 PUBLIC_URL=/iframe yarn workspace @meme-bros/canvas dev",
-    "start:proxy": "node proxy.js",
+    "start": "craco start",
     "build": "craco build"
   },
   "eslintConfig": {

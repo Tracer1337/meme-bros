@@ -23,27 +23,20 @@ module.exports = {
           loader: 'file-loader',
           include: path.resolve(__dirname, './static/media/[name].[ext]'),
         },
-        // Enable html import
-        {
-          test: /postMock.html$/,
-          use: {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-            },
-          },
-        }
       );
       return webpackConfig;
     },
     alias: {
-      "react-native-webview": "react-native-web-webview",
       "react-native-fast-image": "react-native-scalable-image"
     },
     plugins: [
       // Inject the React Native "__DEV__" global variable.
       new webpack.DefinePlugin({
         __DEV__: process.env.NODE_ENV !== "production",
+      }),
+      // Make ``import React from 'react'`` optional
+      new webpack.ProvidePlugin({
+        React: 'react',
       }),
     ],
   },

@@ -1,7 +1,8 @@
 import { Modules } from "@meme-bros/client-lib"
+import Canvas from "@meme-bros/canvas"
 
 const canvasModule: Modules.CanvasModule = {
-    uri: "http://localhost:8080/iframe"
+    CanvasComponent: Canvas
 }
 
 export default canvasModule

@@ -1,5 +1,4 @@
-import React, { useRef, useContext } from "react"
-import WebView from "react-native-webview"
+import React, { useContext } from "react"
 import { DeepPartial } from "tsdef"
 import produce from "immer"
 import { Editor } from "@meme-bros/shared"
@@ -9,7 +8,6 @@ import {
     SharedContext,
     updateCanvasBase,
     useModule,
-    useRNWebViewMessaging,
     useSharedContext,
     useListeners
 } from "@meme-bros/client-lib"
@@ -25,21 +23,13 @@ function Canvas() {
     const context = useSharedContext()
 
     const core = useModule("core")
-    const canvasMod = useModule("canvas")
+    const { CanvasComponent } = useModule("canvas")
 
     const dialogs = useContext(DialogContext)
-    
-    const canvas = useRef<WebView>(null)
-
-    const { onMessage } = useRNWebViewMessaging(canvas)
 
     const { createCanvasElement } = useCanvasUtils()
     const loadCanvasDummy = useCanvasDummyLoader()
     const { scaleToScreen, scaleTemplateCanvas } = useCanvasScaling()
-
-    const handleWebViewLoad = () => {
-        context.events.emit("canvas.load")
-    }
 
     const handleCanvasRender = async () => {
         if (!core?.render) {
@@ -145,19 +135,7 @@ function Canvas() {
         ["stickers.open", handleStickersOpen]
     ])
     
-    return (
-        // @ts-ignore
-        <WebView
-            originWhitelist={["*"]}
-            source={{ uri: canvasMod.uri }}
-            ref={canvas}
-            onMessage={onMessage}
-            onLoad={handleWebViewLoad}
-            bounces={false}
-            scrollEnabled={false}
-            allowFileAccess
-        />
-    )
+    return <CanvasComponent/>
 }
 
 export default Canvas

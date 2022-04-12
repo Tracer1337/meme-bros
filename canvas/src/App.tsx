@@ -1,15 +1,39 @@
 import { useEffect, useRef, useState } from "react"
-import { Box, styled } from "@mui/material"
+import {
+    Box,
+    CssBaseline,
+    styled,
+    createTheme,
+    ThemeProvider,
+    GlobalStyles
+} from "@mui/material"
 import {
     SharedContext,
     useListeners,
     useSharedContext,
     useWindowMessaging
 } from "@meme-bros/client-lib"
+import { AnimationRegistryProvider } from "./lib/animation"
 import Canvas from "./components/Canvas"
 import { mockCanvas } from "./mock"
 import DebugMenu from "./components/DebugMenu"
 import config from "./config"
+
+const theme = createTheme({
+    palette: {
+        mode: "dark"
+    }
+})
+
+if (config.debug) {
+    console.log(theme)
+}
+
+const globalStyles = <GlobalStyles styles={{
+    body: {
+        overflow: "hidden"
+    }
+}}/>
 
 const MAX_HISTORY_LENGTH = 100
 
@@ -71,12 +95,18 @@ function App() {
     }
 
     return (
-        <Container>
-            {debug && <DebugMenu/>}
-            <CanvasContainer>
-                <Canvas/>
-            </CanvasContainer>
-        </Container>
+        <ThemeProvider theme={theme}>
+            <CssBaseline/>
+            {globalStyles}
+            <AnimationRegistryProvider>
+                <Container>
+                    {debug && <DebugMenu/>}
+                    <CanvasContainer>
+                        <Canvas/>
+                    </CanvasContainer>
+                </Container>
+            </AnimationRegistryProvider>
+        </ThemeProvider>
     )
 }
 
