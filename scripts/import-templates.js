@@ -120,13 +120,17 @@ async function run() {
     bar.start(templates.length, 0)
 
     await Promise.all(templates.map(async (template) => {
-        await api.templates.create({
-            name: template.label,
-            uses: template.amount_uses,
-            canvas: await renderCanvas(template)
-        })
-
-        bar.increment()
+        try {
+            await api.templates.create({
+                name: template.label,
+                uses: template.amount_uses,
+                canvas: await renderCanvas(template)
+            })
+        } catch (error) {
+            console.error(error)
+        } finally {
+            bar.increment()
+        }
     }))
 
     bar.stop()
