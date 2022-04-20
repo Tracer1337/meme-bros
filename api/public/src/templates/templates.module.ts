@@ -1,15 +1,19 @@
 import { Module } from "@nestjs/common"
 import { MongooseModule } from "@nestjs/mongoose"
+import { ConfigModule } from "@nestjs/config"
 import { Template, TemplateSchema } from "@meme-bros/api-lib"
 import { TemplatesController } from "./templates.controller"
 import { TemplatesService } from "./templates.service"
+import { PreviewsModule } from "../previews/previews.module"
 
 @Module({
     imports: [
         MongooseModule.forFeature([{
             name: Template.name,
             schema: TemplateSchema
-        }])
+        }]),
+        ConfigModule,
+        PreviewsModule
     ],
     controllers: [TemplatesController],
     providers: [TemplatesService]

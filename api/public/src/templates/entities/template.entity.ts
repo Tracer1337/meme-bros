@@ -1,3 +1,4 @@
+import { Exclude, Expose } from "class-transformer"
 import { TemplateDocument } from "@meme-bros/api-lib"
 
 export class TemplateEntity {
@@ -5,8 +6,15 @@ export class TemplateEntity {
 
     hash: string
 
+    @Exclude()
+    uses: number
+    
     name: string
 
+    @Exclude()
+    previewFile: string
+    
+    @Expose()
     canvas: object
 
     constructor(document: TemplateDocument) {
