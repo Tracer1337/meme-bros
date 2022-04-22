@@ -3,7 +3,7 @@ import { APP_INTERCEPTOR } from "@nestjs/core"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { MongooseModule } from "@nestjs/mongoose"
 import { ThrottlerModule } from "@nestjs/throttler"
-import { ImgurModule, StorageModule, TrendModule } from "@meme-bros/api-lib"
+import { ImgurModule, StorageModule, TrendModule, CoreModule } from "@meme-bros/api-lib"
 import { configuration } from "./config/configuration"
 import { configurationSchema } from "./config/configuration.schema"
 import { TemplatesModule } from "./templates/templates.module"
@@ -28,6 +28,13 @@ import { UploadsModule } from "./uploads/uploads.module"
             useFactory: (configService: ConfigService) => ({
                 ttl: configService.get<number>("throttle.ttl"),
                 limit: configService.get<number>("throttle.limit")
+            }),
+            inject: [ConfigService]
+        }),
+        CoreModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                uri: configService.get<string>("core.uri")
             }),
             inject: [ConfigService]
         }),
