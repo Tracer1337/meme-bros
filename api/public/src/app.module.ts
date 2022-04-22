@@ -6,6 +6,8 @@ import { ThrottlerModule } from "@nestjs/throttler"
 import { ImgurModule, StorageModule, TrendModule, CoreModule } from "@meme-bros/api-lib"
 import { configuration } from "./config/configuration"
 import { configurationSchema } from "./config/configuration.schema"
+import { UsersModule } from "./users/users.module"
+import { AuthModule } from "./auth/auth.module"
 import { TemplatesModule } from "./templates/templates.module"
 import { StickersModule } from "./stickers/stickers.module"
 import { UploadsModule } from "./uploads/uploads.module"
@@ -61,6 +63,8 @@ import { UploadsModule } from "./uploads/uploads.module"
             }),
             inject: [ConfigService]
         }),
+        UsersModule,
+        AuthModule,
         TemplatesModule,
         StickersModule,
         UploadsModule
