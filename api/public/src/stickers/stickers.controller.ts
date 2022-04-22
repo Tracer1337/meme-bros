@@ -2,6 +2,9 @@ import { Controller, Get, Param, Post, UseGuards, Body, Query, Delete } from "@n
 import { ThrottlerGuard } from "@nestjs/throttler"
 import { StickersService } from "./stickers.service"
 import { JwtAuthGuard } from "../auth/jwt-auth.guard"
+import { RolesGuard } from "../roles/roles.guard"
+import { Roles } from "../roles/roles.decorator"
+import { Role } from "../roles/role.enum"
 import { CreateStickerDTO } from "./dto/create-sticker.dto"
 import { StickerEntity } from "./entities/sticker.entity"
 import { GetAllStickersDTO } from "./dto/get-all-stickers.dto"
@@ -13,7 +16,8 @@ export class StickersController {
     ) {}
     
     @Post()
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
     async create(@Body() createStickerDTO: CreateStickerDTO) {
         const sticker = await this.stickersService.create(createStickerDTO)
         return new StickerEntity(sticker)
@@ -32,7 +36,8 @@ export class StickersController {
     }
 
     @Delete(":filename")
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
     async delete(@Param("filename") filename: string) {
         await this.stickersService.delete(filename)
     }

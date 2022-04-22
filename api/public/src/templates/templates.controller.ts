@@ -1,11 +1,14 @@
 import { Controller, Get, Param, Post, Query, UseGuards, Body, Put, Delete } from "@nestjs/common"
 import { ThrottlerGuard } from "@nestjs/throttler"
+import { JwtAuthGuard } from "../auth/jwt-auth.guard"
+import { Roles } from "../roles/roles.decorator"
+import { Role } from "../roles/role.enum"
+import { RolesGuard } from "src/roles/roles.guard"
 import { TemplatesService } from "./templates.service"
 import { TemplateEntity } from "./entities/template.entity"
 import { CreateTemplateDTO } from "./dto/create-template.dto"
 import { GetAllTemplatesDTO } from "./dto/get-all-templates.dto"
 import { UpdateTemplateDTO } from "./dto/update-template.dto"
-import { JwtAuthGuard } from "../auth/jwt-auth.guard"
 
 @Controller("templates")
 export class TemplatesController {
@@ -14,7 +17,8 @@ export class TemplatesController {
     ) {}
 
     @Post()
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
     async create(@Body() createTemplateDTO: CreateTemplateDTO) {
         this.templatesService.validateCanvas(createTemplateDTO.canvas)
         const template = await this.templatesService.create(createTemplateDTO)
@@ -68,9 +72,10 @@ export class TemplatesController {
     async registerUse(@Param("id") id: string) {
         await this.templatesService.registerUse(id)
     }
-
+    
     @Put(":id")
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
     async update(
         @Param("id") id: string,
         @Body() updateTemplateDTO: UpdateTemplateDTO
@@ -86,7 +91,8 @@ export class TemplatesController {
     }
 
     @Delete(":id")
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
     async delete(@Param("id") id: string) {
         await this.templatesService.delete(id)
     }
