@@ -1,4 +1,4 @@
-import { ClassSerializerInterceptor, Module } from "@nestjs/common"
+import { Module } from "@nestjs/common"
 import { APP_INTERCEPTOR } from "@nestjs/core"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 import { MongooseModule } from "@nestjs/mongoose"
@@ -11,6 +11,7 @@ import { AuthModule } from "./auth/auth.module"
 import { TemplatesModule } from "./templates/templates.module"
 import { StickersModule } from "./stickers/stickers.module"
 import { UploadsModule } from "./uploads/uploads.module"
+import { ClassSerializerInterceptor } from "./class-serializer.interceptor"
 
 @Module({
     imports: [

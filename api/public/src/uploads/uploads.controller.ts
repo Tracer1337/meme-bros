@@ -10,6 +10,7 @@ import { GetAllUploadsDTO } from "./dto/get-all-uploads.dto"
 import { UploadEntity } from "./entities/upload.entity"
 
 @Controller("uploads")
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UploadsController {
     constructor(
         private readonly uploadsService: UploadsService
@@ -17,12 +18,12 @@ export class UploadsController {
 
     @Post("/")
     @UseGuards(ThrottlerGuard)
+    @Roles(Role.PUBLIC)
     async uploadImage(@Body() uploadImageDTO: UploadImageDTO) {
         return await this.uploadsService.uploadImage(uploadImageDTO)
     }
 
     @Get()
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     async getAll(@Query() getAllUploadsDTO: GetAllUploadsDTO) {
         const docs = await this.uploadsService.findAll(getAllUploadsDTO)
@@ -30,7 +31,6 @@ export class UploadsController {
     }
 
     @Delete(":id")
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     async delete(@Param("id") id: string) {
         await this.uploadsService.delete(id)

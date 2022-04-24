@@ -10,13 +10,13 @@ import { StickerEntity } from "./entities/sticker.entity"
 import { GetAllStickersDTO } from "./dto/get-all-stickers.dto"
 
 @Controller("stickers")
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class StickersController {
     constructor(
         private readonly stickersService: StickersService
     ) {}
     
     @Post()
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     async create(@Body() createStickerDTO: CreateStickerDTO) {
         const sticker = await this.stickersService.create(createStickerDTO)
@@ -24,6 +24,7 @@ export class StickersController {
     }
 
     @Get()
+    @Roles(Role.PUBLIC)
     async getAll(@Query() getAllStickersDTO: GetAllStickersDTO) {
         const stickers = await this.stickersService.findAll(getAllStickersDTO)
         return stickers.map((sticker) => new StickerEntity(sticker))
@@ -31,12 +32,12 @@ export class StickersController {
 
     @Post(":filename/register-use")
     @UseGuards(ThrottlerGuard)
+    @Roles(Role.PUBLIC)
     async registerUse(@Param("filename") filename: string) {
         await this.stickersService.registerUse(filename)
     }
 
     @Delete(":filename")
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     async delete(@Param("filename") filename: string) {
         await this.stickersService.delete(filename)

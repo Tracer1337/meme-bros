@@ -11,13 +11,13 @@ import { GetAllTemplatesDTO } from "./dto/get-all-templates.dto"
 import { UpdateTemplateDTO } from "./dto/update-template.dto"
 
 @Controller("templates")
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class TemplatesController {
     constructor(
         private readonly templatesService: TemplatesService
     ) {}
 
     @Post()
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     async create(@Body() createTemplateDTO: CreateTemplateDTO) {
         this.templatesService.validateCanvas(createTemplateDTO.canvas)
@@ -26,55 +26,63 @@ export class TemplatesController {
     }
 
     @Get()
+    @Roles(Role.PUBLIC)
     async getAll(@Query() getAllTemplatesDTO: GetAllTemplatesDTO) {
         const templates = await this.templatesService.findAll(getAllTemplatesDTO)
         return templates.map((template) => new TemplateEntity(template))
     }
 
     @Get(":id")
+    @Roles(Role.PUBLIC)
     async getOne(@Param("id") id: string) {
         const template = await this.templatesService.findById(id)
         return new TemplateEntity(template)
     }
 
     @Get(":id/canvas")
+    @Roles(Role.PUBLIC)
     async getCanvas(@Param("id") id: string) {
         return await this.templatesService.findCanvasById(id)
     }
 
     @Get("hash")
-    async getList() {
+    @Roles(Role.PUBLIC)
+    async getHash() {
         return await this.templatesService.getHash()
     }
 
     @Get("list/hash")
+    @Roles(Role.PUBLIC)
     async getHashList() {
         return await this.templatesService.getHashList()
     }
 
     @Get("list/new")
+    @Roles(Role.PUBLIC)
     async getNewList() {
         return await this.templatesService.getNewList()
     }
 
     @Get("list/top")
+    @Roles(Role.PUBLIC)
     async getTopList() {
         return await this.templatesService.getTopList()
     }
 
     @Get("list/hot")
+    @Roles(Role.PUBLIC)
     async getHotList() {
         return await this.templatesService.getHotList()
     }
 
     @Post(":id/register-use")
     @UseGuards(ThrottlerGuard)
+    @Roles(Role.PUBLIC)
     async registerUse(@Param("id") id: string) {
         await this.templatesService.registerUse(id)
     }
     
     @Put(":id")
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     async update(
         @Param("id") id: string,
@@ -91,7 +99,6 @@ export class TemplatesController {
     }
 
     @Delete(":id")
-    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     async delete(@Param("id") id: string) {
         await this.templatesService.delete(id)

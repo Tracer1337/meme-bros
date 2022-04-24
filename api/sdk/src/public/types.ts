@@ -8,3 +8,7 @@ export type Template = {
     hash: string,
     previewFile: string
 }
+
+export type Sticker = {
+    filename: string
+}

@@ -1,9 +1,5 @@
-import { Role } from "../../roles/role.enum"
+import { User } from "../../users/interfaces/user.interface"
 
 export interface AuthorizedRequest extends Request {
-    user: {
-        id: string,
-        username: string,
-        roles: Role[]
-    }
+    user: User
 }
