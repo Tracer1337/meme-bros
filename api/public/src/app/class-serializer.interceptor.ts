@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common"
 import { instanceToPlain } from "class-transformer"
 import { map, Observable } from "rxjs"
-import { AuthorizedRequest } from "./auth/interfaces/request.interface"
+import { AuthorizedRequest } from "../auth/interfaces/request.interface"
 
 export class ClassSerializerInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
