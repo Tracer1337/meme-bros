@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common"
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from "@nestjs/common"
 import { Reflector } from "@nestjs/core"
 import { AuthorizedRequest } from "../auth/interfaces/request.interface"
 import { Role } from "./role.enum"
@@ -20,6 +20,10 @@ export class RolesGuard implements CanActivate {
         if (user.roles.includes(Role.ADMIN)) {
             return true
         }
-        return requiredRoles.some((role) => user.roles?.includes(role))
+        const hasRole = requiredRoles.some((role) => user.roles?.includes(role))
+        if (!hasRole && user.roles.includes(Role.PUBLIC)) {
+            throw new UnauthorizedException()
+        }
+        return hasRole
     }
 }
