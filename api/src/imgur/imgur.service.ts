@@ -1,17 +1,19 @@
-import { Injectable } from "@nestjs/common"
-import { ConfigService } from "@nestjs/config"
+import { Inject, Injectable } from "@nestjs/common"
+import { ConfigService, ConfigType } from "@nestjs/config"
 import { ImgurClient } from "imgur"
 import { getBase64FromDataURI } from "@meme-bros/shared"
+import { imgurConfig } from "./imgur.config"
 
 @Injectable()
 export class ImgurService {
     private api: ImgurClient
     
     constructor(
-        private readonly configService: ConfigService
+        @Inject(imgurConfig.KEY)
+        readonly config: ConfigType<typeof imgurConfig>
     ) {
         this.api = new ImgurClient({
-            clientId: this.configService.get<string>("imgur.clientId")
+            clientId: config.clientId
         })
     }
 

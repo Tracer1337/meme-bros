@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common"
-import { ConfigService } from "@nestjs/config"
+import { Inject, Injectable } from "@nestjs/common"
+import { ConfigType } from "@nestjs/config"
 import {
     Editor,
     getBase64FromDataURI,
@@ -8,11 +8,13 @@ import {
 import { StorageService } from "../storage/storage.service"
 import { CoreService } from "../core/core.service"
 import { TemplateDocument } from "../schemas/template.schema"
+import { templatesConfig } from "../templates/templates.config"
 
 @Injectable()
 export class PreviewsService {
     constructor(
-        private readonly configService: ConfigService,
+        @Inject(templatesConfig.KEY)
+        private readonly config: ConfigType<typeof templatesConfig>,
         private readonly storageService: StorageService,
         private readonly coreService: CoreService
     ) {}
@@ -39,11 +41,9 @@ export class PreviewsService {
     }
 
     private getPixelRatio(canvas: Editor.Canvas) {
-        const width = this.configService.get<number>("templates.previewWidth")
-        const height = this.configService.get<number>("templates.previewHeight")
         return canvas.width >= canvas.height
-            ? width / canvas.width
-            : height / canvas.height
+            ? this.config.preview.width / canvas.width
+            : this.config.preview.height / canvas.height
     }
 
     private getPreviewElements(canvas: Editor.Canvas) {

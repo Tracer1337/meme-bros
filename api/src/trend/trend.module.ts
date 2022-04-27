@@ -4,11 +4,12 @@ import { HttpModule } from "@nestjs/axios"
 import { MongooseModule } from "@nestjs/mongoose"
 import { Trend, TrendSchema } from "../schemas/trend.schema"
 import { TrendService } from "./trend.service"
+import { templatesConfig } from "../templates/templates.config"
 
 @Module({
     imports: [
         HttpModule,
-        ConfigModule,
+        ConfigModule.forFeature(templatesConfig),
         MongooseModule.forFeature([{
             name: Trend.name,
             schema: TrendSchema

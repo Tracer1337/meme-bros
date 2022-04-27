@@ -1,26 +1,28 @@
 import { Model } from "mongoose"
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common"
-import { ConfigService } from "@nestjs/config"
+import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common"
+import { ConfigService, ConfigType } from "@nestjs/config"
 import { InjectModel } from "@nestjs/mongoose"
 import { Trend as TrendModel, TrendDocument } from "../schemas/trend.schema"
 import { Trend } from "./trend"
+import { templatesConfig } from "src/templates/templates.config"
 
 @Injectable()
 export class TrendService {
     constructor(
         @InjectModel(TrendModel.name) private readonly trendModel: Model<TrendDocument>,
-        private readonly configService: ConfigService
+        @Inject(templatesConfig.KEY)
+        private readonly config: ConfigType<typeof templatesConfig>
     ) {}
 
     async load() {
         const trendModel = await this.trendModel.findOneAndUpdate(
-            { name: this.configService.get<string>("templates.trend.name") },
+            { name: this.config.trend.name },
             {},
             { new: true, upsert: true }
         )
         const trend = new Trend(
-            this.configService.get<number>("templates.trend.damping"),
-            this.configService.get<number>("templates.trend.reduction")
+            this.config.trend.damping,
+            this.config.trend.reduction
         )
         trend.loadScores(Object.fromEntries(trendModel.scores))
         return trend
@@ -28,7 +30,7 @@ export class TrendService {
 
     async save(trend: Trend) {
         await this.trendModel.updateOne(
-            { name: this.configService.get<string>("templates.trend.name") },
+            { name: this.config.trend.name },
             { $set: { scores: trend.getScores() } }
         )
     }

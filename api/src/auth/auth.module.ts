@@ -6,6 +6,7 @@ import { AuthController } from "./auth.controller"
 import { AuthService } from "./auth.service"
 import { UsersModule } from "../users/users.module"
 import { JwtStrategy } from "./jwt.strategy"
+import { authConfig } from "./auth.config"
 
 @Module({
     imports: [
@@ -14,14 +15,14 @@ import { JwtStrategy } from "./jwt.strategy"
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: async (configService: ConfigService) => ({
-                secret: configService.get<string>("jwt.secret"),
+                secret: configService.get<string>("auth.jwt.secret"),
                 signOptions: {
                     expiresIn: "7d"
                 }
             }),
             inject: [ConfigService]
         }),
-        ConfigModule
+        ConfigModule.forFeature(authConfig)
     ],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy]

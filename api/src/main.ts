@@ -17,7 +17,7 @@ async function bootstrap() {
     }))
     app.use(bodyParser.json({ limit: "5mb" }))
     app.enableCors()
-    await app.listen(configService.get("port"))
+    await app.listen(configService.get("app.port"))
 }
 
 bootstrap()
