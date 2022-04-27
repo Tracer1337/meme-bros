@@ -1,6 +1,6 @@
 import { StickerDocument, Sticker } from "@meme-bros/api-lib"
 import { Expose } from "class-transformer"
-import { Role } from "../../roles/role.enum"
+import { Role } from "src/roles/role.enum"
 
 export class StickerEntity implements Sticker {
     filename: string

@@ -1,6 +1,6 @@
 import { Exclude, Expose } from "class-transformer"
 import { Template, TemplateDocument } from "@meme-bros/api-lib"
-import { Role } from "../../roles/role.enum"
+import { Role } from "src/roles/role.enum"
 
 export class TemplateEntity implements Template {
     id: string

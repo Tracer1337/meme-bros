@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer"
 import { User } from "../interfaces/user.interface"
-import { Role } from "../../roles/role.enum"
+import { Role } from "src/roles/role.enum"
 
 export class UserEntity implements User {
     id: string
