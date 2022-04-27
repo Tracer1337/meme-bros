@@ -38,7 +38,7 @@ export class TemplatesResource extends Resource<Config> {
     
         this.one = new Getter(axios, (id) => `templates/${id}`)
         this.canvas = new Getter(axios, (template) => `templates/${template.id}/canvas`)
-        this.hash = new Getter(axios, () => "templates/hash")
+        this.hash = new Getter(axios, () => "templates/list/state")
         this.hashList = new Getter(axios, () => "templates/list/hash")
         this.newList = new Getter(axios, () => "templates/list/new")
         this.topList = new Getter(axios, () => "templates/list/top")

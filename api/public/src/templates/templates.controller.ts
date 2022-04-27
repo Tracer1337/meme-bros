@@ -45,7 +45,7 @@ export class TemplatesController {
         return await this.templatesService.findCanvasById(id)
     }
 
-    @Get("hash")
+    @Get("list/state")
     @Roles(Role.PUBLIC)
     async getHash() {
         return await this.templatesService.getHash()
