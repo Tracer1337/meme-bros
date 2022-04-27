@@ -17,7 +17,10 @@ export async function syncStickers(config: SyncConfig) {
         await fs.readFile(join(path, STICKERS_FILE))
     ) || []
 
-    const stickersDiff = diffUnique(stickersFile, stickers)
+    const stickersDiff = diffUnique(
+        stickersFile,
+        stickers.map((sticker) => sticker.filename)
+    )
 
     await Promise.all([
         ...stickersDiff.added.map(async (filename) => {
