@@ -17,11 +17,11 @@ export class RolesGuard implements CanActivate {
             return true
         }
         const { user } = context.switchToHttp().getRequest() as AuthorizedRequest
-        if (user.roles.includes(Role.ADMIN)) {
+        if (user.roles.has(Role.ADMIN)) {
             return true
         }
-        const hasRole = requiredRoles.some((role) => user.roles?.includes(role))
-        if (!hasRole && user.roles.includes(Role.PUBLIC)) {
+        const hasRole = requiredRoles.some((role) => user.roles.has(role))
+        if (!hasRole && user.roles.has(Role.PUBLIC)) {
             throw new UnauthorizedException()
         }
         return hasRole

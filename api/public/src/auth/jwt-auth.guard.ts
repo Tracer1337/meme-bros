@@ -6,7 +6,7 @@ import { Role } from "../roles/role.enum"
 export class JwtAuthGuard extends AuthGuard("jwt") {
     handleRequest(_err: any, user: any) {
         if (!user) {
-            return { roles: [Role.PUBLIC] }
+            return { roles: new Set([Role.PUBLIC]) }
         }
         return user
     }

@@ -8,7 +8,7 @@ export class UserEntity implements User {
     username: string
 
     @Exclude()
-    roles: Role[]
+    roles: Set<Role>
 
     constructor(user: User) {
         Object.assign(this, user)
