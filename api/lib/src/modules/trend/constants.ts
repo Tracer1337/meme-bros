@@ -1,1 +1,0 @@
-export const TREND_OPTIONS_KEY = "TREND_OPTIONS"
