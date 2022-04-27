@@ -14,6 +14,8 @@ export class ClassSerializerInterceptor implements NestInterceptor {
 
     private serialize(data: any, context: ExecutionContext){
         const { user } = context.switchToHttp().getRequest() as AuthorizedRequest
-        return instanceToPlain(data, { groups: Array.from(user.roles) })
+        return instanceToPlain(data, {
+            groups: user ? Array.from(user.roles) : []
+        })
     }
 }
