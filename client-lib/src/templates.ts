@@ -34,7 +34,7 @@ export async function syncTemplates(config: SyncConfig) {
     const templatesFile: TemplatesFile = JSON.parse(
         await fs.readFile(join(path, TEMPLATES_FILE))
     ) || emptyTemplatesFile
-    const hash = await api.templates.hash.get()
+    const hash = await api.templates.getHash()
 
     if (templatesFile.hash === hash) {
         return
@@ -46,10 +46,10 @@ export async function syncTemplates(config: SyncConfig) {
     ])
 
     const [hashList, newList, topList, hotList] = await Promise.all([
-        api.templates.hashList.get(),
-        api.templates.newList.get(),
-        api.templates.topList.get(),
-        api.templates.hotList.get()
+        api.templates.getHashList(),
+        api.templates.getNewList(),
+        api.templates.getTopList(),
+        api.templates.getHotList()
     ])
 
     const templatesDiff = diffUnique(templatesFile.hashList, hashList)
@@ -57,7 +57,7 @@ export async function syncTemplates(config: SyncConfig) {
     const promises = []
 
     if (templatesDiff.added.length > 0) {
-        const templates = await api.templates.map.get({
+        const templates = await api.templates.getAllAsMap({
             hashes: templatesDiff.added
         })
         const ids = createIdsMap(templates)
@@ -111,11 +111,11 @@ async function addTemplate(
     const canvasFile = `${template.hash}.json`
     await Promise.all([
         download(
-            api.templates.canvas.url(template),
+            api.templates.getCanvasURL(template.id),
             join(path, CANVAS_DIR, canvasFile)
         ),
         download(
-            api.storage.templatePreview.url(template),
+            api.storage.url(template.previewFile),
             join(path, PREVIEWS_DIR, template.previewFile)
         )
     ])

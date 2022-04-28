@@ -20,7 +20,10 @@ export type GetAllTemplates = Pagination & {
 }
 
 export class TemplatesResource {
-    constructor(private readonly axios: AxiosInstance, _config: Config) {}
+    constructor(
+        private readonly axios: AxiosInstance,
+        private readonly config: Config
+    ) {}
 
     public async getAll(params?: GetAllTemplates) {
         const res = await this.axios.get<Template[]>("templates", { params })
@@ -37,6 +40,10 @@ export class TemplatesResource {
     public async getOne(id: string) {
         const res = await this.axios.get<Template>(`templates/${id}`)
         return res.data
+    }
+
+    public getCanvasURL(id: string) {
+        return `${this.config.host}templates/${id}/canvas`
     }
 
     public async getCanvas(id: string) {

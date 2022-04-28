@@ -1,4 +1,4 @@
-import * as API from "@meme-bros/api-sdk"
+import { API } from "@meme-bros/api-sdk"
 import { syncTemplates } from "./templates"
 import { syncStickers } from "./stickers"
 import { join } from "./utils"
@@ -6,7 +6,7 @@ import { join } from "./utils"
 export const RESOURCES_DIR = "resources"
 
 export type SyncConfig = {
-    api: API.PublicAPI,
+    api: API,
     path: string,
     fs: {
         rm: (path: string) => Promise<void>,

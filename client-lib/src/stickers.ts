@@ -11,7 +11,7 @@ export async function syncStickers(config: SyncConfig) {
 
     await assertDirExists(config, STICKERS_DIR)
 
-    const stickers = await api.stickers.all.get()
+    const stickers = await api.stickers.getAll()
 
     const stickersFile = JSON.parse(
         await fs.readFile(join(path, STICKERS_FILE))
@@ -26,7 +26,7 @@ export async function syncStickers(config: SyncConfig) {
         ...stickersDiff.added.map(async (filename) => {
             try {
                 await download(
-                    api.storage.sticker.url(filename),
+                    api.storage.url(filename),
                     join(path, STICKERS_DIR, filename)
                 )
             } catch (error) {
