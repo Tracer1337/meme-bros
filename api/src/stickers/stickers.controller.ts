@@ -6,7 +6,7 @@ import { RolesGuard } from "../roles/roles.guard"
 import { Roles } from "../roles/roles.decorator"
 import { Role } from "../roles/role.enum"
 import { CreateStickerDTO } from "./dto/create-sticker.dto"
-import { StickerEntity } from "./entities/sticker.entity"
+import { StickerEntity } from "./sticker.entity"
 import { GetAllStickersDTO } from "./dto/get-all-stickers.dto"
 
 @Controller("stickers")

@@ -7,7 +7,7 @@ import { Role } from "../roles/role.enum"
 import { UploadsService } from "./uploads.service"
 import { UploadImageDTO } from "./dto/upload-image.dto"
 import { GetAllUploadsDTO } from "./dto/get-all-uploads.dto"
-import { UploadEntity } from "./entities/upload.entity"
+import { UploadEntity } from "./upload.entity"
 
 @Controller("uploads")
 @UseGuards(JwtAuthGuard, RolesGuard)

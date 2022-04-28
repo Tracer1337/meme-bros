@@ -1,6 +1,6 @@
 import { Exclude, Expose } from "class-transformer"
-import { Role } from "src/roles/role.enum"
-import { Template, TemplateDocument } from "../template.schema"
+import { Role } from "../roles/role.enum"
+import { Template, TemplateDocument } from "./template.schema"
 
 export class TemplateEntity implements Template {
     id: string

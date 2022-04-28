@@ -7,7 +7,7 @@ import { JwtAuthGuard } from "./jwt-auth.guard"
 import { RolesGuard } from "../roles/roles.guard"
 import { Roles } from "../roles/roles.decorator"
 import { Role } from "../roles/role.enum"
-import { UserEntity } from "../users/entities/user.entity"
+import { UserEntity } from "../users/user.entity"
 
 @Controller("auth")
 @UseGuards(JwtAuthGuard, RolesGuard)

@@ -1,5 +1,5 @@
 import { Exclude } from "class-transformer"
-import { UploadDocument, Upload } from "../upload.schema"
+import { UploadDocument, Upload } from "./upload.schema"
 
 export class UploadEntity implements Upload {
     id: string
