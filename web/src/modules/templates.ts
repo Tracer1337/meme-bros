@@ -29,6 +29,6 @@ export function useTemplatesModule(): Modules.TemplatesModule {
     return {
         loadTemplates,
         getPreviewURI: (template) => api.storage.url(template.previewFile),
-        getCanvas: (template) => api.templates.getCanvas(template)
+        getCanvas: (template) => api.templates.getCanvas(template.id)
     }
 }

@@ -19,7 +19,7 @@ export class UploadsResource {
         return res.data
     }
 
-    public async delete(upload: Upload) {
-        await this.axios.delete(`uploads/${upload.id}`)
+    public async delete(id: string) {
+        await this.axios.delete(`uploads/${id}`)
     }
 }

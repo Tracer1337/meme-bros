@@ -35,7 +35,7 @@ function GeneratedImageDialog({ visible, data, close }: {
         if (!isRegistered.current) {
             isRegistered.current = true
             if (context.template) {
-                api.templates.registerUse(context.template)
+                api.templates.registerUse(context.template.id)
             }
             Object.values(context.stickers).forEach((filename) =>
                 api.stickers.registerUse(filename)

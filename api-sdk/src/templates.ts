@@ -81,17 +81,17 @@ export class TemplatesResource {
         return res.data
     }
 
-    public async update(template: Template, payload: Partial<CreateTemplate>) {
-        const res = await this.axios.put<Template>(`templates/${template.id}`, payload)
+    public async update(id: string, payload: Partial<CreateTemplate>) {
+        const res = await this.axios.put<Template>(`templates/${id}`, payload)
         return res.data
     }
 
-    public async registerUse(template: Template) {
-        const res = await this.axios.post(`templates/${template.id}/register-use`)
+    public async registerUse(id: string) {
+        const res = await this.axios.post(`templates/${id}/register-use`)
         return res.data
     }
 
-    public async delete(template: Template) {
-        await this.axios.delete(`templates/${template.id}`)
+    public async delete(id: string) {
+        await this.axios.delete(`templates/${id}`)
     }
 }

@@ -23,11 +23,11 @@ export class StickersResource {
         return res.data
     }
 
-    public async registerUse(sticker: Sticker) {
-        await this.axios.post(`stickers/${sticker.filename}/register-use`)
+    public async registerUse(filename: string) {
+        await this.axios.post(`stickers/${filename}/register-use`)
     }
 
-    public async delete(sticker: Sticker) {
-        await this.axios.delete(`stickers/${sticker.filename}`)
+    public async delete(filename: string) {
+        await this.axios.delete(`stickers/${filename}`)
     }
 }
