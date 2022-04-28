@@ -3,7 +3,7 @@ const path = require("path")
 const fetch = require("node-fetch")
 const { pipeline } = require("stream")
 const { promisify } = require("util")
-const { PublicAPI } = require("@meme-bros/api-sdk")
+const { API } = require("@meme-bros/api-sdk")
 const {
     syncResources,
     RESOURCES_DIR: RESOURCES_DIR_NAME
@@ -11,8 +11,8 @@ const {
 
 const streamPipeline = promisify(pipeline)
 
-const api = new PublicAPI({
-    host: process.env.API_HOST || "http://localhost:6006"
+const api = new API({
+    host: process.env.API_HOST || "http://localhost:5000"
 })
 
 const RESOURCES_DIR = path.resolve(

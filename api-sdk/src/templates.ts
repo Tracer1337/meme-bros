@@ -43,7 +43,7 @@ export class TemplatesResource {
     }
 
     public getCanvasURL(id: string) {
-        return `${this.config.host}templates/${id}/canvas`
+        return `${this.config.host}/templates/${id}/canvas`
     }
 
     public async getCanvas(id: string) {

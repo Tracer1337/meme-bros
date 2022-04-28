@@ -12,15 +12,13 @@ export async function syncStickers(config: SyncConfig) {
     await assertDirExists(config, STICKERS_DIR)
 
     const stickers = await api.stickers.getAll()
+    const files = stickers.map((sticker) => sticker.filename)
 
     const stickersFile = JSON.parse(
         await fs.readFile(join(path, STICKERS_FILE))
     ) || []
 
-    const stickersDiff = diffUnique(
-        stickersFile,
-        stickers.map((sticker) => sticker.filename)
-    )
+    const stickersDiff = diffUnique(stickersFile, files)
 
     await Promise.all([
         ...stickersDiff.added.map(async (filename) => {
@@ -44,6 +42,6 @@ export async function syncStickers(config: SyncConfig) {
 
     await fs.writeFile(
         join(path, STICKERS_FILE),
-        JSON.stringify(stickers, null, 4)
+        JSON.stringify(files, null, 4)
     )
 }

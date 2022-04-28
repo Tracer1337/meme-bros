@@ -8,7 +8,7 @@ export class StorageResource {
     ) {}
 
     public url(filename: string) {
-        return `${this.config.host}storage/${filename}`
+        return `${this.config.host}/storage/${filename}`
     }
 
     public async get(filename: string) {
