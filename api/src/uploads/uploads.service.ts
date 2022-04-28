@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException, NotFoundException } from "@ne
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
 import { ImgurService } from "../imgur/imgur.service"
-import { Upload, UploadDocument } from "../schemas/upload.schema"
+import { Upload, UploadDocument } from "./upload.schema"
 import { UploadImageDTO } from "./dto/upload-image.dto"
 import { GetAllUploadsDTO } from "./dto/get-all-uploads.dto"
 

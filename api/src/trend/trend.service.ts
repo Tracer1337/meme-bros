@@ -2,7 +2,7 @@ import { Model } from "mongoose"
 import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common"
 import { ConfigService, ConfigType } from "@nestjs/config"
 import { InjectModel } from "@nestjs/mongoose"
-import { Trend as TrendModel, TrendDocument } from "../schemas/trend.schema"
+import { Trend as TrendModel, TrendDocument } from "./trend.schema"
 import { Trend } from "./trend"
 import { templatesConfig } from "src/templates/templates.config"
 

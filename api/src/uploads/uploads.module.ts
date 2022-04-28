@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common"
 import { MongooseModule } from "@nestjs/mongoose"
 import { ImgurModule } from "../imgur/imgur.module"
-import { Upload, UploadSchema } from "../schemas/upload.schema"
+import { Upload, UploadSchema } from "./upload.schema"
 import { UploadsController } from "./uploads.controller"
 import { UploadsService } from "./uploads.service"
 

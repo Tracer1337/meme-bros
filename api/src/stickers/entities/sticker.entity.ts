@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer"
-import { StickerDocument, Sticker } from "src/schemas/sticker.schema"
 import { Role } from "src/roles/role.enum"
+import { StickerDocument, Sticker } from "../sticker.schema"
 
 export class StickerEntity implements Sticker {
     filename: string

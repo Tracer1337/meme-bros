@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common"
 import { MongooseModule } from "@nestjs/mongoose"
 import { StorageModule } from "../storage/storage.module"
-import { Sticker, StickerSchema } from "../schemas/sticker.schema"
+import { Sticker, StickerSchema } from "./sticker.schema"
 import { StickersController } from "./stickers.controller"
 import { StickersService } from "./stickers.service"
 

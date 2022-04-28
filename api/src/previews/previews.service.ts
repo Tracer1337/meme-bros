@@ -7,7 +7,7 @@ import {
 } from "@meme-bros/shared"
 import { StorageService } from "../storage/storage.service"
 import { CoreService } from "../core/core.service"
-import { TemplateDocument } from "../schemas/template.schema"
+import { TemplateDocument } from "../templates/template.schema"
 import { templatesConfig } from "../templates/templates.config"
 
 @Injectable()
