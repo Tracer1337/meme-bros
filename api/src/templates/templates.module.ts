@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common"
 import { MongooseModule } from "@nestjs/mongoose"
-import { ConfigModule } from "@nestjs/config"
 import { PreviewsModule } from "../previews/previews.module"
 import { TrendModule } from "../trend/trend.module"
 import { Template, TemplateSchema } from "./template.schema"
@@ -13,7 +12,6 @@ import { TemplatesService } from "./templates.service"
             name: Template.name,
             schema: TemplateSchema
         }]),
-        ConfigModule,
         PreviewsModule,
         TrendModule
     ],
