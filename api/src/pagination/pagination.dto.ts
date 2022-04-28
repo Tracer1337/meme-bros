@@ -6,12 +6,12 @@ export class PaginationDTO {
     @Min(0)
     @IsOptional()
     @Type(() => Number)
-    page?: number = 0
+    page?: number
 
     @IsInt()
     @Min(1)
     @Max(100)
     @IsOptional()
     @Type(() => Number)
-    per_page?: number = 10
+    per_page?: number
 }
