@@ -1,11 +1,11 @@
-import { usePublicAPI } from "@meme-bros/api-sdk"
+import { useAPI } from "@meme-bros/api-sdk"
 import { Modules } from "@meme-bros/client-lib"
 
 export function useStickersModule(): Modules.StickersModule {
-    const api = usePublicAPI()
+    const api = useAPI()
 
     return {
-        loadStickers: () => api.stickers.all.get(),
-        getStickerURI: (filename) => api.storage.sticker.url(filename)
+        loadStickers: () => api.stickers.getAll(),
+        getStickerURI: (filename) => api.storage.url(filename)
     }
 }

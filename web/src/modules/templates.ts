@@ -1,15 +1,15 @@
-import { usePublicAPI } from "@meme-bros/api-sdk"
+import { useAPI } from "@meme-bros/api-sdk"
 import { Modules } from "@meme-bros/client-lib"
 
 export function useTemplatesModule(): Modules.TemplatesModule {
-    const api = usePublicAPI()
+    const api = useAPI()
 
     const loadTemplates: Modules.TemplatesModule["loadTemplates"] = async () => {
         const [templates, newList, topList, hotList] = await Promise.all([
-            api.templates.all.get(),
-            api.templates.newList.get(),
-            api.templates.topList.get(),
-            api.templates.hotList.get()
+            api.templates.getAll(),
+            api.templates.getNewList(),
+            api.templates.getTopList(),
+            api.templates.getHotList()
         ])
     
         const meta = Object.fromEntries(
@@ -28,7 +28,7 @@ export function useTemplatesModule(): Modules.TemplatesModule {
     
     return {
         loadTemplates,
-        getPreviewURI: (template) => api.storage.templatePreview.url(template),
-        getCanvas: (template) => api.templates.canvas.get(template)
+        getPreviewURI: (template) => api.storage.url(template.previewFile),
+        getCanvas: (template) => api.templates.getCanvas(template)
     }
 }

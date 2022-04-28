@@ -1,5 +1,4 @@
 import "./style.css"
-import React from "react"
 import RNApp from "@meme-bros/app"
 import { Modules, ModulesProvider } from "@meme-bros/client-lib"
 import { useCoreModule } from "./modules/core"

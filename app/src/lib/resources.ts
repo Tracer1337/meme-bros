@@ -72,7 +72,8 @@ function useStickersLoader() {
     const run = async () => {
         try {
             appContext.set({ stickers: { isLoading: true } })
-            const list = await loadStickers()
+            const stickers = await loadStickers()
+            const list = stickers.map((sticker) => sticker.filename)
             appContext.set({ stickers: { isLoading: false, list } })
         } catch (error) {
             console.error(error)

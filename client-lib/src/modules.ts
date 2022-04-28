@@ -25,7 +25,7 @@ export namespace Modules {
     }
 
     export type StickersModule = {
-        loadStickers: () => Promise<string[]>,
+        loadStickers: () => Promise<API.Sticker[]>,
         getStickerURI: (filename: string) => string
     }
 
