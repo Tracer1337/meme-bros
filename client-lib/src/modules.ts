@@ -48,7 +48,7 @@ export namespace Modules {
     }
 
     export type CanvasModule = {
-        Component: React.FunctionComponent
+        CanvasComponent: React.FunctionComponent
     }
 
     export type ViewModule = {
