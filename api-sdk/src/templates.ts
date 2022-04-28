@@ -22,12 +22,12 @@ export type GetAllTemplates = Pagination & {
 export class TemplatesResource {
     constructor(private readonly axios: AxiosInstance, _config: Config) {}
 
-    public async getAll(params: GetAllTemplates) {
+    public async getAll(params?: GetAllTemplates) {
         const res = await this.axios.get<Template[]>("templates", { params })
         return res.data
     }
 
-    public async getAllAsMap(params: GetAllTemplates) {
+    public async getAllAsMap(params?: GetAllTemplates) {
         const res = await this.axios.get<Template[]>("templates", { params })
         return Object.fromEntries(
             res.data.map((template) => [template.id, template])

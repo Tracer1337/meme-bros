@@ -9,7 +9,7 @@ export type Upload = {
 export class UploadsResource {
     constructor(private readonly axios: AxiosInstance, _config: Config) {}
 
-    public async getAll(params: Pagination) {
+    public async getAll(params?: Pagination) {
         const res = await this.axios.get<Upload[]>("uploads", { params })
         return res.data
     }

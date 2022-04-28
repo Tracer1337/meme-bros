@@ -13,7 +13,7 @@ export type CreateSticker = {
 export class StickersResource {
     constructor(private readonly axios: AxiosInstance, _config: Config) {}
 
-    public async getAll(params: Pagination) {
+    public async getAll(params?: Pagination) {
         const res = await this.axios.get<Sticker[]>("stickers", { params })
         return res.data
     }
