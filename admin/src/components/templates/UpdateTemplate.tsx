@@ -1,8 +1,9 @@
 import React from "react"
 import { useLocation, useParams } from "react-router-dom"
-import * as API from "@meme-bros/api-sdk/dist/admin/types"
-import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
-import TemplateForm, { Fields } from "./TemplateForm"
+import * as API from "@meme-bros/api-sdk"
+import { useAPI } from "@meme-bros/api-sdk"
+import TemplateForm from "./TemplateForm"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 
 export type LocationState = API.Template
 
@@ -13,35 +14,52 @@ function UpdateTemplate() {
         throw new Error("Missing param: 'id'")
     }
 
-    const api = useAdminAPI()
-
     const locationState = useLocation().state as LocationState
-    
-    const templateReq = api.templates.one.use(id)
 
-    const canvasReq = api.templates.canvas.use(id)
+    const api = useAPI()
 
-    const template = locationState || templateReq.data
+    const queryClient = useQueryClient()
 
-    const handleSubmit = async (values: Fields) => {
-        if (!id) {
-            return
+    const {
+        isLoading: isTemplateLoading,
+        isError: isTemplateError,
+        data: template
+    } = useQuery(
+        ["template", id],
+        () => api.templates.getOne(id),
+        { initialData: locationState }
+    )
+
+    const {
+        isLoading: isCanvasLoading,
+        isError: isCanvasError,
+        data: canvas
+    } = useQuery(
+        ["canvas", id],
+        () => api.templates.getCanvas(id)
+    )
+
+    const updateMutation = useMutation(
+        (payload: Partial<API.CreateTemplate>) => api.templates.update(id, payload),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["template", id])
+                queryClient.invalidateQueries(["canvas", id])
+            }
         }
-        await api.templates.update(template, values)
-        api.templates.all.mutate()
-    }
+    )
     
-    if (templateReq.error || canvasReq.error) {
-        return <div>Failed to load</div>
-    }
-    if (!template || !canvasReq.data) {
+    if (isTemplateLoading || isCanvasLoading) {
         return <div>Loading...</div>
+    }
+    if (isTemplateError || !template || isCanvasError || !canvas) {
+        return <div>Failed to load</div>
     }
 
     return (
         <TemplateForm
-            values={{ ...template, canvas: canvasReq.data }}
-            onSubmit={handleSubmit}
+            values={{ ...template, canvas }}
+            onSubmit={updateMutation.mutateAsync}
         />
     )
 }

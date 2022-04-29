@@ -1,21 +1,29 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
-import TemplateForm, { Fields } from "./TemplateForm"
+import { useMutation, useQueryClient } from "react-query"
+import * as API from "@meme-bros/api-sdk"
+import { useAPI } from "@meme-bros/api-sdk"
+import TemplateForm from "./TemplateForm"
 
 function CreateTemplate() {
-    const api = useAdminAPI()
+    const api = useAPI()
+    
+    const queryClient = useQueryClient()
     
     const navigate = useNavigate()
 
-    const handleSubmit = async (values: Fields) => {
-        const template = await api.templates.create(values)
-        api.templates.all.mutate()
-        navigate(`/templates/${template.id}`)
-    }
+    const submitMutation = useMutation(
+        (payload: API.CreateTemplate) => api.templates.create(payload),
+        {
+            onSuccess: (template: API.Template) => {
+                queryClient.invalidateQueries("templates")
+                navigate(`/templates/${template.id}`)
+            }
+        }
+    )
     
     return (
-        <TemplateForm onSubmit={handleSubmit}/>
+        <TemplateForm onSubmit={submitMutation.mutateAsync}/>
     )
 }
 

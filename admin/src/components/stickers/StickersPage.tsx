@@ -1,17 +1,37 @@
 import React, { useState } from "react"
+import { useMutation, useQueryClient } from "react-query"
 import { Container, Typography } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
-import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
+import { useAPI } from "@meme-bros/api-sdk"
+import * as API from "@meme-bros/api-sdk"
 import StickersList from "./StickersList"
 import { importImage } from "../../lib/file"
 import { useSnackbar } from "../../lib/snackbar"
 
 function StickersPage() {
-    const api = useAdminAPI()
+    const api = useAPI()
 
+    const queryClient = useQueryClient()
+    
     const snackbar = useSnackbar()
 
     const [isLoading, setIsLoading] = useState(false)
+
+    const createMutation = useMutation(
+        (payload: API.CreateSticker) => api.stickers.create(payload),
+        {
+            onMutate: () => setIsLoading(true),
+            onSuccess: () => snackbar.success(),
+            onError: (error) => {
+                console.error(error)
+                snackbar.error()
+            },
+            onSettled: () => {
+                setIsLoading(false)
+                queryClient.invalidateQueries("stickers")
+            }
+        }
+    )
 
     const handleCreate = async () => {
         const image = await importImage()
@@ -19,17 +39,7 @@ function StickersPage() {
             snackbar.info("Cancelled")
             return
         }
-        setIsLoading(true)
-        api.stickers.create({ uri: image.base64 })
-            .then(() => snackbar.success())
-            .catch((error) => {
-                console.error(error)
-                snackbar.error()
-            })
-            .finally(() => {
-                setIsLoading(false)
-                api.stickers.all.mutate()
-            })
+        createMutation.mutate({ uri: image.base64 })
     }
 
     return (

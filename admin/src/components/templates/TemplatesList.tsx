@@ -1,5 +1,6 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import {
     Box,
     IconButton,
@@ -12,23 +13,47 @@ import {
     Typography
 } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
-import * as API from "@meme-bros/api-sdk/dist/admin/types"
+import { useAPI } from "@meme-bros/api-sdk"
+import * as API from "@meme-bros/api-sdk"
 import { LocationState } from "./UpdateTemplate"
 import { useConfirm } from "../../lib/confirm"
+import { useSnackbar } from "../../lib/snackbar"
 
 const PreviewImage = styled("img")({
     height: 50
 })
 
-function Page({ index }: { index: number }) {
-    const api = useAdminAPI()
-    
-    const { data, error } = api.templates.all.use({ page: index })
+function Item({ template }: { template: API.Template }) {
+    const api = useAPI()
 
-    const confirm = useConfirm()
+    const queryClient = useQueryClient()
 
     const navigate = useNavigate()
+
+    const snackbar = useSnackbar()
+
+    const [isDeleting, setIsDeleting] = useState(false)
+
+    const deleteMutation = useMutation(
+        () => api.templates.delete(template.id),
+        {
+            onMutate: () => setIsDeleting(true),
+            onSuccess: () =>  {
+                snackbar.success()
+                navigate("/templates")
+            },
+            onError: (error) => {
+                console.error(error)
+                snackbar.error()
+            },
+            onSettled: () => {
+                setIsDeleting(false)
+                queryClient.invalidateQueries("templates")
+            }
+        }
+    )
+
+    const confirm = useConfirm()
 
     const handleClick = (template: API.Template) => {
         navigate(template.id, { state: template as LocationState })
@@ -36,66 +61,83 @@ function Page({ index }: { index: number }) {
 
     const handleDelete = async (template: API.Template) => {
         if (await confirm(`The template '${template.name}' will be deleted`)) {
-            await api.templates.delete(template)
-            api.templates.all.mutate({ page: index })
-            navigate("/templates")
+            deleteMutation.mutate()
         }
     }
 
-    if (error) return <div>Failed to load</div>
-    if (!data) return <div>Loading...</div>
-
     return (
-        <List sx={{
-            height: 700,
-            overflowY: "auto"
-        }}>
-            {data.map((template) => (
-                <ListItem
-                    key={template.id}
-                    secondaryAction={
-                        <IconButton
-                            edge="end"
-                            onClick={() => handleDelete(template)}
-                        >
-                            <DeleteIcon/>
-                        </IconButton>
-                    }
+        <ListItem
+            key={template.id}
+            secondaryAction={
+                <IconButton
+                    edge="end"
+                    onClick={() => handleDelete(template)}
+                    disabled={isDeleting}
                 >
-                    <ListItemButton onClick={() => handleClick(template)}>
-                        <Box sx={{ minWidth: 100 }}>
-                            <PreviewImage
-                                src={api.storage.templatePreview.url(template)}
-                                alt="Preview"
-                            />
-                        </Box>
+                    <DeleteIcon/>
+                </IconButton>
+            }
+        >
+            <ListItemButton onClick={() => handleClick(template)}>
+                <Box sx={{ minWidth: 100 }}>
+                    <PreviewImage
+                        src={api.storage.url(template.previewFile)}
+                        alt="Preview"
+                    />
+                </Box>
 
-                        <ListItemText>
-                            <Box>{template.name}</Box>
-                            <Typography variant="caption">
-                                {template.uses}
-                            </Typography>
-                        </ListItemText>
-                    </ListItemButton>
-                </ListItem>
-            ))}
-        </List>
+                <ListItemText>
+                    <Box>{template.name}</Box>
+                    <Typography variant="caption">
+                        {template.uses}
+                    </Typography>
+                </ListItemText>
+            </ListItemButton>
+        </ListItem>
     )
 }
 
 function TemplatesList() {
-    const [page, setPage] = useState(1)
+    const api = useAPI()
+    
+    const queryClient = useQueryClient()
+    
+    const [page, setPage] = useState(0)
+
+    const {
+        isLoading,
+        isError,
+        data
+    } = useQuery(
+        ["templates", page],
+        () => api.templates.getAll({ page, per_page: 10 })
+    )
+
+    useEffect(() => {
+        queryClient.prefetchQuery(
+            ["templates", page + 1],
+            () => api.templates.getAll({
+                page: page + 1,
+                per_page: 10
+            })
+        )
+    }, [api, queryClient, page])
+
+    if (isLoading) return <div>Loading...</div>
+    if (isError || !data) return <div>Failed to load</div>
 
     return (
         <div>
-            <Page index={page - 1}/>
-            <div style={{ display: "none" }}>
-                <Page index={page}/>
-            </div>
+            <List sx={{
+                height: 700,
+                overflowY: "auto"
+            }}>
+                {data.map((template) => <Item template={template} key={template.id}/>)}
+            </List>
             <Pagination
                 count={Infinity}
-                page={page}
-                onChange={(_e, value) => setPage(value)}
+                page={page + 1}
+                onChange={(_e, value) => setPage(value - 1)}
             />
         </div>
     )

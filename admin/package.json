@@ -23,6 +23,7 @@
     "react-hook-form": "^7.23.0",
     "react-native-scalable-image": "^1.1.0",
     "react-native-web": "^0.17.5",
+    "react-query": "^3.38.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
     "tsdef": "^0.0.14",

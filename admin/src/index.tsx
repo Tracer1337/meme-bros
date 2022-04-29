@@ -1,10 +1,11 @@
 import "./style.css"
 import React from "react"
 import ReactDOM from "react-dom"
+import { QueryClient, QueryClientProvider } from "react-query"
+import { ReactQueryDevtools } from "react-query/devtools"
 import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { AdminAPIProvider } from "@meme-bros/api-sdk/dist/admin"
-import { PublicAPIProvider } from "@meme-bros/api-sdk"
+import { APIProvider } from "@meme-bros/api-sdk"
 import App from "./components/App"
 import { Storage } from "./lib/storage"
 import { SnackbarProvider } from "./lib/snackbar"
@@ -23,15 +24,15 @@ const theme = createTheme({
     }
 })
 
+const queryClient = new QueryClient()
+
 ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             {globalStyles}
-            <PublicAPIProvider config={{
-                host: process.env.PUBLIC_API_HOST || "http://localhost:6006"
-            }}>
-                <AdminAPIProvider config={{
+            <QueryClientProvider client={queryClient}>
+                <APIProvider config={{
                     host: process.env.ADMIN_API_HOST || "http://localhost:5000",
                     token: Storage.get(Storage.Keys.TOKEN) || ""
                 }}>
@@ -42,8 +43,9 @@ ReactDOM.render(
                             </DialogProvider>
                         </SnackbarProvider>
                     </StoreProvider>
-                </AdminAPIProvider>
-            </PublicAPIProvider>
+                </APIProvider>
+                <ReactQueryDevtools/>
+            </QueryClientProvider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById("root")

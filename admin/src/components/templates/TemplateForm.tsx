@@ -4,17 +4,13 @@ import { Grid, Paper, TextField } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import WebApp from "@meme-bros/web"
 import { useListeners, useSharedContext } from "@meme-bros/client-lib"
-import * as API from "@meme-bros/api-sdk/dist/admin"
-import * as PublicAPI from "@meme-bros/api-sdk"
+import * as API from "@meme-bros/api-sdk"
 import { scaleCanvas } from "./utils/scale"
 import { useSnackbar } from "../../lib/snackbar"
 
-export type Fields = {
-    name: string,
-    canvas: API.CreateTemplate["canvas"]
-}
+export type Fields = Pick<API.CreateTemplate, "name" | "canvas">
 
-const emptyTemplate: PublicAPI.Template = {
+const emptyTemplate: API.Template = {
     id: "",
     hash: "",
     name: "",
@@ -23,7 +19,7 @@ const emptyTemplate: PublicAPI.Template = {
 
 function TemplateForm({ values, ...props }: {
     values?: Fields,
-    onSubmit: (values: Fields) => Promise<void>
+    onSubmit: (values: Fields) => Promise<any>
 }) {
     const context = useSharedContext()
 

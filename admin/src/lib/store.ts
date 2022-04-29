@@ -1,6 +1,6 @@
 import create from "zustand"
 import createContext from "zustand/context"
-import { AdminAPI, useAdminAPI } from "@meme-bros/api-sdk/dist/admin"
+import { API, useAPI } from "@meme-bros/api-sdk"
 import { Storage } from "./storage"
 import React from "react"
 
@@ -17,7 +17,7 @@ type Store = {
 
 const { Provider, useStore } = createContext<Store>()
 
-const createStore = ({ api }: { api: AdminAPI }) =>
+const createStore = ({ api }: { api: API }) =>
     create<Store>((set) => ({
         isLoggedIn: false,
         username: "",
@@ -37,14 +37,14 @@ const createStore = ({ api }: { api: AdminAPI }) =>
             })
         },
         authorize: async () => {
-            api.auth.profile.get().then(({ username }) =>
+            api.auth.getProfile().then(({ username }) =>
                 set({ isLoggedIn: true, username })
             )
         }
     }))
 
 export function StoreProvider({ children }: { children: JSX.Element }) {
-    const api = useAdminAPI()
+    const api = useAPI()
     
     return React.createElement(
         Provider,

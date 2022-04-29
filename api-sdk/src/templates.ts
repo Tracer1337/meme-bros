@@ -16,7 +16,7 @@ export type CreateTemplate = {
 }
 
 export type GetAllTemplates = Pagination & {
-    hashes: string[]
+    hashes?: string[]
 }
 
 export class TemplatesResource {
