@@ -38,8 +38,8 @@ const globalStyles = <GlobalStyles styles={{
 const MAX_HISTORY_LENGTH = 100
 
 const Container = styled(Box)({
-    height: "100vh",
-    display: "flex"
+    display: "flex",
+    flex: 1
 })
 
 const CanvasContainer = styled(Box)({
