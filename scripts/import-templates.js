@@ -119,7 +119,8 @@ async function run() {
     const bar = new progress.SingleBar()
     bar.start(templates.length, 0)
 
-    await Promise.all(templates.map(async (template) => {
+    // TODO: Fix core-http race condition
+    for (let template of templates) {
         try {
             await api.templates.create({
                 name: template.label,
@@ -131,7 +132,7 @@ async function run() {
         } finally {
             bar.increment()
         }
-    }))
+    }
 
     bar.stop()
 }
