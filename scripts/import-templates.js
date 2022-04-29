@@ -1,12 +1,12 @@
 import ora from "ora"
 import progress from "cli-progress"
-import { AdminAPI } from "@meme-bros/api-sdk/dist/admin/index.js"
+import { API } from "@meme-bros/api-sdk"
 import { makeId } from "@meme-bros/client-lib/dist/utils.js"
 import { getDefaultDataByType } from "@meme-bros/client-lib/dist/editor.js"
 import EasyMemeAPI from "./lib/easymeme.js"
 import sharp from "sharp"
 
-const api = new AdminAPI({
+const api = new API({
     host: process.env.ADMIN_API_HOST || "http://localhost:5000"
 })
 
