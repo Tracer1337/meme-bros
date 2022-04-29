@@ -1,5 +1,4 @@
 import { Editor } from "@meme-bros/shared"
-import React from "react"
 import { ElementComponentProps } from "./makeElement"
 import ImageElement from "./ImageElement"
 import ShapeElement from "./ShapeElement"

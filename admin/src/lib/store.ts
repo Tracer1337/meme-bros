@@ -1,8 +1,8 @@
+import React from "react"
 import create from "zustand"
 import createContext from "zustand/context"
 import { API, useAPI } from "@meme-bros/api-sdk"
 import { Storage } from "./storage"
-import React from "react"
 
 type Store = {
     isLoggedIn: boolean,

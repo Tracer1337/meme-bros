@@ -1,4 +1,3 @@
-import React from "react"
 import { IconButton, useTheme } from "react-native-paper"
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types"
 import { useSharedContext } from "@meme-bros/client-lib"

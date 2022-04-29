@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Avatar, Divider, IconButton, Menu, MenuItem } from "@mui/material"
 import { useStore } from "../../lib/store"

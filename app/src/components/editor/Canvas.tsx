@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { DeepPartial } from "tsdef"
 import produce from "immer"
 import { Editor } from "@meme-bros/shared"

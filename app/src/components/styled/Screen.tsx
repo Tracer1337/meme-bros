@@ -1,4 +1,3 @@
-import React from "react"
 import { StyleProp, View, ViewProps, ViewStyle } from "react-native"
 import { useTheme } from "react-native-paper"
 

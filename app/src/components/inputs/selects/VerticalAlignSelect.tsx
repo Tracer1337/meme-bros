@@ -1,4 +1,3 @@
-import React from "react"
 import { verticalAlign } from "@meme-bros/client-lib"
 import Select from "../Select"
 

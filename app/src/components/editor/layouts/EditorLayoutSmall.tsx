@@ -1,4 +1,3 @@
-import React from "react"
 import { View } from "react-native"
 import BottomBar from "../bottom-bar/BottomBar"
 import Canvas from "../Canvas"

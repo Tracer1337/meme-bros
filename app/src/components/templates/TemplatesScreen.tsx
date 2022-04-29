@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useNavigate } from "react-router-native"
 import { Text, ActivityIndicator } from "react-native-paper"
 import { useSharedContext } from "@meme-bros/client-lib"

@@ -1,4 +1,3 @@
-import React from "react"
 import { useSharedContext } from "@meme-bros/client-lib"
 import { IconButton } from "react-native-paper"
 

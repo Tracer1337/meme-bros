@@ -1,4 +1,3 @@
-import React from "react"
 import { StyleSheet } from "react-native"
 import { useSharedContext } from "@meme-bros/client-lib"
 import Switch from "../../inputs/Switch"

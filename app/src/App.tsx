@@ -1,4 +1,3 @@
-import React from "react"
 import { LogBox } from "react-native"
 import { DarkTheme, Portal, Provider as PaperProvider } from "react-native-paper"
 import { GestureHandlerRootView } from "react-native-gesture-handler"

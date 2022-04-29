@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { FlatList, LayoutChangeEvent, StyleSheet, View} from "react-native"
 import {
     ActivityIndicator,

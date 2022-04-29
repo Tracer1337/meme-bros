@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { View, StyleSheet } from "react-native"
 import { useNavigate } from "react-router-native"
 import { IconButton, Surface, useTheme } from "react-native-paper"

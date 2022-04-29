@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { FAB, Portal } from "react-native-paper"
 import { useSharedContext } from "@meme-bros/client-lib"
 

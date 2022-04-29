@@ -1,4 +1,3 @@
-import React from "react"
 import { NativeRouter, Routes, Route } from "react-router-native"
 import Layout from "../layout/Layout"
 import TemplatesScreen from "../templates/TemplatesScreen"

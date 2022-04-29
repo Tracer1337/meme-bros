@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-native"
 import { useTheme, Surface } from "react-native-paper"
 import { SceneMap, TabView, Route, TabBar } from "react-native-tab-view"

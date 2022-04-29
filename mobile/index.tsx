@@ -1,4 +1,3 @@
-import React from "react"
 import { AppRegistry } from "react-native"
 import App from "@meme-bros/app"
 import { PublicAPIProvider } from "@meme-bros/api-sdk"

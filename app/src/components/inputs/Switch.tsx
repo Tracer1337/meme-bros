@@ -1,4 +1,3 @@
-import React from "react"
 import { View, StyleSheet } from "react-native"
 import { Switch as SwitchLib, Text } from "react-native-paper"
 import { OverwriteProps } from "tsdef"

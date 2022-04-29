@@ -1,4 +1,3 @@
-import React from "react"
 import { StyleSheet, View } from "react-native"
 import Canvas from "../Canvas"
 import ConfigPanel from "../config-panel/ConfigPanel"

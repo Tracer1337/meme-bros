@@ -1,4 +1,3 @@
-import React from "react"
 import { StyleSheet, View } from "react-native"
 import { ActivityIndicator, IconButton, Surface, Text } from "react-native-paper"
 import { useAppContext } from "../../lib/context"

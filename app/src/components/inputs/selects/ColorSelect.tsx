@@ -1,4 +1,3 @@
-import React from "react"
 import { TouchableOpacity, View, ViewStyle } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { Text, useTheme } from "react-native-paper"

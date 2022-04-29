@@ -1,4 +1,3 @@
-import React from "react"
 import { useNavigate } from "react-router-dom"
 import { useMutation, useQueryClient } from "react-query"
 import * as API from "@meme-bros/api-sdk"

@@ -1,4 +1,3 @@
-import React from "react"
 import { StyleSheet } from "react-native"
 import { useNavigate } from "react-router-native"
 import { Divider, IconButton, Surface, useTheme } from "react-native-paper"

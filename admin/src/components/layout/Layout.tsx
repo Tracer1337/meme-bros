@@ -1,4 +1,3 @@
-import React from "react"
 import { Box, Button } from "@mui/material"
 import { NavLink, Outlet } from "react-router-dom"
 import UserMenu from "./UserMenu"

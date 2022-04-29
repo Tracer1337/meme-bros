@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Image } from "react-native"
 import { Button, Dialog, Text } from "react-native-paper"
 import { useAPI } from "@meme-bros/api-sdk"

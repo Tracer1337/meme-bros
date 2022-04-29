@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { Surface, useTheme } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
