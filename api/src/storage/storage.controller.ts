@@ -15,6 +15,7 @@ export class StorageController {
     ) {
         await this.storageService.assertFileExists(filename)
         res.type(filename)
-        this.storageService.getReadStream(filename).pipe(res)
+        const stream = await this.storageService.get(filename)
+        stream.pipe(res)
     }
 }

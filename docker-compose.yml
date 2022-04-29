@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=meme-bros
+  minio:
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9090"
+    ports:
+      - 9000:9000
+      - 9090:9090
+    volumes:
+      - minio:/data
+    environment:
+      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_PASSWORD=changeme
+
+volumes:
+  mongodb:
+  minio:

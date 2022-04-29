@@ -1,44 +1,59 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common"
+import { Inject, Injectable, NotFoundException, OnModuleInit } from "@nestjs/common"
 import { ConfigType } from "@nestjs/config"
-import { createReadStream } from "fs"
-import fs from "fs/promises"
-import path from "path"
+import * as minio from "minio"
 import { v4 as uuid } from "uuid"
 import { storageConfig } from "./storage.config"
 
 @Injectable()
-export class StorageService {
+export class StorageService implements OnModuleInit {
     constructor(
         @Inject(storageConfig.KEY)
-        private readonly config: ConfigType<typeof storageConfig>
+        private readonly config: ConfigType<typeof storageConfig>,
+        @Inject("MINIO") private readonly minioClient: minio.Client
     ) {}
+
+    async onModuleInit() {
+        const bucketExists = await this.minioClient.bucketExists(
+            this.config.bucketName
+        )
+        if (!bucketExists) {
+            await this.minioClient.makeBucket(
+                this.config.bucketName,
+                this.config.bucketRegion
+            )
+        }
+    }
 
     async put(buffer: Buffer, ext: string) {
         const filename = `${uuid()}.${ext}`
-        await this.assertStorageDirExists()
-        await fs.writeFile(this.getFilePath(filename), buffer)
+        await this.minioClient.putObject(
+            this.config.bucketName,
+            filename,
+            buffer
+        )
         return filename
     }
 
     async get(filename: string) {
-        return await fs.readFile(this.getFilePath(filename))
-    }
-
-    getReadStream(filename: string) {
-        return createReadStream(this.getFilePath(filename))
+        return await this.minioClient.getObject(
+            this.config.bucketName,
+            filename
+        )
     }
 
     async delete(filename: string) {
-        return await fs.unlink(this.getFilePath(filename))
+        await this.minioClient.removeObject(
+            this.config.bucketName,
+            filename
+        )
     }
 
-    getFilePath(filename: string) {
-        return path.join(this.config.path, filename)
-    }
-
-    async exists(path: string) {
+    async exists(filename: string) {
         try {
-            await fs.access(path)
+            await this.minioClient.statObject(
+                this.config.bucketName,
+                filename
+            )
             return true
         } catch {
             return false
@@ -46,14 +61,9 @@ export class StorageService {
     }
 
     async assertFileExists(filename: string) {
-        if (!await this.exists(this.getFilePath(filename))) {
+        const fileExists = await this.exists(filename)
+        if (!fileExists) {
             throw new NotFoundException()
-        }
-    }
-
-    async assertStorageDirExists() {
-        if (!await this.exists(this.config.path)) {
-            await fs.mkdir(this.config.path)
         }
     }
 }
