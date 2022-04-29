@@ -6,11 +6,11 @@ import { ReactQueryDevtools } from "react-query/devtools"
 import { CssBaseline, GlobalStyles } from "@mui/material"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { APIProvider } from "@meme-bros/api-sdk"
-import App from "./components/App"
-import { Storage } from "./lib/storage"
-import { SnackbarProvider } from "./lib/snackbar"
-import { DialogProvider } from "./lib/dialogs"
-import { StoreProvider } from "./lib/store"
+import { Storage } from "@lib/storage"
+import { SnackbarProvider } from "@lib/snackbar"
+import { DialogProvider } from "@lib/dialogs"
+import { StoreProvider } from "@lib/store"
+import Router from "@components/router/Router"
 
 const globalStyles = <GlobalStyles styles={{
     a: {
@@ -39,7 +39,7 @@ ReactDOM.render(
                     <StoreProvider>
                         <SnackbarProvider>
                             <DialogProvider>
-                                <App/>
+                                <Router/>
                             </DialogProvider>
                         </SnackbarProvider>
                     </StoreProvider>
