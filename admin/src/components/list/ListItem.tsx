@@ -3,8 +3,8 @@ import { useMutation } from "react-query"
 import { AnyFunction } from "tsdef"
 import { ListItem as MuiListItem, IconButton } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { useSnackbar } from "../../lib/snackbar"
-import { useConfirm } from "../../lib/confirm"
+import { useSnackbar } from "@lib/snackbar"
+import { useConfirm } from "@lib/confirm"
 
 function ListItem({
     children,

@@ -3,8 +3,8 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { TextField, Container, Typography } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { useLocation, useNavigate } from "react-router-dom"
-import { useStore } from "../../lib/store"
-import { Storage } from "../../lib/storage"
+import { useStore } from "@lib/store"
+import { Storage } from "@lib/storage"
 
 type Fields = {
     username: string

@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material"
 import { NavLink, Outlet } from "react-router-dom"
 import UserMenu from "./UserMenu"
-import { useStore } from "../../lib/store"
+import { useStore } from "@lib/store"
 
 const links: { to: string, title: string }[] = [
     { to: "/", title: "Home" },

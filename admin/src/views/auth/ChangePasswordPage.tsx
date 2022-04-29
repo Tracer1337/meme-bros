@@ -3,7 +3,7 @@ import { Container, TextField, Typography } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useAPI } from "@meme-bros/api-sdk"
-import { useSnackbar } from "../../lib/snackbar"
+import { useSnackbar } from "@lib/snackbar"
 
 type Fields = {
     oldPassword: string,

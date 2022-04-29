@@ -5,8 +5,8 @@ import { LoadingButton } from "@mui/lab"
 import { useAPI } from "@meme-bros/api-sdk"
 import * as API from "@meme-bros/api-sdk"
 import StickersList from "./StickersList"
-import { importImage } from "../../lib/file"
-import { useSnackbar } from "../../lib/snackbar"
+import { importImage } from "@lib/file"
+import { useSnackbar } from "@lib/snackbar"
 
 function StickersPage() {
     const api = useAPI()

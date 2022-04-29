@@ -6,7 +6,7 @@ import WebApp from "@meme-bros/web"
 import { useListeners, useSharedContext } from "@meme-bros/client-lib"
 import * as API from "@meme-bros/api-sdk"
 import { scaleCanvas } from "./utils/scale"
-import { useSnackbar } from "../../lib/snackbar"
+import { useSnackbar } from "@lib/snackbar"
 
 export type Fields = Pick<API.CreateTemplate, "name" | "canvas">
 

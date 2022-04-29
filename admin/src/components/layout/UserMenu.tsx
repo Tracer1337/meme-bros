@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Avatar, Divider, IconButton, Menu, MenuItem } from "@mui/material"
-import { useStore } from "../../lib/store"
+import { useStore } from "@lib/store"
 
 function UserMenu() {
     const navigate = useNavigate()

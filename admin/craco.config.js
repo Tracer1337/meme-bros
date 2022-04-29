@@ -1,6 +1,7 @@
-const webpack = require("webpack");
-const { getWebpackTools } = require("react-native-monorepo-tools");
 const path = require("path")
+const webpack = require("webpack")
+const { getWebpackTools } = require("react-native-monorepo-tools")
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 const monorepoWebpackTools = getWebpackTools();
 
@@ -24,6 +25,7 @@ module.exports = {
           include: path.resolve(__dirname, './static/media/[name].[ext]'),
         },
       );
+      webpackConfig.resolve.plugins.push(new TsconfigPathsPlugin())
       return webpackConfig;
     },
     alias: {
