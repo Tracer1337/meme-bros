@@ -1,5 +1,6 @@
 import { useLocation, useParams } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "react-query"
+import { CircularProgress } from "@mui/material"
 import * as API from "@meme-bros/api-sdk"
 import { useAPI } from "@meme-bros/api-sdk"
 import TemplateForm from "./TemplateForm"
@@ -48,12 +49,9 @@ function UpdateTemplate() {
         }
     )
     
-    if (isTemplateLoading || isCanvasLoading) {
-        return <div>Loading...</div>
-    }
-    if (isTemplateError || !template || isCanvasError || !canvas) {
+    if (isTemplateLoading || isCanvasLoading) return <CircularProgress/>
+    if (isTemplateError || !template || isCanvasError || !canvas)
         return <div>Failed to load</div>
-    }
 
     return (
         <TemplateForm

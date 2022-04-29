@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useQuery, useQueryClient } from "react-query"
-import { List as MuiList, Pagination } from "@mui/material"
+import { CircularProgress, List as MuiList, Pagination } from "@mui/material"
 import { AnyFunction } from "tsdef"
 import { useAPI } from "@meme-bros/api-sdk"
 import * as API from "@meme-bros/api-sdk"
@@ -54,7 +54,7 @@ function List<T>({
         )
     }, [api, queryClient, page, queryKey, query])
 
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) return <CircularProgress/>
     if (isError || !data) return <div>Failed to load</div>
 
     return (
