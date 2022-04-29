@@ -82,9 +82,9 @@ function App() {
 
     useEffect(() => {
         if (config.debug) {
-            requestAnimationFrame(() =>
+            requestAnimationFrame(() => {
                 context.set({ canvas: mockCanvas })
-            )
+            })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

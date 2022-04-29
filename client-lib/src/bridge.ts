@@ -71,8 +71,12 @@ export function useWindowMessaging() {
             if (typeof event.data !== "string") {
                 return
             }
-            const message = JSON.parse(event.data) as Bridge.Message
-            bridge.messages.emit(message.event, message.data)
+            try {
+                const message = JSON.parse(event.data) as Bridge.Message
+                bridge.messages.emit(message.event, message.data)
+            } catch {
+                console.warn("Failed to parse window message")
+            }
         }]
     ]
 
