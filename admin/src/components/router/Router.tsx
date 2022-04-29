@@ -1,14 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Layout from "../layout/Layout"
-import IndexPage from "../IndexPage"
-import RequireAuth from "../auth/RequireAuth"
-import LoginPage from "../auth/LoginPage"
-import ChangePasswordPage from "../auth/ChangePasswordPage"
-import TemplatesPage from "../templates/TemplatesPage"
-import CreateTemplate from "../templates/CreateTemplate"
-import UpdateTemplate from "../templates/UpdateTemplate"
-import StickersPage from "../stickers/StickersPage"
-import UploadsPage from "../uploads/UploadsPage"
+import IndexPage from "../../views/IndexPage"
+import RequireAuth from "../../views/auth/RequireAuth"
+import LoginPage from "../../views/auth/LoginPage"
+import ChangePasswordPage from "../../views/auth/ChangePasswordPage"
+import TemplatesPage from "../../views/templates/TemplatesPage"
+import CreateTemplate from "../../views/templates/CreateTemplate"
+import UpdateTemplate from "../../views/templates/UpdateTemplate"
+import StickersPage from "../../views/stickers/StickersPage"
+import UploadsPage from "../../views/uploads/UploadsPage"
 
 function auth(child: JSX.Element) {
     return (

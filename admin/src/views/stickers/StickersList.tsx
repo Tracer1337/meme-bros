@@ -1,7 +1,7 @@
 import { Box, Typography, styled } from "@mui/material"
 import * as API from "@meme-bros/api-sdk"
 import { useAPI } from "@meme-bros/api-sdk"
-import List from "../list/List"
+import List from "../../components/list/List"
 
 const PreviewImage = styled("img")({
     height: 100

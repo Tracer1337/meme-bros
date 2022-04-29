@@ -8,7 +8,7 @@ import {
 } from "@mui/material"
 import { useAPI } from "@meme-bros/api-sdk"
 import * as API from "@meme-bros/api-sdk"
-import List from "../list/List"
+import List from "../../components/list/List"
 import { LocationState } from "./UpdateTemplate"
 
 const PreviewImage = styled("img")({
