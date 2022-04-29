@@ -15,28 +15,30 @@ function Layout() {
 
     return (
         <>
-            <Box sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                height: 64,
-                mx: 8
-            }}>
-                {links.map((link, i) => (
-                    <NavLink
-                        key={i}
-                        to={link.to}
-                        style={({ isActive }) => ({
-                            color: isActive ? "yellow" : undefined
-                        })}
-                    >
-                        <Button variant="text">
-                            {link.title}
-                        </Button>
-                    </NavLink>
-                ))}
-                {isLoggedIn && <UserMenu/>}
-            </Box>
+            {isLoggedIn && (
+                <Box sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    height: 64,
+                    mx: 8
+                }}>
+                    {links.map((link, i) => (
+                        <NavLink
+                            key={i}
+                            to={link.to}
+                            style={({ isActive }) => ({
+                                color: isActive ? "yellow" : undefined
+                            })}
+                        >
+                            <Button variant="text">
+                                {link.title}
+                            </Button>
+                        </NavLink>
+                    ))}
+                    <UserMenu/>
+                </Box>
+            )}
             <Outlet/>
         </>
     )
