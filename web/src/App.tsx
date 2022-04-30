@@ -4,10 +4,10 @@ import { Modules, ModulesProvider } from "@meme-bros/client-lib"
 import { useCoreModule } from "./modules/core"
 import { useTemplatesModule } from "./modules/templates"
 import { useStickersModule } from "./modules/stickers"
-import storageModule from "./modules/storage"
-import canvasModule from "./modules/canvas"
-import viewModule from "./modules/view"
-import permissionsModule from "./modules/permissions"
+import { useStorageModule } from "./modules/storage"
+import { useCanvasModule } from "./modules/canvas"
+import { useViewModule } from "./modules/view"
+import { usePermissionsModule } from "./modules/permissions"
 
 function App({ width, height }: {
     width: number,
@@ -17,10 +17,10 @@ function App({ width, height }: {
         core: useCoreModule(),
         templates: useTemplatesModule(),
         stickers: useStickersModule(),
-        storage: storageModule,
-        canvas: canvasModule,
-        view: viewModule,
-        permissions: permissionsModule,
+        storage: useStorageModule(),
+        canvas: useCanvasModule(),
+        view: useViewModule(),
+        permissions: usePermissionsModule(),
         social: {},
         sync: {}
     }
