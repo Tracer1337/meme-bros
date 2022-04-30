@@ -1,9 +1,12 @@
 import { Modules } from "@meme-bros/client-lib"
 import { Resources } from "../lib/resources"
 
-const stickersModule: Modules.StickersModule = {
-    loadStickers: Resources.readStickersFile,
-    getStickerURI: Resources.getStickerURI
+export function useStickersModule(): Modules.StickersModule {
+    return {
+        loadStickers: async () => {
+            const files = await Resources.readStickersFile()
+            return files.map((filename) => ({ filename }))
+        },
+        getStickerURI: Resources.getStickerURI
+    }
 }
-
-export default stickersModule

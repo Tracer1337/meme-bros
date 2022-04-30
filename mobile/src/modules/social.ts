@@ -1,14 +1,14 @@
 import { Modules } from "@meme-bros/client-lib"
 import Share from "react-native-share"
 
-const share: Modules.SocialModule["share"] = async (args) => {
-    try {
-        const res = await Share.open({ url: args.uri })
-    } catch {}
+export function useSocialModule(): Modules.SocialModule {
+    const share: Modules.SocialModule["share"] = async (args) => {
+        try {
+            await Share.open({ url: args.uri })
+        } catch {}
+    }
+    
+    return {
+        share
+    }
 }
-
-const socialModule: Modules.SocialModule = {
-    share
-}
-
-export default socialModule

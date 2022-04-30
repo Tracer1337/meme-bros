@@ -1,19 +1,19 @@
+import { Platform } from "react-native"
 import RNFS from "react-native-fs"
 import { Modules, syncResources, RESOURCES_DIR, join } from "@meme-bros/client-lib"
+import { useAPI } from "@meme-bros/api-sdk"
 import { copyFolderAssets, writeFilePatched } from "../lib/fs"
-import { usePublicAPI } from "@meme-bros/api-sdk"
-import { Platform } from "react-native"
-
-async function setupStorage() {
-    const path = join(RNFS.DocumentDirectoryPath, RESOURCES_DIR)
-    if (await RNFS.exists(path)) {
-        return
-    }
-    await copyFolderAssets(RESOURCES_DIR, path)
-}
 
 export function useSyncModule(): Modules.SyncModule {
-    const api = usePublicAPI()
+    const api = useAPI()
+
+    const setupStorage = async () => {
+        const path = join(RNFS.DocumentDirectoryPath, RESOURCES_DIR)
+        if (await RNFS.exists(path)) {
+            return
+        }
+        await copyFolderAssets(RESOURCES_DIR, path)
+    }
     
     const syncResourcesWrapper: Modules.SyncModule["syncResources"] = async () => {
         if (Platform.OS !== "android") {

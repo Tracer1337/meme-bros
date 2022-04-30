@@ -1,34 +1,34 @@
 import { AppRegistry } from "react-native"
 import App from "@meme-bros/app"
-import { PublicAPIProvider } from "@meme-bros/api-sdk"
+import { APIProvider } from "@meme-bros/api-sdk"
 import {
     BridgeProvider,
     SharedContextProvider,
     ModulesProvider
 } from "@meme-bros/client-lib"
 import { name as appName } from "./app.json"
-import coreModule from "./src/modules/core"
-import templatesModules from "./src/modules/templates"
-import storageModule from "./src/modules/storage"
-import canvasModule from "./src/modules/canvas"
-import viewModule from "./src/modules/view"
-import permissionsModule from "./src/modules/permissions"
-import socialModule from "./src/modules/social"
+import { useCoreModule } from "./src/modules/core"
+import { useTemplatesModule } from "./src/modules/templates"
+import { useStorageModule } from "./src/modules/storage"
+import { useCanvasModule } from "./src/modules/canvas"
+import { useViewModule } from "./src/modules/view"
+import { usePermissionsModule } from "./src/modules/permissions"
+import { useSocialModule } from "./src/modules/social"
 import { useSyncModule } from "./src/modules/sync"
-import stickersModule from "./src/modules/stickers"
+import { useStickersModule } from "./src/modules/stickers"
 
 function Main() {
     return (
         <ModulesProvider modules={{
-            core: coreModule,
+            core: useCoreModule(),
             sync: useSyncModule(),
-            templates: templatesModules,
-            stickers: stickersModule,
-            storage: storageModule,
-            canvas: canvasModule,
-            view: viewModule,
-            permissions: permissionsModule,
-            social: socialModule
+            templates: useTemplatesModule(),
+            stickers: useStickersModule(),
+            storage: useStorageModule(),
+            canvas: useCanvasModule(),
+            view: useViewModule(),
+            permissions: usePermissionsModule(),
+            social: useSocialModule()
         }}>
             <BridgeProvider>
                 <SharedContextProvider>
@@ -41,11 +41,11 @@ function Main() {
 
 function MainWrapper() {
     return (
-        <PublicAPIProvider config={{
+        <APIProvider config={{
             host: process.env.PUBLIC_API_HOST || "http://10.0.2.2:6006"
         }}>
             <Main/>
-        </PublicAPIProvider>
+        </APIProvider>
     )
 }
 

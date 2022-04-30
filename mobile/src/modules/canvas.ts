@@ -29,8 +29,8 @@ function CanvasComponent() {
     })
 }
 
-const canvasModule: Modules.CanvasModule = {
-    CanvasComponent
+export function useCanvasModule(): Modules.CanvasModule {
+    return {
+        CanvasComponent
+    }
 }
-
-export default canvasModule
