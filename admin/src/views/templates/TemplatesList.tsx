@@ -26,10 +26,8 @@ function TemplatesList() {
     
     return (
         <List
-            sx={{
-                height: 700,
-                overflowY: "auto"
-            }}
+            sx={{ height: 650, overflowY: "auto" }}
+            searchable
             keyExtractor={(item: API.Template) => item.id}
             labelExtractor={(item) => item.name}
             queryKey="templates"

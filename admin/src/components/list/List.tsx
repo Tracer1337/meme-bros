@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { useQuery, useQueryClient } from "react-query"
-import { CircularProgress, List as MuiList, Pagination } from "@mui/material"
+import { CircularProgress, List as MuiList, Pagination, TextField } from "@mui/material"
 import { AnyFunction } from "tsdef"
 import { useAPI } from "@meme-bros/api-sdk"
 import * as API from "@meme-bros/api-sdk"
 import ListItem from "./ListItem"
+import { useDebouncedValue } from "@lib/debounce"
 
 function List<T>({
     itemComponent,
@@ -14,29 +15,39 @@ function List<T>({
     query,
     deleteMutation,
     onDelete,
+    searchable,
     ...props
 }: React.ComponentProps<typeof MuiList> & {
     itemComponent: React.FunctionComponent<{ item: T }>,
     keyExtractor: (item: T) => number | string,
     labelExtractor?: (item: T) => number | string,
     queryKey: string,
-    query: (payload: API.Pagination) => Promise<T[]>,
+    query: (payload: API.Pagination & {
+        search?: string
+    }) => Promise<T[]>,
     deleteMutation: (item: T) => Promise<void>,
-    onDelete?: AnyFunction
+    onDelete?: AnyFunction,
+    searchable?: boolean
 }) {
     const api = useAPI()
     
     const queryClient = useQueryClient()
     
     const [page, setPage] = useState(0)
+    const [search, setSearch] = useState("")
+    const debouncedSearch = useDebouncedValue(search, 200)
 
     const {
         isLoading,
         isError,
         data
     } = useQuery(
-        [queryKey, page],
-        () => query({ page, per_page: 10 }),
+        [queryKey, page, debouncedSearch],
+        () => query({
+            page,
+            per_page: 10,
+            search: debouncedSearch
+        }),
         {
             staleTime: Infinity,
             keepPreviousData: true
@@ -59,6 +70,14 @@ function List<T>({
 
     return (
         <div>
+            {searchable && (
+                <TextField
+                    label="Search"
+                    value={search}
+                    onChange={(event) => setSearch(event.currentTarget.value)}
+                    sx={{ width: "100%" }}
+                />
+            )}
             <MuiList {...props}>
                 {data.map((item) => (
                     <ListItem

@@ -59,6 +59,9 @@ export class TemplatesService {
                 $in: getAllTemplatesDTO.hashes
             }
         }
+        if (getAllTemplatesDTO?.search) {
+            query.name = new RegExp(getAllTemplatesDTO.search, "i")
+        }
         return this.templateModel.find(query)
             .select("-canvas")
             .sort({ uses: "descending" })
